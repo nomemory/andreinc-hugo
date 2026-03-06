@@ -13,7 +13,7 @@ It's 2026, and my interest in writing was at a new all-time low. Naturally, inst
 
 This isn't exactly a spectacular feat. A lot of people are jumping ship nowadays, usually for reasons related to the fragility of the Ruby ecosystem rather than Jekyll's actual capabilities (which are perfectly fine for most humans). All in all, I like Hugo more. I won't miss the cryptic failed builds I had to endure while deploying to Netlify.
 
-My first instinct was to build everything from scratch. Then I realized that my definition of "scratch" is actually the [Bear Blog](https://bearblog.dev/) theme. It’s minimalistic enough to let me pretend I did the work while saving me from the existential dread of CSS grids.
+My first instinct was to build everything from scratch. Then I realized that my definition of "scratch" is actually the [Bear Blog](https://bearblog.dev/) theme. It's minimalistic enough to let me pretend I did the work while saving me from the existential dread of CSS grids.
 
 Once the foundation was set, I cooked up a few shortcodes and partials to handle my specific neuroses.
 
@@ -68,9 +68,9 @@ I've always wanted centered captions for my images. So, I wrote this small short
 
 # Quotes in the footer
 
-I’ve wanted a random quote generator. 
+I've wanted a random quote generator. 
 
-I'm not sure if this is a Millennial nostalgia thing, but I’ve added this "inspiration" engine to the site footer (`/layouts/partials/footer`):
+I'm not sure if this is a Millennial nostalgia thing, but I've added this "inspiration" engine to the site footer (`/layouts/partials/footer`):
 
 ```html
 {{ if (.Param "showQuote") }}
@@ -106,7 +106,7 @@ Also people will refresh the pages more. Does it mean more visits ?
 
 # Related articles
 
-To try and convince the reader that I’m worth more than five minutes of their time, I added a custom recommendation section (`/layouts/partials/related.html`):
+To try and convince the reader that I'm worth more than five minutes of their time, I added a custom recommendation section (`/layouts/partials/related.html`):
 
 ```html
 {{ $related := where .Site.RegularPages ".Params.categories" "intersect" .Params.categories }}
@@ -148,10 +148,21 @@ I frequently do mistakes, and even if I review my articles, sometimes a new pair
 
 # Better filtering
 
-Finally, I’ve cleaned up the taxonomies. 
+Finally, I've cleaned up the taxonomies. 
 
-It’s now much easier for users to filter out my "personal" rambling ([/persona](/categories/persona/)) from the more "serious" content related to [math](/categories/math) and [programming](/categories/programming).
+It's now much easier for users to filter out my "personal" rambling ([/persona](/categories/persona/)) from the more "serious" content related to [math](/categories/math) and [programming](/categories/programming).
 
-The separation isn't perfect, but it’s a start. 
+The separation isn't perfect, but it's a start. 
 
 Now, if only I could find the motivation to actually write the content I'm so busy Categorizing.
+
+# Things I haven't managed to do *yet*
+
+These are the items I've wrestled with but haven't quite conquered:
+
+* I originally wanted to port the comments from my old Jekyll blog over to this one. It turned out to be an impossible task, which led me to the existential question: *Do I even need a comment section?* I eventually settled on [Giscus](https://giscus.app/), but I still have my suspicions about hosting "dynamic" content onto a static site.
+* This is the big one. I wanted to pre-render the formulas in my [math](/categories/math) articles so the browser doesn't have a seizure trying to load a page heavy on $\LaTeX$. It's easy enough to hack together locally, but getting the pipeline to play nice with Netlify was a specialized brand of hassle I wasn't willing to endure. I've put it on the back burner for now.
+
+# Conclusions
+
+Jekyll was nice, but Hugo is nicer. I'm satisfied with the new "minor" functionality and the general aesthetic of the site. I have plans for the future, but I'm wary of becoming too "meta", basically I'd much rather write actual content than spend the rest of my life blogging about the act of blogging.
