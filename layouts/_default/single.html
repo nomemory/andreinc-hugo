@@ -24,6 +24,10 @@
 
 <br/>
 
+<br>
+
+{{ partial "giscus.html" . }}
+
 {{ if eq .Type "posts" }}{{ if (.Param "enablePostNavigator")}}
   {{- partial "post_navigator.html" . -}}
 {{ end }}{{ end }}
