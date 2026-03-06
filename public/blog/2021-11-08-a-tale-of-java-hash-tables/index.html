@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A tale of Java Hash Tables | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="A tale of Java Hash Tables" />
+<meta name="description" content="The intended audience for this article is undergrad students who already have a good grasp of Java, or seasoned Java developers who would like to explore an in-depth analysis of various hash table implementations that use Open Addressing.
+The reader should be familiar with Java generics, collections, basic data structures, hash functions, and bitwise operations.
+
+  Contents
+  
+  
+    Introduction
+      
+        Standard Implementations by Language
+        Objectives and Scope
+          
+            The Contenders
+            Getting Started
+          
+        
+      
+    
+    Separate Chaining, or how HashMap&lt;K,V&gt; works internally
+      
+        
+          
+            The Table and the Nodes
+            Mapping Cities: An Example
+            The &ldquo;Magic&rdquo; of Bucket Indexing
+            Retrieval: Following the Trail
+            Performance Optimizations
+          
+        
+      
+    
+    Open Addressing
+      
+        Tombstones
+        LProbMap&lt;K, V&gt;
+          
+            The Hash Function
+            Inserting an Entry
+            The Bitwise Modulo Trick
+            Retrieving an Entry
+            Deleting an Entry
+            Resizing and Rehashing
+          
+        
+        LProbSOAMap&lt;K,V&gt;
+        PerturbMap&lt;K, V&gt;
+          
+            Scrambling the Search Path
+            A Practical Example
+            Implementation of get(Object key)
+            Performance Trade-offs
+          
+        
+        LProbBinsMap&lt;K,V&gt;
+          
+            Separating Metadata from Data
+            Implementation of get(Object key)
+            Advantages of the &ldquo;Bins&rdquo; Approach
+          
+        
+        LProbRadarMap&lt;K, V&gt;
+          
+            How the Radar Works
+            Insertion Logic
+            Retrieval Logic
+            Analysis and Risks
+          
+        
+        RobinHoodMap&lt;K, V&gt;
+          
+            The &ldquo;Rich&rdquo; and the &ldquo;Poor&rdquo;
+            Implementation of put
+            Why use Robin Hood Hashing?
+          
+        
+      
+    
+    Benchmarks
+      
+        
+          
+            Benchmark Configuration
+          
+        
+        Data Generation Strategies
+          
+            1. RandomStringsReads
+            2. SequencedStringsReads
+            3. AlphaNumericCodesReads
+          
+        
+        The Results
+          
+            Including LProbSOAMap&lt;K,V&gt;
+          
+        
+      
+    
+    Wrapping Up
+      
+        
+          
+            Discussion
+          
+        
+      
+    
+  
+
+
+Introduction
+In Java, the primary hash table implementation, HashMap&lt;K,V&gt;, employs the classical Separate Chaining technique with its critical optimizations (such as treeifying bins) to reduce read times during high-collision scenarios." />
+<meta name="keywords" content="java," />
+
+
+<meta property="og:url" content="http://localhost:1313/blog/2021-11-08-a-tale-of-java-hash-tables/">
+  <meta property="og:site_name" content="Personal Site of Andrei N. Ciobanu">
+  <meta property="og:title" content="A tale of Java Hash Tables">
+  <meta property="og:description" content="The intended audience for this article is undergrad students who already have a good grasp of Java, or seasoned Java developers who would like to explore an in-depth analysis of various hash table implementations that use Open Addressing.
+The reader should be familiar with Java generics, collections, basic data structures, hash functions, and bitwise operations.
+Contents Introduction Standard Implementations by Language Objectives and Scope The Contenders Getting Started Separate Chaining, or how HashMap&lt;K,V&gt; works internally The Table and the Nodes Mapping Cities: An Example The “Magic” of Bucket Indexing Retrieval: Following the Trail Performance Optimizations Open Addressing Tombstones LProbMap&lt;K, V&gt; The Hash Function Inserting an Entry The Bitwise Modulo Trick Retrieving an Entry Deleting an Entry Resizing and Rehashing LProbSOAMap&lt;K,V&gt; PerturbMap&lt;K, V&gt; Scrambling the Search Path A Practical Example Implementation of get(Object key) Performance Trade-offs LProbBinsMap&lt;K,V&gt; Separating Metadata from Data Implementation of get(Object key) Advantages of the “Bins” Approach LProbRadarMap&lt;K, V&gt; How the Radar Works Insertion Logic Retrieval Logic Analysis and Risks RobinHoodMap&lt;K, V&gt; The “Rich” and the “Poor” Implementation of put Why use Robin Hood Hashing? Benchmarks Benchmark Configuration Data Generation Strategies 1. RandomStringsReads 2. SequencedStringsReads 3. AlphaNumericCodesReads The Results Including LProbSOAMap&lt;K,V&gt; Wrapping Up Discussion Introduction In Java, the primary hash table implementation, HashMap&lt;K,V&gt;, employs the classical Separate Chaining technique with its critical optimizations (such as treeifying bins) to reduce read times during high-collision scenarios.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2021-11-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2021-11-08T00:00:00+00:00">
+    <meta property="article:tag" content="Java">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="A tale of Java Hash Tables">
+  <meta name="twitter:description" content="The intended audience for this article is undergrad students who already have a good grasp of Java, or seasoned Java developers who would like to explore an in-depth analysis of various hash table implementations that use Open Addressing.
+The reader should be familiar with Java generics, collections, basic data structures, hash functions, and bitwise operations.
+Contents Introduction Standard Implementations by Language Objectives and Scope The Contenders Getting Started Separate Chaining, or how HashMap&lt;K,V&gt; works internally The Table and the Nodes Mapping Cities: An Example The “Magic” of Bucket Indexing Retrieval: Following the Trail Performance Optimizations Open Addressing Tombstones LProbMap&lt;K, V&gt; The Hash Function Inserting an Entry The Bitwise Modulo Trick Retrieving an Entry Deleting an Entry Resizing and Rehashing LProbSOAMap&lt;K,V&gt; PerturbMap&lt;K, V&gt; Scrambling the Search Path A Practical Example Implementation of get(Object key) Performance Trade-offs LProbBinsMap&lt;K,V&gt; Separating Metadata from Data Implementation of get(Object key) Advantages of the “Bins” Approach LProbRadarMap&lt;K, V&gt; How the Radar Works Insertion Logic Retrieval Logic Analysis and Risks RobinHoodMap&lt;K, V&gt; The “Rich” and the “Poor” Implementation of put Why use Robin Hood Hashing? Benchmarks Benchmark Configuration Data Generation Strategies 1. RandomStringsReads 2. SequencedStringsReads 3. AlphaNumericCodesReads The Results Including LProbSOAMap&lt;K,V&gt; Wrapping Up Discussion Introduction In Java, the primary hash table implementation, HashMap&lt;K,V&gt;, employs the classical Separate Chaining technique with its critical optimizations (such as treeifying bins) to reduce read times during high-collision scenarios.">
+
+
+
+
+  <meta itemprop="name" content="A tale of Java Hash Tables">
+  <meta itemprop="description" content="The intended audience for this article is undergrad students who already have a good grasp of Java, or seasoned Java developers who would like to explore an in-depth analysis of various hash table implementations that use Open Addressing.
+The reader should be familiar with Java generics, collections, basic data structures, hash functions, and bitwise operations.
+Contents Introduction Standard Implementations by Language Objectives and Scope The Contenders Getting Started Separate Chaining, or how HashMap&lt;K,V&gt; works internally The Table and the Nodes Mapping Cities: An Example The “Magic” of Bucket Indexing Retrieval: Following the Trail Performance Optimizations Open Addressing Tombstones LProbMap&lt;K, V&gt; The Hash Function Inserting an Entry The Bitwise Modulo Trick Retrieving an Entry Deleting an Entry Resizing and Rehashing LProbSOAMap&lt;K,V&gt; PerturbMap&lt;K, V&gt; Scrambling the Search Path A Practical Example Implementation of get(Object key) Performance Trade-offs LProbBinsMap&lt;K,V&gt; Separating Metadata from Data Implementation of get(Object key) Advantages of the “Bins” Approach LProbRadarMap&lt;K, V&gt; How the Radar Works Insertion Logic Retrieval Logic Analysis and Risks RobinHoodMap&lt;K, V&gt; The “Rich” and the “Poor” Implementation of put Why use Robin Hood Hashing? Benchmarks Benchmark Configuration Data Generation Strategies 1. RandomStringsReads 2. SequencedStringsReads 3. AlphaNumericCodesReads The Results Including LProbSOAMap&lt;K,V&gt; Wrapping Up Discussion Introduction In Java, the primary hash table implementation, HashMap&lt;K,V&gt;, employs the classical Separate Chaining technique with its critical optimizations (such as treeifying bins) to reduce read times during high-collision scenarios.">
+  <meta itemprop="datePublished" content="2021-11-08T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2021-11-08T00:00:00+00:00">
+  <meta itemprop="wordCount" content="5920">
+  <meta itemprop="keywords" content="Java">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: var(--background-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: var(--text-color);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  a {
+    color: var(--link-color);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px dashed;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: var(--blockquote-color);
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+</style>
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/math.css">
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof renderMathInElement !== "function") {
+    console.error("KaTeX auto-render not loaded");
+    return;
+  }
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false }
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body>
+  <header><header class="site-header">
+  <nav class="global-nav">
+    
+      <a href="/blog/">Blog</a>
+    
+      <a href="/about/">About</a>
+    
+      <a href="/links/">Links</a>
+    
+  </nav>
+</header></header>
+  <main>
+  <article>
+    <header class="post-header" style="margin-bottom: 2rem;">
+  
+  <h1 style="margin-top: 0; margin-bottom: 0.5rem;">A tale of Java Hash Tables</h1>
+  
+  <div class="post-meta" style="color: #666; font-size: 0.9em;">
+    
+    
+      <time datetime="2021-11-08">
+        2021-11-08
+      </time>
+    
+    
+    
+      
+        <span style="margin: 0 0.5rem;">&middot;</span>
+      
+      <span>
+        
+          
+          <a href="/categories/programming" style="color: inherit;">programming</a>
+        
+      </span>
+    
+
+    
+      
+        <span style="margin: 0 0.5rem;">&middot;</span>
+      
+      <span>
+        
+          
+          <a href="/tags/java" style="color: inherit;">#java</a>
+        
+      </span>
+    
+  </div>
+
+</header>  
+    <p>The intended audience for this article is undergrad students who already have a good grasp of Java, or seasoned Java developers who would like to explore an in-depth analysis of various <em>hash table</em> implementations that use <em>Open Addressing</em>.</p>
+<p>The reader should be familiar with Java generics, collections, basic data structures, hash functions, and bitwise operations.</p>
+<nav class="toc">
+  <h2>Contents</h2>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a>
+      <ul>
+        <li><a href="#standard-implementations-by-language">Standard Implementations by Language</a></li>
+        <li><a href="#objectives-and-scope">Objectives and Scope</a>
+          <ul>
+            <li><a href="#the-contenders">The Contenders</a></li>
+            <li><a href="#getting-started">Getting Started</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#separate-chaining-or-how-hashmapkv-works-internally">Separate Chaining, or how <code>HashMap&lt;K,V&gt;</code> works internally</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#the-table-and-the-nodes">The Table and the Nodes</a></li>
+            <li><a href="#mapping-cities-an-example">Mapping Cities: An Example</a></li>
+            <li><a href="#the-magic-of-bucket-indexing">The &ldquo;Magic&rdquo; of Bucket Indexing</a></li>
+            <li><a href="#retrieval-following-the-trail">Retrieval: Following the Trail</a></li>
+            <li><a href="#performance-optimizations">Performance Optimizations</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#open-addressing">Open Addressing</a>
+      <ul>
+        <li><a href="#tombstones">Tombstones</a></li>
+        <li><a href="#lprobmapk-v"><code>LProbMap&lt;K, V&gt;</code></a>
+          <ul>
+            <li><a href="#the-hash-function">The Hash Function</a></li>
+            <li><a href="#inserting-an-entry">Inserting an Entry</a></li>
+            <li><a href="#the-bitwise-modulo-trick">The Bitwise Modulo Trick</a></li>
+            <li><a href="#retrieving-an-entry">Retrieving an Entry</a></li>
+            <li><a href="#deleting-an-entry">Deleting an Entry</a></li>
+            <li><a href="#resizing-and-rehashing">Resizing and Rehashing</a></li>
+          </ul>
+        </li>
+        <li><a href="#lprobsoamapkv"><code>LProbSOAMap&lt;K,V&gt;</code></a></li>
+        <li><a href="#perturbmapk-v"><code>PerturbMap&lt;K, V&gt;</code></a>
+          <ul>
+            <li><a href="#scrambling-the-search-path">Scrambling the Search Path</a></li>
+            <li><a href="#a-practical-example">A Practical Example</a></li>
+            <li><a href="#implementation-of-getobject-key">Implementation of <code>get(Object key)</code></a></li>
+            <li><a href="#performance-trade-offs">Performance Trade-offs</a></li>
+          </ul>
+        </li>
+        <li><a href="#lprobbinsmapkv"><code>LProbBinsMap&lt;K,V&gt;</code></a>
+          <ul>
+            <li><a href="#separating-metadata-from-data">Separating Metadata from Data</a></li>
+            <li><a href="#implementation-of-getobject-key-1">Implementation of <code>get(Object key)</code></a></li>
+            <li><a href="#advantages-of-the-bins-approach">Advantages of the &ldquo;Bins&rdquo; Approach</a></li>
+          </ul>
+        </li>
+        <li><a href="#lprobradarmapk-v"><code>LProbRadarMap&lt;K, V&gt;</code></a>
+          <ul>
+            <li><a href="#how-the-radar-works">How the Radar Works</a></li>
+            <li><a href="#insertion-logic">Insertion Logic</a></li>
+            <li><a href="#retrieval-logic">Retrieval Logic</a></li>
+            <li><a href="#analysis-and-risks">Analysis and Risks</a></li>
+          </ul>
+        </li>
+        <li><a href="#robinhoodmapk-v"><code>RobinHoodMap&lt;K, V&gt;</code></a>
+          <ul>
+            <li><a href="#the-rich-and-the-poor">The &ldquo;Rich&rdquo; and the &ldquo;Poor&rdquo;</a></li>
+            <li><a href="#implementation-of-put">Implementation of <code>put</code></a></li>
+            <li><a href="#why-use-robin-hood-hashing">Why use Robin Hood Hashing?</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#benchmarks">Benchmarks</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#benchmark-configuration">Benchmark Configuration</a></li>
+          </ul>
+        </li>
+        <li><a href="#data-generation-strategies">Data Generation Strategies</a>
+          <ul>
+            <li><a href="#1-randomstringsreads">1. <code>RandomStringsReads</code></a></li>
+            <li><a href="#2-sequencedstringsreads">2. <code>SequencedStringsReads</code></a></li>
+            <li><a href="#3-alphanumericcodesreads">3. <code>AlphaNumericCodesReads</code></a></li>
+          </ul>
+        </li>
+        <li><a href="#the-results">The Results</a>
+          <ul>
+            <li><a href="#including-lprobsoamapkv">Including <code>LProbSOAMap&lt;K,V&gt;</code></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#wrapping-up">Wrapping Up</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#discussion">Discussion</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+</nav>
+<h1 id="introduction">Introduction</h1>
+<p>In Java, the primary hash table implementation, <code>HashMap&lt;K,V&gt;</code>, employs the classical <strong>Separate Chaining</strong> technique with its critical optimizations (such as treeifying bins) to reduce read times during high-collision scenarios.</p>
+<p>However, the choice between <a href="https://en.wikipedia.org/wiki/Hash_table#Separate_chaining">Separate Chaining</a> and <a href="https://en.wikipedia.org/wiki/Hash_table#Open_addressing">Open Addressing</a> is a point of divergence among programming language designers.</p>
+<p>As analyzed in <a href="https://rcoh.me/posts/hash-map-analysis/">this deep dive</a>, languages like Python, Ruby, and Rust favor <strong>Open Addressing</strong> for their standard dictionaries, while Java, Go, C#, and C++ remain more conservative, sticking to <strong>Separate Chaining</strong>.</p>
+<h2 id="standard-implementations-by-language">Standard Implementations by Language</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Programming Language</th>
+          <th style="text-align: left">Hash Table Algorithm</th>
+          <th style="text-align: left">Source(s)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Python</strong></td>
+          <td style="text-align: left">Open Addressing</td>
+          <td style="text-align: left"><a href="https://github.com/python/cpython/blob/main/Objects/dictobject.c">dictobject.c</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Ruby</strong></td>
+          <td style="text-align: left">Open Addressing</td>
+          <td style="text-align: left"><a href="https://github.com/ruby/ruby/blob/master/st.c">st.c</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Rust</strong></td>
+          <td style="text-align: left">Open Addressing</td>
+          <td style="text-align: left"><a href="https://github.com/rust-lang/rust/blob/master/library/std/src/collections/hash/map.rs">map.rs</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Java</strong></td>
+          <td style="text-align: left">Separate Chaining</td>
+          <td style="text-align: left"><a href="https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/HashMap.java">HashMap.java</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Go</strong></td>
+          <td style="text-align: left">Separate Chaining</td>
+          <td style="text-align: left"><a href="https://github.com/golang/go/blob/master/src/hash/maphash/maphash.go">maphash.go</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>C#</strong></td>
+          <td style="text-align: left">Separate Chaining</td>
+          <td style="text-align: left"><a href="https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/Dictionary.cs">Dictionary.cs</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>C++</strong></td>
+          <td style="text-align: left">Separate Chaining</td>
+          <td style="text-align: left"><a href="https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/bits/hashtable.h">hashtable.h</a></td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="objectives-and-scope">Objectives and Scope</h2>
+<p>In this article, we will explore how to implement hash tables in Java using various <strong>Open Addressing</strong> strategies. We will then benchmark these custom implementations against the reference <code>HashMap&lt;K,V&gt;</code>.</p>
+<ul>
+<li><strong>Design Choices:</strong> I have intentionally skipped <strong>Quadratic Probing</strong>, as I find Python&rsquo;s &ldquo;perturbation&rdquo; approach more sophisticated. While I drew inspiration from <strong>Hopscotch Hashing</strong>, I&rsquo;ve implemented a variation rather than the pure algorithm. A draft of <strong>Cuckoo Hashing</strong> is also available in the repository for the curious.</li>
+<li><strong>Academic Context:</strong> These implementations are academic in nature. While a developer specialized in low-level Java optimization could likely push these further, these serve as a clear baseline for structural comparison.</li>
+<li><strong>Benchmarking:</strong> Measuring performance in the JVM is notoriously tricky. I have used <a href="https://openjdk.java.net/projects/code-tools/jmh/">JMH (Java Microbenchmark Harness)</a> to ensure results are as accurate as possible, but I welcome feedback on the methodology.</li>
+</ul>
+<h3 id="the-contenders">The Contenders</h3>
+<p>We will implement and benchmark six <code>Map&lt;K,V&gt;</code> variations against <code>HashMap&lt;K,V&gt;</code>:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Java Class</th>
+          <th style="text-align: left">Source</th>
+          <th style="text-align: left">Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><code>LProbMap&lt;K, V&gt;</code></td>
+          <td style="text-align: left"><a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbMap.java">src</a></td>
+          <td style="text-align: left">A classic Open Addressing implementation using <strong>Linear Probing</strong>.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>LProbSOAMap&lt;K,V&gt;</code></td>
+          <td style="text-align: left"><a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbSOAMap.java">src</a></td>
+          <td style="text-align: left">A &ldquo;Structure of Arrays&rdquo; (SOA) approach to linear probing, optimizing memory layout for cache locality.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>LProbBinsMap&lt;K,V&gt;</code></td>
+          <td style="text-align: left"><a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbBinsMap.java">src</a></td>
+          <td style="text-align: left">An implementation inspired by <strong>Ruby&rsquo;s</strong> hash table design.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>LProbRadarMap&lt;K, V&gt;</code></td>
+          <td style="text-align: left"><a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbRadarMap.java">src</a></td>
+          <td style="text-align: left">Uses a separate bit-vector (&ldquo;radar&rdquo;) to track item locations, similar to <strong>Hopscotch Hashing</strong>.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>PerturbMap&lt;K, V&gt;</code></td>
+          <td style="text-align: left"><a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/PerturbMap.java">src</a></td>
+          <td style="text-align: left">Implements <strong>Python&rsquo;s perturbation algorithm</strong> to resolve collisions more effectively than simple linear steps.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>RobinHoodMap&lt;K, V&gt;</code></td>
+          <td style="text-align: left"><a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/RobinHoodMap.java">src</a></td>
+          <td style="text-align: left"><strong>Robin Hood Hashing</strong>: a linear probing variant that minimizes variance in probe lengths.</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="getting-started">Getting Started</h3>
+<p>The full source code is available on GitHub:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone git@github.com:nomemory/open-addressing-java-maps.git
+</span></span></code></pre></div><p>Before we dive into the Java code, I highly recommend reviewing my previous article on C-based hash tables. It provides a necessary refresh on theoretical fundamentals, such as hash functions and load factors, which remain constant regardless of the language.</p>
+<h1 id="separate-chaining-or-how-hashmapkv-works-internally">Separate Chaining, or how <code>HashMap&lt;K,V&gt;</code> works internally</h1>
+<p>As I&rsquo;ve previously stated, <code>HashMap&lt;K,V&gt;</code> is implemented using a typical <strong>Separate Chaining</strong> technique. If you jump straight into <a href="https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/HashMap.java">reading the source code</a>, things can be a little confusing, especially if you don&rsquo;t know what you are looking for. But once you understand the main concepts, everything becomes much clearer.</p>
+<blockquote>
+<p>Even if this is not the primary purpose of this article, I believe it&rsquo;s always a good idea to understand how <code>HashMap&lt;K,V&gt;</code> works. Many Java interviewers love to ask this question!</p>
+</blockquote>
+<p>If you already understand how <code>HashMap&lt;K,V&gt;</code> works, you can skip directly to the <a href="#open-addressing">next section</a>. If you don&rsquo;t, and you are curious about it, please read on.</p>
+<h3 id="the-table-and-the-nodes">The Table and the Nodes</h3>
+<p>The <code>HashMap&lt;K,V&gt;</code> class contains an array of <code>Node&lt;K,V&gt;</code>. For simplicity, we are going to call this array <code>table</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#505050">// The table, initialized on first use, and resized as necessary. </span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// When allocated, length is always a power of two. </span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">transient</span> Node<span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;[]</span> table;
+</span></span></code></pre></div><p>The <code>table</code> is the most important structure in the class; it&rsquo;s the actual space where we store our data. Each entry in this array is a <code>Node&lt;K,V&gt;</code>, which has the following composition:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#5317ac">class</span> Node<span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> <span style="color:#5317ac">implements</span> Map.Entry<span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> hash;
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">final</span> K key;
+</span></span><span style="display:flex;"><span>        V value;
+</span></span><span style="display:flex;"><span>        Node<span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> next;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// getters and setters + other goodies       </span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>As you likely noticed, <code>Node&lt;K,V&gt;</code> is used to implement a linked data structure. The <code>next</code> attribute references the next <code>Node</code> in the chain. Think of the <code>Node&lt;K,V&gt;[] table</code> as an array of linked structures, for simplicity, let&rsquo;s assume those chained structures are <strong>linked lists</strong>.</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/chained-structure.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<h3 id="mapping-cities-an-example">Mapping Cities: An Example</h3>
+<p>To make things transparent, let&rsquo;s define a <code>HashMap&lt;String, String&gt;</code>, where keys <code>K</code> are European capital cities and values <code>V</code> are the corresponding countries.</p>
+<p>Initially, the <code>table</code> is empty with a default capacity of <code>1 &lt;&lt; 4</code> (which equals 16). The choice of using a power of two is not accidental, as we will see shortly.</p>
+<figure class="custom-figure" style="max-width: 300px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/empty-hashmap.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>Now, let&rsquo;s insert our first entries: <code>&lt;&quot;Paris&quot;, &quot;France&quot;&gt;</code>, <code>&lt;&quot;Sofia&quot;, &quot;Bulgaria&quot;&gt;</code>, <code>&lt;&quot;Madrid&quot;, &quot;Spain&quot;&gt;</code>, and <code>&lt;&quot;Bucharest&quot;, &quot;Romania&quot;&gt;</code>.</p>
+<p>When you call <code>put(K key, V value)</code>, the call is dispatched to <code>putVal(...)</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> V <span style="color:#721045">put</span>(K key, V value) {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> putVal(hash(key), key, value, <span style="color:#0000c0">false</span>, <span style="color:#0000c0">true</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Before <code>putVal</code> runs, the VM must compute <code>hash(key)</code>. <code>HashMap</code> accepts <code>null</code> keys, which by convention always hash to <code>0</code>. For everything else, it uses this bit-shifting logic:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> <span style="color:#721045">hash</span>(Object key) {
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> h;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> (key <span style="color:#00538b">==</span> <span style="color:#0000c0">null</span>) <span style="color:#00538b">?</span> 0 : (h <span style="color:#00538b">=</span> key.hashCode()) <span style="color:#00538b">^</span> (h <span style="color:#00538b">&gt;&gt;&gt;</span> 16);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The extra bitwise operation improves the <strong>diffusion</strong> of the <code>hashCode()</code> by mixing higher-order bits into the lower ones. This reduces collisions. Applying this to our cities, we get:</p>
+<ul>
+<li><strong>Paris</strong>: 76885502</li>
+<li><strong>Sofia</strong>: 80061639</li>
+<li><strong>Madrid</strong>: -1997818570</li>
+<li><strong>Bucharest</strong>: -543452922</li>
+</ul>
+<h3 id="the-magic-of-bucket-indexing">The &ldquo;Magic&rdquo; of Bucket Indexing</h3>
+<p>In <code>putVal</code>, the map identifies the correct bucket using: <code>tab[i = (n - 1) &amp; hash]</code>.</p>
+<p>Because <code>n</code> (table length) is always a power of two, <code>(n - 1) &amp; hash</code> is a <a href="https://stackoverflow.com/questions/6670715/mod-of-power-2-on-bitwise-operators">mathematical shortcut</a> for <code>hash % n</code>. It &ldquo;projects&rdquo; the massive range of integer values into our specific array indices <code>{0, 1, ..., n-1}</code> while avoiding the slow modulo operator.</p>
+<p>Calculating our indices:</p>
+<ul>
+<li><strong>Paris</strong>: (16-1) &amp; 76885502 = <strong>14</strong></li>
+<li><strong>Sofia</strong>: (16-1) &amp; 80061639 = <strong>7</strong></li>
+<li><strong>Madrid</strong>: (16-1) &amp; -1997818570 = <strong>6</strong></li>
+<li><strong>Bucharest</strong>: (16-1) &amp; -543452922 = <strong>6</strong></li>
+</ul>
+<p>Notice that <strong>Madrid</strong> and <strong>Bucharest</strong> both want to go to index <strong>6</strong>. This is a <strong>hash collision</strong>.</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/insert-hashmap.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<ol>
+<li><strong>Paris</strong> is stored at <code>table[14]</code>.</li>
+<li><strong>Sofia</strong> is stored at <code>table[7]</code>.</li>
+<li><strong>Madrid</strong> is stored at <code>table[6]</code>.</li>
+<li><strong>Bucharest</strong> also maps to <code>table[6]</code>. Since the slot is occupied, the new node is appended to the chain (Madrid&rsquo;s <code>next</code> now points to Bucharest).</li>
+</ol>
+<h3 id="retrieval-following-the-trail">Retrieval: Following the Trail</h3>
+<p>Retrieving an element with <code>get(&quot;Bucharest&quot;)</code> follows the same path:</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/read-hashmap.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<ol>
+<li>Compute <code>hash(&quot;Bucharest&quot;)</code>.</li>
+<li>Find index <strong>6</strong>.</li>
+<li>Compare the hash and key of the first node at <code>table[6]</code> (Madrid).</li>
+<li>Since they don&rsquo;t match, follow <code>next</code> to the next node.</li>
+<li>Check if <code>&quot;Bucharest&quot;.equals(currentNode.key)</code>. If true, return the value.</li>
+</ol>
+<h3 id="performance-optimizations">Performance Optimizations</h3>
+<p><code>HashMap</code> isn&rsquo;t just a simple array of lists; it performs two vital optimizations:</p>
+<p><strong>1. Capacity Adjustment (Resizing)</strong>
+The <code>loadFactor</code> (default <code>0.75</code>) defines when to resize. If you have 16 slots and insert 13 items, $13/16 &gt; 0.75$. The map will double its capacity to 32 and <strong>rehash</strong> every existing element. This keeps the chains short and the lookup time close to $O(1)$.</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/adjust-capacity-hashmap.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p><strong>2. Bucket Adjustment (Treeification)</strong>
+If a single bucket&rsquo;s chain becomes too long (reaching <code>TREEIFY_THRESHOLD = 8</code>), <code>HashMap</code> converts that linked list into a <strong>Red-Black Tree</strong>. This changes the worst-case search time from $O(n)$ to $O(\log n)$, preventing performance degradation even during heavy collisions.</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/adjust-bucket.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<h1 id="open-addressing">Open Addressing</h1>
+<p>Compared to <em>Separate Chaining</em>, <em>Open Addressing</em> hash tables store only one entry per slot. There are no real <em>buckets</em>, no <em>linked lists</em>, and no <em>red-black trees</em>. Instead, the implementation relies on a single, extensive array that contains everything the map needs to operate.</p>
+<p>If the array of pairs is sparse enough (typically operating at a load factor $&lt; 0.77$) and the hashing function provides decent diffusion, hash collisions should be rare. However, they are still inevitable. When a collision occurs, we &ldquo;probe&rdquo; the array to find another available slot for the entry.</p>
+<p>The most straightforward probing algorithm is <strong>linear probing</strong>. In the event of a collision, we iterate through each subsequent slot (starting from the initially computed index) until we find an empty spot for insertion. If we reach the end of the array, we simply wrap around to index <code>0</code>.</p>
+<p>The primary advantage of <em>Open Addressing</em> over <em>Separate Chaining</em> is the reduction of cache misses. Because the data resides in a single contiguous block of memory, the CPU can leverage spatial locality much more effectively.</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/open-addressing-high-level.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>The biggest shortcoming of <em>Open Addressing</em> is its sensitivity to sub-optimal hash functions. Consider an extreme case: a hash function that returns a constant value. In this scenario, every element targets the same slot, leading to a collision for every insertion.</p>
+<p>While <code>HashMap&lt;K,V&gt;</code> would gracefully degrade to $O(\log n)$ performance (thanks to its treeified buckets), a <em>Linear Probing</em> implementation would degrade to $O(n)$, effectively becoming a very slow linked list.</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/hashmap-vs-open-addressing.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>In practice, few developers use a constant-returning hash function, but even mildly sub-optimal functions lead to <strong>clustering</strong>. This is a phenomenon where occupied slots form dense groups, forcing the VM to traverse long sequences during every insert, read, or delete operation.</p>
+<h2 id="tombstones">Tombstones</h2>
+<p>Deleting an element from an <em>Open Addressing</em> table is a subtle task. We cannot simply set a slot to <code>null</code> because doing so might break a probing sequence, making subsequent elements &ldquo;unreachable&rdquo; during a search. To solve this, we use <a href="/2021/10/02/implementing-hash-tables-in-c-part-1#tombstones"><strong>tombstones</strong></a>.</p>
+<p>Whenever an entry is deleted, we mark the slot with a special &ldquo;tombstone&rdquo; flag:</p>
+<ul>
+<li><strong>Inserts</strong>: A tombstone is treated as an empty slot and is a candidate for a new entry.</li>
+<li><strong>Reads/Deletes</strong>: We skip the tombstone and continue the traversal to ensure we don&rsquo;t miss elements further down the probe sequence.</li>
+</ul>
+<p>When resizing the array, we filter out these tombstones to clean up the &ldquo;junk&rdquo; left behind by deletions. While algorithms that avoid tombstones exist (involving complex element shifts), I&rsquo;ve opted for the tombstone approach because deletions are typically rare in most <code>Map</code> use cases, and their impact on performance is generally negligible.</p>
+<h2 id="lprobmapk-v"><code>LProbMap&lt;K, V&gt;</code></h2>
+<p><code>LProbMap&lt;K,V&gt;</code> is my initial &ldquo;academic&rdquo; attempt at implementing an <em>Open Addressing</em> map in Java. This implementation follows the standard algorithms &ldquo;by the book&rdquo; without excessive micro-optimizations.</p>
+<blockquote>
+<p>You can find the full source code for this implementation <a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbMap.java">here</a>.</p>
+</blockquote>
+<p>The class extends <code>Map&lt;K,V&gt;</code>, requiring an implementation for all standard interface methods. Let&rsquo;s look at the core structure and the primary <code>put</code> method:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">class</span> LProbMap<span style="color:#00538b">&lt;</span>K, V<span style="color:#00538b">&gt;</span> <span style="color:#5317ac">implements</span> Map<span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">double</span> DEFAULT_MAX_LOAD_FACTOR <span style="color:#00538b">=</span> 0.6;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">double</span> DEFAULT_MIN_LOAD_FACTOR <span style="color:#00538b">=</span> DEFAULT_MAX_LOAD_FACTOR <span style="color:#00538b">/</span> 4;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> DEFAULT_MAP_CAPACITY_POW_2 <span style="color:#00538b">=</span> 6;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> <span style="color:#005a5f">int</span> size <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> <span style="color:#005a5f">int</span> tombstones <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> <span style="color:#005a5f">int</span> capPow2 <span style="color:#00538b">=</span> DEFAULT_MAP_CAPACITY_POW_2;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> LProbMapEntry<span style="color:#00538b">&lt;</span>K, V<span style="color:#00538b">&gt;[]</span> buckets <span style="color:#00538b">=</span> 
+</span></span><span style="display:flex;"><span>                        <span style="color:#5317ac">new</span> LProbMapEntry<span style="color:#00538b">[</span>1 <span style="color:#00538b">&lt;&lt;</span> DEFAULT_MAP_CAPACITY_POW_2<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// ... additional logic ...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The <code>DEFAULT_MAX_LOAD_FACTOR</code> is set to <code>0.6</code>. Once the map reaches this threshold, it triggers a resize. While this leaves 40% of the array empty, it significantly improves read performance by keeping probe sequences short. The load factor is calculated as: <code>(size + tombstones) / buckets.length</code>.</p>
+<h3 id="the-hash-function">The Hash Function</h3>
+<p>We use a &ldquo;finalizer&rdquo; inspired by <a href="https://en.wikipedia.org/wiki/MurmurHash">Murmur Hash</a> to improve the diffusion of Java&rsquo;s native <code>hashCode()</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">static</span> <span style="color:#005a5f">int</span> <span style="color:#721045">hash</span>(<span style="color:#5317ac">final</span> Object obj) {
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> h <span style="color:#00538b">=</span> obj.hashCode();
+</span></span><span style="display:flex;"><span>    h <span style="color:#00538b">^=</span> h <span style="color:#00538b">&gt;&gt;</span> 16;
+</span></span><span style="display:flex;"><span>    h <span style="color:#00538b">*=</span> 0x3243f6a9;
+</span></span><span style="display:flex;"><span>    h <span style="color:#00538b">^=</span> h <span style="color:#00538b">&gt;&gt;</span> 16;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> h <span style="color:#00538b">&amp;</span> 0xfffffff; <span style="color:#505050">// Ensure the result is non-negative</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The bitwise <code>&amp; 0xfffffff</code> ensures we don&rsquo;t deal with negative indices, as Java lacks an unsigned 32-bit integer type.</p>
+<h3 id="inserting-an-entry">Inserting an Entry</h3>
+<p>The insertion logic for <code>LProbMap</code> follows these steps:</p>
+<ol>
+<li>Increase capacity if the load factor threshold is exceeded.</li>
+<li>Calculate the base slot using the hash.</li>
+<li>If the slot is <code>null</code>, insert the entry.</li>
+<li>If the slot is occupied, use linear probing (step through the array) until we find a tombstone, an empty slot, or the existing key.</li>
+</ol>
+<p>Note: Our convention uses entries with <code>null</code> keys to represent tombstones, so this map does not support <code>null</code> keys.</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">protected</span> V <span style="color:#721045">put</span>(K key, V value, <span style="color:#005a5f">int</span> hash) {
+</span></span><span style="display:flex;"><span>    increaseCapacity();
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> idx <span style="color:#00538b">=</span> hash <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1); <span style="color:#505050">// The &#34;Base Slot&#34; calculation</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">while</span>(<span style="color:#0000c0">true</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span> <span style="color:#00538b">==</span> <span style="color:#0000c0">null</span>) {
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span> <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> LProbMapEntry<span style="color:#00538b">&lt;&gt;</span>(key, value, hash);
+</span></span><span style="display:flex;"><span>            size<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key <span style="color:#00538b">==</span> <span style="color:#0000c0">null</span>) { <span style="color:#505050">// Found a tombstone</span>
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key <span style="color:#00538b">=</span> key;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.value <span style="color:#00538b">=</span> value;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.hash <span style="color:#00538b">=</span> hash;
+</span></span><span style="display:flex;"><span>            size<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>            tombstones<span style="color:#00538b">--</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.hash <span style="color:#00538b">==</span> hash <span style="color:#00538b">&amp;&amp;</span> key.equals(buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key)) {
+</span></span><span style="display:flex;"><span>            V ret <span style="color:#00538b">=</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.value;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.value <span style="color:#00538b">=</span> value;
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">return</span> ret;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Linear probing: jump to the next index or wrap around</span>
+</span></span><span style="display:flex;"><span>        idx<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (buckets.length <span style="color:#00538b">==</span> idx) idx <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="the-bitwise-modulo-trick">The Bitwise Modulo Trick</h3>
+<p>The line <code>int idx = hash &amp; (buckets.length - 1)</code> is a common optimization. In computer architecture, the modulo operator (<code>%</code>) is relatively expensive compared to bitwise operations.</p>
+<p>Since our table size is always a power of two ($2^n$), we can use a bitwise <code>AND</code> with a mask of all ones ($2^n - 1$) to calculate the remainder. This is effectively &ldquo;cutting&rdquo; the number to fit the array size.</p>
+<p>[Image explaining the bitwise AND mask as a modulo shortcut]
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bitwise-modulo.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></p>
+<h3 id="retrieving-an-entry">Retrieving an Entry</h3>
+<p>The algorithm for retrieving a value by its key follows the same probing logic used during insertion. The process is as follows:</p>
+<ol>
+<li>Compute the <code>hash(key)</code>.</li>
+<li>Calculate the base slot: <code>idx = hash &amp; (buckets.length - 1)</code>.</li>
+<li>If the base slot is <code>null</code>, we are 100% certain the key does not exist in the map, and we return <code>null</code>.</li>
+<li>If the slot is occupied, we check if the stored <code>hash</code> matches our key&rsquo;s <code>hash</code>.
+<ul>
+<li>If hashes match, we perform a final <code>equals()</code> check to account for potential hash collisions.</li>
+<li>If they match, we return the value.</li>
+<li>If they don&rsquo;t match (or if we encounter a tombstone), we probe further using linear probing.</li>
+</ul>
+</li>
+<li>We repeat this until we either find the key or encounter a <code>null</code> slot, which signifies the end of the cluster.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> V <span style="color:#721045">get</span>(Object key) {
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> hash <span style="color:#00538b">=</span> hash(key);
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> idx <span style="color:#00538b">=</span> hash <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>    LProbMapEntry<span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> bucket <span style="color:#00538b">=</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (bucket <span style="color:#00538b">==</span> <span style="color:#0000c0">null</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">do</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Match found: check hash first (fast), then equals()</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (bucket.hash <span style="color:#00538b">==</span> hash <span style="color:#00538b">&amp;&amp;</span> key.equals(bucket.key)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">return</span> bucket.value;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Linear probing: wrap around if at the end of the array</span>
+</span></span><span style="display:flex;"><span>        idx<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (idx <span style="color:#00538b">==</span> buckets.length) idx <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>        bucket <span style="color:#00538b">=</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#5317ac">while</span>(bucket <span style="color:#00538b">!=</span> <span style="color:#0000c0">null</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="deleting-an-entry">Deleting an Entry</h3>
+<p>Deletion in an Open Addressing table requires care to avoid breaking the &ldquo;chain&rdquo; of a cluster. Instead of nullifying a slot, we replace the entry with a <strong>tombstone</strong> (represented here by setting the key to <code>null</code> within an existing entry).</p>
+<ol>
+<li>Identify the base slot for the key.</li>
+<li>If the base slot is <code>null</code>, the key isn&rsquo;t here; return <code>null</code>.</li>
+<li>Otherwise, probe through the cluster comparing hashes and keys.</li>
+<li>When the element is found:
+<ul>
+<li>Remove it by marking the slot as a tombstone.</li>
+<li>Increment the <code>tombstones</code> counter and decrement the <code>size</code>.</li>
+<li>Return the old value.</li>
+</ul>
+</li>
+<li>After the operation, check if the load factor has dropped enough to justify decreasing the table capacity.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> V <span style="color:#721045">remove</span>(Object key) {
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> hash <span style="color:#00538b">=</span> hash(key);
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> idx <span style="color:#00538b">=</span> hash <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span> <span style="color:#00538b">==</span> <span style="color:#0000c0">null</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">do</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.hash <span style="color:#00538b">==</span> hash <span style="color:#00538b">&amp;&amp;</span> key.equals(buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key)) {
+</span></span><span style="display:flex;"><span>            V oldVal <span style="color:#00538b">=</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.value;
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// Mark as tombstone: clear key/value but keep the slot non-null</span>
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key <span style="color:#00538b">=</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.value <span style="color:#00538b">=</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.hash <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>            tombstones<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>            size<span style="color:#00538b">--</span>;
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            decreaseCapacity();
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">return</span> oldVal;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        idx<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (idx <span style="color:#00538b">==</span> buckets.length) idx <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>    } <span style="color:#5317ac">while</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span> <span style="color:#00538b">!=</span> <span style="color:#0000c0">null</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="resizing-and-rehashing">Resizing and Rehashing</h3>
+<p>We follow a similar strategy to <code>HashMap&lt;K,V&gt;</code> for capacity management. If the load factor (including tombstones) exceeds our maximum threshold, we double the capacity. Conversely, if the load factor falls below a minimum threshold, we halve it.</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/resize-rehash.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>Capacity adjustment is crucial for two reasons:</p>
+<ol>
+<li><strong>Clustering Control</strong>: It breaks up dense clusters that degrade performance.</li>
+<li><strong>Tombstone Cleanup</strong>: Since we don&rsquo;t rehash tombstones, resizing effectively purges the &ldquo;junk&rdquo; elements from our memory, making the array sparse again.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">protected</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">void</span> <span style="color:#721045">reHashElements</span>(<span style="color:#005a5f">int</span> capModifier) {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">this</span>.capPow2 <span style="color:#00538b">+=</span> capModifier;
+</span></span><span style="display:flex;"><span>    LProbMapEntry<span style="color:#00538b">&lt;</span>K, V<span style="color:#00538b">&gt;[]</span> oldBuckets <span style="color:#00538b">=</span> <span style="color:#5317ac">this</span>.buckets;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Allocate new array with updated power-of-two capacity</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">this</span>.buckets <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> LProbMapEntry<span style="color:#00538b">[</span>1 <span style="color:#00538b">&lt;&lt;</span> capPow2<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">this</span>.size <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">this</span>.tombstones <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Full rehash: re-insert all non-deleted elements</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">for</span> (<span style="color:#005a5f">int</span> i <span style="color:#00538b">=</span> 0; i <span style="color:#00538b">&lt;</span> oldBuckets.length; <span style="color:#00538b">++</span>i) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (oldBuckets<span style="color:#00538b">[</span>i<span style="color:#00538b">]</span> <span style="color:#00538b">!=</span> <span style="color:#0000c0">null</span> <span style="color:#00538b">&amp;&amp;</span> oldBuckets<span style="color:#00538b">[</span>i<span style="color:#00538b">]</span>.key <span style="color:#00538b">!=</span> <span style="color:#0000c0">null</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// Re-insert using the new capacity</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">this</span>.put(oldBuckets<span style="color:#00538b">[</span>i<span style="color:#00538b">]</span>.key, oldBuckets<span style="color:#00538b">[</span>i<span style="color:#00538b">]</span>.value, oldBuckets<span style="color:#00538b">[</span>i<span style="color:#00538b">]</span>.hash);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">protected</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">void</span> <span style="color:#721045">increaseCapacity</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">final</span> <span style="color:#005a5f">double</span> lf <span style="color:#00538b">=</span> (<span style="color:#005a5f">double</span>)(size <span style="color:#00538b">+</span> tombstones) <span style="color:#00538b">/</span> buckets.length;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (lf <span style="color:#00538b">&gt;</span> DEFAULT_MAX_LOAD_FACTOR) {
+</span></span><span style="display:flex;"><span>        reHashElements(1);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">protected</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">void</span> <span style="color:#721045">decreaseCapacity</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">final</span> <span style="color:#005a5f">double</span> lf <span style="color:#00538b">=</span> (<span style="color:#005a5f">double</span>)size <span style="color:#00538b">/</span> buckets.length;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (lf <span style="color:#00538b">&lt;</span> DEFAULT_MIN_LOAD_FACTOR <span style="color:#00538b">&amp;&amp;</span> <span style="color:#5317ac">this</span>.capPow2 <span style="color:#00538b">&gt;</span> DEFAULT_MAP_CAPACITY_POW_2) {
+</span></span><span style="display:flex;"><span>        reHashElements(<span style="color:#00538b">-</span>1);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>While this implementation is functional, it could be further optimized by pre-calculating the threshold values (e.g., <code>maxSize = capacity * loadFactor</code>) to avoid floating-point division during every <code>put</code> or <code>remove</code> call.</p>
+<h2 id="lprobsoamapkv"><code>LProbSOAMap&lt;K,V&gt;</code></h2>
+<p>This implementation follows a nice optimization proposed by <strong>dzaima</strong> on <a href="https://github.com/nomemory/open-addressing-java-maps/issues/1">GitHub</a>, focusing on memory layout and allocation overhead.</p>
+<blockquote>
+<p>For the full source code, please check the <a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbSOAMap.java">repository link</a>.</p>
+</blockquote>
+<p>The core argument for this approach centers on how Java handles object allocation and cache locality:</p>
+<blockquote>
+<p>&ldquo;A very important property of open addressing is the ability to avoid an allocation per inserted item. Without that, <code>LProbMap</code> and Java&rsquo;s <code>HashMap</code> differ only by where the next object pointer is read a list in <code>LProbMap</code> or the entry object in <code>HashMap</code>. Since both are likely already in cache, performance remains similar. To truly leverage Open Addressing in Java, we should utilize a <strong>Struct-of-Arrays</strong> approach.&rdquo;</p>
+</blockquote>
+<p>By moving away from an array of entry objects (Array of Structures), we can eliminate the overhead of creating a new <code>Map.Entry</code> object for every single insertion. While Java doesn&rsquo;t yet have native &ldquo;value types&rdquo; (like C# structs), we can simulate a flatter memory layout by splitting the entry components into primitive and object arrays.</p>
+<p>In <code>LProbSOAMap</code>, we discard the <code>LProbMapEntry&lt;K, V&gt;[] buckets</code> array. Instead, we distribute the keys, values, and hashes across three distinct, parallel arrays:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> K<span style="color:#00538b">[]</span> bucketsK <span style="color:#00538b">=</span> (K<span style="color:#00538b">[]</span>) <span style="color:#5317ac">new</span> Object<span style="color:#00538b">[</span>1 <span style="color:#00538b">&lt;&lt;</span> DEFAULT_MAP_CAPACITY_POW_2<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">public</span> V<span style="color:#00538b">[]</span> bucketsV <span style="color:#00538b">=</span> (V<span style="color:#00538b">[]</span>) <span style="color:#5317ac">new</span> Object<span style="color:#00538b">[</span>1 <span style="color:#00538b">&lt;&lt;</span> DEFAULT_MAP_CAPACITY_POW_2<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span><span style="color:#505050">// hash=0 indicates empty; hash=1 indicates a tombstone</span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#005a5f">int</span><span style="color:#00538b">[]</span> bucketsH <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> <span style="color:#005a5f">int</span><span style="color:#00538b">[</span>1 <span style="color:#00538b">&lt;&lt;</span> DEFAULT_MAP_CAPACITY_POW_2<span style="color:#00538b">]</span>; 
+</span></span></code></pre></div><p>In the standard <code>LProbMap</code>, every time you add an element, you perform a <code>new LProbMapEntry&lt;&gt;(...)</code>. This places pressure on the Garbage Collector and adds a layer of indirection (a pointer to an object).</p>
+<p>By using the <strong>SoA</strong> approach:</p>
+<ol>
+<li><strong>Zero Allocation on Put</strong>: We simply write the key and value references into existing array slots.</li>
+<li><strong>Primitive Efficiency</strong>: The <code>int[] bucketsH</code> stores hashes as raw primitives, which is much more cache-friendly than wrapping them in an object.</li>
+<li><strong>Sequential Access</strong>: During linear probing, the CPU can pre-fetch the next elements in these arrays more efficiently than it can traverse a chain of separate entry objects.</li>
+</ol>
+<p>While this means the VM has to manage three separate memory locations, it remains one of the best ways to minimize the &ldquo;object tax&rdquo; in modern Java performance tuning.</p>
+<h2 id="perturbmapk-v"><code>PerturbMap&lt;K, V&gt;</code></h2>
+<p>The <a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/PerturbMap.java"><code>PerturbMap&lt;K, V&gt;</code></a> is nearly identical to <code>LProbMap&lt;K, V&gt;</code>, but it introduces one significant change in how it handles collisions. Instead of relying on sequential steps, it uses a pseudo-random probing sequence.</p>
+<p>While studying the <a href="https://github.com/python/cpython/blob/main/Objects/dictobject.c">CPython source code</a> for the <code>dict</code> implementation, I came across a fascinating logic for resolving collisions:</p>
+<blockquote>
+<p>&ldquo;This is done by initializing an (unsigned) variable &lsquo;perturb&rsquo; to the full hash code, and changing the recurrence to:</p>
+<p><code>perturb &gt;&gt;= PERTURB_SHIFT;</code></p>
+<p><code>j = (5 * j) + 1 + perturb;</code></p>
+<p><code>use j % 2**i as the next table index;</code>&rdquo;</p>
+</blockquote>
+<h3 id="scrambling-the-search-path">Scrambling the Search Path</h3>
+<p>To combat <strong>clustering</strong>, which happens when a <em>mediocre</em> hash function causes entries to &ldquo;clump&rdquo; together, Python proposes a strategy that doesn&rsquo;t use linear probing. Instead, it &ldquo;scrambles&rdquo; the probing sequence to find the next index.</p>
+<p>Instead of the simple cycle used in linear probing:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>idx<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">if</span> (idx <span style="color:#00538b">==</span> buckets.length) idx <span style="color:#00538b">=</span> 0;
+</span></span></code></pre></div><p>We implement the Python-inspired recurrence:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>idx <span style="color:#00538b">=</span> (5 <span style="color:#00538b">*</span> idx) <span style="color:#00538b">+</span> 1 <span style="color:#00538b">+</span> perturb;
+</span></span><span style="display:flex;"><span>perturb <span style="color:#00538b">&gt;&gt;=</span> SHIFTER;
+</span></span><span style="display:flex;"><span>idx <span style="color:#00538b">=</span> idx <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1);
+</span></span></code></pre></div><p>Here, <code>SHIFTER</code> is a constant (typically 5) and <code>perturb</code> is initialized to the original <code>hash</code>. As the loop progresses, <code>perturb</code> eventually reaches zero, and the algorithm settles into a deterministic sequence that still guarantees every slot will be visited.</p>
+<h3 id="a-practical-example">A Practical Example</h3>
+<p>Let&rsquo;s assume an initial <code>hash = 32132932</code>, <code>SHIFTER = 5</code>, and a <code>buckets.length = 16</code>. If we encounter collisions, the probing sequence would jump like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> hash <span style="color:#00538b">=</span> 32132932;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> shifter <span style="color:#00538b">=</span> 5;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> bucketsLength <span style="color:#00538b">=</span> 1 <span style="color:#00538b">&lt;&lt;</span> 4;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">int</span> idx <span style="color:#00538b">=</span> hash <span style="color:#00538b">&amp;</span> (bucketsLength <span style="color:#00538b">-</span> 1); <span style="color:#505050">// Initial: 4</span>
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">int</span> perturb <span style="color:#00538b">=</span> hash;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">for</span>(<span style="color:#005a5f">int</span> j <span style="color:#00538b">=</span> 0; j <span style="color:#00538b">&lt;</span> 5; j<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>    idx <span style="color:#00538b">=</span> (5 <span style="color:#00538b">*</span> idx) <span style="color:#00538b">+</span> 1 <span style="color:#00538b">+</span> perturb;
+</span></span><span style="display:flex;"><span>    perturb <span style="color:#00538b">&gt;&gt;=</span> shifter;
+</span></span><span style="display:flex;"><span>    idx <span style="color:#00538b">=</span> idx <span style="color:#00538b">&amp;</span> (bucketsLength <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>    System.out.print(idx <span style="color:#00538b">+</span> <span style="color:#2544bb">&#34; &#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Output: 8 2 13 5 7</span>
+</span></span></code></pre></div><p>Visually, this prevents a &ldquo;clump&rdquo; of data from forcing the CPU to read ten items in a row. Instead, the VM &ldquo;jumps&rdquo; across the array to find space.</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/perturb.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<h3 id="implementation-of-getobject-key">Implementation of <code>get(Object key)</code></h3>
+<p>The retrieval logic remains familiar, but with the updated indexing recurrence:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> V <span style="color:#721045">get</span>(Object key) {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (<span style="color:#0000c0">null</span> <span style="color:#00538b">==</span> key) <span style="color:#5317ac">throw</span> <span style="color:#5317ac">new</span> IllegalArgumentException(<span style="color:#2544bb">&#34;Null keys not supported&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> hash <span style="color:#00538b">=</span> hash32(key);
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> idx <span style="color:#00538b">=</span> hash <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span> <span style="color:#00538b">==</span> <span style="color:#0000c0">null</span>) <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> perturb <span style="color:#00538b">=</span> hash;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">do</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.hash <span style="color:#00538b">==</span> hash <span style="color:#00538b">&amp;&amp;</span> key.equals(buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">return</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.value;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// The Scrambling Logic</span>
+</span></span><span style="display:flex;"><span>        idx <span style="color:#00538b">=</span> (5 <span style="color:#00538b">*</span> idx) <span style="color:#00538b">+</span> 1 <span style="color:#00538b">+</span> perturb;
+</span></span><span style="display:flex;"><span>        perturb <span style="color:#00538b">&gt;&gt;=</span> SHIFTER;
+</span></span><span style="display:flex;"><span>        idx <span style="color:#00538b">=</span> idx <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    } <span style="color:#5317ac">while</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span> <span style="color:#00538b">!=</span> <span style="color:#0000c0">null</span>);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="performance-trade-offs">Performance Trade-offs</h3>
+<ul>
+<li><strong>Clustering Defense</strong>: We effectively eliminate primary clustering by augmenting the hash function’s diffusion through the probing logic itself.</li>
+<li><strong>Cache Locality</strong>: The trade-off is a potential increase in cache misses. Linear probing is fast because it reads contiguous memory; <code>PerturbMap</code> jumps around, which may force the CPU to fetch new cache lines more frequently.</li>
+</ul>
+<h2 id="lprobbinsmapkv"><code>LProbBinsMap&lt;K,V&gt;</code></h2>
+<p>This implementation is closely related to <code>LProbMap&lt;K,V&gt;</code>, but introduces a structural change inspired by <a href="https://github.com/ruby/ruby/blob/master/st.c">Ruby&rsquo;s hash table implementation</a>. To keep the comparison fair, I have continued to use <strong>linear probing</strong> as the search algorithm.</p>
+<blockquote>
+<p>For the full source code, please check <a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbBinsMap.java">this link</a>.</p>
+</blockquote>
+<h3 id="separating-metadata-from-data">Separating Metadata from Data</h3>
+<p>The core concept is to decouple the probing logic from the actual data storage. Instead of one large array of objects, we split the information between two specialized arrays:</p>
+<ul>
+<li><strong><code>int[] bins</code></strong>: A sparse array of integers. Instead of storing entries directly, this array stores the <em>indices</em> of where the entries can be found.</li>
+<li><strong><code>Map.Entry&lt;K,V&gt;[] entries</code></strong>: A dense, <code>ArrayList</code>-like structure. This is where the actual keys, values, and hashes are stored.</li>
+</ul>
+<p>Visually, <code>LProbBinsMap&lt;K,V&gt;</code> organizes its memory like this:</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/binsandentries.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>To find an element, we perform our hash-based lookup in the <code>bins</code> array first. The value found there serves as a pointer to the correct location in the <code>entries</code> array.</p>
+<h3 id="implementation-of-getobject-key-1">Implementation of <code>get(Object key)</code></h3>
+<p>Coded as a re-interpretation of the standard linear probing logic, the <code>get</code> method looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> V <span style="color:#721045">get</span>(Object key) {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (<span style="color:#0000c0">null</span> <span style="color:#00538b">==</span> key) <span style="color:#5317ac">throw</span> <span style="color:#5317ac">new</span> IllegalArgumentException(<span style="color:#2544bb">&#34;Null keys not supported&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> hash <span style="color:#00538b">=</span> hash(key);
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> idx <span style="color:#00538b">=</span> hash <span style="color:#00538b">&amp;</span> (bins.length <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// If the bin is empty, we know the key doesn&#39;t exist</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (bins<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span> <span style="color:#00538b">==</span> EMPTY_SLOT) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">do</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#005a5f">int</span> entryIdx <span style="color:#00538b">=</span> bins<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Skip tombstones and check the entry at the indexed position</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (entryIdx <span style="color:#00538b">!=</span> TOMBSTONE) {
+</span></span><span style="display:flex;"><span>            LProbMapEntry<span style="color:#00538b">&lt;</span>K, V<span style="color:#00538b">&gt;</span> entry <span style="color:#00538b">=</span> entries<span style="color:#00538b">[</span>entryIdx<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">if</span> (entry.hash <span style="color:#00538b">==</span> hash <span style="color:#00538b">&amp;&amp;</span> key.equals(entry.key)) {
+</span></span><span style="display:flex;"><span>                <span style="color:#5317ac">return</span> entry.value;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Linear probing through the bins array</span>
+</span></span><span style="display:flex;"><span>        idx<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (idx <span style="color:#00538b">==</span> bins.length) idx <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    } <span style="color:#5317ac">while</span> (bins<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span> <span style="color:#00538b">!=</span> EMPTY_SLOT);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="advantages-of-the-bins-approach">Advantages of the &ldquo;Bins&rdquo; Approach</h3>
+<ol>
+<li><strong>Reduced Memory Footprint</strong>: In a standard Open Addressing map, a sparse array of object references (<code>Entry[]</code>) can be memory-intensive. In this model, the sparse array is just primitives (<code>int[]</code>), which is much smaller.</li>
+<li><strong>Dense Data Storage</strong>: The <code>entries</code> array is packed densely. This improves cache locality when the VM needs to iterate over all elements (like during resizing or entry sets), as it doesn&rsquo;t have to skip over large gaps of <code>null</code> slots.</li>
+<li><strong>Cache-Friendly Probing</strong>: Probing through an <code>int[]</code> is incredibly fast. The CPU can fit many more &ldquo;bins&rdquo; into a single cache line than it can with &ldquo;entry&rdquo; objects, making the search for the correct index highly efficient.</li>
+</ol>
+<h2 id="lprobradarmapk-v"><code>LProbRadarMap&lt;K, V&gt;</code></h2>
+<p><code>LProbRadarMap&lt;K, V&gt;</code> is an experimental implementation that fights clustering by utilizing a <strong>radar</strong> structure, a bit-vector that tracks the &ldquo;neighborhood&rdquo; of a base slot. This approach is inspired by the metadata-driven search patterns found in <strong>Hopscotch Hashing</strong>.</p>
+<blockquote>
+<p>For the full source code, please check <a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbRadarMap.java">this link</a>.</p>
+</blockquote>
+<h3 id="how-the-radar-works">How the Radar Works</h3>
+<p>The <code>radar[]</code> array is an array of integers where each <code>radar[i]</code> acts as a bitmask. It tracks all elements in the <code>buckets</code> array that have their <strong>base index</strong> at <code>i</code> but were pushed to a later position (up to 32 slots away) due to collisions.</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/radar.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>Let’s break down the logic using the diagram above:</p>
+<ul>
+<li><strong><code>buckets[2]</code></strong> was not originally hashed to index <code>1</code>, so the second bit of <code>radar[1]</code> remains <code>0</code>.</li>
+<li><strong><code>buckets[3]</code></strong>, <strong><code>buckets[5]</code></strong>, and <strong><code>buckets[6]</code></strong> all have a base index of <code>1</code>. Consequently, we set the corresponding bits in <code>radar[1]</code> to <code>1</code>.</li>
+</ul>
+<h3 id="insertion-logic">Insertion Logic</h3>
+<p>When inserting an element, we keep track of how far we have &ldquo;probed&rdquo; from the base index. If we find a slot within the 32-bit window, we update the radar bitmask.</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">protected</span> V <span style="color:#721045">put</span>(K key, V value, <span style="color:#005a5f">int</span> hash) {
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Increase the capacity if the threshold is met</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (shouldGrow()) {
+</span></span><span style="display:flex;"><span>        grow();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> base <span style="color:#00538b">=</span> hash <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> idx <span style="color:#00538b">=</span> base;
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> probing <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">while</span>(<span style="color:#0000c0">true</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// If we exceed the 32-slot radar window, we are forced to resize</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (probing <span style="color:#00538b">==</span> 32) {
+</span></span><span style="display:flex;"><span>            grow();
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">return</span> put(key, value, hash);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span> <span style="color:#00538b">==</span> <span style="color:#0000c0">null</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// It&#39;s a free spot</span>
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span> <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> LProbEntry(key, value, hash);
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// Mark the bit in the radar entry for the base slot</span>
+</span></span><span style="display:flex;"><span>            radar<span style="color:#00538b">[</span>base<span style="color:#00538b">]</span> <span style="color:#00538b">|=</span> (1 <span style="color:#00538b">&lt;&lt;</span> probing);
+</span></span><span style="display:flex;"><span>            size<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key <span style="color:#00538b">==</span> <span style="color:#0000c0">null</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// It&#39;s a tombstone: reclaim the spot</span>
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key <span style="color:#00538b">=</span> key;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.val <span style="color:#00538b">=</span> value;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.hash <span style="color:#00538b">=</span> hash;
+</span></span><span style="display:flex;"><span>            radar<span style="color:#00538b">[</span>base<span style="color:#00538b">]</span> <span style="color:#00538b">|=</span> (1 <span style="color:#00538b">&lt;&lt;</span> probing);
+</span></span><span style="display:flex;"><span>            size<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>            tombstones<span style="color:#00538b">--</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.hash <span style="color:#00538b">==</span> hash <span style="color:#00538b">&amp;&amp;</span> key.equals(buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// Key match: perform an update</span>
+</span></span><span style="display:flex;"><span>            V ret <span style="color:#00538b">=</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.val;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.val <span style="color:#00538b">=</span> value;
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">return</span> ret;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        probing<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>        idx <span style="color:#00538b">=</span> (idx <span style="color:#00538b">+</span> 1) <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="retrieval-logic">Retrieval Logic</h3>
+<p>The advantage of the radar is that we can skip the <code>equals()</code> check and the hash check for any slot where the radar bit is <code>0</code>. We would only examine &ldquo;relevant&rdquo; buckets that we know belong to this specific base index.</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> V <span style="color:#721045">get</span>(Object key) {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (<span style="color:#0000c0">null</span> <span style="color:#00538b">==</span> key) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">throw</span> <span style="color:#5317ac">new</span> IllegalArgumentException(<span style="color:#2544bb">&#34;Map doesn&#39;t support null keys&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> hash <span style="color:#00538b">=</span> hash(key);
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> idx <span style="color:#00538b">=</span> hash <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> rd <span style="color:#00538b">=</span> radar<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Quick exit: if the radar is 0, no elements with this base index exist</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (rd <span style="color:#00538b">==</span> 0) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">for</span>(<span style="color:#005a5f">int</span> bit <span style="color:#00538b">=</span> 0; bit <span style="color:#00538b">&lt;</span> 32; bit<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Only check the bucket if the radar bit indicates a match resides here</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (((rd <span style="color:#00538b">&gt;&gt;</span> bit) <span style="color:#00538b">&amp;</span> 1) <span style="color:#00538b">==</span> 1) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">if</span> (buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.hash <span style="color:#00538b">==</span> hash <span style="color:#00538b">&amp;&amp;</span> key.equals(buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key)) {
+</span></span><span style="display:flex;"><span>                <span style="color:#5317ac">return</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.val;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        idx <span style="color:#00538b">=</span> (idx <span style="color:#00538b">+</span> 1) <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="analysis-and-risks">Analysis and Risks</h3>
+<p>To be honest, this specific implementation has some significant drawbacks:</p>
+<ul>
+<li>Checking the bit <code>((rd &gt;&gt; bit) &amp; 1) == 1</code> isn&rsquo;t necessarily faster than simply checking if <code>buckets[idx] == null</code>, especially given modern CPU branch prediction and the overhead of bitwise shifts in a loop;</li>
+<li>Enforcing a hard limit of 32 for the probing distance is a dangerous approach. If a user provides a poor <code>hashCode()</code> implementation that causes a massive cluster, the map will trigger a resize every time a 33rd collision occurs. This could lead to a massive, sparse array that eventually crashes the JVM with an <code>OutOfMemoryError</code> (OOM).</li>
+</ul>
+<p>Nevertheless, it was a fun exercise in metadata-assisted probing.</p>
+<h2 id="robinhoodmapk-v"><code>RobinHoodMap&lt;K, V&gt;</code></h2>
+<p>The <code>RobinHoodMap&lt;K, V&gt;</code> is my final open-addressing implementation, utilizing the <a href="https://en.wikipedia.org/wiki/Hash_table#Robin_Hood_hashing">Robin Hood hashing</a> technique. This algorithm is a variation of linear probing that aims to reduce the variance of &ldquo;distance from home&rdquo; for all entries in the table.</p>
+<blockquote>
+<p>For the full source code, please check <a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/RobinHoodMap.java">this link</a>.</p>
+</blockquote>
+<h3 id="the-rich-and-the-poor">The &ldquo;Rich&rdquo; and the &ldquo;Poor&rdquo;</h3>
+<p>In standard linear probing, an element that arrives late to a crowded neighborhood might be pushed very far from its base slot, leading to long search times. Robin Hood hashing fixes this by &ldquo;taking from the rich and giving to the poor.&rdquo;</p>
+<p>In this context, an entry is &ldquo;rich&rdquo; if it is located close to its base slot (low distance) and &ldquo;poor&rdquo; if it has been pushed far away (high distance). During insertion, if a new entry is &ldquo;poorer&rdquo; than the one currently occupying a slot, they swap places.</p>
+<p>To implement this, we add a <code>dist</code> attribute to our entry class:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">class</span> Entry<span style="color:#00538b">&lt;</span>K, V<span style="color:#00538b">&gt;</span> <span style="color:#5317ac">implements</span> Map.Entry<span style="color:#00538b">&lt;</span>K, V<span style="color:#00538b">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> K key;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> V value;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> <span style="color:#005a5f">int</span> hash;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> <span style="color:#005a5f">int</span> dist; <span style="color:#505050">// Distance from the base slot</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// (more code)</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Let&rsquo;s look at how an insertion works with the following visual example:</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/robinhood.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<ol>
+<li>We want to insert <code>&quot;B&quot;</code>. Its base slot is <code>3</code>.</li>
+<li>We check index <code>3</code>. It&rsquo;s occupied by <code>X</code>. Since <code>distance(B,3) == 0</code> is not greater than <code>distance(X, base(X))</code>, we move to the next slot.</li>
+<li>We check index <code>4</code>. It&rsquo;s occupied by <code>D</code>. Since <code>distance(B,3) == 1</code> is not greater than <code>distance(D, base(D))</code>, we move to the next slot.</li>
+<li>We check index <code>5</code>. It&rsquo;s occupied by <code>F</code>. Here, <code>distance(B,3) == 2</code>, while <code>F</code> is only <code>1</code> slot away from its own base. Because <code>B</code> is poorer than <code>F</code>, we swap them.</li>
+<li>We now continue the process, but this time trying to find a new home for the displaced <code>F</code>.</li>
+</ol>
+<h3 id="implementation-of-put">Implementation of <code>put</code></h3>
+<p>While <code>get</code> and <code>remove</code> remain largely the same as in <code>LProbMap</code>, the <code>put</code> operation is where the &ldquo;Robin Hood&rdquo; logic lives:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">protected</span> V <span style="color:#721045">put</span>(K key, V value, <span style="color:#005a5f">int</span> hash) {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (<span style="color:#0000c0">null</span> <span style="color:#00538b">==</span> key) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">throw</span> <span style="color:#5317ac">new</span> IllegalArgumentException(<span style="color:#2544bb">&#34;Map doesn&#39;t support null keys&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    increaseCapacity();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    K cKey <span style="color:#00538b">=</span> key;
+</span></span><span style="display:flex;"><span>    V cVal <span style="color:#00538b">=</span> value;
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> cHash <span style="color:#00538b">=</span> hash;
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> cDist <span style="color:#00538b">=</span> 0; <span style="color:#505050">// Current distance from base</span>
+</span></span><span style="display:flex;"><span>    V oldVal <span style="color:#00538b">=</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> idx <span style="color:#00538b">=</span> hash <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">while</span> (<span style="color:#0000c0">true</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// If the slot is empty, we simply insert the element</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (<span style="color:#0000c0">null</span> <span style="color:#00538b">==</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>) {
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span> <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> Entry<span style="color:#00538b">&lt;&gt;</span>(cKey, cVal, cHash, cDist);
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">this</span>.size<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">break</span>;
+</span></span><span style="display:flex;"><span>        } 
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// If we found the key, update the value</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (cHash <span style="color:#00538b">==</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.hash <span style="color:#00538b">&amp;&amp;</span> cKey.equals(buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key)) {
+</span></span><span style="display:flex;"><span>            oldVal <span style="color:#00538b">=</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.value;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.value <span style="color:#00538b">=</span> cVal;
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// No swap needed, we just break</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">break</span>;
+</span></span><span style="display:flex;"><span>        } 
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// ROBIN HOOD SWAP: If current entry is &#34;poorer&#34; than the occupant</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (cDist <span style="color:#00538b">&gt;</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.dist) {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// Swap current element with the occupant</span>
+</span></span><span style="display:flex;"><span>            K tmpKey <span style="color:#00538b">=</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key;
+</span></span><span style="display:flex;"><span>            V tmpVal <span style="color:#00538b">=</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.value;
+</span></span><span style="display:flex;"><span>            <span style="color:#005a5f">int</span> tmpHash <span style="color:#00538b">=</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.hash;
+</span></span><span style="display:flex;"><span>            <span style="color:#005a5f">int</span> tmpDist <span style="color:#00538b">=</span> buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.dist;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.key <span style="color:#00538b">=</span> cKey;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.value <span style="color:#00538b">=</span> cVal;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.hash <span style="color:#00538b">=</span> cHash;
+</span></span><span style="display:flex;"><span>            buckets<span style="color:#00538b">[</span>idx<span style="color:#00538b">]</span>.dist <span style="color:#00538b">=</span> cDist;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// Now we look for a home for the displaced element</span>
+</span></span><span style="display:flex;"><span>            cKey <span style="color:#00538b">=</span> tmpKey;
+</span></span><span style="display:flex;"><span>            cVal <span style="color:#00538b">=</span> tmpVal;
+</span></span><span style="display:flex;"><span>            cHash <span style="color:#00538b">=</span> tmpHash;
+</span></span><span style="display:flex;"><span>            cDist <span style="color:#00538b">=</span> tmpDist;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Standard linear probing to the next slot</span>
+</span></span><span style="display:flex;"><span>        cDist<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>        idx <span style="color:#00538b">=</span> (idx <span style="color:#00538b">+</span> 1) <span style="color:#00538b">&amp;</span> (buckets.length <span style="color:#00538b">-</span> 1);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> oldVal;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="why-use-robin-hood-hashing">Why use Robin Hood Hashing?</h3>
+<p>The primary advantage of this technique is that it significantly reduces the variance of the distance entries travel from their base slots.</p>
+<p>In a standard linear probing table, you might have one unlucky element that is 50 slots away from home, making its retrieval very slow. In a Robin Hood table, that &ldquo;cost&rdquo; is shared across the neighborhood.</p>
+<p>This leads to much more consistent search times and helps prevent the &ldquo;long tail&rdquo; of performance degradation during high load factors.</p>
+<h1 id="benchmarks">Benchmarks</h1>
+<p>After implementing the six <strong>Open Addressing</strong> maps: <a href="%5Bhttps://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbMap.java%5D(https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbMap.java)"><code>LProbMap.java</code></a>, <a href="%5Bhttps://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbBinsMap.java%5D(https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbBinsMap.java)"><code>LProbBinsMap.java</code></a>, <a href="%5Bhttps://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbRadarMap.java%5D(https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/LProbRadarMap.java)"><code>LProbRadarMap.java</code></a>, <a href="%5Bhttps://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/PerturbMap.java%5D(https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/PerturbMap.java)"><code>PerturbMap.java</code></a>, <a href="%5Bhttps://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/RobinHoodMap.java%5D(https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/net/andreinc/neatmaps/RobinHoodMap.java)"><code>RobinHoodMap.java</code></a>, and the SoA variant, it was time to put them to the test against the standard <code>HashMap&lt;K,V&gt;</code> reference.</p>
+<p>Microbenchmarking in Java is notoriously difficult due to JIT optimizations and JVM warmups. To handle this properly, I used <a href="https://openjdk.java.net/projects/code-tools/jmh/">JMH</a> combined with <a href="https://www.mockneat.com">MockNeat</a> for data generation.</p>
+<p>The benchmarks are available in the repository under the <a href="%5Bhttps://github.com/nomemory/open-addressing-java-maps/tree/main/src/main/java/performance/jmh%5D(https://github.com/nomemory/open-addressing-java-maps/tree/main/src/main/java/performance/jmh)"><code>performance/jmh</code></a> folder. To run them yourself, refer to the <a href="%5Bhttps://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/performance/jmh/Main.java%5D(https://github.com/nomemory/open-addressing-java-maps/blob/main/src/main/java/performance/jmh/Main.java)"><code>Main.class</code></a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#505050">// Cleans the existing generated data from previous runs</span>
+</span></span><span style="display:flex;"><span>InputDataUtils.cleanBenchDataFolder();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Options options <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> OptionsBuilder()
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Benchmarks to include</span>
+</span></span><span style="display:flex;"><span>        .include(RandomStringsReads.class.getName())
+</span></span><span style="display:flex;"><span>        .include(SequencedStringReads.class.getName())
+</span></span><span style="display:flex;"><span>        .include(AlphaNumericCodesReads.class.getName())
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Configuration</span>
+</span></span><span style="display:flex;"><span>        .timeUnit(TimeUnit.MICROSECONDS)
+</span></span><span style="display:flex;"><span>        .shouldDoGC(<span style="color:#0000c0">true</span>)
+</span></span><span style="display:flex;"><span>        .resultFormat(ResultFormatType.JSON)
+</span></span><span style="display:flex;"><span>        .addProfiler(GCProfiler.class)
+</span></span><span style="display:flex;"><span>        .result(<span style="color:#2544bb">&#34;benchmarks_&#34;</span> <span style="color:#00538b">+</span> System.currentTimeMillis() <span style="color:#00538b">+</span> <span style="color:#2544bb">&#34;.json&#34;</span>)
+</span></span><span style="display:flex;"><span>        .build();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">new</span> Runner(options).run();
+</span></span></code></pre></div><p>The execution generates a JSON result file which can be visualized using <a href="https://jmh.morethan.io/">JMH Visualizer</a> or a custom <a href="https://github.com/nomemory/open-addressing-java-maps/blob/main/reporting/benchmarks_reporting.py">Python script</a>.</p>
+<h3 id="benchmark-configuration">Benchmark Configuration</h3>
+<p>I defined three primary benchmark scenarios: <code>RandomStringsReads</code>, <code>SequencedStringReads</code>, and <code>AlphaNumericCodesReads</code>. They share the following configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>@BenchmarkMode(Mode.AverageTime)
+</span></span><span style="display:flex;"><span>@OutputTimeUnit(TimeUnit.MICROSECONDS)
+</span></span><span style="display:flex;"><span>@State(Scope.Benchmark)
+</span></span><span style="display:flex;"><span>@Fork(value <span style="color:#00538b">=</span> 3, jvmArgs <span style="color:#00538b">=</span> {<span style="color:#2544bb">&#34;-Xms6G&#34;</span>, <span style="color:#2544bb">&#34;-Xmx16G&#34;</span>})
+</span></span><span style="display:flex;"><span>@Warmup(iterations <span style="color:#00538b">=</span> 2, time <span style="color:#00538b">=</span> 5)
+</span></span><span style="display:flex;"><span>@Measurement(iterations <span style="color:#00538b">=</span> 4, time <span style="color:#00538b">=</span> 5)
+</span></span></code></pre></div><p>Each class tests two specific behaviors: <code>randomReads()</code> (where keys are guaranteed to exist) and <code>randomReadsWithMisses()</code> (where there is a 50% chance the key is missing).</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>@Benchmark
+</span></span><span style="display:flex;"><span>@CompilerControl(CompilerControl.Mode.INLINE)
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">randomReads</span>(Blackhole bh) {
+</span></span><span style="display:flex;"><span>    bh.consume(testedMap.get(fromStrings(keys).get()));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h2 id="data-generation-strategies">Data Generation Strategies</h2>
+<h3 id="1-randomstringsreads">1. <code>RandomStringsReads</code></h3>
+<p>Keys are generated using MockNeat&rsquo;s <a href="https://www.mockneat.com/docs/#probabilities"><code>probabilities()</code></a> method to simulate diverse real-world data:</p>
+<ul>
+<li>20% Full Names</li>
+<li>20% Addresses</li>
+<li>20% Dictionary Words</li>
+<li>20% Car Make/Models</li>
+<li>20% String-encoded Integers</li>
+</ul>
+<h3 id="2-sequencedstringsreads">2. <code>SequencedStringsReads</code></h3>
+<p>Uses <a href="https://www.mockneat.com/docs/#intseq"><code>intSeq().mapToString()</code></a> to generate keys like <code>&quot;0&quot;</code>, <code>&quot;1&quot;</code>, <code>&quot;2&quot;</code>. This tests how the maps handle inputs with high mathematical patterns.</p>
+<h3 id="3-alphanumericcodesreads">3. <code>AlphaNumericCodesReads</code></h3>
+<p>Uses <code>strings().size(6).type(StringType.ALPHA_NUMERIC)</code> to generate short, fixed-length codes.</p>
+<h2 id="the-results">The Results</h2>
+<p>After approximately 6 hours of execution, the initial results were plotted. The charts compare average time (lower is better) across increasing map sizes (from 1,000 to 10,000,000 entries).</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center">Random Reads</th>
+          <th style="text-align: center">Reads with Misses</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench/RandomStringsReads.randomReads.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench/RandomStringsReads.randomReadsWithMisses.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench/SequencedStringReads.randomReads.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench/SequencedStringReads.randomReadsWithMisses.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench/AlphaNumericCodesReads.randomReads.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench/AlphaNumericCodesReads.randomReadsWithMisses.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="including-lprobsoamapkv">Including <code>LProbSOAMap&lt;K,V&gt;</code></h3>
+<p>After dzaima&rsquo;s SoA (Structure of Arrays) contribution, I re-ran the suite. The SoA variant significantly improved performance by reducing object overhead.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center">Random Reads (with SoA)</th>
+          <th style="text-align: center">Reads with Misses (with SoA)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench1/RandomStringsReads.randomReads.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench1/RandomStringsReads.randomReadsWithMisses.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench1/SequencedStringReads.randomReads.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench1/SequencedStringReads.randomReadsWithMisses.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench1/AlphaNumericCodesReads.randomReads.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+          <td style="text-align: center"><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-11-08-a-tale-of-java-hash-tables/bench1/AlphaNumericCodesReads.randomReadsWithMisses.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></td>
+      </tr>
+  </tbody>
+</table>
+<h1 id="wrapping-up">Wrapping Up</h1>
+<p>This project was both a fun and frustrating dive into the &ldquo;other half&rdquo; of Java performance (he JIT compiler). Here are my main takeaways:</p>
+<ul>
+<li><strong>The JIT Factor</strong>: In Java, you are only &ldquo;half-smart.&rdquo; You can write optimized code, but you have no direct control over inlining or the final machine code produced by the JIT.</li>
+<li><strong>Performance</strong>: <code>LProbMap</code> and <code>RobinHoodMap</code> performed surprisingly well against <code>HashMap</code> for datasets under 1 million entries. <code>LProbSOAMap</code> was the standout performer, outshining <code>HashMap</code> until the size exceeded 10 million entries, at which point <code>HashMap</code>&rsquo;s chaining optimizations began to dominate.</li>
+<li><strong>The &ldquo;Bins&rdquo; Mystery</strong>: I had high hopes for <code>LProbBinsMap</code>, but it performed the worst. The extra indirection likely caused too many cache misses in the JVM environment.</li>
+<li><strong>Should you use these?</strong> Probably not. <code>HashMap&lt;K,V&gt;</code> is battle-tested, bullet-proof, and highly optimized for the general case.</li>
+</ul>
+<p>If you have ideas for further optimizations (like shifting elements instead of using tombstones) the repository is open for PRs.</p>
+<h3 id="discussion">Discussion</h3>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=29319151">Hacker News Thread</a></li>
+<li><a href="https://www.reddit.com/r/java/comments/r0b9o9/a_tale_of_java_hash_tables/">Reddit /r/java Discussion</a></li>
+</ul>
+
+    
+
+
+
+
+  <div class="related-posts" style="border: 2px dashed #d3d6db; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; background-color: #fafafa;">
+    <h1 style="margin-top: 0;">Related Articles</h3>
+    <p style="font-size: 0.95em; color: #555;">I'm so glad you made it to the end. If you have a few more minutes, you might enjoy these:</p>
+    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-03-28">
+            Mar 28, 2024
+          </time>
+          &mdash; 
+          <a href="/blog/2024-03-28-programming-projects-ideas/" style="margin-left: 0.25rem;">My list of challenging software projects some programmers should try</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2023-02-01">
+            Feb 01, 2023
+          </time>
+          &mdash; 
+          <a href="/blog/2023-02-01-demystifying-bitwise-ops/" style="margin-left: 0.25rem;">Demystifying bitwise operations, a gentle C tutorial</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-09-01">
+            Sep 01, 2022
+          </time>
+          &mdash; 
+          <a href="/blog/2022-09-01-patological-input-for-the-java-hash-tables/" style="margin-left: 0.25rem;">Building pathological input for Java HashMaps - hash collisions generator</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-05-01">
+            May 01, 2022
+          </time>
+          &mdash; 
+          <a href="/blog/2022-05-01-4-integers-are-enough-to-write-a-snake-game/" style="margin-left: 0.25rem;">4 integers are enough to write a Snake Game</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-10">
+            Apr 10, 2022
+          </time>
+          &mdash; 
+          <a href="/blog/2022-04-10-a-blog-that-is-a-single-executable-binary/" style="margin-left: 0.25rem;">A blog that is a single executable binary</a>
+        </li>
+      
+    </ul>
+    
+  </div>
+
+  </article>
+
+  </main>
+  <footer>
+</footer>
+
+  
+</body>
+
+</html>

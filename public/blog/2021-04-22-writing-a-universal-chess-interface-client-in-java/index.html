@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Writing a Universal Chess Interface (UCI) Client in Java | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="Writing a Universal Chess Interface (UCI) Client in Java" />
+<meta name="description" content="
+  Contents
+  
+  
+    Introduction
+    Working with an UCI-enabled engine from the command line
+      
+        Installing Stockfish (and Leela Zero)
+        Listing supported options
+        Changing an option
+        Analyzing a position
+      
+    
+    Writing the Java UCI Client library
+      
+        Opening and closing the engine process
+        Sending commands to the engine
+        Example: Getting the best move
+        Example: Retrieving the 10 best moves
+      
+    
+    Going further
+    References
+  
+
+
+Introduction
+
+I love chess; it&rsquo;s just that chess doesn&rsquo;t love me back.
+
+Recently my interest in chess surged (I blame Corona), so I decided to write a set of tools for creating statistics about my games—I am a programmer, after all." />
+<meta name="keywords" content="java," />
+
+
+<meta property="og:url" content="http://localhost:1313/blog/2021-04-22-writing-a-universal-chess-interface-client-in-java/">
+  <meta property="og:site_name" content="Personal Site of Andrei N. Ciobanu">
+  <meta property="og:title" content="Writing a Universal Chess Interface (UCI) Client in Java">
+  <meta property="og:description" content="Contents Introduction Working with an UCI-enabled engine from the command line Installing Stockfish (and Leela Zero) Listing supported options Changing an option Analyzing a position Writing the Java UCI Client library Opening and closing the engine process Sending commands to the engine Example: Getting the best move Example: Retrieving the 10 best moves Going further References Introduction I love chess; it’s just that chess doesn’t love me back.
+Recently my interest in chess surged (I blame Corona), so I decided to write a set of tools for creating statistics about my games—I am a programmer, after all.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2021-04-22T00:00:00+00:00">
+    <meta property="article:modified_time" content="2021-04-22T00:00:00+00:00">
+    <meta property="article:tag" content="Java">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Writing a Universal Chess Interface (UCI) Client in Java">
+  <meta name="twitter:description" content="Contents Introduction Working with an UCI-enabled engine from the command line Installing Stockfish (and Leela Zero) Listing supported options Changing an option Analyzing a position Writing the Java UCI Client library Opening and closing the engine process Sending commands to the engine Example: Getting the best move Example: Retrieving the 10 best moves Going further References Introduction I love chess; it’s just that chess doesn’t love me back.
+Recently my interest in chess surged (I blame Corona), so I decided to write a set of tools for creating statistics about my games—I am a programmer, after all.">
+
+
+
+
+  <meta itemprop="name" content="Writing a Universal Chess Interface (UCI) Client in Java">
+  <meta itemprop="description" content="Contents Introduction Working with an UCI-enabled engine from the command line Installing Stockfish (and Leela Zero) Listing supported options Changing an option Analyzing a position Writing the Java UCI Client library Opening and closing the engine process Sending commands to the engine Example: Getting the best move Example: Retrieving the 10 best moves Going further References Introduction I love chess; it’s just that chess doesn’t love me back.
+Recently my interest in chess surged (I blame Corona), so I decided to write a set of tools for creating statistics about my games—I am a programmer, after all.">
+  <meta itemprop="datePublished" content="2021-04-22T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2021-04-22T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1704">
+  <meta itemprop="keywords" content="Java">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: var(--background-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: var(--text-color);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  a {
+    color: var(--link-color);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px dashed;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: var(--blockquote-color);
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+</style>
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/math.css">
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body>
+  <header><header class="site-header">
+  <nav class="global-nav">
+    
+      <a href="/blog/">Blog</a>
+    
+      <a href="/about/">About</a>
+    
+      <a href="/links/">Links</a>
+    
+  </nav>
+</header></header>
+  <main>
+  <article>
+    <header class="post-header" style="margin-bottom: 2rem;">
+  
+  <h1 style="margin-top: 0; margin-bottom: 0.5rem;">Writing a Universal Chess Interface (UCI) Client in Java</h1>
+  
+  <div class="post-meta" style="color: #666; font-size: 0.9em;">
+    
+    
+      <time datetime="2021-04-22">
+        2021-04-22
+      </time>
+    
+    
+    
+      
+        <span style="margin: 0 0.5rem;">&middot;</span>
+      
+      <span>
+        
+          
+          <a href="/categories/programming" style="color: inherit;">programming</a>
+        
+      </span>
+    
+
+    
+      
+        <span style="margin: 0 0.5rem;">&middot;</span>
+      
+      <span>
+        
+          
+          <a href="/tags/java" style="color: inherit;">#java</a>
+        
+      </span>
+    
+  </div>
+
+</header>  
+    <nav class="toc">
+  <h2>Contents</h2>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#working-with-an-uci-enabled-engine-from-the-command-line">Working with an UCI-enabled engine from the command line</a>
+      <ul>
+        <li><a href="#installing-stockfish-and-leela-zero">Installing Stockfish (and Leela Zero)</a></li>
+        <li><a href="#listing-supported-options">Listing supported options</a></li>
+        <li><a href="#changing-an-option">Changing an option</a></li>
+        <li><a href="#analyzing-a-position">Analyzing a position</a></li>
+      </ul>
+    </li>
+    <li><a href="#writing-the-java-uci-client-library">Writing the Java UCI Client library</a>
+      <ul>
+        <li><a href="#opening-and-closing-the-engine-process">Opening and closing the engine process</a></li>
+        <li><a href="#sending-commands-to-the-engine">Sending commands to the engine</a></li>
+        <li><a href="#example-getting-the-best-move">Example: Getting the best move</a></li>
+        <li><a href="#example-retrieving-the-10-best-moves">Example: Retrieving the 10 best moves</a></li>
+      </ul>
+    </li>
+    <li><a href="#going-further">Going further</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+</nav>
+<h1 id="introduction">Introduction</h1>
+<blockquote>
+<p>I love chess; it&rsquo;s just that chess doesn&rsquo;t love me back.</p>
+</blockquote>
+<p>Recently my interest in chess surged (I blame Corona), so I decided to write a set of tools for creating statistics about my games—I am a programmer, after all.</p>
+<p>My plan was to build something straightforward, you know, the type of statistics that would answer simple questions like:</p>
+<ul>
+<li>Which opening I am the most successful with;</li>
+<li>How good I am compared to my opponent after (let&rsquo;s say) move 10;</li>
+<li>How often do I blunder pieces in blitz;</li>
+<li>etc.</li>
+</ul>
+<p>So my first reaction (as a programmer) was to find a Java library that &ldquo;connects&rdquo; to Stockfish (or to a similar open-source chess engine) and does the work for me. Little did I know: no maintained Java library does that.</p>
+<p>After doing my research, I found out that most modern chess engines implement a protocol called UCI. UCI stands for <a href="https://en.wikipedia.org/wiki/Universal_Chess_Interface"><em>Universal Chess Interface</em></a>. It&rsquo;s good that we have a standard, right?</p>
+<p>Well, wrong. UCI is quite arcane by today&rsquo;s standards. There&rsquo;s no REST API waiting to be consumed. You aren&rsquo;t even connecting through a Network Socket. No! UCI uses OLD-SCHOOL process communication through <code>stdin</code> and <code>stdout</code>. And here the fun begins.</p>
+<p>Technically there is documentation (protocol specification can be found <a href="https://github.com/nomemory/uci-protocol-specification/">here</a> or <a href="https://www.shredderchess.com/download.html">here</a>), but it&rsquo;s not the type of documentation that holds you by the hand. It can&rsquo;t really be used without a little &ldquo;reverse engineering&rdquo; and &ldquo;do it yourself&rdquo; testing.</p>
+<p>This article explains how you can write your own UCI Client in Java, but the same knowledge applies to any other programming language.</p>
+<p>The full code is on GitHub: <a href="https://github.com/nomemory/neat-chess">neat-chess</a>.</p>
+<h1 id="working-with-an-uci-enabled-engine-from-the-command-line">Working with an UCI-enabled engine from the command line</h1>
+<h2 id="installing-stockfish-and-leela-zero">Installing Stockfish (and Leela Zero)</h2>
+<p>The first step was to install <a href="https://stockfishchess.org/">Stockfish</a> as a command-line utility. If you are on *NIX, most package managers have it in their repo.</p>
+<p>For example, on MAC:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install stockfish
+</span></span></code></pre></div><p>On Ubuntu:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get install stockfish
+</span></span></code></pre></div><p>On Windows:</p>
+<blockquote>
+<p>Why are you using Windows for programming?</p>
+</blockquote>
+<p>After installation, to start Stockfish, just type <code>stockfish</code> in your terminal.</p>
+<p>Another exciting engine to work with is <a href="https://lczero.org/">Leela Chess Zero</a>. You can install this as well from the command line: <code>brew install lc0</code>.</p>
+<h2 id="listing-supported-options">Listing supported options</h2>
+<p>As per protocol definition, the first command you need to submit is <code>uci</code>. After the engine receives <code>uci</code> on its <code>stdin</code>, it will initialize the UCI interface and identify itself with a line starting with <code>id name</code>.</p>
+<p>Then, all the supported options the engine implements are listed on lines starting with <code>option name &lt;option_name&gt; type ...</code>.</p>
+<p>After successful initialization, the engine will always print: <code>uciok</code>.</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-04-22-writing-a-universal-chess-interface-client-in-java/startstockfish2.gif" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>Make no assumption, the list of supported options is not standard. For example, <a href="https://lczero.org/">Leela Chess Zero</a> output is different:</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-04-22-writing-a-universal-chess-interface-client-in-java/lc0start.gif" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>Each option has a type: <code>check</code>, <code>spin</code>, <code>combo</code>, <code>button</code>, and <code>string</code>. It&rsquo;s essential to notice this, especially when you want to parse or set them.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Option type</th>
+          <th style="text-align: left">Description</th>
+          <th style="text-align: left">Example line</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><code>check</code></td>
+          <td style="text-align: left">The option can be <code>true</code> or <code>false</code></td>
+          <td style="text-align: left"><code>option name Ponder type check default false</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>spin</code></td>
+          <td style="text-align: left">A number in a given range [<code>min</code>, <code>max</code>]</td>
+          <td style="text-align: left"><code>option name MultiPV type spin default 1 min 1 max 500</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>combo</code></td>
+          <td style="text-align: left">Predefined string values</td>
+          <td style="text-align: left"><code>option name Analysis Contempt type combo default Both var Off var White var Black var Both</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>button</code></td>
+          <td style="text-align: left">No value; used to signal an action</td>
+          <td style="text-align: left"><code>option name Clear Hash type button</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>string</code></td>
+          <td style="text-align: left">A simple text string</td>
+          <td style="text-align: left"><code>option name EvalFile type string default nn-62ef826d1a6d.nnue</code></td>
+      </tr>
+  </tbody>
+</table>
+<p>Now, in the original specification, the following options are listed, but engines aren&rsquo;t limited to these.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Option name</th>
+          <th style="text-align: left">Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><code>Hash</code></td>
+          <td style="text-align: left">Memory in MB for internal hash tables.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>NalimovPath</code></td>
+          <td style="text-align: left">Path to <a href="https://www.chessprogramming.org/Nalimov_Tablebases">Nalimov table bases</a>.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>NalimovCache</code></td>
+          <td style="text-align: left">Internal cache for <a href="https://www.chessprogramming.org/Nalimov_Tablebases">Nalimov table bases</a>.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>Ponder</code></td>
+          <td style="text-align: left">Toggles whether the engine can ponder (think on opponent&rsquo;s time).</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>OwnBook</code></td>
+          <td style="text-align: left">Toggles whether the engine uses its own opening book.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>MultiPV</code></td>
+          <td style="text-align: left">Number of best lines to show (k-best mode).</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>UCI_ShowCurrLine</code></td>
+          <td style="text-align: left">Toggles showing the current line being calculated.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>UCI_ShowRefutations</code></td>
+          <td style="text-align: left">Toggles showing moves and their refutations.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>UCI_LimitStrength</code></td>
+          <td style="text-align: left">Toggles limiting strength to a specific Elo.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>UCI_Elo</code></td>
+          <td style="text-align: left">Specifies the Elo value for strength limiting.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>UCI_AnalyseMode</code></td>
+          <td style="text-align: left">Toggles engine behavior for analysis vs playing mode.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>UCI_Opponent</code></td>
+          <td style="text-align: left">Sends opponent info (name, title, Elo) to the engine.</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="changing-an-option">Changing an option</h2>
+<p>To change the value of an existing option, use:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>setoption name &lt;option_name&gt; value &lt;value&gt;
+</span></span></code></pre></div><p>For example, if we want the engine to enter Analyse Mode (<code>UCI_AnalyseMode</code>) and support five analysis lines (<code>MultiPV</code>), we write:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>setoption name UCI_AnalyseMode value true
+</span></span><span style="display:flex;"><span>setoption name MultiPV value 5
+</span></span></code></pre></div><p>As a best practice, after sending a synchronous command, it&rsquo;s best to issue: <code>isready</code>.</p>
+<blockquote>
+<p><strong>isready</strong> &gt; This must be sent when the engine has processed all input and is ready to accept new commands. It is usually sent after a command that can take some time, but it can be used anytime and must always be answered with &ldquo;readyok&rdquo;.</p>
+</blockquote>
+<p>So the current order of commands should be:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>setoption name UCI_AnalyseMode value true
+</span></span><span style="display:flex;"><span>setoption name MultiPV value 5
+</span></span><span style="display:flex;"><span>isready
+</span></span></code></pre></div><p>Real-time example:
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-04-22-writing-a-universal-chess-interface-client-in-java/setoption.gif" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></p>
+<h2 id="analyzing-a-position">Analyzing a position</h2>
+<p>A UCI-enabled chess engine uses FEN (<a href="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation">Forsyth–Edwards Notation</a>) to read a given position. FEN contains a &ldquo;snapshot&rdquo; of the chessboard at a given moment.</p>
+<p>On the other hand, PGN (<a href="https://en.wikipedia.org/wiki/Portable_Game_Notation">Portable Game Notation</a>) contains the whole game history. UCI engines understand FEN, not PGN.</p>
+<p>Before analyzing a position, use <code>ucinewgame</code> to clear the engine state. Since <code>ucinewgame</code> can take longer than expected, it&rsquo;s best to follow it with an <code>isready</code> command.</p>
+<p>To set a new position:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>position fen &lt;FEN&gt;
+</span></span></code></pre></div><p>Example position (mate in 3, Black to move):
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-04-22-writing-a-universal-chess-interface-client-in-java/matein3.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure></p>
+<p>The corresponding FEN: <code>8/8/4Rp2/5P2/1PP1pkP1/7P/1P1r4/7K b - - 0 40</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>ucinewgame
+</span></span><span style="display:flex;"><span>isready
+</span></span><span style="display:flex;"><span>position fen 8/8/4Rp2/5P2/1PP1pkP1/7P/1P1r4/7K b - - 0 40
+</span></span></code></pre></div><p>Now ask the engine to analyze using <code>go &lt;params&gt;</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>go movetime 1000
+</span></span></code></pre></div><p>This forces the engine to think for only 1 second.</p>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-04-22-writing-a-universal-chess-interface-client-in-java/analyseposition.gif" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>The last two lines of output show:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>info depth 245 seldepth 6 multipv 1 score mate 3 nodes 143187 nps 3579675 tbhits 0 time 40 pv f4g3 e6e4 d2d1 e4e1 d1e1
+</span></span><span style="display:flex;"><span>bestmove f4g3 ponder e6e4
+</span></span></code></pre></div><p>Stockfish suggests <code>f4g3</code> (Black King) and correctly identifies a mate in 3. UCI uses <code>from-move-to-move</code> notation (LAN), so you often need a chessboard in parallel to visualize it.</p>
+<h1 id="writing-the-java-uci-client-library">Writing the Java UCI Client library</h1>
+<p>A UCI engine works like this:</p>
+<ol>
+<li>Open the chess engine process;</li>
+<li>Write commands to <code>stdin</code>;</li>
+<li>Read results from <code>stdout</code>;</li>
+<li>You can&rsquo;t precisely estimate analysis time;</li>
+<li>A process only handles one position at a time. For parallel analysis, open multiple processes.</li>
+</ol>
+<h2 id="opening-and-closing-the-engine-process">Opening and closing the engine process</h2>
+<p>We use <code>Process</code> and <code>ProcessBuilder</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">class</span> Client {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> Process process <span style="color:#00538b">=</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> BufferedReader reader <span style="color:#00538b">=</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> OutputStreamWriter writer <span style="color:#00538b">=</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">start</span>(String cmd) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">var</span> pb <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> ProcessBuilder(cmd);
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">this</span>.process <span style="color:#00538b">=</span> pb.start();
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">this</span>.reader <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> BufferedReader(<span style="color:#5317ac">new</span> InputStreamReader(process.getInputStream()));
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">this</span>.writer <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> OutputStreamWriter(process.getOutputStream());
+</span></span><span style="display:flex;"><span>        } <span style="color:#5317ac">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            e.printStackTrace();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">close</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (<span style="color:#5317ac">this</span>.process <span style="color:#00538b">!=</span> <span style="color:#0000c0">null</span> <span style="color:#00538b">&amp;&amp;</span> <span style="color:#5317ac">this</span>.process.isAlive()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">this</span>.process.destroy();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">if</span> (reader <span style="color:#00538b">!=</span> <span style="color:#0000c0">null</span>) reader.close();
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">if</span> (writer <span style="color:#00538b">!=</span> <span style="color:#0000c0">null</span>) writer.close();
+</span></span><span style="display:flex;"><span>        } <span style="color:#5317ac">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            e.printStackTrace();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="sending-commands-to-the-engine">Sending commands to the engine</h2>
+<p>Designing a robust command method requires a few things:</p>
+<ul>
+<li><strong>Timeout</strong>: We need a limit because analysis can take forever. We wrap execution in a <code>CompletableFuture</code> and use <code>get(timeout)</code>.</li>
+<li><strong>Blocking</strong>: The thread should wait for the response to avoid sending commands in parallel.</li>
+<li><strong>Genericity</strong>: Use a <a href="https://en.wikipedia.org/wiki/Higher-order_function">higher-order function</a> to process lines.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#00538b">&lt;</span>T<span style="color:#00538b">&gt;</span> T <span style="color:#721045">command</span>(String cmd, Function<span style="color:#00538b">&lt;</span>List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span>, T<span style="color:#00538b">&gt;</span> processor, Predicate<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> breakCondition, <span style="color:#005a5f">long</span> timeout)
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">throws</span> InterruptedException, ExecutionException, TimeoutException {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    CompletableFuture<span style="color:#00538b">&lt;</span>T<span style="color:#00538b">&gt;</span> future <span style="color:#00538b">=</span> CompletableFuture.supplyAsync(() <span style="color:#00538b">-&gt;</span> {
+</span></span><span style="display:flex;"><span>        List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> output <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> ArrayList<span style="color:#00538b">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">try</span> {
+</span></span><span style="display:flex;"><span>            writer.write(cmd <span style="color:#00538b">+</span> <span style="color:#2544bb">&#34;\n&#34;</span>);
+</span></span><span style="display:flex;"><span>            writer.write(<span style="color:#2544bb">&#34;isready\n&#34;</span>);
+</span></span><span style="display:flex;"><span>            writer.flush();
+</span></span><span style="display:flex;"><span>            String line;
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">while</span> ((line <span style="color:#00538b">=</span> reader.readLine()) <span style="color:#00538b">!=</span> <span style="color:#0000c0">null</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#5317ac">if</span> (line.contains(<span style="color:#2544bb">&#34;Unknown command&#34;</span>)) <span style="color:#5317ac">throw</span> <span style="color:#5317ac">new</span> RuntimeException(line);
+</span></span><span style="display:flex;"><span>                output.add(line);
+</span></span><span style="display:flex;"><span>                <span style="color:#5317ac">if</span> (breakCondition.test(line)) <span style="color:#5317ac">break</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        } <span style="color:#5317ac">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            e.printStackTrace();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> processor.apply(output);
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> future.get(timeout, TimeUnit.MILLISECONDS);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="example-getting-the-best-move">Example: Getting the best move</h2>
+<p>Let&rsquo;s ask Stockfish for the best move in our mate-in-3 position:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">var</span> client <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> Client();
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">var</span> position <span style="color:#00538b">=</span> <span style="color:#2544bb">&#34;8/8/4Rp2/5P2/1PP1pkP1/7P/1P1r4/7K b - - 0 40&#34;</span>;
+</span></span><span style="display:flex;"><span>client.start(<span style="color:#2544bb">&#34;stockfish&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Init</span>
+</span></span><span style="display:flex;"><span>client.command(<span style="color:#2544bb">&#34;uci&#34;</span>, identity(), s <span style="color:#00538b">-&gt;</span> s.startsWith(<span style="color:#2544bb">&#34;uciok&#34;</span>), 2000L);
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Set position</span>
+</span></span><span style="display:flex;"><span>client.command(<span style="color:#2544bb">&#34;position fen &#34;</span> <span style="color:#00538b">+</span> position, identity(), s <span style="color:#00538b">-&gt;</span> s.startsWith(<span style="color:#2544bb">&#34;readyok&#34;</span>), 2000L);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Go</span>
+</span></span><span style="display:flex;"><span>String bestMove <span style="color:#00538b">=</span> client.command(
+</span></span><span style="display:flex;"><span>        <span style="color:#2544bb">&#34;go movetime 3000&#34;</span>,
+</span></span><span style="display:flex;"><span>        lines <span style="color:#00538b">-&gt;</span> lines.stream().filter(s <span style="color:#00538b">-&gt;</span> s.startsWith(<span style="color:#2544bb">&#34;bestmove&#34;</span>)).findFirst().get(),
+</span></span><span style="display:flex;"><span>        line <span style="color:#00538b">-&gt;</span> line.startsWith(<span style="color:#2544bb">&#34;bestmove&#34;</span>),
+</span></span><span style="display:flex;"><span>        5000L)
+</span></span><span style="display:flex;"><span>        .split(<span style="color:#2544bb">&#34; &#34;</span>)<span style="color:#00538b">[</span>1<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>System.out.println(bestMove); <span style="color:#505050">// Output: f4g3</span>
+</span></span><span style="display:flex;"><span>client.close();
+</span></span></code></pre></div><h2 id="example-retrieving-the-10-best-moves">Example: Retrieving the 10 best moves</h2>
+<p>This involves parsing the engine&rsquo;s info lines. First, set <code>MultiPV</code> to <code>10</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>client.command(<span style="color:#2544bb">&#34;setoption name MultiPV value 10&#34;</span>, identity(), s <span style="color:#00538b">-&gt;</span> s.startsWith(<span style="color:#2544bb">&#34;readyok&#34;</span>), 2000L);
+</span></span></code></pre></div><p>For the Ruy-Lopez position (<code>r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3</code>), the engine output looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>info depth 10 seldepth 12 multipv 1 score cp -8 ... pv a7a6 b5a4 g8f6 ...
+</span></span><span style="display:flex;"><span>info depth 10 seldepth 13 multipv 2 score cp -27 ... pv g8f6 b1c3 f8d6 ...
+</span></span></code></pre></div><p>The relevant part is:
+<code>info depth &lt;depth&gt; ... multipv &lt;line&gt; score cp &lt;score&gt; ... pv &lt;move1&gt; &lt;move2&gt; ...</code></p>
+<p>We can use a regex with <a href="https://docs.oracle.com/javase/tutorial/essential/regex/groups.html">groups</a> to capture this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>info depth ([\w]*) seldepth [\w]* multipv ([\w]*) score (cp ([\-\w]*)|mate ([\w*])) [\s\w]*pv ([\w]*)\s*([\s\w]*)
+</span></span></code></pre></div><figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2021-04-22-writing-a-universal-chess-interface-client-in-java/regex.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<ul>
+<li><code>group 1</code>: depth</li>
+<li><code>group 2</code>: line number (multipv)</li>
+<li><code>group 4</code>: score (centipawns)</li>
+<li><code>group 5</code>: mate in X</li>
+<li><code>group 6</code>: actual move</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">var</span> analysisLineRegex <span style="color:#00538b">=</span> <span style="color:#2544bb">&#34;info depth ([\\w]*) seldepth [\\w]* multipv ([\\w]*) score (cp ([\\-\\w]*)|mate ([\\w*])) [\\s\\w]*pv ([\\w]*)\\s*([\\s\\w]*)&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">var</span> pattern <span style="color:#00538b">=</span> Pattern.compile(analysisLineRegex);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Map<span style="color:#00538b">&lt;</span>Integer, String<span style="color:#00538b">&gt;</span> bestMoves <span style="color:#00538b">=</span> client.command(
+</span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;go depth 10&#34;</span>,
+</span></span><span style="display:flex;"><span>    lines <span style="color:#00538b">-&gt;</span> {
+</span></span><span style="display:flex;"><span>        Map<span style="color:#00538b">&lt;</span>Integer, String<span style="color:#00538b">&gt;</span> result <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> TreeMap<span style="color:#00538b">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">for</span>(String line : lines) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">var</span> matcher <span style="color:#00538b">=</span> pattern.matcher(line);
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">if</span> (matcher.matches()) {
+</span></span><span style="display:flex;"><span>                result.put(Integer.parseInt(matcher.group(2)), matcher.group(6));
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> result;
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    s <span style="color:#00538b">-&gt;</span> s.startsWith(<span style="color:#2544bb">&#34;bestmove&#34;</span>),
+</span></span><span style="display:flex;"><span>    5000L);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bestMoves.forEach((k, v) <span style="color:#00538b">-&gt;</span> System.out.println(k <span style="color:#00538b">+</span> <span style="color:#2544bb">&#34; &#34;</span> <span style="color:#00538b">+</span> v));
+</span></span></code></pre></div><h1 id="going-further">Going further</h1>
+<p>The code above is a bit raw, but it&rsquo;s a foundation. Normally, you&rsquo;d hide the generic <code>command()</code> method and expose high-level abstractions.</p>
+<p>This is what I did with <a href="https://github.com/nomemory/neat-chess">neat-chess</a>. It&rsquo;s a library tested with Stockfish 13 that handles the &ldquo;nasty&rdquo; parts for you.</p>
+<p>Using <strong>neat-chess</strong>, the code looks much cleaner:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">var</span> client <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> UCI();
+</span></span><span style="display:flex;"><span>client.startStockfish();
+</span></span><span style="display:flex;"><span>client.setOption(<span style="color:#2544bb">&#34;MultiPV&#34;</span>, <span style="color:#2544bb">&#34;10&#34;</span>);
+</span></span><span style="display:flex;"><span>client.positionFen(<span style="color:#2544bb">&#34;r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">var</span> analysis <span style="color:#00538b">=</span> client.analysis(18).getResultOrThrow();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>analysis.getAllMoves().forEach((idx, move) <span style="color:#00538b">-&gt;</span> {
+</span></span><span style="display:flex;"><span>    System.out.println(move);
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>client.close();
+</span></span></code></pre></div><h1 id="references">References</h1>
+<ul>
+<li><a href="https://github.com/nomemory/uci-protocol-specification/">UCI Protocol Specification</a></li>
+<li><a href="https://craftinginterpreters.com/hash-tables.html">Crafting Interpreters - Hash Tables (Robert Nystrom)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Portable_Game_Notation">Portable Game Notation (PGN)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation">Forsyth–Edwards Notation (FEN)</a></li>
+</ul>
+
+    
+
+
+
+
+  <div class="related-posts" style="border: 2px dashed #d3d6db; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; background-color: #fafafa;">
+    <h1 style="margin-top: 0;">Related Articles</h3>
+    <p style="font-size: 0.95em; color: #555;">I'm so glad you made it to the end. If you have a few more minutes, you might enjoy these:</p>
+    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-03-28">
+            Mar 28, 2024
+          </time>
+          &mdash; 
+          <a href="/blog/2024-03-28-programming-projects-ideas/" style="margin-left: 0.25rem;">My list of challenging software projects some programmers should try</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2023-02-01">
+            Feb 01, 2023
+          </time>
+          &mdash; 
+          <a href="/blog/2023-02-01-demystifying-bitwise-ops/" style="margin-left: 0.25rem;">Demystifying bitwise operations, a gentle C tutorial</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-09-01">
+            Sep 01, 2022
+          </time>
+          &mdash; 
+          <a href="/blog/2022-09-01-patological-input-for-the-java-hash-tables/" style="margin-left: 0.25rem;">Building pathological input for Java HashMaps - hash collisions generator</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-05-01">
+            May 01, 2022
+          </time>
+          &mdash; 
+          <a href="/blog/2022-05-01-4-integers-are-enough-to-write-a-snake-game/" style="margin-left: 0.25rem;">4 integers are enough to write a Snake Game</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-10">
+            Apr 10, 2022
+          </time>
+          &mdash; 
+          <a href="/blog/2022-04-10-a-blog-that-is-a-single-executable-binary/" style="margin-left: 0.25rem;">A blog that is a single executable binary</a>
+        </li>
+      
+    </ul>
+    
+  </div>
+
+  </article>
+
+  </main>
+  <footer>
+</footer>
+
+  
+</body>
+
+</html>

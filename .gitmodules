@@ -1,0 +1,9 @@
+[submodule "themes/PaperMod"]
+	path = themes/PaperMod
+	url = https://github.com/adityatelange/hugo-PaperMod
+[submodule "themes/starter"]
+	path = themes/starter
+	url = https://github.com/jimfrenette/hugo-starter.git
+[submodule "themes/bearblog"]
+	path = themes/bearblog
+	url = https://github.com/janraasch/hugo-bearblog.git

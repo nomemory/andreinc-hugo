@@ -1,0 +1,26 @@
+<ul>
+  {{ range .Site.Data.blogroll.body.outline }}
+    {{ if .outline }}
+      <li><strong>{{ index . "-text" | default (index . "text") }}</strong>
+        <ul>
+          {{ range .outline }}
+            {{/* 1. Get the raw URL from the XML */}}
+            {{ $rawUrl := index . "-htmlUrl" | default (index . "htmlUrl") | default (index . "-xmlUrl") | default (index . "xmlUrl") }}
+            
+            {{/* 2. Parse the URL and keep only the domain */}}
+            {{ $urlObj := urls.Parse $rawUrl }}
+            {{ $domainOnly := printf "%s://%s/" $urlObj.Scheme $urlObj.Host }}
+            
+            <li><a href="{{ $domainOnly }}" target="_blank" rel="noopener">{{ index . "-text" | default (index . "text") }}</a></li>
+          {{ end }}
+        </ul>
+      </li>
+    {{ else }}
+      {{/* Logic for loose links (repeated for consistency) */}}
+      {{ $rawUrl := index . "-htmlUrl" | default (index . "htmlUrl") | default (index . "-xmlUrl") | default (index . "xmlUrl") }}
+      {{ $urlObj := urls.Parse $rawUrl }}
+      {{ $domainOnly := printf "%s://%s/" $urlObj.Scheme $urlObj.Host }}
+      <li><a href="{{ $domainOnly }}" target="_blank" rel="noopener">{{ index . "-text" | default (index . "text") }}</a></li>
+    {{ end }}
+  {{ end }}
+</ul>

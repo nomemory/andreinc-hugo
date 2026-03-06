@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Max-Heap on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/max-heap/</link>
+    <description>Recent content in Max-Heap on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 01 Jun 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/max-heap/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Implementing a generic Priority Queue in C (using heaps)</title>
+      <link>http://localhost:1313/2011/06/01/implementing-a-generic-priority-queue-in-c-using-heaps/</link>
+      <pubDate>Wed, 01 Jun 2011 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2011/06/01/implementing-a-generic-priority-queue-in-c-using-heaps/</guid>
+      <description>&lt;p&gt;In Computer Science, a &lt;code&gt;Priority Queue&lt;/code&gt; is an abstract data type, very similar to a normal Queue, but with a twist: &lt;em&gt;every element has a priority attached to itself&lt;/em&gt;. The rule is that an element with high priority is served before an element with low priority.&lt;/p&gt;&#xA;&lt;p&gt;Our implementation is going to use a &lt;a href=&#34;https://en.wikipedia.org/wiki/Binary_heap&#34;&gt;Binary Heap&lt;/a&gt;. This is fancy name for a heap structure that takes the form of a &lt;code&gt;binary tree&lt;/code&gt; that is &lt;code&gt;complete&lt;/code&gt;, and the key that is stored in each node is (&lt;code&gt;&amp;gt;=&lt;/code&gt;) bigger than keys stored in its children.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

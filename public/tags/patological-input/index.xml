@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Patological-Input on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/patological-input/</link>
+    <description>Recent content in Patological-Input on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Sep 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/patological-input/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building pathological input for Java HashMaps - hash collisions generator</title>
+      <link>http://localhost:1313/2022/09/01/building-pathological-input-for-java-hashmaps-hash-collisions-generator/</link>
+      <pubDate>Thu, 01 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2022/09/01/building-pathological-input-for-java-hashmaps-hash-collisions-generator/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve recently stumbled upon an article about the &lt;a href=&#34;https://en.wikipedia.org/wiki/Weierstrass_function&#34;&gt;Weisterstrass Function&lt;/a&gt;, which led me to another article about &lt;a href=&#34;https://en.wikipedia.org/wiki/Pathological_(mathematics)&#34;&gt;Patological Objects&lt;/a&gt; in Mathematics, meaning, functions, numbers, etc., that have &lt;em&gt;deviant&lt;/em&gt;, irregular, or counterintuitive properties.&lt;/p&gt;&#xA;&lt;p&gt;There was a time when (even) the &lt;em&gt;introduction&lt;/em&gt;  of $0$ broke the mathematics of the day. At first, $0$ was highly &lt;em&gt;pathological&lt;/em&gt;. For example, the 7th-century mathematician &lt;a href=&#34;https://en.wikipedia.org/wiki/Brahmagupta&#34;&gt;Brahmagupta&lt;/a&gt; said about division by zero:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;A positive or negative number when divided by zero is a fraction with the zero as denominator. Zero divided by a negative or positive number is either zero or is expressed as a fraction with zero as numerator and the finite quantity as denominator. &lt;strong&gt;Zero divided by zero is zero&lt;/strong&gt;.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

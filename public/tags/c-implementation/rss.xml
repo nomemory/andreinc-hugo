@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C-Implementation on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/c-implementation/</link>
+    <description>Recent content in C-Implementation on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 11 Dec 2010 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/c-implementation/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Euclid&#39;s Algorithm</title>
+      <link>http://localhost:1313/2010/12/11/euclids-algorithm/</link>
+      <pubDate>Sat, 11 Dec 2010 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2010/12/11/euclids-algorithm/</guid>
+      <description>&lt;p&gt;Recently I&amp;rsquo;ve started to implement (or reimplement) the most common algorithms a software developer should know . One of the nicest books I found on this topic is &lt;a href=&#34;http://www.amazon.com/Algorithms-Parts-1-4-Fundamentals-Structures/dp/0201314525&#34;&gt;Algorithms in C&lt;/a&gt; (Robert Sedgewick) .&lt;/p&gt;&#xA;&lt;p&gt;Of course, there is &lt;a href=&#34;http://www.amazon.com/Art-Computer-Programming-Volumes-Boxed/dp/0201485419&#34;&gt;this&lt;/a&gt; and &lt;a href=&#34;http://www.amazon.com/Introduction-Algorithms-Second-Thomas-Cormen/dp/0262032937&#34;&gt;this&lt;/a&gt;, but lately I am more interested on the &amp;ldquo;implementation&amp;rdquo; side of things than on maths and theory .&lt;/p&gt;&#xA;&lt;h1 id=&#34;algorithm-description&#34;&gt;Algorithm Description&lt;/h1&gt;&#xA;&lt;p&gt;&lt;strong&gt;Euclid&amp;rsquo;s Algorithm&lt;/strong&gt; is an efficient method for calculating the greatest common divisor of two numbers (aka &lt;em&gt;GCD&lt;/em&gt;) . The &lt;em&gt;GCD&lt;/em&gt; of two numbers is considered the largest number that divides both of them (without leaving a reminder) .&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

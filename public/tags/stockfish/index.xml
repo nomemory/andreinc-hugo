@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Stockfish on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/stockfish/</link>
+    <description>Recent content in Stockfish on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/stockfish/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Writing a Universal Chess Interface (UCI) Client in Java</title>
+      <link>http://localhost:1313/2021/04/22/writing-a-universal-chess-interface-uci-client-in-java/</link>
+      <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2021/04/22/writing-a-universal-chess-interface-uci-client-in-java/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;I love chess; it&amp;rsquo;s just that chess doesn&amp;rsquo;t love me back.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;Recently my interest in chess surged (I blame Corona), so I&amp;rsquo;ve decided to write a set of tools for creating statistics about my games - I am a programmer, after all.&lt;/p&gt;&#xA;&lt;p&gt;My plan was to build something straightforward, you know, the type of statistics that would answer simple questions like:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Which opening I am the most successful with;&lt;/li&gt;&#xA;&lt;li&gt;How good I am compared to my opponent after (let&amp;rsquo;s say), move 10;&lt;/li&gt;&#xA;&lt;li&gt;How often do I blunder pieces in blitz;&lt;/li&gt;&#xA;&lt;li&gt;etc.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;So my first reaction (as a programmer) was to find a Java library that &amp;ldquo;connects&amp;rdquo; to Stockfish (or to a similar open-source chess engine) and do the works for me. Little did I know: no maintained Java library does that.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

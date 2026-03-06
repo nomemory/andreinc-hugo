@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>I&#39;ve promised myself never to use gradle | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="I&#39;ve promised myself never to use gradle" />
+<meta name="description" content="
+title: &ldquo;Hash, displace, and compress: Perfect hashing with Java&rdquo;
+date: &ldquo;2022-03-15&rdquo;
+classes: wide
+comments: true
+usemathjax: true
+excerpt: &ldquo;An implementation of a perfection hashing algorithm in Java&rdquo;
+categories:
+
+&ldquo;java&rdquo;
+&ldquo;algorithms&rdquo;
+tags:
+&ldquo;vm&rdquo;
+&ldquo;lc3&rdquo;
+
+
+
+This article explains a straightforward approach for generating Perfect Hash Functions, and using them in tandem with a Map&lt;K,V&gt; implementation called ReadOnlyMap&lt;K,V&gt;. It assumes the reader is already familiar with the concepts like hash functions and hash tables. If you want to refresh your knowledge on the two mentioned topics, I recommend you to read some of my previous articles: Implementing Hash Tables in C and A tale of Java Hash Tables." />
+<meta name="keywords" content="java," />
+
+
+<meta property="og:url" content="http://localhost:1313/2022/03/15/ive-promised-myself-never-to-use-gradle/">
+  <meta property="og:site_name" content="Personal Site of Andrei N. Ciobanu">
+  <meta property="og:title" content="I&#39;ve promised myself never to use gradle">
+  <meta property="og:description" content="title: “Hash, displace, and compress: Perfect hashing with Java” date: “2022-03-15” classes: wide comments: true usemathjax: true excerpt: “An implementation of a perfection hashing algorithm in Java” categories:
+“java” “algorithms” tags: “vm” “lc3” This article explains a straightforward approach for generating Perfect Hash Functions, and using them in tandem with a Map&lt;K,V&gt; implementation called ReadOnlyMap&lt;K,V&gt;. It assumes the reader is already familiar with the concepts like hash functions and hash tables. If you want to refresh your knowledge on the two mentioned topics, I recommend you to read some of my previous articles: Implementing Hash Tables in C and A tale of Java Hash Tables.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-03-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2022-03-15T00:00:00+00:00">
+    <meta property="article:tag" content="Java">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="I&#39;ve promised myself never to use gradle">
+  <meta name="twitter:description" content="title: “Hash, displace, and compress: Perfect hashing with Java” date: “2022-03-15” classes: wide comments: true usemathjax: true excerpt: “An implementation of a perfection hashing algorithm in Java” categories:
+“java” “algorithms” tags: “vm” “lc3” This article explains a straightforward approach for generating Perfect Hash Functions, and using them in tandem with a Map&lt;K,V&gt; implementation called ReadOnlyMap&lt;K,V&gt;. It assumes the reader is already familiar with the concepts like hash functions and hash tables. If you want to refresh your knowledge on the two mentioned topics, I recommend you to read some of my previous articles: Implementing Hash Tables in C and A tale of Java Hash Tables.">
+
+
+
+
+  <meta itemprop="name" content="I&#39;ve promised myself never to use gradle">
+  <meta itemprop="description" content="title: “Hash, displace, and compress: Perfect hashing with Java” date: “2022-03-15” classes: wide comments: true usemathjax: true excerpt: “An implementation of a perfection hashing algorithm in Java” categories:
+“java” “algorithms” tags: “vm” “lc3” This article explains a straightforward approach for generating Perfect Hash Functions, and using them in tandem with a Map&lt;K,V&gt; implementation called ReadOnlyMap&lt;K,V&gt;. It assumes the reader is already familiar with the concepts like hash functions and hash tables. If you want to refresh your knowledge on the two mentioned topics, I recommend you to read some of my previous articles: Implementing Hash Tables in C and A tale of Java Hash Tables.">
+  <meta itemprop="datePublished" content="2022-03-15T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2022-03-15T00:00:00+00:00">
+  <meta itemprop="wordCount" content="3062">
+  <meta itemprop="keywords" content="Java">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: var(--background-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: var(--text-color);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  a {
+    color: var(--link-color);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px dashed;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: var(--blockquote-color);
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+</style>
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/math.css">
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof renderMathInElement !== "function") {
+    console.error("KaTeX auto-render not loaded");
+    return;
+  }
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false }
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Personal Site of Andrei N. Ciobanu</h2>
+</a>
+<nav>
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+<a href="/links/">Links</a>
+
+<a href="/tags/">Tags</a>
+
+</nav>
+</header>
+  <main>
+
+<content>
+  <hr>
+<p>title: &ldquo;Hash, displace, and compress: Perfect hashing with Java&rdquo;
+date: &ldquo;2022-03-15&rdquo;
+classes: wide
+comments: true
+usemathjax: true
+excerpt: &ldquo;An implementation of a perfection hashing algorithm in Java&rdquo;
+categories:</p>
+<ul>
+<li>&ldquo;java&rdquo;</li>
+<li>&ldquo;algorithms&rdquo;
+tags:</li>
+<li>&ldquo;vm&rdquo;</li>
+<li>&ldquo;lc3&rdquo;</li>
+</ul>
+<hr>
+<blockquote>
+<p>This article explains a straightforward approach for generating <em>Perfect Hash Functions</em>, and using them in tandem with a <code>Map&lt;K,V&gt;</code> implementation called <code>ReadOnlyMap&lt;K,V&gt;</code>. It assumes the reader is already familiar with the concepts like hash functions and hash tables. If you want to refresh your knowledge on the two mentioned topics, I recommend you to read some of my previous articles: <a href="%7B%7Bsite.url%7D%7D/2021/10/02/implementing-hash-tables-in-c-part-1">Implementing Hash Tables in C</a> and <a href="%7B%7Bsite.url%7D%7D/2021/11/08/a-tale-of-java-hash-tables">A tale of Java Hash Tables</a>.</p>
+</blockquote>
+<p>A <em>Perfect Hash Function</em> (PHF), $H$ is a <em>hash function</em> that maps distinct elements from a set $S$ to a range of integer values $[0,1,&hellip;.]$, so that there are no collisions. In other words, $H$ is injective. This means that for any $x_{1}, x{2} \in U$, if $H(x_{1})=H(x{2})$ we can say for sure $x_{1}=x_{2}$. The contrapositive argument is also true, if $H(x_{1}) \neq H(x_{2})$, then for sure $x_{1} \neq x_{2}$.</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-03-15-perfect-hashing-with-java/ph.drawio.png" alt="png"></p>
+<p>Moreover, a <em>Minimal Perfect Hash Function</em> (MPHF) is a PHF $H$ defined on a finite set $S = {a_0, a_1, &hellip;, a_{m-1}}$ with values in range of integers values ${0, 1, &hellip;, m-1}$ of size $m$.</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-03-15-perfect-hashing-with-java/mph.drawio.png" alt="png"></p>
+<p>A function like this would be fantastic to use in the context of <em>Hash Tables</em>, wouldn&rsquo;t it be so !?</p>
+<p>In theory, without collisions, every element goes straight into an empty bucket without risking finding an intruder already settled. Or, in the case of Open Addressing Hash Tables, the element doesn&rsquo;t have to probe the buckets to find its place in the <em>Universe</em>.</p>
+<p>Another (significant) advantage of using an MPHF is the space consideration: we can don&rsquo;t have to impose a load factor on the <strong>Hash Table</strong>, because we know there&rsquo;s a perfect association (1:1) between elements and buckets. When using an MPHF, the load factor is <code>1.0</code>, compared to ~ <code>0.66-0.8</code> for Open Addressing Hash Tables or <code>0.7</code> for classic Separate Chaining implementations.</p>
+<p>But don&rsquo;t get too excited; there are a few <em>gotchas</em>:</p>
+<ul>
+<li>To find an MPHF or PHF, we need to know all the keys in advance.
+After computing the PHF and building the <em>Hash Table</em>, we cannot add new entries; the data structure is read-only. To be 100% accurate, <a href="https://en.wikipedia.org/wiki/Dynamic_perfect_hashing">dynamic perfect hashing exists</a>, but because it&rsquo;s quite memory intensive, we rarely see it in practice.</li>
+<li>Computing an MPHF is not guaranteed to work all the time, at least not if we use an algorithm that takes (almost) linear or logarithmic time.</li>
+<li>The resulting <em>Perfect Hash Function</em> is complex and usually performs a secondary table lookup. In practice, it can be slower than a standard hash function.</li>
+</ul>
+<p>The idea for generating PHFs and MPHFs is not new; it first appeared in 1984 in a paper called <a href="https://www.cs.princeton.edu/courses/archive/fall09/cos521/Handouts/storingasparse.pdf">Storing a Sparse Table with O(1) Worst Case Access Time</a>. A significant improvement was proposed in 2009 with the paper <a href="http://cmph.sourceforge.net/papers/esa09.pdf">Hash, displace, and compress</a> (which the current article is based upon).</p>
+<p>Meanwhile, more algorithms have emerged, and most of them are already implemented and described in the <a href="http://cmph.sourceforge.net">cmph library</a>. What is nice about <strong>cmph</strong> is that you can compile the lib as a standalone executable that allows you to generate MPHFs from the command line. Currently cmph supports the following algorithms: <a href="http://cmph.sourceforge.net/chd.html">CHD</a>, <a href="http://cmph.sourceforge.net/bdz.html">BDZ</a>, <a href="http://cmph.sourceforge.net/bmz.html">BMZ</a>, <a href="http://cmph.sourceforge.net/brz.html">BRZ</a>, <a href="http://cmph.sourceforge.net/chm.html">CHM</a>, <a href="http://cmph.sourceforge.net/fch.html">FCH</a>, <a href="http://cmph.sourceforge.net/chm.html">CHM</a>, and <a href="http://cmph.sourceforge.net/fch.html">FCH</a>, each with its own PROs and CONs, as explained on this <a href="http://cmph.sourceforge.net">page</a>.</p>
+<p>If you are passionate about this topic, you can also check Reini Urban&rsquo;s <a href="https://github.com/rurban/Perfect-Hash">Perfect-Hash</a> for PHFs code generation, and <a href="http://blogs.perl.org/users/rurban/2014/08/perfect-hashes-and-faster-than-memcmp.html">his article</a> on the topic.</p>
+<p>In this article, we are going to implement in Java, a &ldquo;naive&rdquo; version of <a href="http://cmph.sourceforge.net/chd.html">CHD</a>, which is actually based on how Steve Hanov implemented it in python, in his article: <a href="http://stevehanov.ca/blog/?id=119">&ldquo;Throw away the keys: Easy, Minimal Perfect Hashing&rdquo;</a>, and this <a href="https://github.com/wahern/phf/blob/master/phf.cc">C implementation</a> by <a href="https://github.com/wahern">William Ahern</a>.</p>
+<h1 id="the-code">The code</h1>
+<p>If you want to checkout the code associated with this project:</p>
+<pre tabindex="0"><code>git clone git@github.com:nomemory/mphmap.git
+</code></pre><h1 id="a-glimpse">A glimpse</h1>
+<p>To get a better understanding of what we are going to achieve by the end of this article, let&rsquo;s suppose we have a Set $S$ of 15 <em>Roman Emperors</em> keys:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Set<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> emperors <span style="color:#00538b">=</span>
+</span></span><span style="display:flex;"><span>    Set.of(<span style="color:#2544bb">&#34;Augustus&#34;</span>, <span style="color:#2544bb">&#34;Tiberius&#34;</span>, <span style="color:#2544bb">&#34;Caligula&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;Claudius&#34;</span>, <span style="color:#2544bb">&#34;Nero&#34;</span>, <span style="color:#2544bb">&#34;Vespasian&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;Titus&#34;</span>, <span style="color:#2544bb">&#34;Dominitian&#34;</span>, <span style="color:#2544bb">&#34;Nerva&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;Trajan&#34;</span>, <span style="color:#2544bb">&#34;Hadrian&#34;</span>, <span style="color:#2544bb">&#34;Antonious Pius&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;Marcus Aurelius&#34;</span>, <span style="color:#2544bb">&#34;Lucius Verus&#34;</span>, <span style="color:#2544bb">&#34;Commodus&#34;</span>);
+</span></span></code></pre></div><p>We want to find a function $H$ that evenly distributes each of the keys to 15 hash buckets in the range <code>[0,1, .. 14]</code>.</p>
+<p>If we use Java&rsquo;s built-in <code>String.hashCode()</code> on the keys, we will get a few collisions:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#505050">// Intiliaze buckets as an empty List&lt;ArrayList&lt;String&gt;&gt;</span>
+</span></span><span style="display:flex;"><span>List<span style="color:#00538b">&lt;</span>ArrayList<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;&gt;</span> buckets <span style="color:#00538b">=</span>
+</span></span><span style="display:flex;"><span>    Stream.generate(() <span style="color:#00538b">-&gt;</span> <span style="color:#5317ac">new</span> ArrayList<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span>()).limit(emperors.size()).toList();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Distributing elements in the buckets</span>
+</span></span><span style="display:flex;"><span>emperors.forEach(s <span style="color:#00538b">-&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// We apply &amp; 0xfffffff, because, by default hashCode </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// can return a negative value</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> hash <span style="color:#00538b">=</span> (s.hashCode() <span style="color:#00538b">&amp;</span> 0xfffffff) <span style="color:#00538b">%</span> buckets.size();
+</span></span><span style="display:flex;"><span>    buckets.get(hash).add(s);
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Printing buckets contents</span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">for</span> (<span style="color:#005a5f">int</span> i <span style="color:#00538b">=</span> 0; i <span style="color:#00538b">&lt;</span> buckets.size(); i<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>    System.out.printf(<span style="color:#2544bb">&#34;bucket[%d]=%s\n&#34;</span>, i, buckets.get(i));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Output:</p>
+<pre tabindex="0"><code>bucket[0]=[Augustus]
+bucket[1]=[]
+bucket[2]=[Tiberius]
+bucket[3]=[]
+bucket[4]=[Lucius Verus]
+bucket[5]=[]
+bucket[6]=[]
+bucket[7]=[]
+bucket[8]=[Caligula]
+bucket[9]=[Antonious Pius]
+bucket[10]=[]
+bucket[11]=[Dominitian]
+bucket[12]=[Hadrian, Titus, Claudius]
+bucket[13]=[Nerva, Marcus Aurelius]
+bucket[14]=[Trajan, Vespasian, Commodus, Nero]
+</code></pre><p>As you can see, the distribution is far from perfect; there are nine collisions in 15 buckets.</p>
+<p>In this article, we will implement a class, <a href="https://github.com/nomemory/mphmap/blob/main/src/main/java/net/andreinc/jperhash/PHF.java"><code>PHF.java</code></a> that will be able to evenly distribute the 15 Roman emperors into their own <em>personal</em> buckets. This would be the right thing to do because it would&rsquo;ve been unfair to have <code>&quot;Trajan&quot;</code> sharing the same space with <code>&quot;Nero&quot;</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Set<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> emperors <span style="color:#00538b">=</span>
+</span></span><span style="display:flex;"><span>            Set.of(<span style="color:#2544bb">&#34;Augustus&#34;</span>, <span style="color:#2544bb">&#34;Tiberius&#34;</span>, <span style="color:#2544bb">&#34;Caligula&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#2544bb">&#34;Claudius&#34;</span>, <span style="color:#2544bb">&#34;Nero&#34;</span>, <span style="color:#2544bb">&#34;Vespasian&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#2544bb">&#34;Titus&#34;</span>, <span style="color:#2544bb">&#34;Dominitian&#34;</span>, <span style="color:#2544bb">&#34;Nerva&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#2544bb">&#34;Trajan&#34;</span>, <span style="color:#2544bb">&#34;Hadrian&#34;</span>, <span style="color:#2544bb">&#34;Antonious Pius&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#2544bb">&#34;Marcus Aurelius&#34;</span>, <span style="color:#2544bb">&#34;Lucius Verus&#34;</span>, <span style="color:#2544bb">&#34;Commodus&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Initializing our Minimal Perfect Hash Function we are going to build </span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// in this article</span>
+</span></span><span style="display:flex;"><span>PHF phf <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> PHF(1.0, 4, Integer.MAX_VALUE);
+</span></span><span style="display:flex;"><span>phf.build(emperors, String::getBytes);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Puting elements in the buckets</span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">final</span> String<span style="color:#00538b">[]</span> buckets <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> String<span style="color:#00538b">[</span>emperors.size()<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span>emperors.forEach(emperor <span style="color:#00538b">-&gt;</span> buckets<span style="color:#00538b">[</span>phf.hash(emperor.getBytes())<span style="color:#00538b">]</span> <span style="color:#00538b">=</span> emperor);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Printing the results</span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">for</span> (<span style="color:#005a5f">int</span> i <span style="color:#00538b">=</span> 0; i <span style="color:#00538b">&lt;</span> buckets.length; i<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>    System.out.printf(<span style="color:#2544bb">&#34;bucket[%d]=%s\n&#34;</span>, i, buckets<span style="color:#00538b">[</span>i<span style="color:#00538b">]</span>);
+</span></span><span style="display:flex;"><span>}                    
+</span></span></code></pre></div><p>Output:</p>
+<pre tabindex="0"><code>bucket[0]=Titus
+bucket[1]=Vespasian
+bucket[2]=Claudius
+bucket[3]=Marcus Aurelius
+bucket[4]=Nero
+bucket[5]=Nerva
+bucket[6]=Caligula
+bucket[7]=Commodus
+bucket[8]=Augustus
+bucket[9]=Tiberius
+bucket[10]=Hadrian
+bucket[11]=Lucius Verus
+bucket[12]=Antonious Pius
+bucket[13]=Trajan
+bucket[14]=Dominitian
+</code></pre><p>As you can see, there are no collisions now. Our function <code>PHF.hash()</code> works &ldquo;flawlessly&rdquo; in this regard: each Emperor to its own bucket.</p>
+<p>Don&rsquo;t get too excited. Let&rsquo;s &ldquo;microbenchmark&rdquo; how fast our new function is compared to the established <code>Object.hashCode()</code>.</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-03-15-perfect-hashing-with-java/phfbench.png" alt="png"></p>
+<p>Being ten times slower than <code>Object.hashCode()</code> is not what I intended to show you, but you get the main idea, <code>PHF.hash()</code> will be slower. My implementation is not exactly the best, but even if you apply some heavy optimizations, you won&rsquo;t be able to get significant improvements.</p>
+<p>Now let&rsquo;s see how <code>PHF.java</code> is implemented.</p>
+<h1 id="the-algorithm-in-images">The algorithm in images</h1>
+<ol>
+<li>
+<p>We split our initial $S$, the set which contains all the possible keys, into virtual &ldquo;buckets&rdquo; $B_{i}$ buckets of size $0 \le i \lt r$. To obtain those buckets, we use a first-level hash function $g(x)$, so that $B={ x \mid g(x)=i }$. <br/><br/><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-03-15-perfect-hashing-with-java/algo-buckets.drawio.png" alt="png"></p>
+</li>
+<li>
+<p>We sort the $B_{i}$ buckets in descending order (according to their size, $\mid B_{i} \mid$), keeping their initial index for later use. The main idea is to start with the <em>problematic</em> buckets first (the ones having the most collisions).  <br/><br/> !<img src="%7B%7Bsite.url%7D%7D/assets/images/2022-03-15-perfect-hashing-with-java/algo-descending-order.drawio.png" alt="png">.</p>
+</li>
+<li>
+<p>We initialize an array $T=[0, 1, 2, &hellip;, m-1]$ with <code>0</code> elements. In our particular example, <code>m=15</code>. In $T$ we keep track of elements for which our PHF don&rsquo;t have collisions.</p>
+</li>
+<li>
+<p>We iterate over each bucket $B_{i}$ with $i\in{0,1&hellip;,r-1}$ in the order obtained at step <code>2.</code>, until $\mid B_{i}\mid=1$ (the size of $B_{i}$ is <code>1</code>)</p>
+<ol>
+<li>For each element in $B_{i}$, we compute $K_{i} = { \phi_{l}(x) \mid x\in B_{i}}$ and $l\in[1,..]$, where $\phi_{1}, \phi_{2}, \phi_{3}, &hellip;$ is a family of hash functions, that or each $l$ it returns a different value for $\phi_{l}(x)$.</li>
+<li>We stop when $\mid K_i \mid = \mid B_i \mid$ and $K_i \cap {j \mid T[j]=1}=\emptyset$. This means that we found $K_{i}$ elements for which there&rsquo;s no previous collisions for the current $l$.
+<ol>
+<li>For $j\in K_i$ we mark $T[j]=1$</li>
+<li>We store the value of $\sigma(i)=l$ . At this point we know that the elements from $B_{i}$ won&rsquo;t colide if we apply $\phi_l(x)$ on them. From a code perspective we can keep $\sigma(i)$ in an array.
+<br/><br/> <img src="%7B%7Bsite.url%7D%7D/assets/images/2022-03-15-perfect-hashing-with-java/algo-algo.drawio.png" alt="png"></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>For the remaining buckets with $\mid B_i \mid=1$, we will look into the remaining empty slots in $T$, and one by one, we will put all remaining elements. We store $\sigma(i)=-\text{position}-1$.</p>
+</li>
+</ol>
+<p>The last part is to find a way of computing $H(x)$, which is our PHF:
+$
+H(x) =
+\left{
+\begin{array}{ll}
+\phi_{\sigma(g(x))}(x)  &amp; \mbox{if } \sigma(g(x)) &gt; 0 \
+-σ(g(x))-1 &amp; \mbox{if } \sigma(g(x))\leq 0
+\end{array}
+\right.
+$</p>
+<p>Visually $H(x)$ works like this:</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-03-15-perfect-hashing-with-java/fct.drawio.png" alt="png"></p>
+<p>Don&rsquo;t worry if things don&rsquo;t make a lot of sense now; the code is easier to implement than the actual presentation.</p>
+<h1 id="the-implementation">The implementation</h1>
+<h2 id="the-hash-functions-gx-and-phi_lx">The hash functions g(x) and $\phi_l(x)$</h2>
+<p>In practice we don&rsquo;t need two separate functions for $g(x)$ and $\phi_l(x)$, we simply apply the following convention:</p>
+<ul>
+<li>We define $g(x)=\phi_0(x)$ ;</li>
+<li>At step <code>4.1</code>, when when we incremenent $l$ for computing $\phi_l(x)$ we start with $l \in {1,2,&hellip;}$.</li>
+</ul>
+<p>From a code perspective, my function of choice was <a href="https://en.wikipedia.org/wiki/MurmurHash">MurmurHash</a>, using this <a href="https://commons.apache.org/proper/commons-codec/jacoco/org.apache.commons.codec.digest/MurmurHash3.java.html#L398">Apache implementation</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#505050">// Constants for 32-bit variant</span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> C1_32 <span style="color:#00538b">=</span> 0xcc9e2d51;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> C2_32 <span style="color:#00538b">=</span> 0x1b873593;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> R1_32 <span style="color:#00538b">=</span> 15;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> R2_32 <span style="color:#00538b">=</span> 13;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> M_32 <span style="color:#00538b">=</span> 5;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> N_32 <span style="color:#00538b">=</span> 0xe6546b64;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">static</span> <span style="color:#005a5f">int</span> <span style="color:#721045">hash32x86</span>(<span style="color:#5317ac">final</span> <span style="color:#005a5f">byte</span><span style="color:#00538b">[]</span> data, <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> offset, <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> length, <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> seed) {
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> hash <span style="color:#00538b">=</span> seed;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> nblocks <span style="color:#00538b">=</span> length <span style="color:#00538b">&gt;&gt;</span> 2;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// body</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">for</span> (<span style="color:#005a5f">int</span> i <span style="color:#00538b">=</span> 0; i <span style="color:#00538b">&lt;</span> nblocks; i<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> index <span style="color:#00538b">=</span> offset <span style="color:#00538b">+</span> (i <span style="color:#00538b">&lt;&lt;</span> 2);
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> k <span style="color:#00538b">=</span> getLittleEndianInt(data, index);
+</span></span><span style="display:flex;"><span>        hash <span style="color:#00538b">=</span> mix32(k, hash);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// tail</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> index <span style="color:#00538b">=</span> offset <span style="color:#00538b">+</span> (nblocks <span style="color:#00538b">&lt;&lt;</span> 2);
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> k1 <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">switch</span> (offset <span style="color:#00538b">+</span> length <span style="color:#00538b">-</span> index) {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">case</span> 3:
+</span></span><span style="display:flex;"><span>        k1 <span style="color:#00538b">^=</span> (data<span style="color:#00538b">[</span>index <span style="color:#00538b">+</span> 2<span style="color:#00538b">]</span> <span style="color:#00538b">&amp;</span> 0xff) <span style="color:#00538b">&lt;&lt;</span> 16;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">case</span> 2:
+</span></span><span style="display:flex;"><span>        k1 <span style="color:#00538b">^=</span> (data<span style="color:#00538b">[</span>index <span style="color:#00538b">+</span> 1<span style="color:#00538b">]</span> <span style="color:#00538b">&amp;</span> 0xff) <span style="color:#00538b">&lt;&lt;</span> 8;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">case</span> 1:
+</span></span><span style="display:flex;"><span>        k1 <span style="color:#00538b">^=</span> (data<span style="color:#00538b">[</span>index<span style="color:#00538b">]</span> <span style="color:#00538b">&amp;</span> 0xff);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// mix functions</span>
+</span></span><span style="display:flex;"><span>        k1 <span style="color:#00538b">*=</span> C1_32;
+</span></span><span style="display:flex;"><span>        k1 <span style="color:#00538b">=</span> Integer.rotateLeft(k1, R1_32);
+</span></span><span style="display:flex;"><span>        k1 <span style="color:#00538b">*=</span> C2_32;
+</span></span><span style="display:flex;"><span>        hash <span style="color:#00538b">^=</span> k1;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    hash <span style="color:#00538b">^=</span> length;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> fmix32(hash);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#005a5f">int</span> <span style="color:#721045">mix32</span>(<span style="color:#005a5f">int</span> k, <span style="color:#005a5f">int</span> hash) {
+</span></span><span style="display:flex;"><span>    k <span style="color:#00538b">*=</span> C1_32;
+</span></span><span style="display:flex;"><span>    k <span style="color:#00538b">=</span> Integer.rotateLeft(k, R1_32);
+</span></span><span style="display:flex;"><span>    k <span style="color:#00538b">*=</span> C2_32;
+</span></span><span style="display:flex;"><span>    hash <span style="color:#00538b">^=</span> k;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> Integer.rotateLeft(hash, R2_32) <span style="color:#00538b">*</span> M_32 <span style="color:#00538b">+</span> N_32;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#005a5f">int</span> <span style="color:#721045">fmix32</span>(<span style="color:#005a5f">int</span> hash) {
+</span></span><span style="display:flex;"><span>    hash <span style="color:#00538b">^=</span> (hash <span style="color:#00538b">&gt;&gt;&gt;</span> 16);
+</span></span><span style="display:flex;"><span>    hash <span style="color:#00538b">*=</span> 0x85ebca6b;
+</span></span><span style="display:flex;"><span>    hash <span style="color:#00538b">^=</span> (hash <span style="color:#00538b">&gt;&gt;&gt;</span> 13);
+</span></span><span style="display:flex;"><span>    hash <span style="color:#00538b">*=</span> 0xc2b2ae35;
+</span></span><span style="display:flex;"><span>    hash <span style="color:#00538b">^=</span> (hash <span style="color:#00538b">&gt;&gt;&gt;</span> 16);
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> hash;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In this regard:</p>
+<ul>
+<li>$g(x)$ is equivalent with <code>MurmurHash32.hash32x86(data, 0, data.length, 0)</code></li>
+<li>$\phi_l(x)$ is equivalent with <code>MurmurHash32.hash32x86(data, 0, data.length, l)</code></li>
+</ul>
+<h2 id="the-phfjava-class">The <code>PHF.java</code> class</h2>
+<p>We start with the following constructor and class attributes:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">protected</span> <span style="color:#005a5f">double</span> loadFactor;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">protected</span> <span style="color:#005a5f">int</span> keysPerBucket;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">protected</span> <span style="color:#005a5f">int</span> maxSeed;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">protected</span> <span style="color:#005a5f">int</span> numBuckets;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#005a5f">int</span><span style="color:#00538b">[]</span> seeds;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#721045">PHF</span>(<span style="color:#005a5f">double</span> loadFactor, <span style="color:#005a5f">int</span> keysPerBucket, <span style="color:#005a5f">int</span> maxSeed) {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (loadFactor<span style="color:#00538b">&gt;</span>1.0) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">throw</span> <span style="color:#5317ac">new</span> IllegalArgumentException(<span style="color:#2544bb">&#34;Load factor should be &lt;= 1.0&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">this</span>.loadFactor <span style="color:#00538b">=</span> loadFactor;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">this</span>.keysPerBucket <span style="color:#00538b">=</span> keysPerBucket;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">this</span>.maxSeed <span style="color:#00538b">=</span> maxSeed;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>
+<p><code>this.loadFactor</code> is by default <code>1.0</code> if we want a <code>MPHF</code> or less than <code>1.0</code> if we want to generate a <code>PHF</code>.</p>
+</li>
+<li>
+<p><code>this.keysPerBucket</code> represents the average keys per bucket $B_{i}$ . For example if in $S$ we have 15 elements, and we pick <code>keysPerBucket=3</code>, then we will have 5 buckets: $B_{0}, B_{1}, B_{2}, B_{3}, B_{4}$, each with an average of 3 elements.</p>
+</li>
+<li>
+<p><code>this.maxSeed</code> is the maximum value of $l$. If for example we cannot find $K_{i}$ for $l \lt \text{maxSeed}$, then we say our search for finding the MPHF failed and we throw an exception.</p>
+</li>
+<li>
+<p><code>this.seeds</code> corresponds to $\sigma(i)$ from the algorithm description.</p>
+</li>
+</ul>
+<p>The next step is to define two hash functions:</p>
+<ul>
+<li>
+<p>One for internal use (a wrapper) over <code>MurmurHash3.hash32x86(...)</code>;</p>
+</li>
+<li>
+<p>The actual $H(x)$.</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#005a5f">int</span> <span style="color:#721045">hash</span>(<span style="color:#005a5f">byte</span><span style="color:#00538b">[]</span> obj) {
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// g(x)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> seed <span style="color:#00538b">=</span> internalHash(obj, INIT_SEED) <span style="color:#00538b">%</span> seeds.length;
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// if σ(g(x)) &lt;= 0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (seeds<span style="color:#00538b">[</span>seed<span style="color:#00538b">]&lt;=</span>0) {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// we return -σ(g(x))-1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> <span style="color:#00538b">-</span>seeds<span style="color:#00538b">[</span>seed<span style="color:#00538b">]-</span>1;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// we return ϕ_σ(g(x))(x)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> finalHash <span style="color:#00538b">=</span> internalHash(obj, seeds<span style="color:#00538b">[</span>seed<span style="color:#00538b">]</span>) <span style="color:#00538b">%</span> <span style="color:#5317ac">this</span>.numBuckets;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> finalHash;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// IF val == 0 =&gt; g(x)</span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// ELSE acts like ϕ(x)</span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">protected</span> <span style="color:#5317ac">static</span> <span style="color:#005a5f">int</span> <span style="color:#721045">internalHash</span>(<span style="color:#005a5f">byte</span><span style="color:#00538b">[]</span> obj, <span style="color:#005a5f">int</span> val) {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> MurmurHash3.hash32x86(obj, 0, obj.length, val) <span style="color:#00538b">&amp;</span> SIGN_MASK;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>At this point, we introduce a class called: <code>PHFBucket</code>. The sole purpose of this class, is to store the original index of the bucket after step <code>2.</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">private</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">class</span> PHFBucket <span style="color:#5317ac">implements</span> Comparable<span style="color:#00538b">&lt;</span>PHFBucket<span style="color:#00538b">&gt;</span> {
+</span></span><span style="display:flex;"><span>    ArrayList<span style="color:#00538b">&lt;</span><span style="color:#005a5f">byte</span><span style="color:#00538b">[]&gt;</span> elements;
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> originalBucketIndex;  <span style="color:#505050">// stores the original index</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">static</span> PHFBucket <span style="color:#721045">from</span>(ArrayList<span style="color:#00538b">&lt;</span><span style="color:#005a5f">byte</span><span style="color:#00538b">[]&gt;</span> bucket, <span style="color:#005a5f">int</span> originalIndex) {
+</span></span><span style="display:flex;"><span>        PHFBucket result <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> PHFBucket();
+</span></span><span style="display:flex;"><span>        result.elements <span style="color:#00538b">=</span> bucket;
+</span></span><span style="display:flex;"><span>        result.originalBucketIndex <span style="color:#00538b">=</span> originalIndex;
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> result;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Written in a way so we can sort in reverse order</span>
+</span></span><span style="display:flex;"><span>    @Override
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#005a5f">int</span> <span style="color:#721045">compareTo</span>(PHFBucket o) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> o.elements.size() <span style="color:#00538b">-</span> <span style="color:#5317ac">this</span>.elements.size();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    @Override
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> String <span style="color:#721045">toString</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> <span style="color:#2544bb">&#34;Bucket{&#34;</span> <span style="color:#00538b">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#2544bb">&#34;elements.size=&#34;</span> <span style="color:#00538b">+</span> elements.size() <span style="color:#00538b">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#2544bb">&#34;, originalBucketIndex=&#34;</span> <span style="color:#00538b">+</span> originalBucketIndex <span style="color:#00538b">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#2544bb">&#39;}&#39;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The last step is to define the actual algorithm. At the end, <code>this.seeds[]</code> will contain all the values necesarry to compute the <code>MPHF</code> (or <code>PHF</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#00538b">&lt;</span>T<span style="color:#00538b">&gt;</span> <span style="color:#005a5f">void</span> <span style="color:#721045">build</span>(Set<span style="color:#00538b">&lt;</span>T<span style="color:#00538b">&gt;</span> inputElements, Function<span style="color:#00538b">&lt;</span>T, <span style="color:#005a5f">byte</span><span style="color:#00538b">[]&gt;</span> objToByteArrayMapper) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> seedsLength <span style="color:#00538b">=</span> inputElements.size() <span style="color:#00538b">/</span> keysPerBucket;         <span style="color:#505050">// m</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> numBuckets <span style="color:#00538b">=</span> (<span style="color:#005a5f">int</span>) (inputElements.size() <span style="color:#00538b">/</span> loadFactor);     <span style="color:#505050">// r</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">this</span>.numBuckets <span style="color:#00538b">=</span> numBuckets;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// The seeds have to be calculated </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// From an algorithm perspective this is σ(i)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">this</span>.seeds <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> <span style="color:#005a5f">int</span><span style="color:#00538b">[</span>seedsLength<span style="color:#00538b">]</span>;             
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Fill the buckets with empty values initially</span>
+</span></span><span style="display:flex;"><span>    ArrayList<span style="color:#00538b">&lt;</span><span style="color:#005a5f">byte</span><span style="color:#00538b">[]&gt;</span> buckets<span style="color:#00538b">[]</span> <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> ArrayList<span style="color:#00538b">[</span>seedsLength<span style="color:#00538b">]</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">for</span> (<span style="color:#005a5f">int</span> i <span style="color:#00538b">=</span> 0; i <span style="color:#00538b">&lt;</span> buckets.length; i<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>        buckets<span style="color:#00538b">[</span>i<span style="color:#00538b">]</span> <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> ArrayList<span style="color:#00538b">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Adding elements to buckets </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// (step 1. from the algorithm)</span>
+</span></span><span style="display:flex;"><span>    inputElements.stream().map(objToByteArrayMapper).forEach(el <span style="color:#00538b">-&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#005a5f">int</span> index <span style="color:#00538b">=</span> (internalHash(el, INIT_SEED) <span style="color:#00538b">%</span> seedsLength);
+</span></span><span style="display:flex;"><span>        buckets<span style="color:#00538b">[</span>index<span style="color:#00538b">]</span>.add(el);
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Sorting so we can start with buckets with the most items</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// (step 2. from the algorithm)</span>
+</span></span><span style="display:flex;"><span>    ArrayList<span style="color:#00538b">&lt;</span>PHFBucket<span style="color:#00538b">&gt;</span> sortedBuckets <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> ArrayList<span style="color:#00538b">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">for</span> (<span style="color:#005a5f">int</span> i <span style="color:#00538b">=</span> 0; i <span style="color:#00538b">&lt;</span> buckets.length; i<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>        sortedBuckets.add(PHFBucket.from(buckets<span style="color:#00538b">[</span>i<span style="color:#00538b">]</span>, i));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    sort(sortedBuckets);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// For each bucket we try to find a function for which the seed has no collisions</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// occupied represents T</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// (step3)</span>
+</span></span><span style="display:flex;"><span>    BitSet occupied <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> BitSet(numBuckets);
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> sortedBucketIdx <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>    PHFBucket bucket;
+</span></span><span style="display:flex;"><span>    Integer originalIndex;
+</span></span><span style="display:flex;"><span>    ArrayList<span style="color:#00538b">&lt;</span><span style="color:#005a5f">byte</span><span style="color:#00538b">[]&gt;</span> bucketElements;
+</span></span><span style="display:flex;"><span>    Set<span style="color:#00538b">&lt;</span>Integer<span style="color:#00538b">&gt;</span> occupiedBucket;
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// (step 4.)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">for</span>(; sortedBucketIdx <span style="color:#00538b">&lt;</span> sortedBuckets.size(); sortedBucketIdx<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>        bucket <span style="color:#00538b">=</span> sortedBuckets.get(sortedBucketIdx);
+</span></span><span style="display:flex;"><span>        originalIndex <span style="color:#00538b">=</span> bucket.originalBucketIndex;
+</span></span><span style="display:flex;"><span>        bucketElements <span style="color:#00538b">=</span> bucket.elements;
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// If the buckets start to have a single element we don&#39;t have</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// to do any additional computation, we can break the loop</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (bucketElements.size()<span style="color:#00538b">==</span>1) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">break</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// For each seed</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#005a5f">int</span> seedTry <span style="color:#00538b">=</span> INIT_SEED <span style="color:#00538b">+</span> 1;
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">for</span> (; seedTry <span style="color:#00538b">&lt;</span> maxSeed; seedTry<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>            occupiedBucket <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> HashSet<span style="color:#00538b">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// For each element in the bucket</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#005a5f">int</span> eIdx <span style="color:#00538b">=</span> 0;
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">for</span> (; eIdx <span style="color:#00538b">&lt;</span> bucketElements.size(); eIdx<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#005a5f">int</span> hash <span style="color:#00538b">=</span> internalHash(bucketElements.get(eIdx), seedTry) <span style="color:#00538b">%</span> numBuckets;
+</span></span><span style="display:flex;"><span>                <span style="color:#5317ac">if</span> (occupied.get(hash) <span style="color:#00538b">||</span> occupiedBucket.contains(hash)) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#505050">// Trying with this seed is not successful, we break the loop</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#505050">// So we can try with another seed</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#5317ac">break</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                occupiedBucket.add(hash);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">if</span> (eIdx <span style="color:#00538b">==</span> bucketElements.size()) {
+</span></span><span style="display:flex;"><span>                <span style="color:#505050">// In thise case elements per bucket displace well,</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#505050">// we can add them to occupied and the seed to &#39;seeds&#39;</span>
+</span></span><span style="display:flex;"><span>                occupiedBucket.forEach(occupied::set);
+</span></span><span style="display:flex;"><span>                <span style="color:#5317ac">this</span>.seeds<span style="color:#00538b">[</span>originalIndex<span style="color:#00538b">]</span> <span style="color:#00538b">=</span> seedTry;
+</span></span><span style="display:flex;"><span>                <span style="color:#5317ac">break</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// If the seed == SEED_MAX then we&#39;ve failed constructing a Perfect Hash Function</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// This means we&#39;ve exhausted the possible seeds</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (seedTry<span style="color:#00538b">==</span>maxSeed) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">throw</span> <span style="color:#5317ac">new</span> IllegalStateException(<span style="color:#2544bb">&#34;Cannot construct perfect hash function&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// At this point only the buckets with one element remain, we need to add them</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// to seed, we continue the iteration</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// (step 5.)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> occupiedIdx <span style="color:#00538b">=</span> 0; <span style="color:#505050">// start from the first position</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">for</span>(; sortedBucketIdx <span style="color:#00538b">&lt;</span> sortedBuckets.size(); sortedBucketIdx<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>        bucket <span style="color:#00538b">=</span> sortedBuckets.get(sortedBucketIdx);
+</span></span><span style="display:flex;"><span>        originalIndex <span style="color:#00538b">=</span> bucket.originalBucketIndex;
+</span></span><span style="display:flex;"><span>        bucketElements <span style="color:#00538b">=</span> bucket.elements;
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (bucketElements.size()<span style="color:#00538b">==</span>0) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">break</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">while</span>(occupied.get(occupiedIdx)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// increase position so we can find an empty slot</span>
+</span></span><span style="display:flex;"><span>            occupiedIdx<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        occupied.set(occupiedIdx);
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// We subtract (-1) to cover 0 cases</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">this</span>.seeds<span style="color:#00538b">[</span>originalIndex<span style="color:#00538b">]</span> <span style="color:#00538b">=</span> <span style="color:#00538b">-</span>(occupiedIdx)<span style="color:#00538b">-</span>1;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="bonus-creating-a-read-only-mapkv">Bonus: Creating a read-only <code>Map&lt;K,V&gt;</code></h2>
+<p>Now that we have <a href="https://github.com/nomemory/mphmap/blob/main/src/main/java/net/andreinc/jperhash/PHF.java"><code>PHF.java</code></a>, we can create a <em>Hash Table</em> called<a href="https://github.com/nomemory/mphmap/blob/main/src/main/java/net/andreinc/jperhash/ReadOnlyMap.java"><code>ReadOnlyMap&lt;K,V&gt;</code></a>, that only allows read operations:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">class</span> ReadOnlyMap<span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">protected</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">double</span> LOAD_FACTOR <span style="color:#00538b">=</span> 1.0;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">protected</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> KEYS_PER_BUCKET <span style="color:#00538b">=</span> 1;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">protected</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> MAX_SEED <span style="color:#00538b">=</span> Integer.MAX_VALUE;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> PHF phf;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> ArrayList<span style="color:#00538b">&lt;</span>V<span style="color:#00538b">&gt;</span> values;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> Function<span style="color:#00538b">&lt;</span>K,<span style="color:#005a5f">byte</span><span style="color:#00538b">[]&gt;</span> mapper;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#5317ac">public</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> ReadOnlyMap<span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> <span style="color:#721045">snapshot</span>(Map<span style="color:#00538b">&lt;</span>K, V<span style="color:#00538b">&gt;</span> map, Function<span style="color:#00538b">&lt;</span>K, <span style="color:#005a5f">byte</span><span style="color:#00538b">[]&gt;</span> mapper, <span style="color:#005a5f">double</span> loadFactor, <span style="color:#005a5f">int</span> keysPerBucket, <span style="color:#005a5f">int</span> maxSeed) {
+</span></span><span style="display:flex;"><span>        ReadOnlyMap<span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> result <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> ReadOnlyMap<span style="color:#00538b">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>        result.phf <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> PHF(loadFactor, keysPerBucket, maxSeed);
+</span></span><span style="display:flex;"><span>        result.phf.build(map.keySet(), mapper);
+</span></span><span style="display:flex;"><span>        result.values <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> ArrayList<span style="color:#00538b">&lt;&gt;</span>(map.keySet().size());
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">for</span> (<span style="color:#005a5f">int</span> i <span style="color:#00538b">=</span> 0; i <span style="color:#00538b">&lt;</span> map.keySet().size(); i<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>            result.values.add(<span style="color:#0000c0">null</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        result.mapper <span style="color:#00538b">=</span> mapper;
+</span></span><span style="display:flex;"><span>        map.forEach((k, v) <span style="color:#00538b">-&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#005a5f">int</span> hash <span style="color:#00538b">=</span> result.phf.hash(mapper.apply(k));
+</span></span><span style="display:flex;"><span>            result.values.set(hash, v);
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> result;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> ReadOnlyMap<span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> <span style="color:#721045">snapshot</span>(Map<span style="color:#00538b">&lt;</span>K,V<span style="color:#00538b">&gt;</span> map, Function<span style="color:#00538b">&lt;</span>K, <span style="color:#005a5f">byte</span><span style="color:#00538b">[]&gt;</span> mapper) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> snapshot(map, mapper, LOAD_FACTOR, KEYS_PER_BUCKET, MAX_SEED);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#5317ac">static</span> <span style="color:#5317ac">final</span> <span style="color:#00538b">&lt;</span>V<span style="color:#00538b">&gt;</span> ReadOnlyMap<span style="color:#00538b">&lt;</span>String, V<span style="color:#00538b">&gt;</span> <span style="color:#721045">snapshot</span>(Map<span style="color:#00538b">&lt;</span>String, V<span style="color:#00538b">&gt;</span> map) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> snapshot(map, String::getBytes);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> V <span style="color:#721045">get</span>(K key) {
+</span></span><span style="display:flex;"><span>        <span style="color:#005a5f">int</span> hash <span style="color:#00538b">=</span> phf.hash(mapper.apply(key));
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> values.get(hash);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Using the <code>ReadOnlyMap&lt;K,V&gt;</code> is quite straightforward. We only have one method to create a <code>ReadOnlyMap&lt;K,V&gt;</code> as a snapshot from a &ldquo;normal&rdquo; read-write <code>Map&lt;K,V&gt;</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">main</span>(String<span style="color:#00538b">[]</span> args) {
+</span></span><span style="display:flex;"><span>    Set<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> emperors <span style="color:#00538b">=</span>
+</span></span><span style="display:flex;"><span>            Set.of(<span style="color:#2544bb">&#34;Augustus&#34;</span>, <span style="color:#2544bb">&#34;Tiberius&#34;</span>, <span style="color:#2544bb">&#34;Caligula&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#2544bb">&#34;Claudius&#34;</span>, <span style="color:#2544bb">&#34;Nero&#34;</span>, <span style="color:#2544bb">&#34;Vespasian&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#2544bb">&#34;Titus&#34;</span>, <span style="color:#2544bb">&#34;Dominitian&#34;</span>, <span style="color:#2544bb">&#34;Nerva&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#2544bb">&#34;Trajan&#34;</span>, <span style="color:#2544bb">&#34;Hadrian&#34;</span>, <span style="color:#2544bb">&#34;Antonious Pius&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#2544bb">&#34;Marcus Aurelius&#34;</span>, <span style="color:#2544bb">&#34;Lucius Verus&#34;</span>, <span style="color:#2544bb">&#34;Commodus&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Creates a &#34;normal map&#34; from the given keys</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">final</span> Map<span style="color:#00538b">&lt;</span>String, String<span style="color:#00538b">&gt;</span> mp <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> HashMap<span style="color:#00538b">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    emperors.forEach(emp <span style="color:#00538b">-&gt;</span> {
+</span></span><span style="display:flex;"><span>        mp.put(emp, emp<span style="color:#00538b">+</span><span style="color:#2544bb">&#34;123&#34;</span>);
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Creates a &#34;read-only map&#34; from the previous map</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">final</span> ReadOnlyMap<span style="color:#00538b">&lt;</span>String, String<span style="color:#00538b">&gt;</span> romp <span style="color:#00538b">=</span> ReadOnlyMap.snapshot(mp);
+</span></span><span style="display:flex;"><span>    emperors.forEach(emp <span style="color:#00538b">-&gt;</span> {
+</span></span><span style="display:flex;"><span>        System.out.println(emp <span style="color:#00538b">+</span> <span style="color:#2544bb">&#34;:&#34;</span> <span style="color:#00538b">+</span> romp.get(emp));
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="bonus-section-benchmarking-hashmapkv-vs-readonlymapkv">Bonus section: Benchmarking <code>HashMap&lt;K,V&gt;</code> vs. <code>ReadOnlyMap&lt;K,V&gt;</code></h2>
+<p>We&rsquo;ve already benchmarked how &ldquo;fast&rdquo; is <code>PHF.hash()</code> in the beggining in the article, and we&rsquo;ve seen things can be up to 10 times slower than <code>Object.hashCode()</code>. But let&rsquo;s see how fast is <code>ReadOnlyMap&lt;K,V&gt;</code> vs <code>HashMap&lt;K,V&gt;</code>.</p>
+<p>In this regard I&rsquo;ve written the following benchmark, the tests the performance of the <code>get</code> operation on a Maps of 20_000_000 keys:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>@BenchmarkMode(Mode.AverageTime)
+</span></span><span style="display:flex;"><span>@OutputTimeUnit(TimeUnit.MICROSECONDS)
+</span></span><span style="display:flex;"><span>@State(Scope.Benchmark)
+</span></span><span style="display:flex;"><span>@Fork(value <span style="color:#00538b">=</span> 3, jvmArgs <span style="color:#00538b">=</span> {<span style="color:#2544bb">&#34;-Xms6G&#34;</span>, <span style="color:#2544bb">&#34;-Xmx16G&#34;</span>})
+</span></span><span style="display:flex;"><span>@Warmup(iterations <span style="color:#00538b">=</span> 3, time <span style="color:#00538b">=</span> 10)
+</span></span><span style="display:flex;"><span>@Measurement(iterations <span style="color:#00538b">=</span> 5, time <span style="color:#00538b">=</span> 10)
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">class</span> TestReads {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    @Param({<span style="color:#2544bb">&#34;1000&#34;</span>, <span style="color:#2544bb">&#34;100000&#34;</span>, <span style="color:#2544bb">&#34;1000000&#34;</span>, <span style="color:#2544bb">&#34;10000000&#34;</span>, <span style="color:#2544bb">&#34;20000000&#34;</span>})
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> <span style="color:#005a5f">int</span> size;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> Map<span style="color:#00538b">&lt;</span>String, String<span style="color:#00538b">&gt;</span> map;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> ReadOnlyMap<span style="color:#00538b">&lt;</span>String, String<span style="color:#00538b">&gt;</span> readOnlyMap;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> MockUnitString stringsGenerator <span style="color:#00538b">=</span> words().map(s <span style="color:#00538b">-&gt;</span> s <span style="color:#00538b">+</span> ints().get()).mapToString();
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">private</span> List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> keys;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    @Setup(Level.Trial)
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">initMaps</span>() {
+</span></span><span style="display:flex;"><span>        keys <span style="color:#00538b">=</span> stringsGenerator.list(size).get();
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">this</span>.map <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> HashMap<span style="color:#00538b">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>        keys.forEach(key <span style="color:#00538b">-&gt;</span> map.put(key, <span style="color:#2544bb">&#34;abc&#34;</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">this</span>.readOnlyMap <span style="color:#00538b">=</span> ReadOnlyMap.snapshot(map);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    @Benchmark
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">testGetInMap</span>(Blackhole bh) {
+</span></span><span style="display:flex;"><span>        bh.consume(map.get(From.from(keys).get()));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    @Benchmark
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">testGetInReadOnlyMap</span>(Blackhole bh) {
+</span></span><span style="display:flex;"><span>        bh.consume(readOnlyMap.get(From.from(keys).get()));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The results were quite interesting:</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-03-15-perfect-hashing-with-java/benchget.png" alt="png"></p>
+<p><del>Even if the hash function is slower, given the higher memory locality, <code>ReadOnlyMap</code> performs a little bit faster, than a normal <code>HashMap&lt;K,V&gt;</code>.</del></p>
+<p>Later Edit:</p>
+<p>The initial benchmark performed was incorrect, so I&rsquo;ve reported erroneous results: the reality is that <code>HashMap&lt;K,V&gt;</code> faster.</p>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="http://cmph.sourceforge.net/papers/esa09.pdf">http://cmph.sourceforge.net/papers/esa09.pdf</a></li>
+<li><a href="http://stevehanov.ca/blog/?id=119">http://stevehanov.ca/blog/?id=119</a></li>
+<li><a href="https://github.com/wahern/phf/blob/master/phf.cc">https://github.com/wahern/phf/blob/master/phf.cc</a></li>
+</ul>
+
+</content>
+
+
+
+<p>
+  
+  <a href="http://localhost:1313/tags/java/">#Java</a>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+  
+</body>
+
+</html>

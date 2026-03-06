@@ -1,0 +1,68 @@
+baseURL = 'https://andreinc.net/'
+languageCode = 'en-us'
+title = 'Personal Site of Andrei N. Ciobanu'
+
+[outputFormats]
+  [outputFormats.RSS]
+    baseName = "rss"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+     style = 'modus-operandi'
+
+[markup.goldmark.extensions.passthrough]
+enable = true
+
+[markup.goldmark.extensions.passthrough.delimiters]
+  block = [['\\[', '\\]'], ['$$', '$$']]
+  inline = [['\\(', '\\)']]
+
+[markup.tableOfContents]
+  startLevel = 1
+  endLevel = 4
+  ordered = false
+
+[params]
+  description = "A minimalist developer blog."
+  author = "nomemory"
+  hide_footer = true
+  showLogo = true
+  customCSS = ["css/custom.css"]
+  mainSections = ["/posts"]
+  enablePostNavigator = true
+
+[permalinks]
+  posts = '/:year/:month/:day/:slug/'
+  
+[[menu.main]]
+    identifier = "home"
+    name = "home"
+    url = "/"
+    weight = 10
+[[menu.main]]
+    identifier = "about"
+    name = "about"
+    url = "/about/"
+    weight = 20
+[[menu.main]]
+    identifier = "links"
+    name = "links"
+    url = "/links/"
+    weight = 30
+[[menu.main]]
+    identifier = "blogroll"
+    name = "blogroll"
+    url = "/blogroll/"
+    weight = 40
+[[menu.main]]
+    identifier = "rss"
+    name = "rss"
+    url = "/rss.xml"
+    weight = 100
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"

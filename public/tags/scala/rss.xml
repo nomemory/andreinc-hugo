@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Scala on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/scala/</link>
+    <description>Recent content in Scala on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Jan 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/scala/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Evaluate RPN expressions using Haskell, Scala, and python</title>
+      <link>http://localhost:1313/2011/01/03/evaluate-rpn-expressions-using-haskell-scala-and-python/</link>
+      <pubDate>Mon, 03 Jan 2011 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2011/01/03/evaluate-rpn-expressions-using-haskell-scala-and-python/</guid>
+      <description>&lt;nav class=&#34;toc&#34;&gt;&#xA;  &lt;h2&gt;Contents&lt;/h2&gt;&#xA;  &lt;nav id=&#34;TableOfContents&#34;&gt;&#xA;  &lt;ul&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#introduction&#34;&gt;Introduction&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#the-algorithm&#34;&gt;The Algorithm&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#implementations&#34;&gt;Implementations&lt;/a&gt;&#xA;      &lt;ul&gt;&#xA;        &lt;li&gt;&lt;a href=&#34;#scala&#34;&gt;Scala&lt;/a&gt;&lt;/li&gt;&#xA;        &lt;li&gt;&lt;a href=&#34;#python&#34;&gt;Python&lt;/a&gt;&lt;/li&gt;&#xA;        &lt;li&gt;&lt;a href=&#34;#haskell&#34;&gt;Haskell&lt;/a&gt;&lt;/li&gt;&#xA;      &lt;/ul&gt;&#xA;    &lt;/li&gt;&#xA;  &lt;/ul&gt;&#xA;&lt;/nav&gt;&#xA;&lt;/nav&gt;&#xA;&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;One of the earlier challenges from Programming Praxis was the RPN Calculator. The goal is to create a module that evaluates Reverse Polish Notation (RPN) expressions. RPN is a mathematical notation where operators follow their operands, eliminating the need for parentheses. This makes expressions easier for computers to parse and execute.&lt;/p&gt;&#xA;&lt;p&gt;The specific requirement for this challenge was:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Implement an RPN calculator that takes an expression like &lt;code&gt;19 2.14 + 4.5 2 4.3 / - *&lt;/code&gt; (which represents &lt;code&gt;(19 + 2.14) * (4.5 - 2 / 4.3)&lt;/code&gt;) and returns 85.2974. The program should read from standard input, print the result when a newline is encountered, and maintain the state of the operand stack between expressions.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

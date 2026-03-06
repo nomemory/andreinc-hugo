@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Game on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/game/</link>
+    <description>Recent content in Game on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 May 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/game/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>4 integers are enough to write a Snake Game</title>
+      <link>http://localhost:1313/2022/05/01/4-integers-are-enough-to-write-a-snake-game/</link>
+      <pubDate>Sun, 01 May 2022 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2022/05/01/4-integers-are-enough-to-write-a-snake-game/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;&amp;hellip; actually you can use only 2, but this will make your life a little more miserable.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;&lt;img src=&#34;%7B%7Bsite.url%7D%7D/assets/images/2022-05-01-4-integers-are-enough-to-write-a-snake-game/snake.gif&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;After &lt;em&gt;not&lt;/em&gt; implementing a game of snake in ages, I&amp;rsquo;ve decided to do my best today, but with some strange and absurd limitations in mind, you know, to spice up things:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;We will store the game map in a &lt;code&gt;uint32_t&lt;/code&gt; where &lt;code&gt;1s&lt;/code&gt; will form the reptile&amp;rsquo;s body. The map will contain &lt;code&gt;4x8&lt;/code&gt; positions. Enough to have fun!&lt;/li&gt;&#xA;&lt;li&gt;We will keep another &lt;code&gt;uint64_t&lt;/code&gt; as a directions array - this will be useful to move the snake around, while keeping its growing shape intact;&lt;/li&gt;&#xA;&lt;li&gt;We will squeeze another a few 5 bits values in an &lt;code&gt;uint32_t&lt;/code&gt; to keep the positions of the &lt;code&gt;head&lt;/code&gt;, the &lt;code&gt;tail&lt;/code&gt;, the &lt;code&gt;apple&lt;/code&gt;, and the (current) &lt;code&gt;length&lt;/code&gt;. Any input from the keyboard will also be kept here (2 bits will be enough).&lt;/li&gt;&#xA;&lt;li&gt;We will keep an 8 bit (&lt;code&gt;uint8_t&lt;/code&gt;) variable for looping.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Because there&amp;rsquo;s no standard C-way of interacting with the keyboard, I will have to rely on &lt;code&gt;curses&lt;/code&gt;, so if you want to compile the program, make sure you have the lib installed on your system. If you&amp;rsquo;re using the right type of operating system, chances are it&amp;rsquo;s already there. If not you can certainly install it from your favorite package manager.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

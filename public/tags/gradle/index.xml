@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gradle on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/gradle/</link>
+    <description>Recent content in Gradle on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/gradle/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>I&#39;ve promised myself never to use gradle</title>
+      <link>http://localhost:1313/2022/04/01/ive-promised-myself-never-to-use-gradle/</link>
+      <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2022/04/01/ive-promised-myself-never-to-use-gradle/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;The current article won&amp;rsquo;t be an exhaustive technical analysis on Gradle but more like a spontaneous rant.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;Firstly, the time I am willing to allocate for learning a build tool will always be limited. Secondly, I try to be fair, so the list of things I expect from a build tool is small:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Let me list a few dependencies by using a purely descriptive approach;&lt;/li&gt;&#xA;&lt;li&gt;Please give me a stable (!) interface to write plugins for &amp;ldquo;extravagant&amp;rdquo; features. If other devs are building open-source plugins, I am willing to use them instead of writing them independently.&lt;/li&gt;&#xA;&lt;li&gt;After the initial effort to write the build file, I should rarely touch it (unless I am incrementing version numbers).&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Jokes &amp;ldquo;inside&amp;rdquo;, I&amp;rsquo;ve just described Maven.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

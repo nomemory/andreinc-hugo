@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Generic data structures in C | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="Generic data structures in C" />
+<meta name="description" content="
+title: &ldquo;Generic data structures in C&rdquo;
+date: &ldquo;2010-09-30&rdquo;
+classes: wide
+excerpt: &ldquo;A short tutorial on how to write generic code in C.&rdquo;
+categories:
+
+&ldquo;c&rdquo;
+&ldquo;algorithms&rdquo;
+tags:
+&ldquo;advanced&rdquo;
+&ldquo;advanced-c&rdquo;
+&ldquo;c-generics&rdquo;
+&ldquo;c-tutorial&rdquo;
+&ldquo;c-templates&rdquo;
+&ldquo;code-wizard&rdquo;
+&ldquo;compile-time&rdquo;
+&ldquo;data-structure&rdquo;
+&ldquo;generic&rdquo;
+&ldquo;generic-programming&rdquo;
+&ldquo;generic-stack&rdquo;
+&ldquo;generics&rdquo;
+&ldquo;glib&rdquo;
+&ldquo;java-2&rdquo;
+&ldquo;java-generics&rdquo;
+&ldquo;macro&rdquo;
+&ldquo;macro-concatenation&rdquo;
+&ldquo;macro-stringification&rdquo;
+&ldquo;macros&rdquo;
+&ldquo;preprocessor&rdquo;
+&ldquo;preprocessor-hack&rdquo;
+&ldquo;stack&rdquo;
+&ldquo;templates&rdquo;
+
+
+
+This tutorial assumes basic familiarity with C macros, pointers, and simple data structures.  The C language does not provide built-in generics or templates (like C&#43;&#43;, C# or Java), but with a few techniques we can emulate them. This tutorial is old." />
+<meta name="keywords" content="c,algorithms," /><meta name="referrer" content="no-referrer-when-downgrade" />
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: #F6F8FA;  
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #222222;  
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #111111;  
+  }
+
+  a {
+    color: #0056b3;  
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #003d80;  
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  strong {
+    color: #222222;  
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  hr {
+    border: none;  
+    border-top: 1px solid #e5e5e5;  
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 4px solid #0056b3;  
+    color: #444444;  
+    padding-left: 1rem;  
+    font-style: italic;
+    background: #fafafa;  
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+  .mp {
+    border: thin solid #ccc;
+    background-color: #F0F0F0;
+    padding: 25px;
+    width: inherit;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .mpl {
+    position: relative;
+    font: 0.7rem/1.1 sans-serif;  
+    font-style: italic;
+    text-decoration: none;        
+    background: #F0F0F0;
+    border-radius: 1px;
+    border: 0px solid #ccd;
+  }
+
+  .mpt {
+    padding: 25px;
+    font-style: italic;
+    color: #666;
+  }
+
+  .mpc {
+    text-align: center;
+  }
+
+  .mpn {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 0.8rem;
+    color: #777;
+  }
+
+  .meta, .post-meta {
+    color: #555555;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+   
+  table {
+    width: 100%;
+    border-collapse: collapse;  
+    margin: 1.5rem 0;           
+    font-size: 0.95rem;         
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #ddd;
+  }
+
+  tbody td {
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+   
+  tbody tr:hover {
+    background: #fafafa;
+  }
+
+   
+  table code {
+    background: #f3f3f3;
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+   
+  .site-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .global-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e5e5;  
+  }
+
+  .global-nav a {
+    font-weight: 600;
+    color: #222222;  
+    text-decoration: none;
+    font-size: 1.05rem;
+    transition: color 0.2s ease;
+  }
+
+  .global-nav a:hover {
+    color: #0056b3;  
+    text-decoration: underline;
+  }
+
+   
+  .global-nav a.active {
+    color: #0056b3;
+  }
+</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof renderMathInElement !== "function") {
+    console.error("KaTeX auto-render not loaded");
+    return;
+  }
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false }
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+  <header><header class="site-header">
+  <nav class="global-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/about/">About</a>
+    
+      <a href="/links/">Links</a>
+    
+      <a href="/index.xml">RSS</a>
+    
+  </nav>
+</header></header>
+  <main>
+
+
+<h1>Generic data structures in C</h1>
+<p>
+  <i>
+    <time datetime='2011-06-01'>
+      01 Jun, 2011
+    </time>
+  </i>
+</p>
+
+<content>
+  <hr>
+<p>title: &ldquo;Generic data structures in C&rdquo;
+date: &ldquo;2010-09-30&rdquo;
+classes: wide
+excerpt: &ldquo;A short tutorial on how to write generic code in C.&rdquo;
+categories:</p>
+<ul>
+<li>&ldquo;c&rdquo;</li>
+<li>&ldquo;algorithms&rdquo;
+tags:</li>
+<li>&ldquo;advanced&rdquo;</li>
+<li>&ldquo;advanced-c&rdquo;</li>
+<li>&ldquo;c-generics&rdquo;</li>
+<li>&ldquo;c-tutorial&rdquo;</li>
+<li>&ldquo;c-templates&rdquo;</li>
+<li>&ldquo;code-wizard&rdquo;</li>
+<li>&ldquo;compile-time&rdquo;</li>
+<li>&ldquo;data-structure&rdquo;</li>
+<li>&ldquo;generic&rdquo;</li>
+<li>&ldquo;generic-programming&rdquo;</li>
+<li>&ldquo;generic-stack&rdquo;</li>
+<li>&ldquo;generics&rdquo;</li>
+<li>&ldquo;glib&rdquo;</li>
+<li>&ldquo;java-2&rdquo;</li>
+<li>&ldquo;java-generics&rdquo;</li>
+<li>&ldquo;macro&rdquo;</li>
+<li>&ldquo;macro-concatenation&rdquo;</li>
+<li>&ldquo;macro-stringification&rdquo;</li>
+<li>&ldquo;macros&rdquo;</li>
+<li>&ldquo;preprocessor&rdquo;</li>
+<li>&ldquo;preprocessor-hack&rdquo;</li>
+<li>&ldquo;stack&rdquo;</li>
+<li>&ldquo;templates&rdquo;</li>
+</ul>
+<hr>
+<blockquote>
+<p>This tutorial assumes basic familiarity with <strong>C macros</strong>, <strong>pointers</strong>, and simple <strong>data structures</strong>.  The C language does not provide built-in generics or templates (like C++, C# or Java), but with a few techniques we <em>can</em> emulate them. This tutorial is old.</p>
+</blockquote>
+<p>In this post we explore two classic approaches:</p>
+<ul>
+<li><a href="#generic-data-structures-using-the-c-preprocessor">Using the C preprocessor (<code>#define</code> magic)</a></li>
+<li><a href="#generic-data-structures-using-void">Using the flexibility of the void pointer (<code>void*</code>)</a></li>
+</ul>
+<p>There are excellent generic C libraries already available, but understanding the underlying techniques is&hellip;  educational. A GitHub repository containing all code from this article is available here:</p>
+<pre tabindex="0"><code>git clone nomemory/blog-generic-data-structures-in-c
+</code></pre><h1 id="generic-data-structures-using-the-c-preprocessor">Generic Data Structures Using the C Preprocessor</h1>
+<p>To understand the &ldquo;magic&rdquo; (it’s not really magic, just clever abuse), you should be comfortable with: <em>object-like macros</em>, <em>function-like macros</em>, <em>stringification (<code>#arg</code>)</em>, <em>token concatenation (<code>arg1##arg2</code>)</em>. If you need a full refresher, GCC’s macro documentation <a href="https://gcc.gnu.org/onlinedocs/cpp/Macros.html">is excellent</a>:</p>
+<p>Below is a short overview for completeness.</p>
+<h2 id="what-is-a-macro-">What is a macro ?</h2>
+<p>A macro is a piece of text associated with a name. Before compilation, the preprocessor replaces the macro name with the macro body. Two main kinds of macros exist: <em>object-like macros</em>, they behave like constants, and, <em>function-like macros</em>, they behave like functions (yay!).</p>
+<p><strong>Example for object-like macros:</strong></p>
+<pre tabindex="0"><code>#include &lt;stdio.h&gt; 
+#define HELLO &#34;Hello World Macro!&#34;
+int main(){
+	printf(HELLO);
+	return 0;
+}
+</code></pre><p>The preprocessor literally replaces <code>HELLO</code> with <code>&quot;Hello World Macro!&quot;</code>. Can you gess what will be the output ?</p>
+<p><strong>Example for function-like macros:</strong></p>
+<pre tabindex="0"><code>#include &lt;stdio.h&gt;
+#define MAX(a, b) ((a) &gt; (b)) ? (a) : (b)
+int main(){
+	printf(&#34;%dn&#34;, MAX(1,3));
+	return 0;
+}
+</code></pre><p>Expanding <code>MAX(1,3)</code> yields: <code>((1) &gt; (3) ? (1) : (3))</code>, so the actual code that gets compiled is:</p>
+<pre tabindex="0"><code>#include &lt;stdio.h&gt;
+int main(){
+	printf(&#34;%dn&#34;, ((1) &gt; (3) ? (1) : (3)));
+	return 0;
+}
+</code></pre><h2 id="token-concatenation-">Token concatenation (<code>##</code>)</h2>
+<p>Token concatenation allows you to merge tokens into identifiers.</p>
+<pre tabindex="0"><code>#include &lt;stdio.h&gt; 
+#define SHOW(type, msg) show_##type(msg)
+void show_error(char *);
+void show_info(char *);
+
+void show_error(char *message) {
+    fprintf(stderr, &#34;ERROR: %s&#34;, message);
+}
+
+void show_info(char *message){
+    fprintf(stdout, &#34;INFO: %s&#34;, message);
+}
+
+int main(){
+    SHOW(error, &#34;An errorn&#34;);
+    SHOW(info, &#34;Some messagen&#34;);
+    return (0);
+}
+</code></pre><p>Output:</p>
+<pre tabindex="0"><code>ERROR: An error
+INFO: Some message
+</code></pre><p>This technique is the cornerstone of macro-based generic data structures.</p>
+<h1 id="writing-a-generic-stack-using-macros">Writing a generic stack using macros</h1>
+<p>We want a macro that declares: the struct type, the <code>push()</code> function, the <code>pop()</code> function. And we want all names to depend on the generic parameter.</p>
+<pre tabindex="0"><code>#define STACK_DECLARE(type)                                      \
+typedef struct stack_##type##_s {                                \
+    type data;                                                   \
+    struct stack_##type##_s *next;                               \
+} stack_##type;                                                  \
+                                                                 \
+void stack_##type##_push(stack_##type **stack, type data);       \
+type stack_##type##_pop(stack_##type **stack);
+</code></pre><p>Depending on the type supplied as the argument, different code will be generated. A macro can be associated with blocks of code, we just need to use <code>\</code> to signal a multi-line macro.</p>
+<pre tabindex="0"><code>#define STACK_DEFINE(type)                                      \
+void stack_##type##_push(stack_##type **stack, type data) {     \
+    stack_##type *new_node = malloc(sizeof(*new_node));         \
+    if (NULL == new_node) {                                     \
+        fputs(&#34;Couldn&#39;t allocate memoryn&#34;, stderr);             \
+        abort();                                                \
+    }                                                           \
+    new_node-&gt;data = data;                                      \
+    new_node-&gt;next = *stack;                                    \
+    *stack = new_node;                                          \
+}                                                               \
+type stack_##type##_pop(stack_##type **stack) {                 \
+    if (NULL == stack || NULL == *stack){                       \
+        fputs(&#34;Stack underflow&#34;, stderr);                       \
+        abort();                                                \
+    }                                                           \
+    stack_##type *top = *stack;                                 \
+    type value = top-&gt;data;                                     \
+    *stack = top-&gt;next;                                         \
+    free(top);                                                  \
+    return value;                                               \
+}                                                               \
+</code></pre><p>Finally the implementation for the <code>pop()</code> and <code>push()</code> functions:</p>
+<pre tabindex="0"><code>#define STACK_DEFINE(type)                                      \
+void stack_##type##_push(stack_##type **stack, type data) {     \
+    stack_##type *new_node = malloc(sizeof(*new_node));         \
+    if (NULL == new_node) {                                     \
+        fputs(&#34;Couldn&#39;t allocate memoryn&#34;, stderr);             \
+        abort();                                                \
+    }                                                           \
+    new_node-&gt;data = data;                                      \
+    new_node-&gt;next = *stack;                                    \
+    *stack = new_node;                                          \
+}                                                               \
+type stack_##type##_pop(stack_##type **stack) {                 \                  
+    if (NULL == stack || NULL == *stack){                       \
+        fputs(&#34;Stack underflow&#34;, stderr);                       \    
+        abort();                                                \                                                    
+    }                                                           \    
+    stack_##type *top = *stack;                                 \
+    type value = top-&gt;data;                                     \    
+    *stack = top-&gt;next;                                         \
+    free(top);                                                  \
+    return value;                                               \    
+}                                                               \
+</code></pre><p>Expanding with <code>type = int</code> produces real functions:</p>
+<pre tabindex="0"><code>/* Expansion if int is supplied as the macro argument */
+void stack_int_push(stack_int **stack, int data) {
+    stack_int *new_node = malloc(sizeof(*new_node));
+    if (NULL == new_node) {
+        fputs(&#34;Couldn&#39;t allocate memoryn&#34;, stderr);
+        abort();
+    }
+    new_node-&gt;data = data;
+    new_node-&gt;next = *stack;
+    *stack = new_node;
+}
+int stack_int_pop(stack_int **stack) {
+    if (NULL == stack || NULL == *stack) {
+        fputs(&#34;Stack underflow.n&#34;, stderr);
+        abort();
+    }
+    stack_int *top = *stack;
+    int value = top-&gt;data;
+    *stack = top-&gt;next;
+    free(top);
+    return value;
+}
+</code></pre><p>Putting all together:</p>
+<pre tabindex="0"><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &#34;generic_queue.h&#34; /* the header file where we */
+                           /* declared and defined our implementation*/
+
+STACK_DECLARE(int)
+STACK_DEFINE(int)
+
+STACK_DECLARE(double)
+STACK_DEFINE(double)
+
+int main() {
+    STACK_TYPE(int)    *st  = NULL;
+    STACK_TYPE(double) *st2 = NULL;
+
+    for (int i = 0; i &lt; 100; ++i) {
+        STACK_PUSH(int,    &amp;st,  i);
+        STACK_PUSH(double, &amp;st2, i * 1.0);
+    }
+
+    while (st &amp;&amp; st2) {
+        printf(&#34;POP: %d %.2f\n&#34;,
+            STACK_POP(int, &amp;st),
+            STACK_POP(double, &amp;st2)
+        );
+    }
+
+    return 0;
+}
+</code></pre><p>The type argument cannot contain spaces or <code>*</code>. <code>STACK_DECLARE(unsigned long)</code> will not work. Use a <code>typedef</code> instead.</p>
+<h1 id="writing-a-generic-stack-using-void">Writing a generic stack using <code>*void</code></h1>
+<p>Typecasting is one of the most powerful features of the C language. It allows you to convert values between different types, and this becomes especially important when working with pointers.</p>
+<p>Let’s look at a few examples: you can have pointers of type <code>int*</code>, <code>char*</code>, or <code>float*</code>. These all reference concrete types. However, C also provides a special &ldquo;typeless&rdquo; pointer: the void pointer, written as <code>void*</code>. A <code>void*</code> can store the address of any data type, and—after casting back—it allows you to retrieve and interpret that data correctly.</p>
+<p>This makes <code>void*</code> extremely useful for implementing generic data structures, including stacks, queues, or lists that can hold arbitrary values.</p>
+<p>Let&rsquo;s start by defining the underlying <code>struct</code>:</p>
+<pre tabindex="0"><code>typedef struct stack_s {
+    void *data; // Can reference &#34;anything&#34; 
+    struct stack_s *next; // The stack is built as a linked list
+} stack;
+</code></pre><p>The next step is defining the two main stack operations <code>push()</code> and <code>pop()</code>. Their signatures look like this:</p>
+<pre tabindex="0"><code>void stack_push(stack **head, void *data);
+void *stack_pop(stack **head);
+</code></pre><p>The (actual) implementation:</p>
+<pre tabindex="0"><code>void stack_push(stack **head, void *data) {
+    stack *new_node = malloc(sizeof(*new_node));
+    if (NULL == new_node) {
+        fputs(&#34;Couldn&#39;t allocate memory\n&#34;, stderr);
+        abort();
+    }
+    new_node-&gt;data = data;
+    new_node-&gt;next = *head;
+    *head = new_node;
+}
+
+void *stack_pop(stack **head) {
+    stack *top;
+    void *value;
+    if (NULL == head || NULL == *head) {
+        fputs(&#34;Stack underflow\n&#34;, stderr);
+        abort();
+    }
+    top = *head;
+    value = top-&gt;data;
+    *head = top-&gt;next;
+    free(top);
+    return value;
+}
+</code></pre><p>The main method:</p>
+<pre tabindex="0"><code>int main() {
+    stack *s = NULL;
+    int i, *tmp; 
+    
+    /* Add values from [1..100] into the stack */
+    printf(&#34;Pushing: \n&#34;);
+    
+    for (i = 0; i &lt; 100; ++i) {
+        tmp = malloc(sizeof (*tmp));
+        if (NULL == tmp) {
+            fputs(&#34;Couldn&#39;t allocate memory \n&#34;, stderr);
+            abort();
+        }
+        *tmp = i;
+        printf(&#34;%d &#34;, *tmp);
+        stack_push(&amp;s, tmp);
+    }
+    
+    // Remove all elements of the stack
+    
+    printf(&#34;\nPopping: \n&#34;);
+    while(i--&gt;0){
+        tmp = stack_pop(&amp;s);
+        printf(&#34;%d \n&#34;, *tmp);
+        free(tmp);
+    }
+    
+    return (0);
+}
+</code></pre><p>Putting all together:</p>
+<pre tabindex="0"><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct stack_s {
+    void *data; // Can reference &#34;anything&#34;
+    struct stack_s *next; // The stack is built as a linked list
+} stack;
+
+void stack_push(stack **head, void *data);
+void *stack_pop(stack **head);
+
+void stack_push(stack **head, void *data) {
+    stack *new_node = malloc(sizeof(*new_node));
+    if (NULL == new_node) {
+        fputs(&#34;Couldn&#39;t allocate memoryn&#34;, stderr);
+        abort();
+    }
+    new_node-&gt;data = data;
+    new_node-&gt;next = *head;
+    *head = new_node;
+}
+
+void *stack_pop(stack **head) {
+    stack *top;
+    void *value;
+    if (NULL == head || NULL == *head) {
+        fputs(&#34;Stack underflow\n&#34;, stderr);
+        abort();
+    }
+    top = *head;
+    value = top-&gt;data;
+    *head = top-&gt;next;
+    free(top);
+    return value;
+}
+
+int main() {
+    stack *s = NULL;
+    int i, *tmp;
+
+    /* Add values from [1..100] into the stack */
+    printf(&#34;Pushing: \n&#34;);
+
+    for (i = 0; i &lt; 100; ++i) {
+        tmp = malloc(sizeof (*tmp));
+        if (NULL == tmp) {
+            fputs(&#34;Couldn&#39;t allocate memory\n&#34;, stderr);
+            abort();
+        }
+        *tmp = i;
+        printf(&#34;%d &#34;, *tmp);
+        stack_push(&amp;s, tmp);
+    }
+
+    // Remove all elements of the stack
+
+    printf(&#34;\nPopping: n&#34;);
+    while(i--&gt;0){
+        tmp = stack_pop(&amp;s);
+        printf(&#34;%d &#34;, *tmp);
+        free(tmp);
+    }
+
+    return (0);
+}
+</code></pre>
+</content>
+
+<div style="font-size:0.8em;display:flex;gap:16px;justify-content:center;">
+  <p>
+    
+    <a href="http://localhost:1313/2011/06/01/implementing-a-generic-priority-queue-in-c/">
+      &lt;&lt; Previous Post</a>
+        
+  </p>
+  <p>|</p>
+  <p>
+    
+    <a href="http://localhost:1313/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c/">Next Post >></a>
+    
+  </p>
+</div>
+
+
+
+
+
+  <div class="related-posts" style="border: 2px solid #d3d6db; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; background-color: #fafafa;">
+    <h1 style="margin-top: 0;">Related Articles</h3>
+    <p style="font-size: 0.95em; color: #555;">I'm so glad you made it to the end. The following articles are loosely related to this one:</p>
+    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-03-28">
+            Mar 28, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/03/28/my-list-of-challenging-software-projects-some-programmers-should-try/" style="margin-left: 0.25rem;">My list of challenging software projects some programmers should try</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2023-02-01">
+            Feb 01, 2023
+          </time>
+          &mdash; 
+          <a href="/2023/02/01/demystifying-bitwise-operations-a-gentle-c-tutorial/" style="margin-left: 0.25rem;">Demystifying bitwise operations, a gentle C tutorial</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-09-01">
+            Sep 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/09/01/building-pathological-input-for-java-hashmaps-hash-collisions-generator/" style="margin-left: 0.25rem;">Building pathological input for Java HashMaps - hash collisions generator</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-05-01">
+            May 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/05/01/4-integers-are-enough-to-write-a-snake-game/" style="margin-left: 0.25rem;">4 integers are enough to write a Snake Game</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-10">
+            Apr 10, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/10/a-blog-that-is-a-single-executable-binary/" style="margin-left: 0.25rem;">A blog that is a single executable binary</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-01">
+            Apr 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/01/ive-promised-myself-never-to-use-gradle/" style="margin-left: 0.25rem;">I&#39;ve promised myself never to use gradle</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-03-15">
+            Mar 15, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/03/15/hash-displace-and-compress-perfect-hashing-with-java/" style="margin-left: 0.25rem;">Hash, displace, and compress: Perfect hashing with Java</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-03-15">
+            Mar 15, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/03/15/on-implementing-bloom-filters-in-c/" style="margin-left: 0.25rem;">On implementing Bloom Filters in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-12-01">
+            Dec 01, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/12/01/writing-a-simple-16-bit-vm-in-less-than-125-lines-of-c/" style="margin-left: 0.25rem;">Writing a simple 16 bit VM in less than 125 lines of C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-11-08">
+            Nov 08, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/11/08/a-tale-of-java-hash-tables/" style="margin-left: 0.25rem;">A tale of Java Hash Tables</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-10-02">
+            Oct 02, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/10/02/implementing-hash-tables-in-c/" style="margin-left: 0.25rem;">Implementing Hash Tables in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-04-22">
+            Apr 22, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/04/22/writing-a-universal-chess-interface-uci-client-in-java/" style="margin-left: 0.25rem;">Writing a Universal Chess Interface (UCI) Client in Java</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-25">
+            Jan 25, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/25/computing-eigenvalues-and-eigenvectors-using-qr-decomposition/" style="margin-left: 0.25rem;">Computing Eigenvalues and Eigenvectors using QR Decomposition</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-20">
+            Jan 20, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c/" style="margin-left: 0.25rem;">Writing your own linear algebra matrix library in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2011-06-01">
+            Jun 01, 2011
+          </time>
+          &mdash; 
+          <a href="/2011/06/01/implementing-a-generic-priority-queue-in-c/" style="margin-left: 0.25rem;">Implementing a generic Priority Queue in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2010-08-09">
+            Aug 09, 2010
+          </time>
+          &mdash; 
+          <a href="/2010/08/09/hello-world/" style="margin-left: 0.25rem;">Hello world!</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+  </main>
+  <footer>
+    <div class="mpt">The opinions expressed on this blog are highly personal.</div>
+
+</footer>
+</body>
+
+</html>

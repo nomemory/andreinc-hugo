@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>4 integers are enough to write a Snake Game | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="4 integers are enough to write a Snake Game" />
+<meta name="description" content="
+title: &ldquo;A blog that is a single executable binary&rdquo;
+date: &ldquo;2022-04-10&rdquo;
+classes: wide
+comments: true
+usemathjax: true
+excerpt: &ldquo;A Binary Blog generator written in C&rdquo;
+categories:
+
+&ldquo;c&rdquo;
+tags:
+&ldquo;blog&rdquo;
+&ldquo;web-server&rdquo;
+
+
+Recently, while browsing lobste.rs, I had the chance to stumble upon this beautiful article, titled: my website is one binary.
+It was an idea crazy enough (in a positive way) to try it myself in C.
+So, what if I wrote my own blogging &ldquo;platform&rdquo; (in the lack of a more suitable term)? But, instead of outputting a static HTML site, my platform outputs a single executable binary file compatible with any *Nix platform. There would be no HTML files, no other assets, just a piece of source code that gets to be recompiled each time I plan to update my &ldquo;content&rdquo;. Everything stays in memory, and my site is (an) executable." />
+<meta name="keywords" content="c," />
+
+
+<meta property="og:url" content="http://localhost:1313/2022/04/10/4-integers-are-enough-to-write-a-snake-game/">
+  <meta property="og:site_name" content="Personal Site of Andrei N. Ciobanu">
+  <meta property="og:title" content="4 integers are enough to write a Snake Game">
+  <meta property="og:description" content="title: “A blog that is a single executable binary” date: “2022-04-10” classes: wide comments: true usemathjax: true excerpt: “A Binary Blog generator written in C” categories:
+“c” tags: “blog” “web-server” Recently, while browsing lobste.rs, I had the chance to stumble upon this beautiful article, titled: my website is one binary.
+It was an idea crazy enough (in a positive way) to try it myself in C.
+So, what if I wrote my own blogging “platform” (in the lack of a more suitable term)? But, instead of outputting a static HTML site, my platform outputs a single executable binary file compatible with any *Nix platform. There would be no HTML files, no other assets, just a piece of source code that gets to be recompiled each time I plan to update my “content”. Everything stays in memory, and my site is (an) executable.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-04-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2022-04-10T00:00:00+00:00">
+    <meta property="article:tag" content="C">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="4 integers are enough to write a Snake Game">
+  <meta name="twitter:description" content="title: “A blog that is a single executable binary” date: “2022-04-10” classes: wide comments: true usemathjax: true excerpt: “A Binary Blog generator written in C” categories:
+“c” tags: “blog” “web-server” Recently, while browsing lobste.rs, I had the chance to stumble upon this beautiful article, titled: my website is one binary.
+It was an idea crazy enough (in a positive way) to try it myself in C.
+So, what if I wrote my own blogging “platform” (in the lack of a more suitable term)? But, instead of outputting a static HTML site, my platform outputs a single executable binary file compatible with any *Nix platform. There would be no HTML files, no other assets, just a piece of source code that gets to be recompiled each time I plan to update my “content”. Everything stays in memory, and my site is (an) executable.">
+
+
+
+
+  <meta itemprop="name" content="4 integers are enough to write a Snake Game">
+  <meta itemprop="description" content="title: “A blog that is a single executable binary” date: “2022-04-10” classes: wide comments: true usemathjax: true excerpt: “A Binary Blog generator written in C” categories:
+“c” tags: “blog” “web-server” Recently, while browsing lobste.rs, I had the chance to stumble upon this beautiful article, titled: my website is one binary.
+It was an idea crazy enough (in a positive way) to try it myself in C.
+So, what if I wrote my own blogging “platform” (in the lack of a more suitable term)? But, instead of outputting a static HTML site, my platform outputs a single executable binary file compatible with any *Nix platform. There would be no HTML files, no other assets, just a piece of source code that gets to be recompiled each time I plan to update my “content”. Everything stays in memory, and my site is (an) executable.">
+  <meta itemprop="datePublished" content="2022-04-10T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2022-04-10T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2485">
+  <meta itemprop="keywords" content="C">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: var(--background-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: var(--text-color);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  a {
+    color: var(--link-color);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px dashed;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: var(--blockquote-color);
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+</style>
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/math.css">
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof renderMathInElement !== "function") {
+    console.error("KaTeX auto-render not loaded");
+    return;
+  }
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false }
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Personal Site of Andrei N. Ciobanu</h2>
+</a>
+<nav>
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+<a href="/links/">Links</a>
+
+<a href="/tags/">Tags</a>
+
+</nav>
+</header>
+  <main>
+
+<content>
+  <hr>
+<p>title: &ldquo;A blog that is a single executable binary&rdquo;
+date: &ldquo;2022-04-10&rdquo;
+classes: wide
+comments: true
+usemathjax: true
+excerpt: &ldquo;A Binary Blog generator written in C&rdquo;
+categories:</p>
+<ul>
+<li>&ldquo;c&rdquo;
+tags:</li>
+<li>&ldquo;blog&rdquo;</li>
+<li>&ldquo;web-server&rdquo;</li>
+</ul>
+<hr>
+<p>Recently, while browsing <a href="https://lobste.rs/">lobste.rs</a>, I had the chance to stumble upon this beautiful <a href="https://j3s.sh/thought/my-website-is-one-binary.html">article</a>, titled: <em>my website is one binary</em>.</p>
+<p>It was an idea crazy enough (in a positive way) to try it myself in C.</p>
+<p>So, what if I wrote my own blogging &ldquo;platform&rdquo; (in the lack of a more suitable term)? But, instead of outputting a static HTML site, my <em>platform</em> outputs a single <strong>executable binary file</strong> compatible with any *Nix platform. There would be no HTML files, no other assets, just a piece of source code that gets to be recompiled each time I plan to update my &ldquo;content&rdquo;. Everything stays in memory, and my <em>site</em> is (an) executable.</p>
+<p>To go entirely minimalistic, I&rsquo;ve decided to impose myself additional rules to follow:</p>
+<ol>
+<li>The software is not going to use any external dependencies other than what the C standard library and whatever the operating system is offering me (POSIX, I am looking at you!);</li>
+<li>I won&rsquo;t touch <a href="https://en.wikipedia.org/wiki/Common_Gateway_Interface">CGI</a>; that&rsquo;s cheating;</li>
+<li>The program will be as concise as possible, and preferably it won&rsquo;t get bigger than 200-300 lines of code. At the same time, it will be written following a &ldquo;readable&rdquo; coding style, without artificially squeezing things on a single line;</li>
+<li>No premature optimization. The software should withstand moderate traffic: a few requests per minute. No need to be extra clever; this is not <em>web-scale</em>;</li>
+<li>I will try to have fun while writing it, even if I have to deal with C strings;</li>
+<li>This prototype won&rsquo;t replace my current blog, no matter how seductive it may be. I kind of like using ruby, Jekyll, and minimal mistakes;</li>
+<li>No dynamic memory allocation. I will refuse to use <code>calloc()</code>, <code>malloc()</code>, <code>free()</code> and the likes.</li>
+</ol>
+<p>That being (optimistically) settled down, I&rsquo;ve realized I had to write my own primitive HTTP web server; nothing exceedingly fancy, but something that supports GET requests.</p>
+<p>The last time I touched C sockets programming was more than 14 years ago, while I was in UNI. Reading an entire book about the topic was not an option, but I found something better called <a href="https://beej.us/guide/bgnet/html/">Beej&rsquo;s Network Programming guide</a>. If you are already familiar with C, this tutorial has enough information to get you started, and it only takes a few hours to go through it. I&rsquo;ve copy-pasted the examples, gone through them, modified a few things, and everything worked. End of story.</p>
+<p>The next step was to read a bit of the HTTP Protocol. As a backend developer, I have a broad understanding of how it functions. But I was not (recently) put in the position to look closely at what the actual messages look like. I found out that Firefox, the <a href="https://www.rfc-editor.org/rfc/rfc2616">RFC</a>, and the <a href="https://duckduckgo.com/">duckduckgo</a> search engine were my friends.</p>
+<p>That being said and done, I was good to go.</p>
+<h1 id="the-code">The code</h1>
+<p>I&rsquo;ve unimaginatively named my <em>blogging platform</em> <code>microblog-c</code>. The code and the the samples are available here:</p>
+<pre tabindex="0"><code>git clone git@github.com:nomemory/microblog-c.git
+</code></pre><h1 id="running-the-sample-blog">Running the sample blog</h1>
+<p>To build the sample blog, we compile <a href="https://github.com/nomemory/microblog-c/blob/main/microblog.c"><code>microblog.c</code></a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>&gt;&gt; gcc -Wall microblog.c -o microblog
+</span></span><span style="display:flex;"><span>&gt;&gt; ./microblog
+</span></span></code></pre></div><p>If everything goes well, the internal server will start serving HTTP requests on port <code>8080</code>.</p>
+<p>If you are curious to see what everything looks like, open a browser: <a href="http://localhost:8080">http://localhost:8080</a>, and enjoy:</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-04-10-a-blog-that-is-a-single-executable-binary/homepage.png" alt="png">{:height=&ldquo;40%&rdquo; width=&ldquo;40%&rdquo;}</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-04-10-a-blog-that-is-a-single-executable-binary/davidbowie.jpg" alt="png">{:height=&ldquo;25%&rdquo; width=&ldquo;25%&rdquo;}</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-04-10-a-blog-that-is-a-single-executable-binary/ozzy.jpg" alt="png">{:height=&ldquo;25%&rdquo; width=&ldquo;25%&rdquo;}</p>
+<p>As you can see, CSS is not my strongest skill.</p>
+<h1 id="adding-a-new-blog-post-to-the-sample-blog">Adding a new blog post to the sample blog</h1>
+<p>There&rsquo;s no need to touch the <code>microblog.c</code> source code for adding new content to the blog.</p>
+<p>We start by creating a new file in the <code>./cnt</code> folder called <code>jimihendrix</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    .content_type <span style="color:#00538b">=</span> <span style="color:#2544bb">&#34;text/html&#34;</span>,
+</span></span><span style="display:flex;"><span>    .body <span style="color:#00538b">=</span> <span style="color:#2544bb">&#34;&lt;p&gt;Jimmy Hendridx&lt;/p&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;&lt;p&gt;Jimmy Hendrix says hello&lt;/p&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><blockquote>
+<p>Note to self: It&rsquo;s JIMI, not JIMMY!</p>
+</blockquote>
+<p>Then, we reference the new file in the <code>posts</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#505050">#include</span> <span style="color:#505050">&#34;cnt/home&#34; /* 0 */</span><span style="color:#505050">
+</span></span></span><span style="display:flex;"><span>,
+</span></span><span style="display:flex;"><span><span style="color:#505050">#include</span> <span style="color:#505050">&#34;cnt/davidbowie&#34; /* 1 */</span><span style="color:#505050">
+</span></span></span><span style="display:flex;"><span>,
+</span></span><span style="display:flex;"><span><span style="color:#505050">#include</span> <span style="color:#505050">&#34;cnt/ozzyosbourne&#34; /* 2 */</span><span style="color:#505050">
+</span></span></span><span style="display:flex;"><span>, 
+</span></span><span style="display:flex;"><span><span style="color:#505050">#include</span> <span style="color:#505050">&#34;cnt/jimmyhendrix&#34; /* 3 &lt;---- ADD THIS LINE ---&gt; */</span><span style="color:#505050">
+</span></span></span></code></pre></div><p>Next, we will make the <em>article</em> visible on the homepage by editing <code>./cnt/home</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    .content_type <span style="color:#00538b">=</span> <span style="color:#2544bb">&#34;text/html&#34;</span>,
+</span></span><span style="display:flex;"><span>    .body <span style="color:#00538b">=</span> <span style="color:#2544bb">&#34;&lt;p&gt;My name is Andrei N. Ciobanu and this is a blog about my favourite musicians.&lt;p&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;&lt;p&gt;To contact me, please write an email to gnomemory (and then append yahoo.com)&lt;p&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;&lt;p&gt;List of favourite rock stars:&lt;p&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;&lt;ol&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;&lt;li&gt;&lt;a href=&#39;1&#39;&gt;David Bowie&lt;/a&gt;&lt;/li&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;&lt;li&gt;&lt;a href=&#39;2&#39;&gt;Ozzy Osbourne&lt;/a&gt;&lt;/li&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;&lt;li&gt;&lt;a href=&#39;3&#39;&gt;Jimmy Hendrix&lt;/a&gt;&lt;/li&gt;&#34;</span> <span style="color:#505050">/* &lt;&lt;--- HERE*/</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;&lt;/ol&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>And the final step is to re-compile the blog and re-run the server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>&gt;&gt; gcc -Wall microblog.c -o microblog
+</span></span><span style="display:flex;"><span>&gt;&gt; ./microblog
+</span></span></code></pre></div><p>If we open <a href="http://localhost:8080"><code>http://localhost:8080</code></a> again we will the changes:</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-04-10-a-blog-that-is-a-single-executable-binary/home_new.png" alt="png">{:height=&ldquo;25%&rdquo; width=&ldquo;25%&rdquo;}</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-04-10-a-blog-that-is-a-single-executable-binary/jimmyhendrix_new.png" alt="png">{:height=&ldquo;25%&rdquo; width=&ldquo;25%&rdquo;}</p>
+<h1 id="how-everything-works">How everything works</h1>
+<p>The following part of the article is not a step-by-step guide, so I suggest opening <a href="https://github.com/nomemory/microblog-c/blob/main/microblog.c"><code>microblog.c</code></a> to follow the code as you continue reading.</p>
+<h2 id="the-model-and-a-neat-pre-processor-trick">The model and a neat pre-processor trick</h2>
+<p>We start by defining our model, <code>struct post_s</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#505050">#define TEXT_PLAIN &#34;text/plain&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define TEXT_HTML &#34;text/html&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5317ac">typedef</span> <span style="color:#5317ac">struct</span> post_s
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#005a5f">char</span> <span style="color:#00538b">*</span>content_type;
+</span></span><span style="display:flex;"><span>  <span style="color:#005a5f">char</span> <span style="color:#00538b">*</span>body;
+</span></span><span style="display:flex;"><span>} post;
+</span></span></code></pre></div><p>We will keep things simple from the beginning: a blog post has a <code>content_type</code> and a <code>body</code>. The <code>content_type</code> can be either:</p>
+<ul>
+<li><code>text/html</code> if we plan to server classical HTML content;</li>
+<li><code>text/plain</code> if we want to work with <code>.txt</code> files.</li>
+</ul>
+<p>Our main strategy is to keep all the blog posts inside a global array of <code>post posts[]</code> which is <em>known</em> at compile-time:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">#include</span> <span style="color:#505050">&lt;stdio.h&gt;</span><span style="color:#505050">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">#define TEXT_PLAIN &#34;text/plain&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define TEXT_HTML &#34;text/html&#34;
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">typedef</span> <span style="color:#5317ac">struct</span> post_s
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#005a5f">char</span> <span style="color:#00538b">*</span>content_type;
+</span></span><span style="display:flex;"><span>  <span style="color:#005a5f">char</span> <span style="color:#00538b">*</span>body;
+</span></span><span style="display:flex;"><span>} post;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>post posts[] <span style="color:#00538b">=</span> {
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        .content_type <span style="color:#00538b">=</span> TEXT_PLAIN,
+</span></span><span style="display:flex;"><span>        .body <span style="color:#00538b">=</span> <span style="color:#2544bb">&#34;Article 0&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        .content_type <span style="color:#00538b">=</span> TEXT_HTML,
+</span></span><span style="display:flex;"><span>        .body <span style="color:#00538b">=</span> <span style="color:#2544bb">&#34;&lt;p&gt;Article 1&lt;/p&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">const</span> size_t posts_size <span style="color:#00538b">=</span> (<span style="color:#5317ac">sizeof</span>(posts) <span style="color:#00538b">/</span> <span style="color:#5317ac">sizeof</span>(post));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">int</span> <span style="color:#721045">main</span>(<span style="color:#005a5f">void</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Printing the posts to stdout
+</span></span></span><span style="display:flex;"><span>    <span style="color:#5317ac">for</span>(size_t i <span style="color:#00538b">=</span> <span style="color:#0000c0">0</span>; i <span style="color:#00538b">&lt;</span> posts_size; i<span style="color:#00538b">++</span>) {
+</span></span><span style="display:flex;"><span>        printf(<span style="color:#2544bb">&#34;post[%zu].content_type = %s</span><span style="color:#2544bb">\n</span><span style="color:#2544bb">&#34;</span>, i, posts[i].content_type);
+</span></span><span style="display:flex;"><span>        printf(<span style="color:#2544bb">&#34;post[%zu].body =</span><span style="color:#2544bb">\n</span><span style="color:#2544bb"> %s</span><span style="color:#2544bb">\n</span><span style="color:#2544bb">&#34;</span>, i, posts[i].body);
+</span></span><span style="display:flex;"><span>        printf(<span style="color:#2544bb">&#34;</span><span style="color:#2544bb">\n</span><span style="color:#2544bb">&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> <span style="color:#0000c0">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The <code>posts</code> array contains all the content of our blog. Each article is accessible by its index in the global array.</p>
+<p>To modify or add something, we would have to alter the source code and then re-compile. But what if there is a way to keep the content outside the source file?</p>
+<p>Remember the <code>#include</code> pre-processor directive ? Well, contrary to popular belief, its usage it&rsquo;s not limited to header files. We can actually use it to &ldquo;externalize&rdquo; our content, and <code>#include</code> it just before compilation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">/* microblog.c */</span>
+</span></span><span style="display:flex;"><span>post posts[] <span style="color:#00538b">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">#include</span> <span style="color:#505050">&#34;posts&#34;</span><span style="color:#505050">
+</span></span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>Where <code>./posts</code> is a file on the disk with the following structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">/* posts file */</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    .content_type <span style="color:#00538b">=</span> TEXT_PLAIN,
+</span></span><span style="display:flex;"><span>    .body <span style="color:#00538b">=</span> <span style="color:#2544bb">&#34;Article 0&#34;</span>
+</span></span><span style="display:flex;"><span>},
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    .content_type <span style="color:#00538b">=</span> TEXT_HTML,
+</span></span><span style="display:flex;"><span>    .body <span style="color:#00538b">=</span> <span style="color:#2544bb">&#34;&lt;p&gt;Article 1&lt;/p&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>When we <code>#include</code> it, all of it gets inserted back into the source code.</p>
+<p>At this point, we can go even further and separate the articles in their own files and further include them in <code>./posts</code>. To easily visualise what&rsquo;s happening check out the following diagram:</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2022-04-10-a-blog-that-is-a-single-executable-binary/preproc.png" alt="png"></p>
+<h2 id="the-server">The server</h2>
+<p>To serve our blog content to browsers, we will have to implement a straightforward HTTP Server that supports only the <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods">GET request</a>.</p>
+<p>A typical GET request looks like this:</p>
+<pre tabindex="0"><code>GET /1 ........
+...............
+...............
+...............
+...........\r\n
+</code></pre><p>The request is a <code>char*</code> (string) that ends with <code>\r\n</code> (<code>CRLF</code>), and starts with <code>GET /&lt;resource&gt;</code>.</p>
+<p>Of course, the spec is infinitely more complex than this. But for the sake of simplicity, we will concentrate only on the first line, ignoring everything else. We will accept only numerical paths (<code>&lt;resources&gt;</code>). Internally those paths represent indices in our <code>post posts[]</code> array. By convention, our homepage will be <code>posts[0]</code>.</p>
+<p>For example, to <code>GET</code> the homepage of our blog, the request should like:</p>
+<pre tabindex="0"><code>GET / .........
+...............
+...............
+...............
+...........\r\n
+</code></pre><p>To <code>GET</code> another post, let&rsquo;s say the article <code>posts[2]</code>, the request should look like this:</p>
+<pre tabindex="0"><code>GET /2 ........
+...............
+...............
+...............
+...........\r\n
+</code></pre><p>The code for creating the actual server is quite straightforward if you are already familiar with C socket programming (I wasn&rsquo;t, so the code is probably not the best):</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">#define DEFAULT_BACKLOG 1000
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define DEFAULT_PORT 8080
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define DEFAULT_MAX_FORKS 5
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define DEFAULT_TIMEOUT 10000
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">int</span> max_forks <span style="color:#00538b">=</span> DEFAULT_MAX_FORKS;
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">int</span> cur_forks <span style="color:#00538b">=</span> <span style="color:#0000c0">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">void</span> <span style="color:#721045">start_server</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Creates a Server Socket
+</span></span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> server_sock_fd <span style="color:#00538b">=</span> socket(
+</span></span><span style="display:flex;"><span>        AF_INET, <span style="color:#505050">// Address Familiy specific to IPV4 addresses
+</span></span></span><span style="display:flex;"><span>        SOCK_STREAM, <span style="color:#505050">// TCP 
+</span></span></span><span style="display:flex;"><span>        <span style="color:#0000c0">0</span>
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (<span style="color:#00538b">!</span>server_sock_fd) 
+</span></span><span style="display:flex;"><span>        exit_with_error(ERR_SOC_CREATE);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">struct</span> sockaddr_in addr_in <span style="color:#00538b">=</span> {.sin_family <span style="color:#00538b">=</span> AF_INET,
+</span></span><span style="display:flex;"><span>                                  .sin_addr.s_addr <span style="color:#00538b">=</span> INADDR_ANY,
+</span></span><span style="display:flex;"><span>                                  .sin_port <span style="color:#00538b">=</span> htons(DEFAULT_PORT)};
+</span></span><span style="display:flex;"><span>    memset(addr_in.sin_zero, <span style="color:#2544bb">&#39;\0&#39;</span>, <span style="color:#5317ac">sizeof</span>(addr_in.sin_zero));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Bind the socket to the address and port
+</span></span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (bind(server_sock_fd, (<span style="color:#5317ac">struct</span> sockaddr <span style="color:#00538b">*</span>)<span style="color:#00538b">&amp;</span>addr_in,
+</span></span><span style="display:flex;"><span>             <span style="color:#5317ac">sizeof</span>(<span style="color:#5317ac">struct</span> sockaddr)) <span style="color:#00538b">==</span> <span style="color:#00538b">-</span><span style="color:#0000c0">1</span>)
+</span></span><span style="display:flex;"><span>        exit_with_error(ERR_SOC_BIND);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Start listening for incoming connections
+</span></span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (listen(server_sock_fd, DEFAULT_BACKLOG) <span style="color:#00538b">&lt;</span> <span style="color:#0000c0">0</span>)
+</span></span><span style="display:flex;"><span>        exit_with_error(ERR_SOC_LISTEN);   
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> client_sock_fd;
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> addr_in_len <span style="color:#00538b">=</span> <span style="color:#5317ac">sizeof</span>(addr_in);
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">for</span> (;;) {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// A cliet has made a request
+</span></span></span><span style="display:flex;"><span>        client_sock_fd <span style="color:#00538b">=</span> accept(server_sock_fd, (<span style="color:#5317ac">struct</span> sockaddr <span style="color:#00538b">*</span>)<span style="color:#00538b">&amp;</span>addr_in,
+</span></span><span style="display:flex;"><span>                                (socklen_t <span style="color:#00538b">*</span>)<span style="color:#00538b">&amp;</span>addr_in_len);
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (client_sock_fd <span style="color:#00538b">==</span> <span style="color:#00538b">-</span><span style="color:#0000c0">1</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// TODO:	LOG ERROR BUT DON &#39;T EXIT
+</span></span></span><span style="display:flex;"><span>            exit_with_error(ERR_SOC_ACCEPT);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        pid_t proc <span style="color:#00538b">=</span> fork();
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (proc <span style="color:#00538b">&lt;</span> <span style="color:#0000c0">0</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// log error
+</span></span></span><span style="display:flex;"><span>            <span style="color:#505050">// Close client
+</span></span></span><span style="display:flex;"><span>            close(client_sock_fd);
+</span></span><span style="display:flex;"><span>        } <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (proc <span style="color:#00538b">==</span> <span style="color:#0000c0">0</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// We serve the request on a different 
+</span></span></span><span style="display:flex;"><span>            <span style="color:#505050">// subprocess
+</span></span></span><span style="display:flex;"><span>            server_proc_req(client_sock_fd);
+</span></span><span style="display:flex;"><span>        } <span style="color:#5317ac">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// We keep track of the number of forks 
+</span></span></span><span style="display:flex;"><span>            <span style="color:#505050">// the parent is creating
+</span></span></span><span style="display:flex;"><span>            cur_forks<span style="color:#00538b">++</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// No reason to keep this open in the parent
+</span></span></span><span style="display:flex;"><span>            <span style="color:#505050">// We close it
+</span></span></span><span style="display:flex;"><span>            close(client_sock_fd);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Clean up some finished sub-processes
+</span></span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (<span style="color:#00538b">!</span>(cur_forks<span style="color:#00538b">&lt;</span>max_forks)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">while</span> (waitpid(<span style="color:#00538b">-</span><span style="color:#0000c0">1</span>, <span style="color:#8f0075">NULL</span>, WNOHANG) <span style="color:#00538b">&gt;</span> <span style="color:#0000c0">0</span>) {
+</span></span><span style="display:flex;"><span>                cur_forks<span style="color:#00538b">--</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    close(server_sock_fd);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We start by creating <code>server_sock_fd</code>, which binds and listens to <code>DEFAULT_PORT=8080</code>. If those operations fail, the code exits and returns either <code>ERR_SOC_BIND</code> or <code>ERR_SOC_LISTEN</code>, depending on the error.</p>
+<p>The <code>DEFAULT_BACKLOG</code> refers to the max length of the (internal) queue of pending socket connections <code>server_sock_fd</code> can grow to. If a connection request arrives when the (internal) queue has more elements than <code>DEFAULT_BACKLOG</code> , the client may receive an error indicating <code>ECONNREFUSED</code>.</p>
+<p>If the first step is successful, we enter an infinite loop in which we accept new connections. Then, we process each incoming request in its subprocess (using fork()).</p>
+<p>There&rsquo;s a max limit on the number of parallel forks we can have (see <code>max_forks</code>). Our code keeps track of the running number of forks through <code>cur_forks</code>. Whenever <code>cur_forks</code> is close to the limit, we start reaping the zombie sub-processes using <code>waitpid(...)</code>.</p>
+<p>The function responsible with processing the request (<code>server_proc_req</code>) looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">#define REQ_SIZE (1 &lt;&lt; 13)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define REQ_RES_SIZE (1 &lt;&lt; 4)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define REP_MAX_SIZE (REP_H_FMT_LEN + REP_MAX_CNT_SIZE)
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">void</span> <span style="color:#721045">server_proc_req</span>(<span style="color:#005a5f">int</span> client_sock_fd) {
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">char</span> rep_buff[REP_MAX_SIZE] <span style="color:#00538b">=</span> {<span style="color:#0000c0">0</span>};
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">char</span> req_buff[REQ_SIZE] <span style="color:#00538b">=</span> {<span style="color:#0000c0">0</span>};
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">char</span> http_req_res_buff[REQ_RES_SIZE] <span style="color:#00538b">=</span> {<span style="color:#0000c0">0</span>};
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> rec_status <span style="color:#00538b">=</span> server_receive(client_sock_fd, req_buff);
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> rep_status;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (rec_status <span style="color:#00538b">==</span> SR_CON_CLOSE) {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Connecon closed by peer
+</span></span></span><span style="display:flex;"><span>        <span style="color:#505050">// There &#39;s no reason to send anything further
+</span></span></span><span style="display:flex;"><span>        exit(EXIT_SUCCESS);
+</span></span><span style="display:flex;"><span>    } <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (rec_status <span style="color:#00538b">==</span> SR_READ_ERR <span style="color:#00538b">||</span> rec_status <span style="color:#00538b">==</span> SR_READ_OVERFLOW) {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Cannot Read Request(SR_READ_ERR) OR
+</span></span></span><span style="display:flex;"><span>        <span style="color:#505050">// Request is bigger than(REQ_SIZE)
+</span></span></span><span style="display:flex;"><span>        <span style="color:#505050">// In this case we return 400(BAD REQUEST)
+</span></span></span><span style="display:flex;"><span>        rep_status <span style="color:#00538b">=</span> set_http_rep_400(rep_buff);
+</span></span><span style="display:flex;"><span>    } <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (http_req_is_get(req_buff)) {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Request is a valid GET
+</span></span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (http_req_is_home(req_buff)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// The resource is &#34;/&#34; we return posts[0]
+</span></span></span><span style="display:flex;"><span>            rep_status <span style="color:#00538b">=</span> set_http_rep_200(posts[<span style="color:#0000c0">0</span>].content_type, posts[<span style="color:#0000c0">0</span>].body,
+</span></span><span style="display:flex;"><span>                                          strlen(posts[<span style="color:#0000c0">0</span>].body) <span style="color:#00538b">+</span> <span style="color:#0000c0">1</span>, rep_buff);
+</span></span><span style="display:flex;"><span>        } <span style="color:#5317ac">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// The resource is different than &#34;/&#34;
+</span></span></span><span style="display:flex;"><span>            size_t p_idx;
+</span></span><span style="display:flex;"><span>            set_http_req_res(req_buff, <span style="color:#0000c0">5</span>, http_req_res_buff);
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">if</span> (set_post_idx(<span style="color:#00538b">&amp;</span>p_idx, http_req_res_buff) <span style="color:#00538b">&lt;</span> <span style="color:#0000c0">0</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#505050">// If the resource is not a number, or is a number
+</span></span></span><span style="display:flex;"><span>                <span style="color:#505050">// out of range we return 404 NOT FOUND
+</span></span></span><span style="display:flex;"><span>                rep_status <span style="color:#00538b">=</span> set_http_rep_404(rep_buff);
+</span></span><span style="display:flex;"><span>            } <span style="color:#5317ac">else</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#505050">// We return the corresponding post based on the index
+</span></span></span><span style="display:flex;"><span>                <span style="color:#5317ac">struct</span> post_s post <span style="color:#00538b">=</span> posts[p_idx];
+</span></span><span style="display:flex;"><span>                rep_status <span style="color:#00538b">=</span> set_http_rep_200(post.content_type, post.body,
+</span></span><span style="display:flex;"><span>                                              strlen(post.body) <span style="color:#00538b">+</span> <span style="color:#0000c0">1</span>, rep_buff);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    } <span style="color:#5317ac">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// The request looks valid but it &#39;s not a get
+</span></span></span><span style="display:flex;"><span>        <span style="color:#505050">// We return 501
+</span></span></span><span style="display:flex;"><span>        rep_status <span style="color:#00538b">=</span> set_http_rep_501(rep_buff);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (rep_status <span style="color:#00538b">&lt;</span> <span style="color:#0000c0">0</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// There was an error constructing the response
+</span></span></span><span style="display:flex;"><span>        <span style="color:#505050">// TODO LOG
+</span></span></span><span style="display:flex;"><span>    } <span style="color:#5317ac">else</span> {
+</span></span><span style="display:flex;"><span>        server_send(client_sock_fd, rep_buff);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    close(client_sock_fd);
+</span></span><span style="display:flex;"><span>    exit(EXIT_SUCCESS);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We define three buffers:</p>
+<ul>
+<li><code>rep_buff</code> - Here is where we keep the response we are sending back to the client;</li>
+<li><code>req_buff</code> - This contains the request coming from the client;</li>
+<li><code>http_req_res_buff</code> - Here we keep the resource (<code>posts</code> index) we want to access. This is something we extract from <code>req_buff</code>.</li>
+</ul>
+<p>The most important functions called from <code>server_proc_req</code> are <code>server_receive</code> and <code>server_send</code>. These two methods read and write data to/from the socket.</p>
+<p>The code is quite straight-forward:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#5317ac">enum</span> server_receive_ret {
+</span></span><span style="display:flex;"><span>    SR_CON_CLOSE <span style="color:#00538b">=</span> <span style="color:#00538b">-</span><span style="color:#0000c0">1</span>,
+</span></span><span style="display:flex;"><span>    SR_READ_ERR <span style="color:#00538b">=</span> <span style="color:#00538b">-</span><span style="color:#0000c0">2</span>,
+</span></span><span style="display:flex;"><span>    SR_READ_OVERFLOW <span style="color:#00538b">=</span> <span style="color:#00538b">-</span><span style="color:#0000c0">3</span>
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">int</span> <span style="color:#721045">server_receive</span>(<span style="color:#005a5f">int</span> client_sock_fd, <span style="color:#005a5f">char</span> <span style="color:#00538b">*</span>req_buff) {
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> b_req <span style="color:#00538b">=</span> <span style="color:#0000c0">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> tot_b_req <span style="color:#00538b">=</span> <span style="color:#0000c0">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">while</span> ((b_req <span style="color:#00538b">=</span> recv(client_sock_fd, <span style="color:#00538b">&amp;</span>req_buff[tot_b_req],
+</span></span><span style="display:flex;"><span>                         REQ_SIZE <span style="color:#00538b">-</span> tot_b_req, <span style="color:#0000c0">0</span>)) <span style="color:#00538b">&gt;</span> <span style="color:#0000c0">0</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">/* Connection was closed by the peer */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (b_req <span style="color:#00538b">==</span> <span style="color:#0000c0">0</span>) <span style="color:#5317ac">return</span> SR_CON_CLOSE;
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">/* Reading Error */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (b_req <span style="color:#00538b">==</span> <span style="color:#00538b">-</span><span style="color:#0000c0">1</span>) <span style="color:#5317ac">return</span> SR_READ_ERR;
+</span></span><span style="display:flex;"><span>        tot_b_req <span style="color:#00538b">+=</span> b_req;
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">/* HTTP Requst is sent */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (http_req_is_final(req_buff, tot_b_req)) <span style="color:#5317ac">break</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">/* req_buff overflows */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (tot_b_req <span style="color:#00538b">&gt;=</span> REQ_SIZE) <span style="color:#5317ac">return</span> SR_READ_OVERFLOW;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> tot_b_req;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">enum</span> server_send_errno { SS_ERROR <span style="color:#00538b">=</span> <span style="color:#00538b">-</span><span style="color:#0000c0">1</span> };
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">int</span> <span style="color:#721045">server_send</span>(<span style="color:#005a5f">int</span> client_sock_fd, <span style="color:#005a5f">char</span> <span style="color:#00538b">*</span>rep_buff) {
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> w_rep <span style="color:#00538b">=</span> <span style="color:#0000c0">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> tot_w_rep <span style="color:#00538b">=</span> <span style="color:#0000c0">0</span>;
+</span></span><span style="display:flex;"><span>    size_t total <span style="color:#00538b">=</span> strlen(rep_buff) <span style="color:#00538b">+</span> <span style="color:#0000c0">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">while</span> ((w_rep <span style="color:#00538b">=</span> send(client_sock_fd, rep_buff, total <span style="color:#00538b">-</span> tot_w_rep, <span style="color:#0000c0">0</span>)) <span style="color:#00538b">&gt;</span> <span style="color:#0000c0">0</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (w_rep <span style="color:#00538b">&lt;</span> <span style="color:#0000c0">0</span>) <span style="color:#5317ac">return</span> SS_ERROR;
+</span></span><span style="display:flex;"><span>        tot_w_rep <span style="color:#00538b">+=</span> w_rep;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> tot_w_rep;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The two methods (<code>server_receive</code> and <code>server_send</code>) are actual wrappers over <code>send()</code> and <code>recv()</code> that add additional checks on-top.</p>
+<p>For example, in <code>server_receive</code> we make sure we read bytes (<code>b_req</code>) up until we encounter <code>CRLF</code> (<code>http_req_is_final</code>) or we overflow (we read more bytes than <code>req_buff</code> can hold).</p>
+<p>In <code>server_send</code> we make sure that we send all the bytes from <code>rep_buff</code>. Calling <code>send</code> once doesn&rsquo;t guarantee that; that&rsquo;s why we do everything in a loop that checks how manys bytes we&rsquo;ve sent (using <code>w_rep</code>).</p>
+<p>Lastly, the methods: <code>set_http_rep_200</code>, <code>set_http_rep_404</code>, <code>set_http_rep_500</code> are all &ldquo;overloaded&rdquo; (if we can call them like this) for the <code>set_http_rep_ret</code> method:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">#define REP_FMT &#34;%s%s\n&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define REP_H_FMT &#34;HTTP/%s %d \nContent-Type: %s\nContent-Length: %zu\n\n&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define REP_H_FMT_LEN (strlen(REP_H_FMT) + 1 + (1 &lt;&lt; 6))
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define REP_MAX_CNT_SIZE (1 &lt;&lt; 19)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define REP_MAX_SIZE (REP_H_FMT_LEN + REP_MAX_CNT_SIZE)
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">enum</span> set_http_rep_ret {
+</span></span><span style="display:flex;"><span>    SHR_ENC_ERROR <span style="color:#00538b">=</span> <span style="color:#00538b">-</span><span style="color:#0000c0">1</span>,
+</span></span><span style="display:flex;"><span>    SHR_HEAD_OVERFLOW <span style="color:#00538b">=</span> <span style="color:#00538b">-</span><span style="color:#0000c0">2</span>,
+</span></span><span style="display:flex;"><span>    SHR_CNT_ENC_EROR <span style="color:#00538b">=</span> <span style="color:#00538b">-</span><span style="color:#0000c0">3</span>,
+</span></span><span style="display:flex;"><span>    SHR_CNT_OVERFLOW <span style="color:#00538b">=</span> <span style="color:#00538b">-</span><span style="color:#0000c0">4</span>
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">int</span> <span style="color:#721045">set_http_rep</span>(<span style="color:#5317ac">const</span> <span style="color:#005a5f">char</span> <span style="color:#00538b">*</span>http_ver, <span style="color:#5317ac">const</span> http_s_code s_code,
+</span></span><span style="display:flex;"><span>                        <span style="color:#5317ac">const</span> <span style="color:#005a5f">char</span> <span style="color:#00538b">*</span>cnt_type, <span style="color:#5317ac">const</span> <span style="color:#005a5f">char</span> <span style="color:#00538b">*</span>cnt,
+</span></span><span style="display:flex;"><span>                        <span style="color:#5317ac">const</span> size_t cnt_size, <span style="color:#005a5f">char</span> <span style="color:#00538b">*</span>rep_buff) {
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">char</span> h_buff[REP_H_FMT_LEN] <span style="color:#00538b">=</span> {<span style="color:#0000c0">0</span>};
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> bw_head <span style="color:#00538b">=</span> snprintf(h_buff, REP_H_FMT_LEN, REP_H_FMT, http_ver, s_code,
+</span></span><span style="display:flex;"><span>                           cnt_type, cnt_size);
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (bw_head <span style="color:#00538b">&lt;</span> <span style="color:#0000c0">0</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> SHR_ENC_ERROR;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (bw_head <span style="color:#00538b">&gt;=</span> REP_H_FMT_LEN)
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> SHR_HEAD_OVERFLOW;
+</span></span><span style="display:flex;"><span>    size_t buff_size <span style="color:#00538b">=</span> bw_head <span style="color:#00538b">+</span> cnt_size;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (buff_size <span style="color:#00538b">&gt;</span> REP_MAX_SIZE) <span style="color:#5317ac">return</span> SHR_CNT_OVERFLOW;
+</span></span><span style="display:flex;"><span>    <span style="color:#005a5f">int</span> bw_rep <span style="color:#00538b">=</span> snprintf(rep_buff, buff_size, REP_FMT, h_buff, cnt);
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (bw_rep <span style="color:#00538b">&lt;</span> <span style="color:#0000c0">0</span>) <span style="color:#5317ac">return</span> SHR_CNT_ENC_EROR;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">return</span> bw_rep;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This method constructs the message we will send back to the browser and makes sure we don&rsquo;t overflow. It starts by building the header response:</p>
+<pre tabindex="0"><code>&#34;HTTP/%s %d \nContent-Type: %s\nContent-Length: %zu\n\n&#34;
+</code></pre><p>And then adding the actual content:</p>
+<pre tabindex="0"><code>#define REP_FMT &#34;%s%s\n&#34;
+</code></pre><p>I&rsquo;ve used <code>snprintf()</code> for both string concatenations to check for possible overflows or encoding errors.</p>
+<p>That&rsquo;s all.</p>
+<h1 id="conclusions">Conclusions</h1>
+<p>All in all, <code>microblog.c</code> was an exciting experiment. The code is to be taken lightly: like a combination of software minimalism, poorly written C (waiting for feedback, actually), and a late April&rsquo;s Fools Day joke.</p>
+<h1 id="discussion">Discussion</h1>
+<p><a href="https://www.reddit.com/r/C_Programming/comments/u6eeno/a_blog_that_is_a_single_executable_binary/">reddit</a>, <a href="https://lobste.rs/s/oj0yi5/blog_is_single_executable_binary">lobste.rs</a>, <a href="https://news.ycombinator.com/item?id=31081049">hacker news</a>.</p>
+
+</content>
+
+
+
+<p>
+  
+  <a href="http://localhost:1313/tags/c/">#C</a>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+  
+</body>
+
+</html>

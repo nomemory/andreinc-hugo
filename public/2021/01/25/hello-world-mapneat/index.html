@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hello world, mapneat! | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="Hello world, mapneat!" />
+<meta name="description" content="
+title: &ldquo;Hello world, mapneat!&rdquo;
+date: &ldquo;2021-01-31&rdquo;
+classes: wide
+excerpt: &ldquo;A gentle introduction to the Kotlin mapneat library.&rdquo;
+categories:
+
+&ldquo;java&rdquo;
+&ldquo;kotlin&rdquo;
+tags:
+&ldquo;json-to-json&rdquo;
+&ldquo;xml-to-json&rdquo;
+
+
+One of the most common scenarios I had to solve during my Software Engineering career is manipulating data, applying some logic on top, eventually changing the way the data is structured, and then serializing it to JSON to be consumed by other systems.
+mapneat does precisely this; it provides an easy to use DSL for transforming JSON to JSON, XML to JSON, POJO(s) to JSON in a declarative way. The library is written in Kotlin (JVM), but it can be easily used from Java." />
+<meta name="keywords" content="linear algebra," /><meta name="referrer" content="no-referrer-when-downgrade" />
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: #F6F8FA;  
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #222222;  
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #111111;  
+  }
+
+  a {
+    color: #0056b3;  
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #003d80;  
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  strong {
+    color: #222222;  
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  hr {
+    border: none;  
+    border-top: 1px solid #e5e5e5;  
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 4px solid #0056b3;  
+    color: #444444;  
+    padding-left: 1rem;  
+    font-style: italic;
+    background: #fafafa;  
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+  .mp {
+    border: thin solid #ccc;
+    background-color: #F0F0F0;
+    padding: 25px;
+    width: inherit;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .mpl {
+    position: relative;
+    font: 0.7rem/1.1 sans-serif;  
+    font-style: italic;
+    text-decoration: none;        
+    background: #F0F0F0;
+    border-radius: 1px;
+    border: 0px solid #ccd;
+  }
+
+  .mpt {
+    padding: 25px;
+    font-style: italic;
+    color: #666;
+  }
+
+  .mpc {
+    text-align: center;
+  }
+
+  .mpn {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 0.8rem;
+    color: #777;
+  }
+
+  .meta, .post-meta {
+    color: #555555;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+   
+  table {
+    width: 100%;
+    border-collapse: collapse;  
+    margin: 1.5rem 0;           
+    font-size: 0.95rem;         
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #ddd;
+  }
+
+  tbody td {
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+   
+  tbody tr:hover {
+    background: #fafafa;
+  }
+
+   
+  table code {
+    background: #f3f3f3;
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+   
+  .site-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .global-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e5e5;  
+  }
+
+  .global-nav a {
+    font-weight: 600;
+    color: #222222;  
+    text-decoration: none;
+    font-size: 1.05rem;
+    transition: color 0.2s ease;
+  }
+
+  .global-nav a:hover {
+    color: #0056b3;  
+    text-decoration: underline;
+  }
+
+   
+  .global-nav a.active {
+    color: #0056b3;
+  }
+</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof renderMathInElement !== "function") {
+    console.error("KaTeX auto-render not loaded");
+    return;
+  }
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false }
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+  <header><header class="site-header">
+  <nav class="global-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/about/">About</a>
+    
+      <a href="/links/">Links</a>
+    
+      <a href="/index.xml">RSS</a>
+    
+  </nav>
+</header></header>
+  <main>
+
+
+<h1>Hello world, mapneat!</h1>
+<p>
+  <i>
+    <time datetime='2021-01-25'>
+      25 Jan, 2021
+    </time>
+  </i>
+</p>
+
+<content>
+  <hr>
+<p>title: &ldquo;Hello world, mapneat!&rdquo;
+date: &ldquo;2021-01-31&rdquo;
+classes: wide
+excerpt: &ldquo;A gentle introduction to the Kotlin mapneat library.&rdquo;
+categories:</p>
+<ul>
+<li>&ldquo;java&rdquo;</li>
+<li>&ldquo;kotlin&rdquo;
+tags:</li>
+<li>&ldquo;json-to-json&rdquo;</li>
+<li>&ldquo;xml-to-json&rdquo;</li>
+</ul>
+<hr>
+<p>One of the most common scenarios I had to solve during my Software Engineering career is manipulating data, applying some logic on top, eventually changing the way the data is structured, and then serializing it to JSON to be consumed by other systems.</p>
+<p><a href="https://github.com/nomemory/mapneat"><strong>mapneat</strong></a> does precisely this; it provides an easy to use <a href="https://en.wikipedia.org/wiki/Domain-specific_language">DSL</a> for transforming <code>JSON</code> to <code>JSON</code>, <code>XML</code> to <code>JSON</code>, <code>POJO</code>(s) to <code>JSON</code> in a declarative way. The library is written in <a href="https://kotlinlang.org/">Kotlin</a> (JVM), but it can be easily used from Java.</p>
+<p>Under the hood, <strong>mapneat</strong> uses:</p>
+<ul>
+<li><a href="https://github.com/FasterXML/jackson">jackson</a> and <a href="https://github.com/json-path/JsonPath">json-path</a> for JSON querying and processing;</li>
+<li><a href="https://github.com/stleary/JSON-java">JSON In Java</a> for converting from XML to JSON;</li>
+<li><a href="http://jsonassert.skyscreamer.org/">JSONAssert</a> for making JSON assertions (testing purposes).</li>
+</ul>
+<p>The library is available in the <a href="https://bintray.com/nomemory/maven/mapneat">JCenter repo</a>.</p>
+<p>But, let&rsquo;s jump directly into the code:</p>
+<h1 id="a-simple-example">A simple example</h1>
+<p>Let&rsquo;s start with the following class structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#5317ac">class</span> User(
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> id: Long,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> firstName: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> lastName: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> birthDate: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> friends: MutableList&lt;Long&gt;,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> visits: Set&lt;Visit&gt;,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> creditCards: Set&lt;CreditCardInfo&gt;,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> pwd: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> email: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> userName: String
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">class</span> Visit(
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> id: Long,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> country: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> enter: String
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">class</span> CreditCardInfo(
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> number: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> cvv: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> expirationDate: String
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>This hierarchy describes a possible system where <code>User</code>(s) have associated to them financial information (<code>val creditCards: Set&lt;CreditCardInfo&gt;</code>), and all the countries they visited so far (<code>val visits: Set&lt;Visit&gt;</code>). Additionally, <code>User</code>(s) can also befriend other users (<code>val friends: MutableList&lt;Long&gt;</code>).</p>
+<p>Now, let&rsquo;s say we are writing a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> API, and we want to allow others/other systems to query our piece of software.</p>
+<p>Of course, we won&rsquo;t want to share any kind of secret information (passwords), or any financial information.</p>
+<p>But, if we were to serialize the <code>User</code> directly into a <code>JSON</code> format, a possible output will look like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  &#34;id&#34; : <span style="color:#0000c0">490</span>,
+</span></span><span style="display:flex;"><span>  &#34;firstName&#34; : <span style="color:#2544bb">&#34;Rhea&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;lastName&#34; : <span style="color:#2544bb">&#34;Orlich&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;birthDate&#34; : <span style="color:#2544bb">&#34;1925-07-09&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;friends&#34; : [ <span style="color:#0000c0">380</span>, <span style="color:#0000c0">290</span>, <span style="color:#0000c0">470</span> ],
+</span></span><span style="display:flex;"><span>  &#34;visits&#34; : [ {
+</span></span><span style="display:flex;"><span>    &#34;id&#34; : <span style="color:#0000c0">25700</span>,
+</span></span><span style="display:flex;"><span>    &#34;country&#34; : <span style="color:#2544bb">&#34;Saint Lucia&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;enter&#34; : <span style="color:#2544bb">&#34;1970-08-14&#34;</span>
+</span></span><span style="display:flex;"><span>  }, {
+</span></span><span style="display:flex;"><span>    &#34;id&#34; : <span style="color:#0000c0">25500</span>,
+</span></span><span style="display:flex;"><span>    &#34;country&#34; : <span style="color:#2544bb">&#34;Lesotho&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;enter&#34; : <span style="color:#2544bb">&#34;2006-10-18&#34;</span>
+</span></span><span style="display:flex;"><span>  }, {
+</span></span><span style="display:flex;"><span>    &#34;id&#34; : <span style="color:#0000c0">25800</span>,
+</span></span><span style="display:flex;"><span>    &#34;country&#34; : <span style="color:#2544bb">&#34;Kenya&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;enter&#34; : <span style="color:#2544bb">&#34;1972-01-01&#34;</span>
+</span></span><span style="display:flex;"><span>  }, {
+</span></span><span style="display:flex;"><span>    &#34;id&#34; : <span style="color:#0000c0">25600</span>,
+</span></span><span style="display:flex;"><span>    &#34;country&#34; : <span style="color:#2544bb">&#34;Malawi&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;enter&#34; : <span style="color:#2544bb">&#34;2014-06-30&#34;</span>
+</span></span><span style="display:flex;"><span>  }, {
+</span></span><span style="display:flex;"><span>    &#34;id&#34; : <span style="color:#0000c0">25900</span>,
+</span></span><span style="display:flex;"><span>    &#34;country&#34; : <span style="color:#2544bb">&#34;Falkland Islands (malvinas)&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;enter&#34; : <span style="color:#2544bb">&#34;2016-08-17&#34;</span>
+</span></span><span style="display:flex;"><span>  } ],
+</span></span><span style="display:flex;"><span>  &#34;creditCards&#34; : [ {
+</span></span><span style="display:flex;"><span>    &#34;number&#34; : <span style="color:#2544bb">&#34;4158272054910622&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;cvv&#34; : <span style="color:#2544bb">&#34;077&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;expirationDate&#34; : <span style="color:#2544bb">&#34;2035-11-11&#34;</span>
+</span></span><span style="display:flex;"><span>  }, {
+</span></span><span style="display:flex;"><span>    &#34;number&#34; : <span style="color:#2544bb">&#34;373725891728967&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;cvv&#34; : <span style="color:#2544bb">&#34;862&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;expirationDate&#34; : <span style="color:#2544bb">&#34;2021-04-21&#34;</span>
+</span></span><span style="display:flex;"><span>  } ],
+</span></span><span style="display:flex;"><span>  &#34;pwd&#34; : <span style="color:#2544bb">&#34;genomes&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;email&#34; : <span style="color:#2544bb">&#34;crinedbotfly@msn.com&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;userName&#34; : <span style="color:#2544bb">&#34;fainleif&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Here intervenes <strong>mapneat</strong>.</p>
+<p>The library can work directly on top of the object and morph it into a (JSON) format of our choosing.</p>
+<p>For example, instead of showing the <code>User</code> in the format above, let&rsquo;s say we want to:</p>
+<ul>
+<li>Remove the <code>pwd</code> field and everything related to <code>creditCards</code>. We don&rsquo;t want the world to know about them;</li>
+<li>Show only the visited countries, without the visiting date or the id;
+<ul>
+<li>In case the user has visited a country multiple times, we show it once;</li>
+</ul>
+</li>
+<li>We want to <em>uppercase</em> the <code>lastName</code> of the user;</li>
+<li>Instead of showing the <code>id</code> of his friends, we want to retrieve their full name.</li>
+</ul>
+<p>The equivalent <strong>mapneat</strong> transformation that performs what we&rsquo;ve listed above is the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#5317ac">val</span> users : Map&lt;Long, User&gt; = getUsers(<span style="color:#0000c0">100</span>)
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">val</span> aRandomUser = users[<span style="color:#0000c0">10</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">val</span> out = json(fromObject(aRandomUser)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;&#34;</span> <span style="color:#00538b">*=</span> <span style="color:#2544bb">&#34;$&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#2544bb">&#34;visits&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#2544bb">&#34;creditCards&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#2544bb">&#34;pwd&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;visited&#34;</span> <span style="color:#00538b">*=</span> {
+</span></span><span style="display:flex;"><span>        expression = <span style="color:#2544bb">&#34;$.visits[*].country&#34;</span>
+</span></span><span style="display:flex;"><span>        processor = {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">val</span> result = HashSet&lt;String&gt;()
+</span></span><span style="display:flex;"><span>            result.addAll(<span style="color:#5317ac">it</span> <span style="color:#5317ac">as</span> LinkedList&lt;String&gt;)
+</span></span><span style="display:flex;"><span>            result
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;lastName&#34;</span> <span style="color:#00538b">/=</span> { targetCtx().read&lt;String&gt;(<span style="color:#2544bb">&#34;$.lastName&#34;</span>).toUpperCase() }
+</span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;friends&#34;</span> <span style="color:#00538b">/=</span> {
+</span></span><span style="display:flex;"><span>        targetCtx()
+</span></span><span style="display:flex;"><span>            .read&lt;ArrayList&lt;Long&gt;&gt;(<span style="color:#2544bb">&#34;$.friends&#34;</span>)
+</span></span><span style="display:flex;"><span>            .map { (users[<span style="color:#5317ac">it</span>]<span style="color:#00538b">?.</span>firstName + <span style="color:#2544bb">&#34; &#34;</span> + users[<span style="color:#5317ac">it</span>]<span style="color:#00538b">?.</span>lastName) }
+</span></span><span style="display:flex;"><span>            .toList()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>println(<span style="color:#5317ac">out</span>)
+</span></span></code></pre></div><p>If we were to run the code above, the &ldquo;morphed&rdquo; output is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  &#34;id&#34; : <span style="color:#0000c0">490</span>,
+</span></span><span style="display:flex;"><span>  &#34;firstName&#34; : <span style="color:#2544bb">&#34;Rhea&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;lastName&#34; : <span style="color:#2544bb">&#34;ORLICH&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;birthDate&#34; : <span style="color:#2544bb">&#34;1925-07-09&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;friends&#34; : [ <span style="color:#2544bb">&#34;Bunny Winstanley&#34;</span>, <span style="color:#2544bb">&#34;Dianna Imaizumi&#34;</span>, <span style="color:#2544bb">&#34;Verdell Aguillar&#34;</span> ],
+</span></span><span style="display:flex;"><span>  &#34;email&#34; : <span style="color:#2544bb">&#34;crinedbotfly@msn.com&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;userName&#34; : <span style="color:#2544bb">&#34;fainleif&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;visited&#34; : [ <span style="color:#2544bb">&#34;Saint Lucia&#34;</span>, <span style="color:#2544bb">&#34;Falkland Islands (malvinas)&#34;</span>, <span style="color:#2544bb">&#34;Malawi&#34;</span>, <span style="color:#2544bb">&#34;Kenya&#34;</span>, <span style="color:#2544bb">&#34;Lesotho&#34;</span> ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="a-simple-example-explanation">A simple example (Explanation)</h1>
+<p>A <strong>mapneat</strong> <em>Transformation</em> has always the format, and wraps a series of <em>Operations</em>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>json(source = <span style="color:#505050">/* ... */</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#505050">// operation1
+</span></span></span><span style="display:flex;"><span>  <span style="color:#505050">// operation2
+</span></span></span><span style="display:flex;"><span>  <span style="color:#505050">// ...  
+</span></span></span><span style="display:flex;"><span>} 
+</span></span></code></pre></div><p>The first operation we&rsquo;ve performed was: <code>&quot;&quot; *= &quot;$&quot;</code>.</p>
+<p><code>*=</code> is called the <em>Shift Operation</em> and allows us to query an object/json/xml using a <a href="https://github.com/json-path/JsonPath">json-path</a> notation.</p>
+<p>The line expresses: <em>Copy everything (<code>$</code>) you find in the <code>aRandomUser</code> source and put it inside the target</em>.</p>
+<p>The next three lines (<em>Operations</em>) are discarding the information we don&rsquo;t really need:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>- <span style="color:#2544bb">&#34;visits&#34;</span>
+</span></span><span style="display:flex;"><span>- <span style="color:#2544bb">&#34;creditCards&#34;</span>
+</span></span><span style="display:flex;"><span>- <span style="color:#2544bb">&#34;pwd&#34;</span>
+</span></span></code></pre></div><p><code>-</code> is called the <em>Delete Operation</em> and does exactly what it says; it deletes a node and all of its children.</p>
+<p>The next operation is also a shift (<code>*=</code>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#2544bb">&#34;visited&#34;</span> <span style="color:#00538b">*=</span> {
+</span></span><span style="display:flex;"><span>    expression = <span style="color:#2544bb">&#34;$.visits[*].country&#34;</span>
+</span></span><span style="display:flex;"><span>    processor = {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">val</span> result = HashSet&lt;String&gt;()
+</span></span><span style="display:flex;"><span>        result.addAll(<span style="color:#5317ac">it</span> <span style="color:#5317ac">as</span> LinkedList&lt;String&gt;)
+</span></span><span style="display:flex;"><span>        result
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We query the source using a <a href="https://github.com/json-path/JsonPath">json-path</a> expression, and from the <code>visits</code> object we select only the <code>country</code> names (<code>&quot;$.visits[*].country&quot;</code>).</p>
+<p>To avoid possible duplications, we keep the results into a <code>Set&lt;String&gt;</code>.</p>
+<p>The next operation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span> <span style="color:#2544bb">&#34;lastName&#34;</span> <span style="color:#00538b">/=</span> { targetCtx().read&lt;String&gt;(<span style="color:#2544bb">&#34;$.lastName&#34;</span>).toUpperCase() }
+</span></span></code></pre></div><p>Is called an <em>Assign Operation</em> that normally allows us to retrieve information from a lambda expression.</p>
+<p>In our case, the <code>lastName</code> information is already in the target (remember <code>&quot;&quot; *= &quot;$&quot;</code>), so we read it from the target context, and then we just capitalize the <code>String</code>.</p>
+<p>And the last operation is an <em>Assign</em> (as we already have the <code>friends</code> ids in the target context) that returns the <code>User</code>&rsquo;s friends:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#2544bb">&#34;friends&#34;</span> <span style="color:#00538b">/=</span> {
+</span></span><span style="display:flex;"><span>    targetCtx()
+</span></span><span style="display:flex;"><span>        .read&lt;ArrayList&lt;Long&gt;&gt;(<span style="color:#2544bb">&#34;$.friends&#34;</span>)
+</span></span><span style="display:flex;"><span>        .map { (users[<span style="color:#5317ac">it</span>]<span style="color:#00538b">?.</span>firstName + <span style="color:#2544bb">&#34; &#34;</span> + users[<span style="color:#5317ac">it</span>]<span style="color:#00538b">?.</span>lastName) }
+</span></span><span style="display:flex;"><span>        .toList()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="moving-forward">Moving forward</h1>
+<p><strong>mapneat</strong> already offers extensive <a href="https://github.com/nomemory/mapneat">documentation</a>, and that details every supported <em>Operation</em> (there are more!).</p>
+<p>If this article was an interesting read, also check the <a href="https://github.com/nomemory/mapneat-examples">existing examples</a>.</p>
+
+</content>
+
+<div style="font-size:0.8em;display:flex;gap:16px;justify-content:center;">
+  <p>
+    
+    <a href="http://localhost:1313/2021/01/25/linear-transformations-eigenvectors-and-eigenvalues/">
+      &lt;&lt; Previous Post</a>
+        
+  </p>
+  <p>|</p>
+  <p>
+    
+    <a href="http://localhost:1313/2021/01/25/computing-eigenvalues-and-eigenvectors-using-qr-decomposition/">Next Post >></a>
+    
+  </p>
+</div>
+
+
+
+
+
+  <div class="related-posts" style="border: 2px solid #d3d6db; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; background-color: #fafafa;">
+    <h1 style="margin-top: 0;">Related Articles</h3>
+    <p style="font-size: 0.95em; color: #555;">I'm so glad you made it to the end. The following articles are loosely related to this one:</p>
+    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2025-03-17">
+            Mar 17, 2025
+          </time>
+          &mdash; 
+          <a href="/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/" style="margin-left: 0.25rem;">The Trickonometry of Math Olympiad Inequalities</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-11-18">
+            Nov 18, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/11/18/a-joke-in-approximating-numbers-raised-to-irrational-powers/" style="margin-left: 0.25rem;">A joke in approximating numbers raised to irrational powers</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-07-25">
+            Jul 25, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/07/25/how-to-compose-math-problems/" style="margin-left: 0.25rem;">How to compose math problems</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-06-26">
+            Jun 26, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/06/26/a-selection-of-problems-with-logarithms/" style="margin-left: 0.25rem;">A selection of problems with logarithms</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-04-24">
+            Apr 24, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/04/24/from-the-circle-to-epycles/" style="margin-left: 0.25rem;">From the circle to epycles</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-04-24">
+            Apr 24, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/04/24/the-sinusoidal-tetris/" style="margin-left: 0.25rem;">The sinusoidal tetris</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-03-25">
+            Mar 25, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/03/25/10-algebra-problems-selected-from-the-romanian-olympiad-part-2/" style="margin-left: 0.25rem;">10 algebra problems selected from the Romanian Olympiad (Part 2)</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-03-14">
+            Mar 14, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/03/14/a-surprising-matrix-problem/" style="margin-left: 0.25rem;">A Surprising Matrix Problem</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-02-23">
+            Feb 23, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/02/23/20-algebra-problems-selected-from-the-romanian-olympiad-part-1/" style="margin-left: 0.25rem;">20 Algebra Problems Selected from the Romanian Olympiad (Part 1)</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-01-11">
+            Jan 11, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/01/11/the-math-exams-of-my-life/" style="margin-left: 0.25rem;">The math exams of my life</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2023-03-01">
+            Mar 01, 2023
+          </time>
+          &mdash; 
+          <a href="/2023/03/01/the-so-called-magic-of-the-number-37/" style="margin-left: 0.25rem;">The so-called magic of the number 37</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-25">
+            Jan 25, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/25/computing-eigenvalues-and-eigenvectors-using-qr-decomposition/" style="margin-left: 0.25rem;">Computing Eigenvalues and Eigenvectors using QR Decomposition</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-25">
+            Jan 25, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/25/linear-transformations-eigenvectors-and-eigenvalues/" style="margin-left: 0.25rem;">Linear transformations, Eigenvectors and Eigenvalues</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-20">
+            Jan 20, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c/" style="margin-left: 0.25rem;">Writing your own linear algebra matrix library in C</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+  </main>
+  <footer>
+    <div class="mpt">The opinions expressed on this blog are highly personal.</div>
+
+</footer>
+</body>
+
+</html>

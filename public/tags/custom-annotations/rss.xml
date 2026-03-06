@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Custom-Annotations on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/custom-annotations/</link>
+    <description>Recent content in Custom-Annotations on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Sep 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/custom-annotations/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Adding custom annotations to your java beans</title>
+      <link>http://localhost:1313/2013/09/05/adding-custom-annotations-to-your-java-beans/</link>
+      <pubDate>Thu, 05 Sep 2013 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2013/09/05/adding-custom-annotations-to-your-java-beans/</guid>
+      <description>&lt;p&gt;Java annotations are syntactic meta-information that can be added to your Java source code. You can annotate classes, methods, variables, method parameters, and even &lt;a href=&#34;https://puredanger.github.io/tech.puredanger.com/2007/02/28/package-annotations/&#34;&gt;packages&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;The great advantage of Java annotations over Javadoc tags is that those bits of information can be reflective. Thus they can be made available to the VM at runtime (using the &lt;a href=&#34;http://docs.oracle.com/javase/tutorial/reflect/&#34;&gt;Java Reflection API&lt;/a&gt;).&lt;/p&gt;&#xA;&lt;p&gt;Other than this, modern Java frameworks (like Spring) make heavy annotations to let the developer extend, inject data and configure existent behaviors.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

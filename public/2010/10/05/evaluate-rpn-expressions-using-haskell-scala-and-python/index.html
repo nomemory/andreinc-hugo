@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Evaluate RPN expressions using Haskell, Scala, and python | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="Evaluate RPN expressions using Haskell, Scala, and python" />
+<meta name="description" content="
+title: &ldquo;Evaluate RPN expressions using Haskell, Scala, and python&rdquo;
+date: &ldquo;2011-01-03&rdquo;
+classes: wide
+excerpt: &ldquo;RPN Calculator in 3 different programming languages&rdquo;
+categories:
+
+&ldquo;scala&rdquo;
+&ldquo;python&rdquo;
+&ldquo;haskell&rdquo;
+tags:
+
+&ldquo;algorithm&rdquo;
+&ldquo;code&rdquo;
+&ldquo;expressions&rdquo;
+&ldquo;java-2&rdquo;
+&ldquo;module&rdquo;
+&ldquo;operand&rdquo;
+&ldquo;operator&rdquo;
+&ldquo;programming-praxis&rdquo;
+&ldquo;python&rdquo;
+&ldquo;rpn-calculator&rdquo;
+&ldquo;scala&rdquo;
+&ldquo;solution&rdquo;
+&ldquo;sourc-code&rdquo;
+&ldquo;stack&rdquo;
+&ldquo;stack-based&rdquo;
+&ldquo;token&rdquo;
+&ldquo;tokenization&rdquo;
+
+
+
+
+Description
+One of the earliest [Programming Praxis (the site died, so the link doesn&rsquo;t work anymore) challenges is called the RPN Calculator. Our task is to write an RPN module that evaluates simple RPN expressions and returns the correct result. RPN stands for Reverse Polish Notation, a mathematical way of describing an expression where operators strictly follow their operands. From a computational perspective, using RPN leads to faster execution because the expressions don&rsquo;t contain any parenthesis (less parsing), and the algorithm to evaluate them is straightforward." />
+<meta name="keywords" content="java,algorithms," /><meta name="referrer" content="no-referrer-when-downgrade" />
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: #F6F8FA;  
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #222222;  
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #111111;  
+  }
+
+  a {
+    color: #0056b3;  
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #003d80;  
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  strong {
+    color: #222222;  
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  hr {
+    border: none;  
+    border-top: 1px solid #e5e5e5;  
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 4px solid #0056b3;  
+    color: #444444;  
+    padding-left: 1rem;  
+    font-style: italic;
+    background: #fafafa;  
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+  .mp {
+    border: thin solid #ccc;
+    background-color: #F0F0F0;
+    padding: 25px;
+    width: inherit;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .mpl {
+    position: relative;
+    font: 0.7rem/1.1 sans-serif;  
+    font-style: italic;
+    text-decoration: none;        
+    background: #F0F0F0;
+    border-radius: 1px;
+    border: 0px solid #ccd;
+  }
+
+  .mpt {
+    padding: 25px;
+    font-style: italic;
+    color: #666;
+  }
+
+  .mpc {
+    text-align: center;
+  }
+
+  .mpn {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 0.8rem;
+    color: #777;
+  }
+
+  .meta, .post-meta {
+    color: #555555;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+   
+  table {
+    width: 100%;
+    border-collapse: collapse;  
+    margin: 1.5rem 0;           
+    font-size: 0.95rem;         
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #ddd;
+  }
+
+  tbody td {
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+   
+  tbody tr:hover {
+    background: #fafafa;
+  }
+
+   
+  table code {
+    background: #f3f3f3;
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+   
+  .site-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .global-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e5e5;  
+  }
+
+  .global-nav a {
+    font-weight: 600;
+    color: #222222;  
+    text-decoration: none;
+    font-size: 1.05rem;
+    transition: color 0.2s ease;
+  }
+
+  .global-nav a:hover {
+    color: #0056b3;  
+    text-decoration: underline;
+  }
+
+   
+  .global-nav a.active {
+    color: #0056b3;
+  }
+</style>
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+  <header><header class="site-header">
+  <nav class="global-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/about/">About</a>
+    
+      <a href="/links/">Links</a>
+    
+      <a href="/index.xml">RSS</a>
+    
+  </nav>
+</header></header>
+  <main>
+
+
+<h1>Evaluate RPN expressions using Haskell, Scala, and python</h1>
+<p>
+  <i>
+    <time datetime='2010-10-05'>
+      05 Oct, 2010
+    </time>
+  </i>
+</p>
+
+<content>
+  <hr>
+<p>title: &ldquo;Evaluate RPN expressions using Haskell, Scala, and python&rdquo;
+date: &ldquo;2011-01-03&rdquo;
+classes: wide
+excerpt: &ldquo;RPN Calculator in 3 different programming languages&rdquo;
+categories:</p>
+<ul>
+<li>&ldquo;scala&rdquo;</li>
+<li>&ldquo;python&rdquo;</li>
+<li>&ldquo;haskell&rdquo;
+tags:
+<ul>
+<li>&ldquo;algorithm&rdquo;</li>
+<li>&ldquo;code&rdquo;</li>
+<li>&ldquo;expressions&rdquo;</li>
+<li>&ldquo;java-2&rdquo;</li>
+<li>&ldquo;module&rdquo;</li>
+<li>&ldquo;operand&rdquo;</li>
+<li>&ldquo;operator&rdquo;</li>
+<li>&ldquo;programming-praxis&rdquo;</li>
+<li>&ldquo;python&rdquo;</li>
+<li>&ldquo;rpn-calculator&rdquo;</li>
+<li>&ldquo;scala&rdquo;</li>
+<li>&ldquo;solution&rdquo;</li>
+<li>&ldquo;sourc-code&rdquo;</li>
+<li>&ldquo;stack&rdquo;</li>
+<li>&ldquo;stack-based&rdquo;</li>
+<li>&ldquo;token&rdquo;</li>
+<li>&ldquo;tokenization&rdquo;</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="description">Description</h1>
+<p>One of the earliest [Programming <a href="http://programmingpraxis.com/">Praxis</a> (the site died, so the link doesn&rsquo;t work anymore) challenges is called the <em><a href="http://programmingpraxis.com/2009/02/19/rpn-calculator/">RPN Calculator</a></em>. Our task is to write an RPN module that evaluates simple RPN expressions and returns the correct result. RPN stands for <a href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">Reverse Polish Notation</a>, a mathematical way of describing an expression where operators strictly follow their operands. From a computational perspective, using RPN leads to faster execution because the expressions don&rsquo;t contain any parenthesis (less parsing), and the algorithm to evaluate them is straightforward.</p>
+<p>So, the exact requirement was:</p>
+<blockquote>
+<p>Implement an RPN calculator that takes an expression like <code>19 2.14 + 4.5 2 4.3 / - *</code> which is usually expressed as <code>(19 + 2.14) * (4.5 - 2 / 4.3)</code> and responds with 85.2974. The program should read expressions from standard input and print the top of the stack to standard output when a newline is encountered. The program should retain the state of the operand stack between expressions.</p>
+</blockquote>
+<p>If you are new to programming, it&rsquo;s worth reading about Stacks first because the algorithm to solve the exercise is stack-based:</p>
+<ol start="0">
+<li>Initialize an empty <code>Stack</code>;</li>
+<li>Tokenize the expression. For example, the <code>String</code> <code>&quot;19 2.14 + 4.5 2 4.3 / - *&quot;</code> becomes an array of <code>Strings</code> in the form: <code>{&quot;19&quot;, &quot;2.14&quot;, &quot;+&quot;, &quot;4.5&quot;, &quot;2&quot;, &quot;4.3&quot;, &quot;/&quot;, &quot;-&quot;, &quot;*&quot;}</code>;</li>
+<li>Iterate over the array of tokens computed at step <code>1</code>.
+<ul>
+<li>If the token is an operand (number) - we <code>push()</code> it onto the <code>Stack</code> initialized at step 0.</li>
+<li>If the token is an operator (we should know how many operands it needs, let&rsquo;s say the number of operands is <code>N</code>), we <code>pop()</code> <code>N</code> values from the Stack, we evaluate the operation, and we <code>push()</code> the result back onto the <code>Stack</code>.</li>
+</ul>
+</li>
+<li>At the end of the iteration, if the expression is valid, the <code>Stack</code> will contain only <strong>one</strong> value: the actual result.</li>
+</ol>
+<h1 id="implementations">Implementations</h1>
+<p>For fun, I will implement the solutions for this challenge using three different languages: <code>Scala</code>, <code>python</code>, <code>Haskell</code>, and <code>Java</code>.</p>
+<h2 id="scala">Scala</h2>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span><span style="color:#5317ac">import</span> scala.collection.mutable.Stack
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> scala.io.Source
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.lang.Double.parseDouble
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">object</span> RPNCalc <span style="color:#00538b">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#505050">// Maps an operator to a function .
+</span></span></span><span style="display:flex;"><span>	<span style="color:#5317ac">val</span> ops <span style="color:#5317ac">=</span> Map<span style="color:#00538b">(</span><span style="color:#2544bb">&#34;+&#34;</span> <span style="color:#00538b">-&gt;</span> <span style="color:#00538b">((</span><span style="color:#5317ac">_:</span><span style="color:#005a5f">Double</span><span style="color:#00538b">)</span> <span style="color:#00538b">+</span> <span style="color:#00538b">(</span><span style="color:#5317ac">_:</span><span style="color:#005a5f">Double</span><span style="color:#00538b">)),</span>
+</span></span><span style="display:flex;"><span>				  <span style="color:#2544bb">&#34;-&#34;</span> <span style="color:#00538b">-&gt;</span> <span style="color:#00538b">(-(</span><span style="color:#5317ac">_:</span><span style="color:#005a5f">Double</span><span style="color:#00538b">)</span> <span style="color:#00538b">+</span> <span style="color:#00538b">(</span><span style="color:#5317ac">_:</span><span style="color:#005a5f">Double</span><span style="color:#00538b">)),</span>
+</span></span><span style="display:flex;"><span>				  <span style="color:#2544bb">&#34;*&#34;</span> <span style="color:#00538b">-&gt;</span> <span style="color:#00538b">((</span><span style="color:#5317ac">_:</span><span style="color:#005a5f">Double</span><span style="color:#00538b">)</span>  <span style="color:#00538b">*</span> <span style="color:#00538b">(</span><span style="color:#5317ac">_:</span><span style="color:#005a5f">Double</span><span style="color:#00538b">)),</span>
+</span></span><span style="display:flex;"><span>				  <span style="color:#2544bb">&#34;/&#34;</span> <span style="color:#00538b">-&gt;</span> <span style="color:#00538b">(</span><span style="color:#0000c0">1</span><span style="color:#00538b">/(</span><span style="color:#5317ac">_:</span><span style="color:#005a5f">Double</span><span style="color:#00538b">)</span> <span style="color:#00538b">*</span> <span style="color:#00538b">(</span><span style="color:#5317ac">_:</span><span style="color:#005a5f">Double</span><span style="color:#00538b">)))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#505050">// Evaluate RPN expr (given as string of tokens)
+</span></span></span><span style="display:flex;"><span>	<span style="color:#5317ac">def</span> evalTokens<span style="color:#00538b">(</span>tokens<span style="color:#5317ac">:</span> <span style="color:#005a5f">Array</span><span style="color:#00538b">[</span><span style="color:#005a5f">String</span><span style="color:#00538b">])</span> <span style="color:#5317ac">:</span> <span style="color:#005a5f">Double</span> <span style="color:#00538b">=</span> <span style="color:#00538b">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">val</span> stack <span style="color:#5317ac">=</span> <span style="color:#5317ac">new</span> Stack<span style="color:#00538b">[</span><span style="color:#005a5f">Double</span><span style="color:#00538b">]</span>
+</span></span><span style="display:flex;"><span>		tokens<span style="color:#00538b">.</span>foreach<span style="color:#00538b">(</span>tok <span style="color:#5317ac">=&gt;</span> <span style="color:#00538b">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#5317ac">if</span> <span style="color:#00538b">(</span>ops<span style="color:#00538b">.</span>contains<span style="color:#00538b">(</span>tok<span style="color:#00538b">))</span> stack<span style="color:#00538b">.</span>push<span style="color:#00538b">(</span>ops<span style="color:#00538b">(</span>tok<span style="color:#00538b">)(</span>stack<span style="color:#00538b">.</span>pop<span style="color:#00538b">,</span> stack<span style="color:#00538b">.</span>pop<span style="color:#00538b">))</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#5317ac">else</span> stack<span style="color:#00538b">.</span>push<span style="color:#00538b">(</span>parseDouble<span style="color:#00538b">(</span>tok<span style="color:#00538b">))</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#00538b">})</span>
+</span></span><span style="display:flex;"><span>		stack<span style="color:#00538b">.</span>pop
+</span></span><span style="display:flex;"><span>	<span style="color:#00538b">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#505050">// Main	function
+</span></span></span><span style="display:flex;"><span>	<span style="color:#5317ac">def</span> main<span style="color:#00538b">(</span>args<span style="color:#5317ac">:</span> <span style="color:#005a5f">Array</span><span style="color:#00538b">[</span><span style="color:#005a5f">String</span><span style="color:#00538b">])</span> <span style="color:#5317ac">=</span> <span style="color:#00538b">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#505050">// Read line by line from stdin + tokenize line + evaluates line
+</span></span></span><span style="display:flex;"><span>		Source<span style="color:#00538b">.</span>fromInputStream<span style="color:#00538b">(</span>System<span style="color:#00538b">.</span>in<span style="color:#00538b">).</span>getLines<span style="color:#00538b">.</span>foreach<span style="color:#00538b">(</span>l <span style="color:#5317ac">=&gt;</span>
+</span></span><span style="display:flex;"><span>			printf<span style="color:#00538b">(</span><span style="color:#2544bb">&#34;exp=%2.2fn&#34;</span><span style="color:#00538b">,</span> evalTokens<span style="color:#00538b">(</span>l<span style="color:#00538b">.</span>split<span style="color:#00538b">(</span><span style="color:#2544bb">&#34; &#34;</span><span style="color:#00538b">))))</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#00538b">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#00538b">}</span>
+</span></span></code></pre></div><p>And if we compile and run the above code:</p>
+<pre tabindex="0"><code>:~/Workspace/scala$ fsc RPNCalc.scala
+:~/Workspace/scala$ scala RPNCalc
+5 1 2 + 4 * 3 - +
+exp=14.00
+19 2.14 + 4.5 2 4.3 / - *
+exp=85.30
+</code></pre><h2 id="python">Python</h2>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#505050">#!/usr/bin/env python</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> sys
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> re
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>OPS <span style="color:#00538b">=</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#2544bb">&#39;+&#39;</span> : (<span style="color:#5317ac">lambda</span> x, y: x <span style="color:#00538b">+</span> y),
+</span></span><span style="display:flex;"><span>		<span style="color:#2544bb">&#39;-&#39;</span> : (<span style="color:#5317ac">lambda</span> x, y: y <span style="color:#00538b">-</span> x),
+</span></span><span style="display:flex;"><span>		<span style="color:#2544bb">&#39;\*&#39;</span> : (<span style="color:#5317ac">lambda</span> x, y: x <span style="color:#00538b">*</span> y),
+</span></span><span style="display:flex;"><span>		<span style="color:#2544bb">&#39;/&#39;</span> : (<span style="color:#5317ac">lambda</span> x, y: y <span style="color:#00538b">/</span> x)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">def</span> <span style="color:#721045">evalTokens</span>(tokens):
+</span></span><span style="display:flex;"><span>	stack <span style="color:#00538b">=</span> []
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">for</span> token <span style="color:#00538b">in</span> tokens:
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">if</span> token <span style="color:#00538b">in</span> OPS:
+</span></span><span style="display:flex;"><span>			stack<span style="color:#00538b">.</span>append(OPS[token](stack<span style="color:#00538b">.</span>pop(), stack<span style="color:#00538b">.</span>pop()))
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">else</span>:
+</span></span><span style="display:flex;"><span>			stack<span style="color:#00538b">.</span>append(<span style="color:#8f0075">float</span>(token))
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">return</span> stack<span style="color:#00538b">.</span>pop()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">if</span> <span style="color:#00538b">__name__</span><span style="color:#00538b">==</span><span style="color:#2544bb">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">while</span> <span style="color:#0000c0">True</span>:
+</span></span><span style="display:flex;"><span>		<span style="color:#505050"># Read line by line from stdin + tokenize line + evaluates line</span>
+</span></span><span style="display:flex;"><span>		tokens <span style="color:#00538b">=</span> re<span style="color:#00538b">.</span>split(<span style="color:#2544bb">&#34; &#34;</span>, sys<span style="color:#00538b">.</span>stdin<span style="color:#00538b">.</span>readline()<span style="color:#00538b">.</span>strip())
+</span></span><span style="display:flex;"><span>		<span style="color:#8f0075">print</span> tokens
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">if</span> <span style="color:#00538b">not</span> tokens:
+</span></span><span style="display:flex;"><span>			<span style="color:#5317ac">break</span>
+</span></span><span style="display:flex;"><span>		sys<span style="color:#00538b">.</span>stdout<span style="color:#00538b">.</span>write(<span style="color:#2544bb">&#34;exp=</span><span style="color:#2544bb">%2.2f</span><span style="color:#2544bb">n&#34;</span> <span style="color:#00538b">%</span> evalTokens(tokens)) 
+</span></span></code></pre></div><h2 id="haskell">Haskell</h2>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-haskell" data-lang="haskell"><span style="display:flex;"><span><span style="color:#5317ac">import</span> <span style="color:#5317ac">qualified</span> Data.List <span style="color:#5317ac">as</span> List
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> <span style="color:#5317ac">qualified</span> Data.Map <span style="color:#5317ac">as</span> Map
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">{-- List of supported Operators -&gt; mapping with functions --}</span>
+</span></span><span style="display:flex;"><span><span style="color:#721045">ops</span> <span style="color:#00538b">=</span> <span style="color:#005a5f">Map</span><span style="color:#00538b">.</span>fromList [(<span style="color:#2544bb">&#34;+&#34;</span>, (<span style="color:#00538b">+</span>)),
+</span></span><span style="display:flex;"><span>					(<span style="color:#2544bb">&#34;-&#34;</span>, flip (<span style="color:#00538b">-</span>)),
+</span></span><span style="display:flex;"><span>					(<span style="color:#2544bb">&#34;*&#34;</span>, (<span style="color:#00538b">*</span>)),
+</span></span><span style="display:flex;"><span>					(<span style="color:#2544bb">&#34;/&#34;</span>, flip <span style="color:#8f0075">()</span>)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">{-- Calculates value based on the operator string and two number args --}</span>
+</span></span><span style="display:flex;"><span><span style="color:#721045">opsEval</span> <span style="color:#00538b">::</span> <span style="color:#005a5f">String</span> <span style="color:#00538b">-&gt;</span> <span style="color:#005a5f">Float</span> <span style="color:#00538b">-&gt;</span> <span style="color:#005a5f">Float</span> <span style="color:#00538b">-&gt;</span> <span style="color:#005a5f">Float</span>
+</span></span><span style="display:flex;"><span><span style="color:#721045">opsEval</span> key n1 n2 <span style="color:#00538b">=</span> <span style="color:#5317ac">case</span> (<span style="color:#005a5f">Map</span><span style="color:#00538b">.</span>lookup key ops) <span style="color:#5317ac">of</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#005a5f">Just</span> op <span style="color:#00538b">-&gt;</span> op n1 n2
+</span></span><span style="display:flex;"><span>	<span style="color:#005a5f">Nothing</span> <span style="color:#00538b">-&gt;</span> error(<span style="color:#2544bb">&#34;Invalid operator&#34;</span> <span style="color:#00538b">++</span> key)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">{-- The first two elements from the list are poped from the stack, and based
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">on the operator, the result is pushed back onto the stack --}</span>
+</span></span><span style="display:flex;"><span><span style="color:#721045">evalStack</span> <span style="color:#00538b">::</span> [<span style="color:#005a5f">Float</span>] <span style="color:#00538b">-&gt;</span> <span style="color:#005a5f">String</span> <span style="color:#00538b">-&gt;</span> [<span style="color:#005a5f">Float</span>]
+</span></span><span style="display:flex;"><span><span style="color:#721045">evalStack</span> <span style="color:#005a5f">[]</span> key <span style="color:#00538b">=</span> <span style="color:#005a5f">[]</span>
+</span></span><span style="display:flex;"><span><span style="color:#721045">evalStack</span> [x] key <span style="color:#00538b">=</span> [x]
+</span></span><span style="display:flex;"><span><span style="color:#721045">evalStack</span> (x<span style="color:#005a5f">:</span>y<span style="color:#005a5f">:</span>xs) key <span style="color:#00538b">=</span> (opsEval key x y) <span style="color:#005a5f">:</span> xs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">{-- The recursive function to evaluate the expression --}</span>
+</span></span><span style="display:flex;"><span><span style="color:#721045">evalRpnExprRec</span> <span style="color:#00538b">::</span> [<span style="color:#005a5f">Float</span>] <span style="color:#00538b">-&gt;</span> [<span style="color:#005a5f">String</span>] <span style="color:#00538b">-&gt;</span> <span style="color:#005a5f">Float</span>
+</span></span><span style="display:flex;"><span><span style="color:#721045">evalRpnExprRec</span> stack <span style="color:#005a5f">[]</span> <span style="color:#00538b">=</span> <span style="color:#005a5f">List</span><span style="color:#00538b">.</span>head stack
+</span></span><span style="display:flex;"><span><span style="color:#721045">evalRpnExprRec</span> stack (tok<span style="color:#005a5f">:</span>toks)
+</span></span><span style="display:flex;"><span>	<span style="color:#00538b">|</span> <span style="color:#005a5f">Map</span><span style="color:#00538b">.</span>member tok ops <span style="color:#00538b">=</span> evalRpnExprRec (evalStack stack tok) toks
+</span></span><span style="display:flex;"><span>	<span style="color:#00538b">|</span> otherwise	<span style="color:#00538b">=</span> <span style="color:#5317ac">let</span> tokVal <span style="color:#00538b">=</span> read tok <span style="color:#00538b">::</span> <span style="color:#005a5f">Float</span>
+</span></span><span style="display:flex;"><span>				  <span style="color:#5317ac">in</span> evalRpnExprRec (tokVal<span style="color:#005a5f">:</span> stack) toks
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">{-- Evaluates RPN Expression --}</span>
+</span></span><span style="display:flex;"><span><span style="color:#721045">evalRpnExpr</span> <span style="color:#00538b">::</span> <span style="color:#005a5f">String</span> <span style="color:#00538b">-&gt;</span> <span style="color:#005a5f">Float</span>
+</span></span><span style="display:flex;"><span><span style="color:#721045">evalRpnExpr</span> raw <span style="color:#00538b">=</span> evalRpnExprRec <span style="color:#005a5f">[]</span> (<span style="color:#005a5f">List</span><span style="color:#00538b">.</span>words raw)
+</span></span></code></pre></div>
+</content>
+
+<div style="font-size:0.8em;display:flex;gap:16px;justify-content:center;">
+  <p>
+    
+    <a href="http://localhost:1313/2010/09/30/generic-data-structures-in-c/">
+      &lt;&lt; Previous Post</a>
+        
+  </p>
+  <p>|</p>
+  <p>
+    
+    <a href="http://localhost:1313/2010/10/05/converting-infix-to-rpn-shunting-yard-algorithm/">Next Post >></a>
+    
+  </p>
+</div>
+
+
+
+
+
+  <div class="related-posts" style="border: 2px solid #d3d6db; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; background-color: #fafafa;">
+    <h1 style="margin-top: 0;">Related Articles</h3>
+    <p style="font-size: 0.95em; color: #555;">I'm so glad you made it to the end. The following articles are loosely related to this one:</p>
+    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-03-28">
+            Mar 28, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/03/28/my-list-of-challenging-software-projects-some-programmers-should-try/" style="margin-left: 0.25rem;">My list of challenging software projects some programmers should try</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2023-02-01">
+            Feb 01, 2023
+          </time>
+          &mdash; 
+          <a href="/2023/02/01/demystifying-bitwise-operations-a-gentle-c-tutorial/" style="margin-left: 0.25rem;">Demystifying bitwise operations, a gentle C tutorial</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-09-01">
+            Sep 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/09/01/building-pathological-input-for-java-hashmaps-hash-collisions-generator/" style="margin-left: 0.25rem;">Building pathological input for Java HashMaps - hash collisions generator</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-05-01">
+            May 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/05/01/4-integers-are-enough-to-write-a-snake-game/" style="margin-left: 0.25rem;">4 integers are enough to write a Snake Game</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-10">
+            Apr 10, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/10/a-blog-that-is-a-single-executable-binary/" style="margin-left: 0.25rem;">A blog that is a single executable binary</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-01">
+            Apr 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/01/ive-promised-myself-never-to-use-gradle/" style="margin-left: 0.25rem;">I&#39;ve promised myself never to use gradle</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-03-15">
+            Mar 15, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/03/15/hash-displace-and-compress-perfect-hashing-with-java/" style="margin-left: 0.25rem;">Hash, displace, and compress: Perfect hashing with Java</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-03-15">
+            Mar 15, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/03/15/on-implementing-bloom-filters-in-c/" style="margin-left: 0.25rem;">On implementing Bloom Filters in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-12-01">
+            Dec 01, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/12/01/writing-a-simple-16-bit-vm-in-less-than-125-lines-of-c/" style="margin-left: 0.25rem;">Writing a simple 16 bit VM in less than 125 lines of C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-11-08">
+            Nov 08, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/11/08/a-tale-of-java-hash-tables/" style="margin-left: 0.25rem;">A tale of Java Hash Tables</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-10-02">
+            Oct 02, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/10/02/implementing-hash-tables-in-c/" style="margin-left: 0.25rem;">Implementing Hash Tables in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-04-22">
+            Apr 22, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/04/22/writing-a-universal-chess-interface-uci-client-in-java/" style="margin-left: 0.25rem;">Writing a Universal Chess Interface (UCI) Client in Java</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-25">
+            Jan 25, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/25/computing-eigenvalues-and-eigenvectors-using-qr-decomposition/" style="margin-left: 0.25rem;">Computing Eigenvalues and Eigenvectors using QR Decomposition</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-20">
+            Jan 20, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c/" style="margin-left: 0.25rem;">Writing your own linear algebra matrix library in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2011-06-01">
+            Jun 01, 2011
+          </time>
+          &mdash; 
+          <a href="/2011/06/01/implementing-a-generic-priority-queue-in-c/" style="margin-left: 0.25rem;">Implementing a generic Priority Queue in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2010-10-05">
+            Oct 05, 2010
+          </time>
+          &mdash; 
+          <a href="/2010/10/05/converting-infix-to-rpn-shunting-yard-algorithm/" style="margin-left: 0.25rem;">Converting infix to RPN (shunting-yard algorithm)</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2010-09-30">
+            Sep 30, 2010
+          </time>
+          &mdash; 
+          <a href="/2010/09/30/generic-data-structures-in-c/" style="margin-left: 0.25rem;">Generic data structures in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2010-08-09">
+            Aug 09, 2010
+          </time>
+          &mdash; 
+          <a href="/2010/08/09/hello-world/" style="margin-left: 0.25rem;">Hello world!</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+  </main>
+  <footer>
+    <div class="mpt">The opinions expressed on this blog are highly personal.</div>
+
+</footer>
+</body>
+
+</html>

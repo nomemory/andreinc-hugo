@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Converting infix to RPN (shunting-yard algorithm) | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="Converting infix to RPN (shunting-yard algorithm)" />
+<meta name="description" content="
+title: &ldquo;Converting infix to RPN (shunting-yard algorithm)&rdquo;
+date: &ldquo;2010-10-05&rdquo;
+classes: wide
+excerpt: &ldquo;The shunting-yard algorithm implemented in Java.&rdquo;
+categories:
+
+&ldquo;algorithms&rdquo;
+&ldquo;java&rdquo;
+tags:
+&ldquo;algorithm&rdquo;
+&ldquo;calculator&rdquo;
+&ldquo;conversion&rdquo;
+&ldquo;converter&rdquo;
+&ldquo;infix&rdquo;
+&ldquo;infix-to-rpn&rdquo;
+&ldquo;infix-to-rpn-conversion&rdquo;
+&ldquo;java-implementation&rdquo;
+&ldquo;mathematical-expressions&rdquo;
+&ldquo;notation&rdquo;
+&ldquo;operators&rdquo;
+&ldquo;programming-exercise&rdquo;
+&ldquo;python&rdquo;
+&ldquo;reverse-polish-notation&rdquo;
+&ldquo;rpn&rdquo;
+&ldquo;shunting-yard-algorithm&rdquo;
+
+
+Introduction
+If you&rsquo;ve ever tried to write your own calculator, you&rsquo;ve probably needed a way to convert mathematical expressions written in the usual infix notation into Reverse Polish Notation (RPN). This post walks through that conversion using the classic shunting-yard algorithm, and shows a (hopefully) compact Java implementation." />
+<meta name="keywords" content="c,algorithms," /><meta name="referrer" content="no-referrer-when-downgrade" />
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: #F6F8FA;  
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #222222;  
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #111111;  
+  }
+
+  a {
+    color: #0056b3;  
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #003d80;  
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  strong {
+    color: #222222;  
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  hr {
+    border: none;  
+    border-top: 1px solid #e5e5e5;  
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 4px solid #0056b3;  
+    color: #444444;  
+    padding-left: 1rem;  
+    font-style: italic;
+    background: #fafafa;  
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+  .mp {
+    border: thin solid #ccc;
+    background-color: #F0F0F0;
+    padding: 25px;
+    width: inherit;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .mpl {
+    position: relative;
+    font: 0.7rem/1.1 sans-serif;  
+    font-style: italic;
+    text-decoration: none;        
+    background: #F0F0F0;
+    border-radius: 1px;
+    border: 0px solid #ccd;
+  }
+
+  .mpt {
+    padding: 25px;
+    font-style: italic;
+    color: #666;
+  }
+
+  .mpc {
+    text-align: center;
+  }
+
+  .mpn {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 0.8rem;
+    color: #777;
+  }
+
+  .meta, .post-meta {
+    color: #555555;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+   
+  table {
+    width: 100%;
+    border-collapse: collapse;  
+    margin: 1.5rem 0;           
+    font-size: 0.95rem;         
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #ddd;
+  }
+
+  tbody td {
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+   
+  tbody tr:hover {
+    background: #fafafa;
+  }
+
+   
+  table code {
+    background: #f3f3f3;
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+   
+  .site-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .global-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e5e5;  
+  }
+
+  .global-nav a {
+    font-weight: 600;
+    color: #222222;  
+    text-decoration: none;
+    font-size: 1.05rem;
+    transition: color 0.2s ease;
+  }
+
+  .global-nav a:hover {
+    color: #0056b3;  
+    text-decoration: underline;
+  }
+
+   
+  .global-nav a.active {
+    color: #0056b3;
+  }
+</style>
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+  <header><header class="site-header">
+  <nav class="global-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/about/">About</a>
+    
+      <a href="/links/">Links</a>
+    
+      <a href="/index.xml">RSS</a>
+    
+  </nav>
+</header></header>
+  <main>
+
+
+<h1>Converting infix to RPN (shunting-yard algorithm)</h1>
+<p>
+  <i>
+    <time datetime='2010-09-30'>
+      30 Sep, 2010
+    </time>
+  </i>
+</p>
+
+<content>
+  <hr>
+<p>title: &ldquo;Converting infix to RPN (shunting-yard algorithm)&rdquo;
+date: &ldquo;2010-10-05&rdquo;
+classes: wide
+excerpt: &ldquo;The shunting-yard algorithm implemented in Java.&rdquo;
+categories:</p>
+<ul>
+<li>&ldquo;algorithms&rdquo;</li>
+<li>&ldquo;java&rdquo;
+tags:</li>
+<li>&ldquo;algorithm&rdquo;</li>
+<li>&ldquo;calculator&rdquo;</li>
+<li>&ldquo;conversion&rdquo;</li>
+<li>&ldquo;converter&rdquo;</li>
+<li>&ldquo;infix&rdquo;</li>
+<li>&ldquo;infix-to-rpn&rdquo;</li>
+<li>&ldquo;infix-to-rpn-conversion&rdquo;</li>
+<li>&ldquo;java-implementation&rdquo;</li>
+<li>&ldquo;mathematical-expressions&rdquo;</li>
+<li>&ldquo;notation&rdquo;</li>
+<li>&ldquo;operators&rdquo;</li>
+<li>&ldquo;programming-exercise&rdquo;</li>
+<li>&ldquo;python&rdquo;</li>
+<li>&ldquo;reverse-polish-notation&rdquo;</li>
+<li>&ldquo;rpn&rdquo;</li>
+<li>&ldquo;shunting-yard-algorithm&rdquo;</li>
+</ul>
+<hr>
+<h1 id="introduction">Introduction</h1>
+<p>If you&rsquo;ve ever tried to write your own calculator, you&rsquo;ve probably needed a way to convert mathematical expressions written in the usual <em>infix</em> notation into <a href="http://en.wikipedia.org/wiki/Postfix_notation">Reverse Polish Notation (RPN)</a>. This post walks through that conversion using the classic <strong>shunting-yard algorithm</strong>, and shows a (hopefully) compact Java implementation.</p>
+<p>Before we jump into the algorithm, let&rsquo;s make sure we&rsquo;re on the same page about the terminology: <em>infix notation</em> and <em>rpn</em>.</p>
+<p><a href="http://en.wikipedia.org/wiki/Infix_notation">Infix notation</a>: this is the “normal” notation you use every day: operators are written <em>between</em> operands (e.g. <code>A + B</code>, <code>3 * (4 + 5)</code>). It&rsquo;s natural for humans, but surprisingly annoying to parse for computers because you need to consider parentheses and operator precedence.</p>
+<p><a href="http://en.wikipedia.org/wiki/Postfix_notation">RPN (Reverse Polish Notation)</a>: this is the computer friendly notation, as every operator comes <em>after</em> its operands. Parentheses are not needed, and evaluation is very straightforward using a stack.</p>
+<p>Some examples:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Infix</th>
+          <th>Reverse Polish Notation (RPN)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>A + B</code></td>
+          <td><code>A B +</code></td>
+      </tr>
+      <tr>
+          <td><code>A ^ 2 + 2 * A * B + B ^ 2</code></td>
+          <td><code>A 2 ^ 2 A * B * + B 2 ^ +</code></td>
+      </tr>
+      <tr>
+          <td><code>((1 + 2) / 3) ^ 4</code></td>
+          <td><code>1 2 + 3 / 4 ^</code></td>
+      </tr>
+      <tr>
+          <td><code>(1 + 2) * (3 / 4) ^ (5 + 6)</code></td>
+          <td><code>1 2 + 3 4 / 5 6 + ^ *</code></td>
+      </tr>
+  </tbody>
+</table>
+<p>Once an expression is in RPN, evaluating it is just a matter of pushing operands onto a stack and applying operators as you encounter them. But first we need a reliable way to <strong>convert</strong> from infix to RPN.</p>
+<p>To convert infix expressions to RPN we’ll use the <strong><a href="http://en.wikipedia.org/wiki/Shunting-yard_algorithm">shunting-yard algorithm</a></strong>, designed by the one and only <a href="https://en.wikipedia.org/wiki/Edsger_W._Dijkstra">Edsger Dijkstra</a>.</p>
+<p>The &ldquo;simplified&rdquo; version of the algorithm states the following:</p>
+<table border="1"><tbody><tr><td>A <strong>simplified</strong> version of the <strong>Shunting-yard algorithm </strong>(complete&nbsp;<a href="http://en.wikipedia.org/wiki/Shunting-yard_algorithm#The_algorithm_in_detail">version</a>)</td></tr><tr><td><ul><li>For all input tokens <sup>[S1]</sup>:<ul><li>Read the next token <sup>[S2]</sup>;</li><li>If the token is an operator <strong>(x) </strong><sup>[S3]</sup>:<ul><li>While there is an operator <strong>(y)</strong> at the top of the operators stack and: <strong>(x)</strong> is <a href="http://en.wikipedia.org/wiki/Operator_associativity" target="_blank">left-associative</a> and its <a href="http://en.wikipedia.org/wiki/Order_of_operations" target="_blank">precedence</a> is less or equal to that of <strong>(y),</strong> or&nbsp;<strong>(x)</strong> is <a href="http://en.wikipedia.org/wiki/Operator_associativity" target="_blank">right-associative</a> and its precedence is less than <strong>(y) </strong><sup>[S4]</sup>:<ul><li>Pop <strong>(y) </strong>from the stack&nbsp;<sup>[S5]</sup>;</li><li>Add <strong>(y) </strong>to the output buffer&nbsp;<sup>[S6]</sup>;</li></ul></li><li>Push (x) on the stack&nbsp;<sup>[S7]</sup>;</li></ul></li><li>Else if the token is left&nbsp;parenthesis, then push it on the stack&nbsp;<sup>[S8]</sup>;</li><li>Else if the token is a right&nbsp;parenthesis&nbsp;<sup>[S9]</sup>:<ul><li>Until the top token (from the stack) is left parenthesis, pop from the stack to the output buffer&nbsp;<sup>[S10]</sup>;</li><li>Also pop the left&nbsp;parenthesis&nbsp;but don't include it in the output buffer&nbsp;<sup>[S11]</sup>;</li></ul></li><li>Else add token to output buffer&nbsp;<sup>[S12]</sup>.</li></ul></li><li>While there are still operator tokens in the stack, pop them to output<sup> [S13]</sup></li></ul>Note: <sup>[SN] </sup>Relate with code.</td></tr></tbody></table>
+<blockquote>
+<p>Note: These step labels <code>[SN]</code> will directly appear as comments in the Java code so you can easily match the theory to the implementation.</p>
+</blockquote>
+<h1 id="implementation">Implementation</h1>
+<p>The code lives on GitHub and can be cloned with:</p>
+<pre tabindex="0"><code>git clone nomemory/blog-java-shunting-yard
+</code></pre><p>Important: This implementation assumes the input is already tokenized and represents a valid mathematical expression (matching parentheses, no unknown operators, etc.). If the expression is invalid, the code may throw exceptions or behave incorrectly - there is no validation layer here.</p>
+<h1 id="the-operators">The Operators</h1>
+<p>Operators can have either LEFT <a href="https://en.wikipedia.org/wiki/Operator_associativity">Associativity</a> (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>), or RIGHT <a href="https://en.wikipedia.org/wiki/Operator_associativity">Associativity</a> (<code>^</code>), so we are going to use an <code>Enum</code> with two possible values <code>Left</code> and <code>Right</code>:</p>
+<p>First, we model associativity. For our simple calculator, we support the following operators:</p>
+<ul>
+<li>Left-associative: <code>+</code>, <code>-</code>, <code>*</code>,<code>/</code>, <code>%</code> (modulus)</li>
+<li>Right-associative: <code>^</code> (exponentiation)</li>
+</ul>
+<p>We represent associativity with a simple <code>enum</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">enum</span> Associativity {
+</span></span><span style="display:flex;"><span>    LEFT,
+</span></span><span style="display:flex;"><span>    RIGHT
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Moreover, operators have different <a href="https://en.wikipedia.org/wiki/Order_of_operations?oldformat=true">precedence</a>. For example, multiplication and division bind more tightly than addition and subtraction, exponentiation more tightly than both, etc.</p>
+<p>We&rsquo;ll model the precendence using another <code>enum</code> that stores:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">enum</span> Operator <span style="color:#5317ac">implements</span> Comparable<span style="color:#00538b">&lt;</span>Operator<span style="color:#00538b">&gt;</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ADDITION(<span style="color:#2544bb">&#34;+&#34;</span>, Associativity.LEFT, 0),
+</span></span><span style="display:flex;"><span>    SUBTRACTION(<span style="color:#2544bb">&#34;-&#34;</span>, Associativity.LEFT, 0),
+</span></span><span style="display:flex;"><span>    DIVISION(<span style="color:#2544bb">&#34;/&#34;</span>, Associativity.LEFT, 5),
+</span></span><span style="display:flex;"><span>    MULTIPLICATION(<span style="color:#2544bb">&#34;*&#34;</span>, Associativity.LEFT, 5),
+</span></span><span style="display:flex;"><span>    MODULUS(<span style="color:#2544bb">&#34;%&#34;</span>, Associativity.LEFT, 5),
+</span></span><span style="display:flex;"><span>    POWER(<span style="color:#2544bb">&#34;^&#34;</span>, Associativity.RIGHT, 10);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">final</span> Associativity associativity;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">final</span> <span style="color:#005a5f">int</span> precedence;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">final</span> String symbol;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Operator(String symbol, Associativity associativity, <span style="color:#005a5f">int</span> precedence) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">this</span>.symbol <span style="color:#00538b">=</span> symbol;
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">this</span>.associativity <span style="color:#00538b">=</span> associativity;
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">this</span>.precedence <span style="color:#00538b">=</span> precedence;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#005a5f">int</span> <span style="color:#721045">comparePrecedence</span>(Operator operator) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> <span style="color:#5317ac">this</span>.precedence <span style="color:#00538b">-</span> operator.precedence;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>For example, <code>+</code> has a lower precedence than <code>%</code> (modulus), <code>^</code> has a higher precedence than <code>%</code>.</p>
+<h1 id="the-algorithm">The algorithm</h1>
+<p>The <code>S[x]</code> comments directly correspond to the algorithm steps described earlier.</p>
+<p>Please follow the comments:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">package</span> net.andreinc.shunting.yard;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.util.*;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import static</span> net.andreinc.shunting.yard.Associativity.LEFT;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import static</span> net.andreinc.shunting.yard.Associativity.RIGHT;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">class</span> ShuntingYard {
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// A lookup table for operators by symbol, e.g. &#34;+&#34; -&gt; ADDITION, &#34;^&#34; -&gt; POWER</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">final</span> <span style="color:#5317ac">static</span> Map<span style="color:#00538b">&lt;</span>String, Operator<span style="color:#00538b">&gt;</span> OPS <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> HashMap<span style="color:#00538b">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">static</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Build a map with all existing operators by iterating over the enum values</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// and filling the map with:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// &lt;K, V&gt; = &lt;symbol, Operator(symbol, Associativity, Precedence)&gt;   </span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">for</span> (Operator operator : Operator.values()) {
+</span></span><span style="display:flex;"><span>        OPS.put(operator.symbol, operator);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#5317ac">static</span> List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> <span style="color:#721045">shuntingYard</span>(List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> tokens) {
+</span></span><span style="display:flex;"><span>        List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> output <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> LinkedList<span style="color:#00538b">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>        Stack<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> stack <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> Stack<span style="color:#00538b">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>         <span style="color:#505050">// For all the input tokens [S1], read the next token [S2]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">for</span> (String token : tokens) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">if</span> (OPS.containsKey(token)) {
+</span></span><span style="display:flex;"><span>                 <span style="color:#505050">// Token is an operator [S3]</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#5317ac">while</span> (<span style="color:#00538b">!</span>stack.isEmpty() <span style="color:#00538b">&amp;&amp;</span> OPS.containsKey(stack.peek())) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#505050">// While there is an operator (y) at the top of the stack and</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#505050">// either (x) is left-associative and its precedence is less or equal to</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#505050">// that of (y), or (x) is right-associative and its precedence</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#505050">// is less than (y) [S4]:</span>
+</span></span><span style="display:flex;"><span>                    Operator cOp <span style="color:#00538b">=</span> OPS.get(token); <span style="color:#505050">// Current operator (x)</span>
+</span></span><span style="display:flex;"><span>                    Operator lOp <span style="color:#00538b">=</span> OPS.get(stack.peek()); <span style="color:#505050">// Top operator from the stack (y)</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#5317ac">if</span> ((cOp.associativity <span style="color:#00538b">==</span> LEFT <span style="color:#00538b">&amp;&amp;</span> cOp.comparePrecedence(lOp) <span style="color:#00538b">&lt;=</span> 0) <span style="color:#00538b">||</span>
+</span></span><span style="display:flex;"><span>                            (cOp.associativity <span style="color:#00538b">==</span> RIGHT <span style="color:#00538b">&amp;&amp;</span> cOp.comparePrecedence(lOp) <span style="color:#00538b">&lt;</span> 0)) {
+</span></span><span style="display:flex;"><span>                        <span style="color:#505050">// Pop (y) from the stack S[5]</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#505050">// Add (y) output buffer S[6]</span>
+</span></span><span style="display:flex;"><span>                        output.add(stack.pop());
+</span></span><span style="display:flex;"><span>                        <span style="color:#5317ac">continue</span>;
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                    <span style="color:#5317ac">break</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                <span style="color:#505050">// Push the new operator on the stack S[7]</span>
+</span></span><span style="display:flex;"><span>                stack.push(token);
+</span></span><span style="display:flex;"><span>            } <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (<span style="color:#2544bb">&#34;(&#34;</span>.equals(token)) {
+</span></span><span style="display:flex;"><span>                 <span style="color:#505050">// Token is a left parenthesis -&gt; push it on the stack [S8]</span>
+</span></span><span style="display:flex;"><span>                stack.push(token);
+</span></span><span style="display:flex;"><span>            } <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (<span style="color:#2544bb">&#34;)&#34;</span>.equals(token)) {
+</span></span><span style="display:flex;"><span>                <span style="color:#505050">// Token is a right parenthesis [S9]</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#5317ac">while</span> (<span style="color:#00538b">!</span>stack.isEmpty() <span style="color:#00538b">&amp;&amp;</span> <span style="color:#00538b">!</span>stack.peek().equals(<span style="color:#2544bb">&#34;(&#34;</span>)) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#505050">// Until the top token is a left parenthesis, pop from stack</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#505050">// to the output buffer [S10]</span>
+</span></span><span style="display:flex;"><span>                    output.add(stack.pop());
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                <span style="color:#505050">// Pop the left parenthesis and discard it (do not add to output) [S11]</span>
+</span></span><span style="display:flex;"><span>                stack.pop();
+</span></span><span style="display:flex;"><span>            } <span style="color:#5317ac">else</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#505050">// Else add token to output buffer S[12]</span>
+</span></span><span style="display:flex;"><span>                output.add(token);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// After reading all tokens:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">while</span> (<span style="color:#00538b">!</span>stack.isEmpty()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#505050">// While there are still operator tokens on the stack, pop them to output [S13]</span>
+</span></span><span style="display:flex;"><span>            output.add(stack.pop());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span> output;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In the example and tests below, expressions are tokenized using a simple <code>&quot; &quot;.split(&quot; &quot;)</code>. That means each token (number,  operator, parenthesis) is separated by space. In a <em>real-world</em> calculator, you&rsquo;ll typically write a proper tokenizer that can handle: multidigit numbers, decimal points, unary minus, functions or variables names.</p>
+<h1 id="testing-the-code">Testing the code</h1>
+<p>Here are two JUnit tests that validate the implementation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">import</span> org.junit.jupiter.api.Test;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.util.Arrays;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.util.List;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import static</span> net.andreinc.shunting.yard.ShuntingYard.shuntingYard;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import static</span> org.assertj.core.api.Assertions.assertThat;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">class</span> ShuntingYardTest {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    @Test
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">test1</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> given <span style="color:#00538b">=</span> Arrays.asList(<span style="color:#2544bb">&#34;( 1 + 2 ) * ( 3 / 4 ) ^ ( 5 + 6 )&#34;</span>.split(<span style="color:#2544bb">&#34; &#34;</span>));
+</span></span><span style="display:flex;"><span>        List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> expected <span style="color:#00538b">=</span> List.of(<span style="color:#2544bb">&#34;1&#34;</span>, <span style="color:#2544bb">&#34;2&#34;</span>, <span style="color:#2544bb">&#34;+&#34;</span>, <span style="color:#2544bb">&#34;3&#34;</span>, <span style="color:#2544bb">&#34;4&#34;</span>, <span style="color:#2544bb">&#34;/&#34;</span>, <span style="color:#2544bb">&#34;5&#34;</span>, <span style="color:#2544bb">&#34;6&#34;</span>, <span style="color:#2544bb">&#34;+&#34;</span>, <span style="color:#2544bb">&#34;^&#34;</span>, <span style="color:#2544bb">&#34;*&#34;</span>);
+</span></span><span style="display:flex;"><span>        List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> computed <span style="color:#00538b">=</span> shuntingYard(given);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        System.out.println(<span style="color:#2544bb">&#34;infix:&#34;</span> <span style="color:#00538b">+</span> given);
+</span></span><span style="display:flex;"><span>        System.out.println(<span style="color:#2544bb">&#34;rpn (expected):&#34;</span> <span style="color:#00538b">+</span> expected);
+</span></span><span style="display:flex;"><span>        System.out.println(<span style="color:#2544bb">&#34;rpn (computed):&#34;</span> <span style="color:#00538b">+</span> computed);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        assertThat(computed).isEqualTo(expected);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    @Test
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">test2</span>() {
+</span></span><span style="display:flex;"><span>        List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> given <span style="color:#00538b">=</span> Arrays.asList(<span style="color:#2544bb">&#34;A ^ 2 + 2 * A * B + B ^ 2&#34;</span>.split(<span style="color:#2544bb">&#34; &#34;</span>));
+</span></span><span style="display:flex;"><span>        List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> expected <span style="color:#00538b">=</span> List.of(<span style="color:#2544bb">&#34;A&#34;</span>, <span style="color:#2544bb">&#34;2&#34;</span>, <span style="color:#2544bb">&#34;^&#34;</span>, <span style="color:#2544bb">&#34;2&#34;</span>, <span style="color:#2544bb">&#34;A&#34;</span>, <span style="color:#2544bb">&#34;*&#34;</span>, <span style="color:#2544bb">&#34;B&#34;</span>, <span style="color:#2544bb">&#34;*&#34;</span>, <span style="color:#2544bb">&#34;+&#34;</span>, <span style="color:#2544bb">&#34;B&#34;</span>, <span style="color:#2544bb">&#34;2&#34;</span>, <span style="color:#2544bb">&#34;^&#34;</span>, <span style="color:#2544bb">&#34;+&#34;</span>);
+</span></span><span style="display:flex;"><span>        List<span style="color:#00538b">&lt;</span>String<span style="color:#00538b">&gt;</span> computed <span style="color:#00538b">=</span> shuntingYard(given);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        System.out.println(<span style="color:#2544bb">&#34;infix:&#34;</span> <span style="color:#00538b">+</span> given);
+</span></span><span style="display:flex;"><span>        System.out.println(<span style="color:#2544bb">&#34;rpn (expected):&#34;</span> <span style="color:#00538b">+</span> expected);
+</span></span><span style="display:flex;"><span>        System.out.println(<span style="color:#2544bb">&#34;rpn (computed):&#34;</span> <span style="color:#00538b">+</span> computed);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        assertThat(computed).isEqualTo(expected);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Where to go from here:</p>
+<ul>
+<li>This implementation is intentionally small and focused.</li>
+<li>Possible extensions:
+<ul>
+<li>Add input validation (unknown tokens, mismatched parentheses, etc.).</li>
+<li>Implement a full tokenizer (numbers with decimals, unary minus, functions like sin, cos, etc.).</li>
+<li>Implement an RPN evaluator to go from RPN to a numeric result using a stack.</li>
+<li>Support additional operators or functions, with their own associativity and precedence.</li>
+</ul>
+</li>
+</ul>
+
+</content>
+
+<div style="font-size:0.8em;display:flex;gap:16px;justify-content:center;">
+  <p>
+    
+    <a href="http://localhost:1313/2010/09/30/generic-data-structures-in-c/">
+      &lt;&lt; Previous Post</a>
+        
+  </p>
+  <p>|</p>
+  <p>
+    
+    <a href="http://localhost:1313/2011/06/01/implementing-a-generic-priority-queue-in-c/">Next Post >></a>
+    
+  </p>
+</div>
+
+
+
+
+
+  <div class="related-posts" style="border: 2px solid #d3d6db; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; background-color: #fafafa;">
+    <h1 style="margin-top: 0;">Related Articles</h3>
+    <p style="font-size: 0.95em; color: #555;">I'm so glad you made it to the end. The following articles are loosely related to this one:</p>
+    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-03-28">
+            Mar 28, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/03/28/my-list-of-challenging-software-projects-some-programmers-should-try/" style="margin-left: 0.25rem;">My list of challenging software projects some programmers should try</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2023-02-01">
+            Feb 01, 2023
+          </time>
+          &mdash; 
+          <a href="/2023/02/01/demystifying-bitwise-operations-a-gentle-c-tutorial/" style="margin-left: 0.25rem;">Demystifying bitwise operations, a gentle C tutorial</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-09-01">
+            Sep 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/09/01/building-pathological-input-for-java-hashmaps-hash-collisions-generator/" style="margin-left: 0.25rem;">Building pathological input for Java HashMaps - hash collisions generator</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-05-01">
+            May 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/05/01/4-integers-are-enough-to-write-a-snake-game/" style="margin-left: 0.25rem;">4 integers are enough to write a Snake Game</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-10">
+            Apr 10, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/10/a-blog-that-is-a-single-executable-binary/" style="margin-left: 0.25rem;">A blog that is a single executable binary</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-01">
+            Apr 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/01/ive-promised-myself-never-to-use-gradle/" style="margin-left: 0.25rem;">I&#39;ve promised myself never to use gradle</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-03-15">
+            Mar 15, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/03/15/hash-displace-and-compress-perfect-hashing-with-java/" style="margin-left: 0.25rem;">Hash, displace, and compress: Perfect hashing with Java</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-03-15">
+            Mar 15, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/03/15/on-implementing-bloom-filters-in-c/" style="margin-left: 0.25rem;">On implementing Bloom Filters in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-12-01">
+            Dec 01, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/12/01/writing-a-simple-16-bit-vm-in-less-than-125-lines-of-c/" style="margin-left: 0.25rem;">Writing a simple 16 bit VM in less than 125 lines of C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-11-08">
+            Nov 08, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/11/08/a-tale-of-java-hash-tables/" style="margin-left: 0.25rem;">A tale of Java Hash Tables</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-10-02">
+            Oct 02, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/10/02/implementing-hash-tables-in-c/" style="margin-left: 0.25rem;">Implementing Hash Tables in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-04-22">
+            Apr 22, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/04/22/writing-a-universal-chess-interface-uci-client-in-java/" style="margin-left: 0.25rem;">Writing a Universal Chess Interface (UCI) Client in Java</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-25">
+            Jan 25, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/25/computing-eigenvalues-and-eigenvectors-using-qr-decomposition/" style="margin-left: 0.25rem;">Computing Eigenvalues and Eigenvectors using QR Decomposition</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-20">
+            Jan 20, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c/" style="margin-left: 0.25rem;">Writing your own linear algebra matrix library in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2011-06-01">
+            Jun 01, 2011
+          </time>
+          &mdash; 
+          <a href="/2011/06/01/implementing-a-generic-priority-queue-in-c/" style="margin-left: 0.25rem;">Implementing a generic Priority Queue in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2010-09-30">
+            Sep 30, 2010
+          </time>
+          &mdash; 
+          <a href="/2010/09/30/generic-data-structures-in-c/" style="margin-left: 0.25rem;">Generic data structures in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2010-08-09">
+            Aug 09, 2010
+          </time>
+          &mdash; 
+          <a href="/2010/08/09/hello-world/" style="margin-left: 0.25rem;">Hello world!</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+  </main>
+  <footer>
+    <div class="mpt">The opinions expressed on this blog are highly personal.</div>
+
+</footer>
+</body>
+
+</html>

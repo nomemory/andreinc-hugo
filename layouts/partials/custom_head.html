@@ -1,0 +1,23 @@
+{{ if .Params.usekatex }}
+    {{ partial "katex.html" . }}
+{{ end }}
+
+{{ if .Params.usep5js }}
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+{{ end }}
+
+{{ range .Params.customJS }}
+    <script src="{{ . }}"></script>
+{{ end }}
+
+{{ range .Params.customAsyncJS }}
+    <script src="{{ . }}" async></script>
+{{ end }}
+
+{{ range .Params.customDeferJS }}
+    <script src="{{ . }}" defer></script>
+{{ end }}
+
+{{ range .Params.customCSS }}
+    <link rel="stylesheet" href="{{ . }}">
+{{ end }}

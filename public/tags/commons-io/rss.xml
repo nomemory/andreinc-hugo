@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Commons-Io on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/commons-io/</link>
+    <description>Recent content in Commons-Io on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 30 Jun 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/commons-io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Writing a simple file monitor in Java using Commons IO</title>
+      <link>http://localhost:1313/2012/06/30/writing-a-simple-file-monitor-in-java-using-commons-io/</link>
+      <pubDate>Sat, 30 Jun 2012 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2012/06/30/writing-a-simple-file-monitor-in-java-using-commons-io/</guid>
+      <description>&lt;p&gt;Even though Java 7 comes with a low-level API to watch for file system changes (article &lt;a href=&#34;http://java.dzone.com/news/how-watch-file-system-changes&#34;&gt;here&lt;/a&gt;), there&amp;rsquo;s also the option to use the &lt;a href=&#34;http://commons.apache.org/io/&#34;&gt;Commons IO&lt;/a&gt; library from the &lt;a href=&#34;http://www.apache.org/&#34;&gt;Apache Foundation&lt;/a&gt;, mainly the &lt;a href=&#34;http://commons.apache.org/io/api-release/index.html?org/apache/commons/io/monitor/package-summary.html&#34;&gt;org.apache.commons.io.monitor&lt;/a&gt; package.&lt;/p&gt;&#xA;&lt;p&gt;The first step will be to define the location that we are going to monitor:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5317ac&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#5317ac&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#5317ac&#34;&gt;final&lt;/span&gt; String FOLDER &lt;span style=&#34;color:#00538b&#34;&gt;=&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#2544bb&#34;&gt;&amp;#34;/home/skywalker/Desktop/simple-test-monitor/watchdir&amp;#34;&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The next step will be to define a polling interval: how often we will &amp;ldquo;look&amp;rdquo; for file-system changes. The value is expressed in milliseconds:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

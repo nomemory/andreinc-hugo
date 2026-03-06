@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Best-Practices on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/best-practices/</link>
+    <description>Recent content in Best-Practices on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 04 Sep 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/best-practices/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bash Scripting - Best Practices</title>
+      <link>http://localhost:1313/2011/09/04/bash-scripting-best-practices/</link>
+      <pubDate>Sun, 04 Sep 2011 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2011/09/04/bash-scripting-best-practices/</guid>
+      <description>&lt;p&gt;A list of best practices for writing bash scripts:&lt;/p&gt;&#xA;&lt;h1 id=&#34;use-a-portable-shebang&#34;&gt;Use a portable shebang&lt;/h1&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;In computing, a shebang is the character sequence consisting of the characters number sign and exclamation mark (#!) at the beginning of a script. (source &lt;a href=&#34;https://en.wikipedia.org/wiki/Shebang_(Unix)&#34;&gt;wikipedia&lt;/a&gt;)&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;Use:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#505050&#34;&gt;#!/usr/bin/env bash&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;instead of&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#505050&#34;&gt;#!/bin/bash&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;bash&lt;/code&gt; can have various locations Eg.: &lt;code&gt;/sbin/bash&lt;/code&gt; , &lt;code&gt;/usr/local/bin/bash&lt;/code&gt;, &lt;code&gt;/usr/bin/bash&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;Note: This is not only to be applied to &lt;code&gt;bash&lt;/code&gt;, but to other shells or scripting languages.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>4 integers are enough to write a Snake Game | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="4 integers are enough to write a Snake Game" />
+<meta name="description" content="
+&hellip; actually you can use only 2, but this will make your life a little more miserable.
+
+
+  Contents
+  
+  
+    Introduction
+    The code
+    The memory layout
+      
+        map
+        vars
+        shape
+      
+    
+    The game loop
+    The function that moves the snake:
+    The function that displays the snake
+    After the macros expand
+    Final thoughts
+  
+
+
+Introduction
+
+  
+  
+
+After not implementing a game of Snake in ages, I decided to do my best today, but with some strange and absurd limitations in mind, you know, to spice things up:" />
+<meta name="keywords" content="c," /><meta name="referrer" content="no-referrer-when-downgrade" />
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: #F6F8FA;  
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #222222;  
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #111111;  
+  }
+
+  a {
+    color: #0056b3;  
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #003d80;  
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  strong {
+    color: #222222;  
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  hr {
+    border: none;  
+    border-top: 1px solid #e5e5e5;  
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 4px solid #0056b3;  
+    color: #444444;  
+    padding-left: 1rem;  
+    font-style: italic;
+    background: #fafafa;  
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+  .mp {
+    border: thin solid #ccc;
+    background-color: #F0F0F0;
+    padding: 25px;
+    width: inherit;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .mpl {
+    position: relative;
+    font: 0.7rem/1.1 sans-serif;  
+    font-style: italic;
+    text-decoration: none;        
+    background: #F0F0F0;
+    border-radius: 1px;
+    border: 0px solid #ccd;
+  }
+
+  .mpt {
+    padding: 25px;
+    font-style: italic;
+    color: #666;
+  }
+
+  .mpc {
+    text-align: center;
+  }
+
+  .mpn {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 0.8rem;
+    color: #777;
+  }
+
+  .meta, .post-meta {
+    color: #555555;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+   
+  table {
+    width: 100%;
+    border-collapse: collapse;  
+    margin: 1.5rem 0;           
+    font-size: 0.95rem;         
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #ddd;
+  }
+
+  tbody td {
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+   
+  tbody tr:hover {
+    background: #fafafa;
+  }
+
+   
+  table code {
+    background: #f3f3f3;
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+   
+  .site-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .global-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-bottom: 1px solid #e5e5e5;  
+  }
+
+  .global-nav a {
+    font-weight: 550;
+    color: #222222;
+    font-size: 1.05rem;
+    transition: color 0.5s ease;
+  }
+
+  .global-nav a:hover {
+    color: #0056b3;  
+    text-decoration: underline;
+  }
+
+   
+  .global-nav a.active {
+    color: #0056b3;
+  }
+</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof renderMathInElement !== "function") {
+    console.error("KaTeX auto-render not loaded");
+    return;
+  }
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false }
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+  <header><header class="site-header">
+  <nav class="global-nav">
+    
+      <a href="/">home</a>
+    
+      <a href="/about/">about</a>
+    
+      <a href="/links/">links</a>
+    
+      <a href="/blogroll/">blogroll</a>
+    
+      <a href="/rss.xml">rss</a>
+    
+  </nav>
+</header></header>
+  <main>
+
+
+<h1>4 integers are enough to write a Snake Game</h1>
+<p>
+  <i>
+    <time datetime='2022-05-01'>
+      01 May, 2022
+    </time>
+  </i>
+</p>
+
+<content>
+  <blockquote>
+<p>&hellip; actually you can use only 2, but this will make your life a little more miserable.</p>
+</blockquote>
+<nav class="toc">
+  <h2>Contents</h2>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#the-code">The code</a></li>
+    <li><a href="#the-memory-layout">The memory layout</a>
+      <ul>
+        <li><a href="#map"><code>map</code></a></li>
+        <li><a href="#vars"><code>vars</code></a></li>
+        <li><a href="#shape"><code>shape</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#the-game-loop">The game loop</a></li>
+    <li><a href="#the-function-that-moves-the-snake">The function that moves the snake:</a></li>
+    <li><a href="#the-function-that-displays-the-snake">The function that displays the snake</a></li>
+    <li><a href="#after-the-macros-expand">After the macros expand</a></li>
+    <li><a href="#final-thoughts">Final thoughts</a></li>
+  </ul>
+</nav>
+</nav>
+<h1 id="introduction">Introduction</h1>
+<figure class="custom-figure" style="max-width: px; margin: 2rem auto;">
+  <img 
+    src="/images/2022-05-01-4-integers-are-enough-to-write-a-snake-game/snake.gif" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>After <em>not</em> implementing a game of Snake in ages, I decided to do my best today, but with some strange and absurd limitations in mind, you know, to spice things up:</p>
+<ul>
+<li>We will store the game map in a <code>uint32_t</code> where <code>1</code>s will form the reptile&rsquo;s body. The map will contain <code>4x8</code> positions. Enough to have fun!</li>
+<li>We will keep another <code>uint64_t</code> as a directions array - this will be useful to move the snake around while keeping its growing shape intact.</li>
+<li>We will squeeze a few more 5-bit values into an <code>uint32_t</code> to keep the positions of the <code>head</code>, the <code>tail</code>, the <code>apple</code>, and the (current) <code>length</code>. Any input from the keyboard will also be kept here (2 bits will be enough).</li>
+<li>We will keep an 8-bit (<code>uint8_t</code>) variable for looping.</li>
+</ul>
+<p>Because there&rsquo;s no standard C-way of interacting with the keyboard, I will have to rely on <code>curses</code>, so if you want to compile the program, make sure you have the library installed on your system. If you&rsquo;re using the right type of operating system (Linux/macOS), chances are it&rsquo;s already there. If not, you can certainly install it via your favorite package manager.</p>
+<p>Unfortunately, <a href="https://en.wikipedia.org/wiki/Curses_%28programming_library%29"><code>curses</code></a> uses additional memory by itself, but let&rsquo;s be honest, hacking with arcane escape chars and low-level system functions is not fun, and certainly not something I am willing to try by myself right now. Yes, it&rsquo;s cheating, and this article is a fraud!</p>
+<p>Before you continue reading (if you haven&rsquo;t stopped by now), note that the code should be taken as a twisted joke, as an exercise in minimalism, or as both, but probably mostly a joke. Because of the aforementioned limitations, we are going to write some nasty macros to perform bitwise operations, use global variables, reuse the same counter, etc. This is <em>not</em> a good example of readable or elegant code.</p>
+<h1 id="the-code">The code</h1>
+<p>Everything is available on GitHub:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone git@github.com:nomemory/integers-snake.git
+</span></span></code></pre></div><p>To compile and run the program:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcc -Wall snake.c -lcurses <span style="color:#00538b">&amp;&amp;</span> ./a.out
+</span></span></code></pre></div><h1 id="the-memory-layout">The memory layout</h1>
+<p>We will start by defining the 4 integers that will hold all our game data:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#005a5f">uint32_t</span> map <span style="color:#00538b">=</span> ...;
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">uint32_t</span> vars <span style="color:#00538b">=</span> ...;
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">uint64_t</span> shape <span style="color:#00538b">=</span> ...;
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">int8_t</span> i <span style="color:#00538b">=</span> ...;    
+</span></span></code></pre></div><h2 id="map"><code>map</code></h2>
+<p><code>map</code> is what we are going to display on the screen. The <code>32</code> bits of <code>map</code> will form a <code>4x8</code> grid that will be rendered using curses:</p>
+<figure class="custom-figure" style="max-width: 400px; margin: 2rem auto;">
+  <img 
+    src="/images/2022-05-01-4-integers-are-enough-to-write-a-snake-game/map.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>To access the memory and set bits to zero or one, we can use the following macros:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">#define s_is_set(b) ((map &amp; (1 &lt;&lt; (b))) != 0) </span><span style="color:#505050">// checks if the b bit from the map is set to 1
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_tog(b) (map ^= (1 &lt;&lt; (b))) </span><span style="color:#505050">// toggles the b bit of the map (currently not used)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_set_0(b) (map &amp;= ~(1 &lt;&lt; (b))) </span><span style="color:#505050">// sets to 0 the b bit from the map
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_set_1(b) (map |= (1 &lt;&lt; (b))) </span><span style="color:#505050">// sets to 1 the b bit from the map
+</span></span></span></code></pre></div><h2 id="vars"><code>vars</code></h2>
+<p><code>vars</code> is a <code>32</code>-bit integer where we will keep the following data:</p>
+<figure class="custom-figure" style="max-width: 400px; margin: 2rem auto;">
+  <img 
+    src="/images/2022-05-01-4-integers-are-enough-to-write-a-snake-game/vars.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<ul>
+<li><code>hpos</code> (from bit <code>0</code> to <code>4</code>) represents the head position of the snake as an offset from the map&rsquo;s LSB;</li>
+<li><code>tpos</code> (from bit <code>5</code> to <code>9</code>) represents the tail position of the snake as an offset from the map&rsquo;s LSB;</li>
+<li><code>len</code> (from bit <code>10</code> to <code>14</code>) represents the length of the snake;</li>
+<li><code>apos</code> (from bit <code>15</code> to <code>19</code>) represents the apple position as an offset from the map&rsquo;s LSB;</li>
+<li><code>chdir</code> (from bit <code>20</code> to <code>21</code>) represents the last key pressed. <code>2</code> bits are enough because only arrows are registered, and there are 4 of them;</li>
+<li>the remaining bits are not used. Normally we could have kept the <code>uint8_t</code> counter here, but for simplicity, I chose to use a separate variable.</li>
+</ul>
+<p>To access <code>hpos</code>, <code>tpos</code>, etc., we have defined the following macros. Each of them works like a getter/setter for the corresponding segments:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">#define s_mask(start, len) (s_ls_bits(len) &lt;&lt; (start)) </span><span style="color:#505050">// creates a bitmask of len starting from position start
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_prep(y, start, len) (((y) &amp; s_ls_bits(len)) &lt;&lt; (start)) </span><span style="color:#505050">// prepares the mask
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Gets the &#39;len&#39; number of bits, starting from position &#39;start&#39; of &#39;y&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_get(y, start, len) (((y) &gt;&gt; (start)) &amp; s_ls_bits(len)) 
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">// Sets the &#39;len&#39; number of bits, starting from position &#39;start&#39; of &#39;x&#39; to the value &#39;bf&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_set(x, bf, start, len) (x = ((x) &amp; ~s_mask(start, len)) | s_prep(bf, start, len))
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">#define s_hpos s_get(vars, 0, 5) </span><span style="color:#505050">// gets the first 5 bits of &#39;vars&#39;, which corresponds to s_hpos
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_tpos s_get(vars, 5, 5) </span><span style="color:#505050">// gets the next 5 bits of &#39;vars&#39;, which corresponds to s_tpos
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_len s_get(vars, 10, 5)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_apos s_get(vars, 15, 5)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_chdir s_get(vars, 20, 2)
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">#define s_hpos_set(pos) s_set(vars, pos, 0, 5)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_tpos_set(pos) s_set(vars, pos, 5, 5)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_len_set(len) s_set(vars, len, 10, 5)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_apos_set(app) s_set(vars, app, 15, 5)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_chdir_set(cdir) s_set(vars, cdir, 20, 2)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_len_inc s_len_set(s_len + 1)
+</span></span></span></code></pre></div><p>For more information describing the technique behind these macros, please read the following article: <a href="https://www.coranac.com/documents/working-with-bits-and-bitfields/"><em>Working with bits and bitfields</em></a>.</p>
+<h2 id="shape"><code>shape</code></h2>
+<p><code>shape</code> keeps the directions for each cell of the snake&rsquo;s body. <code>2</code> bits per direction are enough, so we can keep a total of 32 directions in a 64-bit integer:</p>
+<figure class="custom-figure" style="max-width: 400px; margin: 2rem auto;">
+  <img 
+    src="/images/2022-05-01-4-integers-are-enough-to-write-a-snake-game/shape.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>The possible directions are mapped using the following macros:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">#define SU 0 </span><span style="color:#505050">// UP                       
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define SD 1 </span><span style="color:#505050">// DOWN                  
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define SL 2 </span><span style="color:#505050">// LEFT                
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define SR 3 </span><span style="color:#505050">// RIGHT
+</span></span></span></code></pre></div><p>Each time the snake moves inside the <code>map</code> grid, we cycle through the directions with the following macros:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">#define s_hdir ((shape &gt;&gt; (s_len * 2) &amp; 3)) </span><span style="color:#505050">// retrieves the head direction (based on s_len)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_tdir (shape &amp; 3) </span><span style="color:#505050">// retrieves the last 2 bits which corresponds to the tail
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_hdir_set(d) s_set(shape, d, s_len * 2, 2) </span><span style="color:#505050">// sets the head direction
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_tdir_set(d) s_set(shape, d, 0, 2) </span><span style="color:#505050">// sets the tail direction 
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Macros for changing the shape each time the snake moves
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_shape_rot(nd) do { shape &gt;&gt;= 2; s_hdir_set(nd); } while(0); 
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_shape_add(nd) do { s_len_inc; shape &lt;&lt;= 2; s_tdir_set(nd); } while(0);
+</span></span></span></code></pre></div><p>When the snake moves without eating an apple, we call the <code>s_shape_rot</code> macro, which removes the last direction (tail) and pushes a new head direction (based on <code>s_chdir</code>).</p>
+<p>In this regard, <code>shape</code> behaves exactly like a queue:</p>
+<figure class="custom-figure" style="max-width: 400px; margin: 2rem auto;">
+  <img 
+    src="/images/2022-05-01-4-integers-are-enough-to-write-a-snake-game/shapequeue.drawio.png" 
+    alt="" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  
+</figure>
+<p>When the snake moves and eats an apple, we call <code>s_shape_add</code>, which increases the length and pushes a new tail direction <code>s_tdir</code>.</p>
+<h1 id="the-game-loop">The game loop</h1>
+<p>The game loop looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">// Some macros to make the code more readable
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">// (or unreadable, depending on you)
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_init do { srand(time(0)); initscr(); keypad(stdscr, TRUE); cbreak(); noecho(); } while(0);
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_exit(e) do { endwin(); exit(e); } while(0);
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_key_press(k1, k2) if (s_hdir == k2) break; s_chdir_set(k1); break;
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">int</span> <span style="color:#721045">main</span>(<span style="color:#005a5f">void</span>) {
+</span></span><span style="display:flex;"><span>    s_init; <span style="color:#505050">// initialize the curses context
+</span></span></span><span style="display:flex;"><span>    rnd_apple(); <span style="color:#505050">// creates a random position for the apple
+</span></span></span><span style="display:flex;"><span>    <span style="color:#5317ac">while</span>(<span style="color:#0000c0">1</span>) {
+</span></span><span style="display:flex;"><span>        show_map(); <span style="color:#505050">// renders the map on screen
+</span></span></span><span style="display:flex;"><span>        timeout(<span style="color:#0000c0">80</span>); <span style="color:#505050">// getch() timeouts after waiting for user input
+</span></span></span><span style="display:flex;"><span>        <span style="color:#5317ac">switch</span> (getch()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">case</span> KEY_UP : { s_key_press(SU, SD) }; 
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">case</span> KEY_DOWN : { s_key_press(SD, SU) };
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">case</span> KEY_LEFT : { s_key_press(SL, SR) };
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">case</span> KEY_RIGHT : { s_key_press(SR, SL) };
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">case</span> <span style="color:#2544bb">&#39;q&#39;</span> <span style="color:#00538b">:</span> s_exit(<span style="color:#0000c0">0</span>); <span style="color:#505050">// Quits the game
+</span></span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        move_snake(); <span style="color:#505050">// The snake moves inside the grid
+</span></span></span><span style="display:flex;"><span>        s_shape_rot(s_chdir); <span style="color:#505050">// The shape is updated
+</span></span></span><span style="display:flex;"><span>        napms(<span style="color:#0000c0">200</span>); <span style="color:#505050">// frame rate :))
+</span></span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    s_exit(<span style="color:#0000c0">0</span>); <span style="color:#505050">// game exits (though unreachable due to while(1))
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Each time an arrow key is pressed, <code>s_key_press</code> is expanded. This checks if the movement is possible, and then updates <code>s_chdir</code> (using <code>s_chdir_set</code>).</p>
+<p>The reason <code>s_key_press</code> requires two input parameters is to exclude the opposite direction. For example, if the snake is currently moving to the RIGHT (<code>SR</code>), moving LEFT (<code>SL</code>) is not physically possible, and thus we break out of the switch without updating the direction.</p>
+<h1 id="the-function-that-moves-the-snake">The function that moves the snake:</h1>
+<p><code>move_snake()</code> is where most of our game logic is implemented:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#505050">#define s_next_l s_mask5(s_hpos + 1) </span><span style="color:#505050">// incrementing the offset to go right
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_next_r s_mask5(s_hpos - 1) </span><span style="color:#505050">// decrementing the offset to go left
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_next_u s_mask5(s_hpos + 8) </span><span style="color:#505050">// change row up, by adding 8 positions to the offset
+</span></span></span><span style="display:flex;"><span><span style="color:#505050">#define s_next_d s_mask5(s_hpos - 8) </span><span style="color:#505050">// change row down, by removing 8 positions from the offset
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Check if a left movement is possible. 
+</span></span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">check_l</span>() { <span style="color:#5317ac">if</span> ((s_mod_p2(s_next_l, <span style="color:#0000c0">8</span>) <span style="color:#00538b">&lt;</span> s_mod_p2(s_hpos, <span style="color:#0000c0">8</span>)) <span style="color:#00538b">||</span> s_is_set(s_next_l)) s_exit(<span style="color:#00538b">-</span><span style="color:#0000c0">1</span>); }
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Check if a right movement is possible. 
+</span></span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">check_r</span>() { <span style="color:#5317ac">if</span> ((s_mod_p2(s_next_r, <span style="color:#0000c0">8</span>) <span style="color:#00538b">&gt;</span> s_mod_p2(s_hpos, <span style="color:#0000c0">8</span>)) <span style="color:#00538b">||</span> s_is_set(s_next_r)) s_exit(<span style="color:#00538b">-</span><span style="color:#0000c0">1</span>); }
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Check if an up movement is possible
+</span></span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">check_u</span>() { <span style="color:#5317ac">if</span> ((s_next_u <span style="color:#00538b">&lt;</span> s_hpos) <span style="color:#00538b">||</span> s_is_set(s_next_u)) s_exit(<span style="color:#00538b">-</span><span style="color:#0000c0">1</span>); }
+</span></span><span style="display:flex;"><span><span style="color:#505050">// Check if a down movement is possible
+</span></span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">check_d</span>() { <span style="color:#5317ac">if</span> ((s_next_d <span style="color:#00538b">&gt;</span> s_hpos) <span style="color:#00538b">||</span> s_is_set(s_next_d)) s_exit(<span style="color:#00538b">-</span><span style="color:#0000c0">1</span>); }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">move_snake</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (s_hdir <span style="color:#00538b">==</span> SL) { check_l(); s_hpos_set(s_hpos <span style="color:#00538b">+</span> <span style="color:#0000c0">1</span>); } 
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (s_hdir <span style="color:#00538b">==</span> SR) { check_r(); s_hpos_set(s_hpos <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>); } 
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (s_hdir <span style="color:#00538b">==</span> SU) { check_u(); s_hpos_set(s_hpos <span style="color:#00538b">+</span> <span style="color:#0000c0">8</span>); }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (s_hdir <span style="color:#00538b">==</span> SD) { check_d(); s_hpos_set(s_hpos <span style="color:#00538b">-</span> <span style="color:#0000c0">8</span>); }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Sets the bit based on the current s_hdir and s_hpos
+</span></span></span><span style="display:flex;"><span>    s_set_1(s_hpos);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// If an apple is eaten
+</span></span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (s_apos <span style="color:#00538b">==</span> s_hpos) {
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// We generate another apple so we don&#39;t starve
+</span></span></span><span style="display:flex;"><span>        rnd_apple();
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// Append to the tail
+</span></span></span><span style="display:flex;"><span>        s_shape_add(s_tdir);
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// We stop clearing the tail bit
+</span></span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Clear the tail bit
+</span></span></span><span style="display:flex;"><span>    s_set_0(s_tpos);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Update the t_pos so we can clear the next tail bit when the snake moves
+</span></span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (s_tdir <span style="color:#00538b">==</span> SL) { s_tpos_set(s_tpos <span style="color:#00538b">+</span> <span style="color:#0000c0">1</span>); } 
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (s_tdir <span style="color:#00538b">==</span> SR) { s_tpos_set(s_tpos <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>); } 
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (s_tdir <span style="color:#00538b">==</span> SU) { s_tpos_set(s_tpos <span style="color:#00538b">+</span> <span style="color:#0000c0">8</span>); } 
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (s_tdir <span style="color:#00538b">==</span> SD) { s_tpos_set(s_tpos <span style="color:#00538b">-</span> <span style="color:#0000c0">8</span>); }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>To validate whether the snake can move within the grid, we implemented the <code>check_*()</code> functions:</p>
+<ul>
+<li><code>check_l()</code> - we check if the X coordinate of the snake (the modulo <code>%8</code> of <code>s_hpos</code>) is larger than the one from the previous position.</li>
+<li><code>check_r()</code> - we check if the X coordinate of the snake (the modulo <code>%8</code> of <code>s_hpos</code>) is smaller than the one from the previous position.</li>
+<li><code>check_u()</code> and <code>check_d()</code> work similarly; they check if incrementing/decrementing <code>s_hpos</code> causes it to overflow/underflow. If it does, it means we have exited the bounds of the grid. Here, integer overflows are used as features.</li>
+</ul>
+<h1 id="the-function-that-displays-the-snake">The function that displays the snake</h1>
+<p>This is the last function we are going to implement:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">show_map</span>() {
+</span></span><span style="display:flex;"><span>    clear();
+</span></span><span style="display:flex;"><span>    i <span style="color:#00538b">=</span> <span style="color:#0000c0">32</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">while</span>(i<span style="color:#00538b">--</span> <span style="color:#00538b">&gt;</span> <span style="color:#0000c0">0</span>) { <span style="color:#505050">// !! Trigger warning for sensitive people: incoming &#39;--&gt;0&#39; slide operator
+</span></span></span><span style="display:flex;"><span>        <span style="color:#505050">// If the bit is an apple, we render the apple &#39;@&#39;
+</span></span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (i <span style="color:#00538b">==</span> s_apos) { addch(<span style="color:#2544bb">&#39;@&#39;</span>); addch(<span style="color:#2544bb">&#39; &#39;</span>); }
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// We draw either the snake bit (&#39;#&#39;) or the empty bit (&#39;.&#39;)
+</span></span></span><span style="display:flex;"><span>        <span style="color:#5317ac">else</span> { addch(s_is_set(i) <span style="color:#00538b">?</span> <span style="color:#2544bb">&#39;#&#39;</span> <span style="color:#00538b">:</span> <span style="color:#2544bb">&#39;.&#39;</span>); addch(<span style="color:#2544bb">&#39; &#39;</span>); }
+</span></span><span style="display:flex;"><span>        <span style="color:#505050">// We construct the grid by inserting a new line every 8 characters
+</span></span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (<span style="color:#00538b">!</span>s_mod_p2(i, <span style="color:#0000c0">8</span>)) { addch(<span style="color:#2544bb">&#39;\n&#39;</span>); }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="after-the-macros-expand">After the macros expand</h1>
+<p>After all the macros expand, the resulting C code looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#005a5f">uint32_t</span> map <span style="color:#00538b">=</span> <span style="color:#0000c0">0x700</span>;
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">uint32_t</span> vars <span style="color:#00538b">=</span> <span style="color:#0000c0">0x20090a</span>;
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">uint64_t</span> shape <span style="color:#00538b">=</span> <span style="color:#0000c0">0x2a</span>;
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">int8_t</span> i <span style="color:#00538b">=</span> <span style="color:#0000c0">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">rnd_apple</span>() {
+</span></span><span style="display:flex;"><span>    i <span style="color:#00538b">=</span> (<span style="color:#721045">rand</span>() <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">32</span> <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">while</span>(((map <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (i))) <span style="color:#00538b">!=</span> <span style="color:#0000c0">0</span>)) i <span style="color:#00538b">=</span> (<span style="color:#721045">rand</span>() <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">32</span> <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>));
+</span></span><span style="display:flex;"><span>    (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">15</span>))) <span style="color:#00538b">|</span> (((i) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">15</span>)));
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">show_map</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#721045">wclear</span>(stdscr);
+</span></span><span style="display:flex;"><span>    i <span style="color:#00538b">=</span> <span style="color:#0000c0">32</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">while</span>(i<span style="color:#00538b">--</span> <span style="color:#00538b">&gt;</span> <span style="color:#0000c0">0</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (i <span style="color:#00538b">==</span> (((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">15</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>))) { <span style="color:#721045">waddch</span>(stdscr, <span style="color:#2544bb">&#39;@&#39;</span>); <span style="color:#721045">waddch</span>(stdscr, <span style="color:#2544bb">&#39; &#39;</span>); }
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">else</span> { <span style="color:#721045">waddch</span>(stdscr, ((map <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (i))) <span style="color:#00538b">!=</span> <span style="color:#0000c0">0</span>) <span style="color:#00538b">?</span> <span style="color:#2544bb">&#39;#&#39;</span> <span style="color:#00538b">:</span> <span style="color:#2544bb">&#39;.&#39;</span>); <span style="color:#721045">waddch</span>(stdscr, <span style="color:#2544bb">&#39; &#39;</span>); }
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (<span style="color:#00538b">!</span>(i <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">8</span> <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>))) { <span style="color:#721045">waddch</span>(stdscr, <span style="color:#2544bb">&#39;\n&#39;</span>); }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">check_l</span>() { <span style="color:#5317ac">if</span> ((((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">+</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">0x1f</span>) <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">8</span> <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">8</span> <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>))) <span style="color:#00538b">||</span> ((map <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">+</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">0x1f</span>)))) <span style="color:#00538b">!=</span> <span style="color:#0000c0">0</span>)) <span style="color:#5317ac">do</span> { <span style="color:#721045">endwin</span>(); <span style="color:#721045">exit</span>(<span style="color:#00538b">-</span><span style="color:#0000c0">1</span>); } <span style="color:#5317ac">while</span>(<span style="color:#0000c0">0</span>);; }
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">check_r</span>() { <span style="color:#5317ac">if</span> ((((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">0x1f</span>) <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">8</span> <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&gt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">8</span> <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>))) <span style="color:#00538b">||</span> ((map <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">0x1f</span>)))) <span style="color:#00538b">!=</span> <span style="color:#0000c0">0</span>)) <span style="color:#5317ac">do</span> { <span style="color:#721045">endwin</span>(); <span style="color:#721045">exit</span>(<span style="color:#00538b">-</span><span style="color:#0000c0">1</span>); } <span style="color:#5317ac">while</span>(<span style="color:#0000c0">0</span>);; }
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">check_u</span>() { <span style="color:#5317ac">if</span> (((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">+</span> <span style="color:#0000c0">8</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">0x1f</span>) <span style="color:#00538b">&lt;</span> (((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>))) <span style="color:#00538b">||</span> ((map <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">+</span> <span style="color:#0000c0">8</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">0x1f</span>)))) <span style="color:#00538b">!=</span> <span style="color:#0000c0">0</span>)) <span style="color:#5317ac">do</span> { <span style="color:#721045">endwin</span>(); <span style="color:#721045">exit</span>(<span style="color:#00538b">-</span><span style="color:#0000c0">1</span>); } <span style="color:#5317ac">while</span>(<span style="color:#0000c0">0</span>);; }
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">check_d</span>() { <span style="color:#5317ac">if</span> (((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">8</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">0x1f</span>) <span style="color:#00538b">&gt;</span> (((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>))) <span style="color:#00538b">||</span> ((map <span style="color:#00538b">&amp;</span> (<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">8</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">0x1f</span>)))) <span style="color:#00538b">!=</span> <span style="color:#0000c0">0</span>)) <span style="color:#5317ac">do</span> { <span style="color:#721045">endwin</span>(); <span style="color:#721045">exit</span>(<span style="color:#00538b">-</span><span style="color:#0000c0">1</span>); } <span style="color:#5317ac">while</span>(<span style="color:#0000c0">0</span>);; }
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">move_snake</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> (((shape <span style="color:#00538b">&gt;&gt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">10</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">*</span> <span style="color:#0000c0">2</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>)) <span style="color:#00538b">==</span> <span style="color:#0000c0">2</span>) { <span style="color:#721045">check_l</span>(); (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">0</span>))) <span style="color:#00538b">|</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">+</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">0</span>))); }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (((shape <span style="color:#00538b">&gt;&gt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">10</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">*</span> <span style="color:#0000c0">2</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>)) <span style="color:#00538b">==</span> <span style="color:#0000c0">3</span>) { <span style="color:#721045">check_r</span>(); (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">0</span>))) <span style="color:#00538b">|</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">0</span>))); }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (((shape <span style="color:#00538b">&gt;&gt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">10</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">*</span> <span style="color:#0000c0">2</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>)) <span style="color:#00538b">==</span> <span style="color:#0000c0">0</span>) { <span style="color:#721045">check_u</span>(); (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">0</span>))) <span style="color:#00538b">|</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">+</span> <span style="color:#0000c0">8</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">0</span>))); }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> (((shape <span style="color:#00538b">&gt;&gt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">10</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">*</span> <span style="color:#0000c0">2</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>)) <span style="color:#00538b">==</span> <span style="color:#0000c0">1</span>) { <span style="color:#721045">check_d</span>(); (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">0</span>))) <span style="color:#00538b">|</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">8</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">0</span>))); }
+</span></span><span style="display:flex;"><span>    (map <span style="color:#00538b">|=</span> (<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>))));
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">15</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">==</span> (((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">0</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>))) {
+</span></span><span style="display:flex;"><span>        <span style="color:#721045">rnd_apple</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">do</span> { (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">10</span>))) <span style="color:#00538b">|</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">10</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">+</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">10</span>))); shape <span style="color:#00538b">&lt;&lt;=</span> <span style="color:#0000c0">2</span>; (shape <span style="color:#00538b">=</span> ((shape) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">0</span>))) <span style="color:#00538b">|</span> ((((shape <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">0</span>))); } <span style="color:#5317ac">while</span>(<span style="color:#0000c0">0</span>);;
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    (map <span style="color:#00538b">&amp;=</span> <span style="color:#00538b">~</span>(<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>))));
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">if</span> ((shape <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>) <span style="color:#00538b">==</span> <span style="color:#0000c0">2</span>) { (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>))) <span style="color:#00538b">|</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">+</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>))); }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> ((shape <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>) <span style="color:#00538b">==</span> <span style="color:#0000c0">3</span>) { (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>))) <span style="color:#00538b">|</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>))); }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> ((shape <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>) <span style="color:#00538b">==</span> <span style="color:#0000c0">0</span>) { (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>))) <span style="color:#00538b">|</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">+</span> <span style="color:#0000c0">8</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>))); }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">else</span> <span style="color:#5317ac">if</span> ((shape <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>) <span style="color:#00538b">==</span> <span style="color:#0000c0">1</span>) { (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>))) <span style="color:#00538b">|</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">8</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>))); }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#005a5f">int</span> <span style="color:#721045">main</span>(<span style="color:#005a5f">void</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">do</span> { <span style="color:#721045">srand</span>(<span style="color:#721045">time</span>(<span style="color:#0000c0">0</span>)); <span style="color:#721045">initscr</span>(); <span style="color:#721045">keypad</span>(stdscr, <span style="color:#0000c0">1</span>); <span style="color:#721045">cbreak</span>(); <span style="color:#721045">noecho</span>(); } <span style="color:#5317ac">while</span>(<span style="color:#0000c0">0</span>);;
+</span></span><span style="display:flex;"><span>    <span style="color:#721045">rnd_apple</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">while</span>(<span style="color:#0000c0">1</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#721045">show_map</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#721045">wtimeout</span>(stdscr, <span style="color:#0000c0">80</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">switch</span> (<span style="color:#721045">wgetch</span>(stdscr)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">case</span> <span style="color:#0000c0">0403</span> <span style="color:#00538b">:</span> { <span style="color:#5317ac">if</span> (((shape <span style="color:#00538b">&gt;&gt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">10</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">*</span> <span style="color:#0000c0">2</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>)) <span style="color:#00538b">==</span> <span style="color:#0000c0">1</span>) <span style="color:#5317ac">break</span>; (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">20</span>))) <span style="color:#00538b">|</span> (((<span style="color:#0000c0">0</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">20</span>))); <span style="color:#5317ac">break</span>; };
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">case</span> <span style="color:#0000c0">0402</span> <span style="color:#00538b">:</span> { <span style="color:#5317ac">if</span> (((shape <span style="color:#00538b">&gt;&gt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">10</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">*</span> <span style="color:#0000c0">2</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>)) <span style="color:#00538b">==</span> <span style="color:#0000c0">0</span>) <span style="color:#5317ac">break</span>; (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">20</span>))) <span style="color:#00538b">|</span> (((<span style="color:#0000c0">1</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">20</span>))); <span style="color:#5317ac">break</span>; };
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">case</span> <span style="color:#0000c0">0404</span> <span style="color:#00538b">:</span> { <span style="color:#5317ac">if</span> (((shape <span style="color:#00538b">&gt;&gt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">10</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">*</span> <span style="color:#0000c0">2</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>)) <span style="color:#00538b">==</span> <span style="color:#0000c0">3</span>) <span style="color:#5317ac">break</span>; (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">20</span>))) <span style="color:#00538b">|</span> (((<span style="color:#0000c0">2</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">20</span>))); <span style="color:#5317ac">break</span>; };
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">case</span> <span style="color:#0000c0">0405</span> <span style="color:#00538b">:</span> { <span style="color:#5317ac">if</span> (((shape <span style="color:#00538b">&gt;&gt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">10</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">*</span> <span style="color:#0000c0">2</span>) <span style="color:#00538b">&amp;</span> <span style="color:#0000c0">3</span>)) <span style="color:#00538b">==</span> <span style="color:#0000c0">2</span>) <span style="color:#5317ac">break</span>; (vars <span style="color:#00538b">=</span> ((vars) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">20</span>))) <span style="color:#00538b">|</span> (((<span style="color:#0000c0">3</span>) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">20</span>))); <span style="color:#5317ac">break</span>; };
+</span></span><span style="display:flex;"><span>            <span style="color:#5317ac">case</span> <span style="color:#2544bb">&#39;q&#39;</span> <span style="color:#00538b">:</span> <span style="color:#721045">exit</span>(<span style="color:#0000c0">0</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#721045">move_snake</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">do</span> { shape <span style="color:#00538b">&gt;&gt;=</span> <span style="color:#0000c0">2</span>; (shape <span style="color:#00538b">=</span> ((shape) <span style="color:#00538b">&amp;</span> <span style="color:#00538b">~</span>(((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>) <span style="color:#00538b">&lt;&lt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">10</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">*</span> <span style="color:#0000c0">2</span>))) <span style="color:#00538b">|</span> ((((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">20</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>))) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">2</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">&lt;&lt;</span> ((((vars) <span style="color:#00538b">&gt;&gt;</span> (<span style="color:#0000c0">10</span>)) <span style="color:#00538b">&amp;</span> ((<span style="color:#0000c0">1</span> <span style="color:#00538b">&lt;&lt;</span> (<span style="color:#0000c0">5</span>)) <span style="color:#00538b">-</span> <span style="color:#0000c0">1</span>)) <span style="color:#00538b">*</span> <span style="color:#0000c0">2</span>))); } <span style="color:#5317ac">while</span>(<span style="color:#0000c0">0</span>);;
+</span></span><span style="display:flex;"><span>        <span style="color:#721045">napms</span>(<span style="color:#0000c0">200</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">do</span> { <span style="color:#721045">endwin</span>(); <span style="color:#721045">exit</span>(<span style="color:#0000c0">0</span>); } <span style="color:#5317ac">while</span>(<span style="color:#0000c0">0</span>);;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>It&rsquo;s not a beautiful sight, but it looks mesmerizing. When I scroll through the code, I get <del>motion</del> bitwise sickness.</p>
+<h1 id="final-thoughts">Final thoughts</h1>
+<p>It was a fun exercise. The full code can be found <a href="https://github.com/nomemory/integers-snake/blob/main/snake.c">here</a>; it&rsquo;s around 100 lines and just 4 integers.</p>
+<p>If the snake moves too fast on your terminal, you can tweak the speed by increasing <code>napms(200);</code>.</p>
+
+</content>
+
+<div style="font-size:0.8em;display:flex;gap:16px;justify-content:center;">
+  <p>
+    
+    <a href="http://localhost:1313/2022/04/10/a-blog-that-is-a-single-executable-binary/">
+      &lt;&lt; Previous Post</a>
+        
+  </p>
+  <p>|</p>
+  <p>
+    
+    <a href="http://localhost:1313/2022/09/01/building-pathological-input-for-java-hashmaps-hash-collisions-generator/">Next Post >></a>
+    
+  </p>
+</div>
+
+
+
+
+
+  <div class="related-posts" style="border: 2px solid #d3d6db; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; background-color: #fafafa;">
+    <h1 style="margin-top: 0;">Related Articles</h3>
+    <p style="font-size: 0.95em; color: #555;">I'm so glad you made it to the end. The following articles are loosely related to this one:</p>
+    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-03-28">
+            Mar 28, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/03/28/my-list-of-challenging-software-projects-some-programmers-should-try/" style="margin-left: 0.25rem;">My list of challenging software projects some programmers should try</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2023-02-01">
+            Feb 01, 2023
+          </time>
+          &mdash; 
+          <a href="/2023/02/01/demystifying-bitwise-operations-a-gentle-c-tutorial/" style="margin-left: 0.25rem;">Demystifying bitwise operations, a gentle C tutorial</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-09-01">
+            Sep 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/09/01/building-pathological-input-for-java-hashmaps-hash-collisions-generator/" style="margin-left: 0.25rem;">Building pathological input for Java HashMaps - hash collisions generator</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-10">
+            Apr 10, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/10/a-blog-that-is-a-single-executable-binary/" style="margin-left: 0.25rem;">A blog that is a single executable binary</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-01">
+            Apr 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/01/ive-promised-myself-never-to-use-gradle/" style="margin-left: 0.25rem;">I&#39;ve promised myself never to use gradle</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+  </main>
+  <footer>
+    <div class="mpt">
+        <div id="quote-container">
+            <p id="quote-text">Loading inspiration...</p>
+            <small id="quote-author"></small>
+        </div>
+    </div>
+    <script>
+    (function() {
+        const quotes = [
+            { text: "It is so shocking to find out how many people do not believe that they can learn, and how many more believe learning to be difficult.", author: "Frank Herbert, Dune" },
+            { text: "Highly organized research is guaranteed to produce nothing new.", author: "Frank Herbert, Dune" },
+            { text: "Proper teaching is recognized with ease. You can know it without fail because it awakens within you that sensation which tells you this is something you have always known.", author: "Frank Herbert, Dune" },
+            { text: "Thou shalt not make a machine in the likeness of a human mind.", author: "Frank Herbert, Dune"},
+            { text: "What senses do we lack that we cannot see or hear another world all around us?", author: "Frank Herbert, Dune"},
+            { text: "Humans are almost always lonely.", author: "Frank Herbert, Dune"},
+            { text: "Science is made up of so many things that appear obvious after they are explained.", author: "Frank Herbert, Dune"},
+            { text: "Anti-intellectualism has been a constant thread winding its way through our political and cultural life, nurtured by the false notion that democracy means that 'my ignorance is just as good as your knowledge.", author: "Isaac Asimov"},
+            { text: "I write for the same reason I breathe - because if I didn't, I would die.", author: "Isaac Asimov"},
+            { text: "If knowledge can create problems, it is not through ignorance that we can solve them.", author: "Isaac Asimov"},
+            { text: "People think of education as something they can finish.", author: "Isaac Asimov"},
+            { text: "A robot may not injure a human being or, through inaction, allow a human being to come to harm.", author: "Isaac Asimov, I, Robot"},
+            { text: "Part of the inhumanity of the computer is that, once it is competently programmed and working smoothly, it is completely honest.", author: "Isaac Asimov"},
+            { text: "The true delight is in the finding out rather than in the knowing.", author: "Isaac Asimov"},
+            { text: "Scientific truth is beyond loyalty and disloyalty.", author: "Isaac Asimov"},
+            { text: "THERE IS AS YET INSUFFICIENT DATA FOR A MEANINGFUL ANSWER.", author: "Isaac Asimov, The Last Question"},
+            { text: "Every idea, extended into infinity, becomes its own opposite.", author: "Georg Wilhelm Friedrich Hegel"},
+            { text: "An idea is always a generalization, and generalization is a property of thinking. To generalize means to think.", author: "Georg Wilhelm Friedrich Hegel"},
+            { text: "We become what we contemplate.", author: "Plato"},
+            { text: "Welcome out of the cave, my friend. It's a bit colder out here, but the stars are just beautiful.", author: "Plato"},
+            { text: "Numbers have a way of taking a man by the hand and leading him down the path of reason.", author: "Pythagoras"},
+            { text: "There is geometry in the humming of the strings, there is music in the spacing of the spheres.", author: "Pythagoras"},
+            { text: "Music is a secret and unconscious mathematical problem of the soul.", author: "Gottfried Leibniz"},
+            { text: "We live in the best of all possible worlds!", author: "Gottfried Leibniz"},
+            { text: "The pleasure we obtain from music comes from counting, but counting unconsciously. Music is nothing but unconscious arithmetic.", author: "Gottfried Leibniz"},
+            { text: "Nature does not make leaps.", author: "Gottfried Leibniz"},
+            { text: "It is worth noting that the notation facilitates discovery. This, in a most wonderful way, reduces the mind's labour.", author: "Gottfried Leibniz"},
+            { text: "Imaginary numbers are a fine and wonderful refuge of the divine spirit almost an amphibian between being and non-being.", author: "Gottfried Leibniz"},
+            { text: "Mathematicians have tried in vain to this day to discover some order in the sequence of prime numbers, and we have reason to believe that it is a mystery into which the human mind will never penetrate.", author: "Leonhard Euler"},
+            { text: "For the sake of brevity, we will always represent this number 2.718281828459... by the letter e.", author: "Leonhard Euler"},
+            { text: "If you don't see why, someone can't tell you. I know numbers are beautiful. If they aren’t beautiful, nothing is.", author: "Paul Erdos"},
+            { text: "God may not play dice with the universe, but something strange is going on with the prime numbers.", author: "Paul Erdos"},
+            { text: "I visualize a time when we will be to robots what dogs are to humans. And I am rooting for the machines.", author: "Claude Shannon"},
+            { text: "If I feel unhappy, I do mathematics to become happy. If I am happy, I do mathematics to keep happy.", author: "Alfred Renyi"},
+            { text: "Use the word 'cybernetics', Norbert, because nobody knows what it means. This will always put you at an advantage in arguments.", author: "Claude Shannon"},
+            { text: "All stable processes we shall predict. All unstable processes we shall control.", author: "John von Neumann"},
+            { text: "Anyone who attempts to generate random numbers by deterministic means is, of course, living in a state of sin.", author: "John von Neumann"},
+            { text: "Static sites are the future, and the past.", author: "'Anoyingmous'" }
+        ];
+
+        
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const selected = quotes[randomIndex];
+
+        
+        document.getElementById('quote-text').innerText = `"${selected.text}"`;
+        document.getElementById('quote-author').innerText = `- ${selected.author}`;
+    })();
+    </script>
+
+</footer>
+</body>
+
+</html>

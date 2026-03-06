@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Algorithms on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/algorithms/</link>
+    <description>Recent content in Algorithms on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 01 Jun 2011 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/algorithms/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Implementing a generic Priority Queue in C</title>
+      <link>http://localhost:1313/2011/06/01/implementing-a-generic-priority-queue-in-c/</link>
+      <pubDate>Wed, 01 Jun 2011 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2011/06/01/implementing-a-generic-priority-queue-in-c/</guid>
+      <description>&lt;nav class=&#34;toc&#34;&gt;&#xA;  &lt;h2&gt;Contents&lt;/h2&gt;&#xA;  &lt;nav id=&#34;TableOfContents&#34;&gt;&#xA;  &lt;ul&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#introduction&#34;&gt;Introduction&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#the-binary-heap&#34;&gt;The Binary Heap&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#why-use-a-heap&#34;&gt;Why use a Heap?&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#the-code&#34;&gt;The code&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#defining-the-data&#34;&gt;Defining the data&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#implementation&#34;&gt;Implementation&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#testing&#34;&gt;Testing&lt;/a&gt;&lt;/li&gt;&#xA;  &lt;/ul&gt;&#xA;&lt;/nav&gt;&#xA;&lt;/nav&gt;&#xA;&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;In Computer Science, a &lt;strong&gt;Priority Queue&lt;/strong&gt; is an abstract data type similar to a standard Queue, but with a critical distinction: &lt;em&gt;every element has an associated priority&lt;/em&gt;. In this structure, elements with higher priorities are dequeued and served before those with lower priorities, regardless of their insertion order.&lt;/p&gt;&#xA;&lt;h1 id=&#34;the-binary-heap&#34;&gt;The Binary Heap&lt;/h1&gt;&#xA;&lt;p&gt;Our implementation utilizes a &lt;strong&gt;Binary Heap&lt;/strong&gt;. While the name sounds complex, it is simply a binary tree that satisfies two specific properties:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>XML to JSON using MapNeat | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="XML to JSON using MapNeat" />
+<meta name="description" content="
+title: &ldquo;XML to JSON using MapNeat&rdquo;
+date: &ldquo;2021-02-01&rdquo;
+classes: wide
+excerpt: &ldquo;A short tutorial on how to transform XML to JSON using mapneat.&rdquo;
+categories:
+
+&ldquo;java&rdquo;
+&ldquo;kotlin&rdquo;
+tags:
+&ldquo;json-to-json&rdquo;
+&ldquo;xml-to-json&rdquo;
+
+
+Following my previous article, I wanted to expand on the capabilities of the mapneat library.
+In this tutorial, I will show you how you can transform an existing XML source into a/the desired JSON format.
+Let&rsquo;s start with the following XML structure:
+&lt;customer&gt;
+    &lt;firstname&gt;Mike&lt;/firstname&gt;
+    &lt;lastname&gt;Smith&lt;/lastname&gt;
+    &lt;visits count=&#34;3&#34;&gt;
+        &lt;visit&gt;
+            &lt;country&gt;France&lt;/country&gt;
+            &lt;date&gt;2010-01-22&lt;/date&gt;
+        &lt;/visit&gt;
+        &lt;visit&gt;
+            &lt;country&gt;Italy&lt;/country&gt;
+            &lt;date&gt;1983-01-22&lt;/date&gt;
+        &lt;/visit&gt;
+        &lt;visit&gt;
+            &lt;country&gt;Romania&lt;/country&gt;
+            &lt;date&gt;2010-01-22&lt;/date&gt;
+        &lt;/visit&gt;
+        &lt;visit&gt;
+            &lt;country&gt;Bulgaria&lt;/country&gt;
+            &lt;date&gt;2010-01-25&lt;/date&gt;
+        &lt;/visit&gt;        
+    &lt;/visits&gt;
+    &lt;email type=&#34;business&#34;&gt;mail@bsi.com&lt;/email&gt;
+    &lt;email type=&#34;personal&#34;&gt;mail@pers.com&lt;/email&gt;
+    &lt;age&gt;67&lt;/age&gt;
+&lt;/customer&gt;
+From it, we want to obtain a JSON like:" />
+<meta name="keywords" content="kotlin," /><meta name="referrer" content="no-referrer-when-downgrade" />
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: #F6F8FA;  
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #222222;  
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #111111;  
+  }
+
+  a {
+    color: #0056b3;  
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #003d80;  
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  strong {
+    color: #222222;  
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  hr {
+    border: none;  
+    border-top: 1px solid #e5e5e5;  
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 4px solid #0056b3;  
+    color: #444444;  
+    padding-left: 1rem;  
+    font-style: italic;
+    background: #fafafa;  
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+  .mp {
+    border: thin solid #ccc;
+    background-color: #F0F0F0;
+    padding: 25px;
+    width: inherit;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .mpl {
+    position: relative;
+    font: 0.7rem/1.1 sans-serif;  
+    font-style: italic;
+    text-decoration: none;        
+    background: #F0F0F0;
+    border-radius: 1px;
+    border: 0px solid #ccd;
+  }
+
+  .mpt {
+    padding: 25px;
+    font-style: italic;
+    color: #666;
+  }
+
+  .mpc {
+    text-align: center;
+  }
+
+  .mpn {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 0.8rem;
+    color: #777;
+  }
+
+  .meta, .post-meta {
+    color: #555555;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+   
+  table {
+    width: 100%;
+    border-collapse: collapse;  
+    margin: 1.5rem 0;           
+    font-size: 0.95rem;         
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #ddd;
+  }
+
+  tbody td {
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+   
+  tbody tr:hover {
+    background: #fafafa;
+  }
+
+   
+  table code {
+    background: #f3f3f3;
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+   
+  .site-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .global-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e5e5;  
+  }
+
+  .global-nav a {
+    font-weight: 600;
+    color: #222222;  
+    text-decoration: none;
+    font-size: 1.05rem;
+    transition: color 0.2s ease;
+  }
+
+  .global-nav a:hover {
+    color: #0056b3;  
+    text-decoration: underline;
+  }
+
+   
+  .global-nav a.active {
+    color: #0056b3;
+  }
+</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof renderMathInElement !== "function") {
+    console.error("KaTeX auto-render not loaded");
+    return;
+  }
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false }
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+  <header><header class="site-header">
+  <nav class="global-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/about/">About</a>
+    
+      <a href="/links/">Links</a>
+    
+      <a href="/index.xml">RSS</a>
+    
+  </nav>
+</header></header>
+  <main>
+
+
+<h1>XML to JSON using MapNeat</h1>
+<p>
+  <i>
+    <time datetime='2021-01-31'>
+      31 Jan, 2021
+    </time>
+  </i>
+</p>
+
+<content>
+  <hr>
+<p>title: &ldquo;XML to JSON using MapNeat&rdquo;
+date: &ldquo;2021-02-01&rdquo;
+classes: wide
+excerpt: &ldquo;A short tutorial on how to transform XML to JSON using mapneat.&rdquo;
+categories:</p>
+<ul>
+<li>&ldquo;java&rdquo;</li>
+<li>&ldquo;kotlin&rdquo;
+tags:</li>
+<li>&ldquo;json-to-json&rdquo;</li>
+<li>&ldquo;xml-to-json&rdquo;</li>
+</ul>
+<hr>
+<p>Following my <a href="/2021/01/31/hello-world-mapneat">previous article</a>, I wanted to expand on the capabilities of the <a href="https://github.com/nomemory/mapneat"><strong>mapneat</strong></a> library.</p>
+<p>In this tutorial, I will show you how you can transform an existing XML source into a/the desired JSON format.</p>
+<p>Let&rsquo;s start with the following XML structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>&lt;customer&gt;
+</span></span><span style="display:flex;"><span>    &lt;firstname&gt;Mike&lt;/firstname&gt;
+</span></span><span style="display:flex;"><span>    &lt;lastname&gt;Smith&lt;/lastname&gt;
+</span></span><span style="display:flex;"><span>    &lt;visits count=<span style="color:#2544bb">&#34;3&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;visit&gt;
+</span></span><span style="display:flex;"><span>            &lt;country&gt;France&lt;/country&gt;
+</span></span><span style="display:flex;"><span>            &lt;date&gt;2010-01-22&lt;/date&gt;
+</span></span><span style="display:flex;"><span>        &lt;/visit&gt;
+</span></span><span style="display:flex;"><span>        &lt;visit&gt;
+</span></span><span style="display:flex;"><span>            &lt;country&gt;Italy&lt;/country&gt;
+</span></span><span style="display:flex;"><span>            &lt;date&gt;1983-01-22&lt;/date&gt;
+</span></span><span style="display:flex;"><span>        &lt;/visit&gt;
+</span></span><span style="display:flex;"><span>        &lt;visit&gt;
+</span></span><span style="display:flex;"><span>            &lt;country&gt;Romania&lt;/country&gt;
+</span></span><span style="display:flex;"><span>            &lt;date&gt;2010-01-22&lt;/date&gt;
+</span></span><span style="display:flex;"><span>        &lt;/visit&gt;
+</span></span><span style="display:flex;"><span>        &lt;visit&gt;
+</span></span><span style="display:flex;"><span>            &lt;country&gt;Bulgaria&lt;/country&gt;
+</span></span><span style="display:flex;"><span>            &lt;date&gt;2010-01-25&lt;/date&gt;
+</span></span><span style="display:flex;"><span>        &lt;/visit&gt;        
+</span></span><span style="display:flex;"><span>    &lt;/visits&gt;
+</span></span><span style="display:flex;"><span>    &lt;email type=<span style="color:#2544bb">&#34;business&#34;</span>&gt;mail@bsi.com&lt;/email&gt;
+</span></span><span style="display:flex;"><span>    &lt;email type=<span style="color:#2544bb">&#34;personal&#34;</span>&gt;mail@pers.com&lt;/email&gt;
+</span></span><span style="display:flex;"><span>    &lt;age&gt;67&lt;/age&gt;
+</span></span><span style="display:flex;"><span>&lt;/customer&gt;
+</span></span></code></pre></div><p>From it, we want to obtain a JSON like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  &#34;person&#34; : {
+</span></span><span style="display:flex;"><span>    &#34;firstName&#34; : <span style="color:#2544bb">&#34;Mike&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;lastName&#34; : <span style="color:#2544bb">&#34;Smith&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;personalEmails&#34; : [ <span style="color:#2544bb">&#34;mail@pers.com&#34;</span> ],
+</span></span><span style="display:flex;"><span>    &#34;businessEmails&#34; : [ <span style="color:#2544bb">&#34;mail@bsi.com&#34;</span> ],
+</span></span><span style="display:flex;"><span>    &#34;hasVisitedRomania&#34; : <span style="color:#2544bb">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  &#34;visits&#34; : {
+</span></span><span style="display:flex;"><span>    &#34;yearsActive&#34; : [ <span style="color:#2544bb">&#34;2010&#34;</span>, <span style="color:#2544bb">&#34;1983&#34;</span> ],
+</span></span><span style="display:flex;"><span>    &#34;countries&#34; : [ <span style="color:#2544bb">&#34;France&#34;</span>, <span style="color:#2544bb">&#34;Italy&#34;</span>, <span style="color:#2544bb">&#34;Romania&#34;</span>, <span style="color:#2544bb">&#34;Bulgaria&#34;</span> ]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We want to morph the source XML into a JSON that:</p>
+<ul>
+<li>Has two separated nodes for <code>person</code> and <code>visits</code>;</li>
+<li>Has the customer&rsquo;s emails grouped into two separated arrays based on their type (<code>&lt;email type=&quot;...&quot;&gt;</code>);</li>
+<li>Has an optional <code>hasVisistedRomania</code> field in case Romania appears in the visits list;</li>
+<li>Has an array containing all the years during which the customer was active (visited countries around the globe) - no duplications accepted</li>
+<li>Has an array containing all the countries the customer has visited - no duplications allowed</li>
+</ul>
+<p>The corresponding <strong>mapneat</strong> transformation might look like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>json(MapNeatSource.fromXml(xml)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;person&#34;</span> <span style="color:#00538b">/=</span> json {
+</span></span><span style="display:flex;"><span>        <span style="color:#2544bb">&#34;firstName&#34;</span> <span style="color:#00538b">*=</span> <span style="color:#2544bb">&#34;$.customer.firstname&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#2544bb">&#34;lastName&#34;</span> <span style="color:#00538b">*=</span> <span style="color:#2544bb">&#34;$.customer.lastname&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#2544bb">&#34;personalEmails&#34;</span> <span style="color:#00538b">*=</span> <span style="color:#2544bb">&#34;$.customer.email[?(@.type == &#39;personal&#39;)].content&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#2544bb">&#34;businessEmails&#34;</span> <span style="color:#00538b">*=</span> <span style="color:#2544bb">&#34;$.customer.email[?(@.type == &#39;business&#39;)].content&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#5317ac">if</span> (sourceCtx().read&lt;MutableList&lt;String&gt;&gt;(<span style="color:#2544bb">&#34;$.customer.visits.visit[*].country&#34;</span>).contains(<span style="color:#2544bb">&#34;Romania&#34;</span>)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#2544bb">&#34;hasVisitedRomania&#34;</span> <span style="color:#00538b">/=</span> <span style="color:#2544bb">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;visits&#34;</span> <span style="color:#00538b">/=</span> json {
+</span></span><span style="display:flex;"><span>        <span style="color:#2544bb">&#34;yearsActive&#34;</span> <span style="color:#00538b">*=</span> {
+</span></span><span style="display:flex;"><span>            expression = <span style="color:#2544bb">&#34;$.customer.visits.visit[*].date&#34;</span>
+</span></span><span style="display:flex;"><span>            processor = {
+</span></span><span style="display:flex;"><span>                (<span style="color:#5317ac">it</span> <span style="color:#5317ac">as</span> MutableList&lt;String&gt;)
+</span></span><span style="display:flex;"><span>                    .map { ds <span style="color:#00538b">-&gt;</span> LocalDate.parse(ds, df).year.toString() }
+</span></span><span style="display:flex;"><span>                    .toSet()
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#2544bb">&#34;countries&#34;</span> <span style="color:#00538b">*=</span> <span style="color:#2544bb">&#34;$.customer.visits.visit[*].country&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="explanation">Explanation</h1>
+<p>Under the hood, <strong>mapneat</strong> uses the <a href="https://github.com/stleary/JSON-java">JSON-java</a> library to convert an XML Source to an intermediary JSON Source automatically.</p>
+<p>This step si done automatically when <code>MapNeatSource.fromXml(xml)</code> is invoked.</p>
+<p>At this point, any XML information/reference will be &ldquo;forever&rdquo; lost.</p>
+<p>For debugging purposes, if you want to see how the intermediary JSON source looks like, especially for debugging purposes, you can do the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>json(MapNeatSource.fromXml(xml)) {
+</span></span><span style="display:flex;"><span>    copySourceToTarget()
+</span></span><span style="display:flex;"><span>    println(<span style="color:#5317ac">this</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Running the above code on our input XML, would return this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  &#34;customer&#34; : {
+</span></span><span style="display:flex;"><span>    &#34;visits&#34; : {
+</span></span><span style="display:flex;"><span>      &#34;count&#34; : <span style="color:#0000c0">3</span>,
+</span></span><span style="display:flex;"><span>      &#34;visit&#34; : [ {
+</span></span><span style="display:flex;"><span>        &#34;date&#34; : <span style="color:#2544bb">&#34;2010-01-22&#34;</span>,
+</span></span><span style="display:flex;"><span>        &#34;country&#34; : <span style="color:#2544bb">&#34;France&#34;</span>
+</span></span><span style="display:flex;"><span>      }, {
+</span></span><span style="display:flex;"><span>        &#34;date&#34; : <span style="color:#2544bb">&#34;1983-01-22&#34;</span>,
+</span></span><span style="display:flex;"><span>        &#34;country&#34; : <span style="color:#2544bb">&#34;Italy&#34;</span>
+</span></span><span style="display:flex;"><span>      }, {
+</span></span><span style="display:flex;"><span>        &#34;date&#34; : <span style="color:#2544bb">&#34;2010-01-22&#34;</span>,
+</span></span><span style="display:flex;"><span>        &#34;country&#34; : <span style="color:#2544bb">&#34;Romania&#34;</span>
+</span></span><span style="display:flex;"><span>      }, {
+</span></span><span style="display:flex;"><span>        &#34;date&#34; : <span style="color:#2544bb">&#34;2010-01-25&#34;</span>,
+</span></span><span style="display:flex;"><span>        &#34;country&#34; : <span style="color:#2544bb">&#34;Bulgaria&#34;</span>
+</span></span><span style="display:flex;"><span>      } ]
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    &#34;firstname&#34; : <span style="color:#2544bb">&#34;Mike&#34;</span>,
+</span></span><span style="display:flex;"><span>    &#34;email&#34; : [ {
+</span></span><span style="display:flex;"><span>      &#34;type&#34; : <span style="color:#2544bb">&#34;business&#34;</span>,
+</span></span><span style="display:flex;"><span>      &#34;content&#34; : <span style="color:#2544bb">&#34;mail@bsi.com&#34;</span>
+</span></span><span style="display:flex;"><span>    }, {
+</span></span><span style="display:flex;"><span>      &#34;type&#34; : <span style="color:#2544bb">&#34;personal&#34;</span>,
+</span></span><span style="display:flex;"><span>      &#34;content&#34; : <span style="color:#2544bb">&#34;mail@pers.com&#34;</span>
+</span></span><span style="display:flex;"><span>    } ],
+</span></span><span style="display:flex;"><span>    &#34;age&#34; : <span style="color:#0000c0">67</span>,
+</span></span><span style="display:flex;"><span>    &#34;lastname&#34; : <span style="color:#2544bb">&#34;Smith&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This is the actual JSON source that we morph into our desired format.</p>
+<p>Now, looking at the following operations:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;person&#34;</span> <span style="color:#00538b">/=</span> json {
+</span></span><span style="display:flex;"><span>        <span style="color:#2544bb">&#34;firstName&#34;</span> <span style="color:#00538b">*=</span> <span style="color:#2544bb">&#34;$.customer.firstname&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#2544bb">&#34;lastName&#34;</span> <span style="color:#00538b">*=</span> <span style="color:#2544bb">&#34;$.customer.lastname&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#2544bb">&#34;personalEmails&#34;</span> <span style="color:#00538b">*=</span> <span style="color:#2544bb">&#34;$.customer.email[?(@.type == &#39;personal&#39;)].content&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#2544bb">&#34;businessEmails&#34;</span> <span style="color:#00538b">*=</span> <span style="color:#2544bb">&#34;$.customer.email[?(@.type == &#39;business&#39;)].content&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">// ....
+</span></span></span></code></pre></div><p>First, we observe that we can have <code>json{}</code> inside <code>json{}</code>.</p>
+<p>This behavior allows us to merge various sources into a single file.</p>
+<p>Creating an inner <code>json{}</code> inside of an outer <code>json{}</code> is done using the assign operation: <code>/=</code>.</p>
+<p><code>&quot;$.customer.email[?(@.type == 'personal')].content&quot;</code> is a <a href="https://github.com/json-path/JsonPath">json-path</a> expression, that not only selects all emails, but also filters them by their type.</p>
+<blockquote>
+<p>Retrieving information from the source is usually done using <code>*=</code> Shift Operations.</p>
+</blockquote>
+<p>Next, given Kotlin&rsquo;s excellent DSL features, we can actually mix control statements (if/else/case) inside our transformation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span> <span style="color:#5317ac">if</span> (sourceCtx().read&lt;MutableList&lt;String&gt;&gt;(<span style="color:#2544bb">&#34;$.customer.visits.visit[*].country&#34;</span>).contains(<span style="color:#2544bb">&#34;Romania&#34;</span>)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;hasVisitedRomania&#34;</span> <span style="color:#00538b">/=</span> <span style="color:#2544bb">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The above code will make sure, the optional field <code>hasVisitedRomania</code> only appears if the list of visited countries (<code>&quot;$.customer.visits.visit[*].country&quot;</code>) contains <code>&quot;Romania&quot;</code>.</p>
+<p>The last part:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">val</span> df = DateTimeFormatter.ofPattern(<span style="color:#2544bb">&#34;yyyy-MM-dd&#34;</span>, Locale.US)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#505050">//....
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#2544bb">&#34;yearsActive&#34;</span> <span style="color:#00538b">*=</span> {
+</span></span><span style="display:flex;"><span>    expression = <span style="color:#2544bb">&#34;$.customer.visits.visit[*].date&#34;</span>
+</span></span><span style="display:flex;"><span>    processor = {
+</span></span><span style="display:flex;"><span>        (<span style="color:#5317ac">it</span> <span style="color:#5317ac">as</span> MutableList&lt;String&gt;)
+</span></span><span style="display:flex;"><span>            .map { ds <span style="color:#00538b">-&gt;</span> LocalDate.parse(ds, df).year.toString() }
+</span></span><span style="display:flex;"><span>            .toSet()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Iterates of all the visits extract the year of the visit and collect elements to a <code>Set</code> (in order to avoid duplications).</p>
+
+</content>
+
+<div style="font-size:0.8em;display:flex;gap:16px;justify-content:center;">
+  <p>
+    
+    <a href="http://localhost:1313/2021/01/25/computing-eigenvalues-and-eigenvectors-using-qr-decomposition/">
+      &lt;&lt; Previous Post</a>
+        
+  </p>
+  <p>|</p>
+  <p>
+    
+    <a href="http://localhost:1313/2021/01/31/hello-world-mapneat/">Next Post >></a>
+    
+  </p>
+</div>
+
+
+
+
+
+  <div class="related-posts" style="border: 2px solid #d3d6db; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; background-color: #fafafa;">
+    <h1 style="margin-top: 0;">Related Articles</h3>
+    <p style="font-size: 0.95em; color: #555;">I'm so glad you made it to the end. The following articles are loosely related to this one:</p>
+    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-03-28">
+            Mar 28, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/03/28/my-list-of-challenging-software-projects-some-programmers-should-try/" style="margin-left: 0.25rem;">My list of challenging software projects some programmers should try</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2023-02-01">
+            Feb 01, 2023
+          </time>
+          &mdash; 
+          <a href="/2023/02/01/demystifying-bitwise-operations-a-gentle-c-tutorial/" style="margin-left: 0.25rem;">Demystifying bitwise operations, a gentle C tutorial</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-09-01">
+            Sep 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/09/01/building-pathological-input-for-java-hashmaps-hash-collisions-generator/" style="margin-left: 0.25rem;">Building pathological input for Java HashMaps - hash collisions generator</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-05-01">
+            May 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/05/01/4-integers-are-enough-to-write-a-snake-game/" style="margin-left: 0.25rem;">4 integers are enough to write a Snake Game</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-10">
+            Apr 10, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/10/a-blog-that-is-a-single-executable-binary/" style="margin-left: 0.25rem;">A blog that is a single executable binary</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-01">
+            Apr 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/01/ive-promised-myself-never-to-use-gradle/" style="margin-left: 0.25rem;">I&#39;ve promised myself never to use gradle</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-03-15">
+            Mar 15, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/03/15/hash-displace-and-compress-perfect-hashing-with-java/" style="margin-left: 0.25rem;">Hash, displace, and compress: Perfect hashing with Java</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-03-15">
+            Mar 15, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/03/15/on-implementing-bloom-filters-in-c/" style="margin-left: 0.25rem;">On implementing Bloom Filters in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-12-01">
+            Dec 01, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/12/01/writing-a-simple-16-bit-vm-in-less-than-125-lines-of-c/" style="margin-left: 0.25rem;">Writing a simple 16 bit VM in less than 125 lines of C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-11-08">
+            Nov 08, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/11/08/a-tale-of-java-hash-tables/" style="margin-left: 0.25rem;">A tale of Java Hash Tables</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-10-02">
+            Oct 02, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/10/02/implementing-hash-tables-in-c/" style="margin-left: 0.25rem;">Implementing Hash Tables in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-04-22">
+            Apr 22, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/04/22/writing-a-universal-chess-interface-uci-client-in-java/" style="margin-left: 0.25rem;">Writing a Universal Chess Interface (UCI) Client in Java</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-31">
+            Jan 31, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/31/hello-world-mapneat/" style="margin-left: 0.25rem;">Hello world, mapneat!</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-25">
+            Jan 25, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/25/computing-eigenvalues-and-eigenvectors-using-qr-decomposition/" style="margin-left: 0.25rem;">Computing Eigenvalues and Eigenvectors using QR Decomposition</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-20">
+            Jan 20, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/20/generate-random-sql-inserts-using-pysert/" style="margin-left: 0.25rem;">Generate random SQL inserts using pysert</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-20">
+            Jan 20, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c/" style="margin-left: 0.25rem;">Writing your own linear algebra matrix library in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2013-09-05">
+            Sep 05, 2013
+          </time>
+          &mdash; 
+          <a href="/2013/09/05/adding-custom-annotations-to-your-java-beans/" style="margin-left: 0.25rem;">Adding custom annotations to your java beans</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2012-06-30">
+            Jun 30, 2012
+          </time>
+          &mdash; 
+          <a href="/2012/06/30/writing-a-simple-file-monitor-in-java-using-commons-io/" style="margin-left: 0.25rem;">Writing a simple file monitor in Java using Commons IO</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2011-09-04">
+            Sep 04, 2011
+          </time>
+          &mdash; 
+          <a href="/2011/09/04/bash-scripting-best-practices/" style="margin-left: 0.25rem;">Bash Scripting - Best Practices</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2011-06-01">
+            Jun 01, 2011
+          </time>
+          &mdash; 
+          <a href="/2011/06/01/implementing-a-generic-priority-queue-in-c/" style="margin-left: 0.25rem;">Implementing a generic Priority Queue in C</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+  </main>
+  <footer>
+    <div class="mpt">The opinions expressed on this blog are highly personal.</div>
+
+</footer>
+</body>
+
+</html>

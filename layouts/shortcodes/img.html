@@ -1,0 +1,12 @@
+<figure class="custom-figure" style="max-width: {{ .Get "width" }}px; margin: 2rem auto;">
+  <img 
+    src="{{ .Get "src" }}" 
+    alt="{{ .Get "caption" }}" 
+    style="width:100%; height:auto; border:1px solid #ddd"
+  >
+  {{ with .Get "caption" }}
+    <figcaption style="font-size: 0.85rem; color: #666; margin-top: 0.5rem; text-align: center;">
+      {{ . }}
+    </figcaption>
+  {{ end }}
+</figure>

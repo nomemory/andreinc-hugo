@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Linear transformations, Eigenvectors and Eigenvalues - an easy explanation | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="Linear transformations, Eigenvectors and Eigenvalues - an easy explanation" />
+<meta name="description" content="
+This article is in early editing. It may suffer changes or corrections. If you spot any error please contact me.
+
+There are rumors saying Computer Vision Engineers consider Eigenvalues and Eigenvectors the single most important concept(s) in linear algebra. I am not 100% sure about that, but I must admit those two things confused me a lot during my university years.
+I think my teacher lost me somewhere in between The basis of a vector space and Linear transformations. N-dimensional vectors rotating ?! That was too much for me. So I&rsquo;ve stopped caring, learned the formulas, and passed the exam. So here I am more than ten years later, interested in A.I. algorithms and realizing those two notions are much simpler than I&rsquo;ve thought." />
+<meta name="keywords" content="linear-algebra,algorithm,computer-science," />
+
+
+<meta property="og:url" content="http://localhost:1313/2021/01/20/linear-transformations-eigenvectors-and-eigenvalues-an-easy-explanation/">
+  <meta property="og:site_name" content="Personal Site of Andrei N. Ciobanu">
+  <meta property="og:title" content="Linear transformations, Eigenvectors and Eigenvalues - an easy explanation">
+  <meta property="og:description" content="This article is in early editing. It may suffer changes or corrections. If you spot any error please contact me.
+There are rumors saying Computer Vision Engineers consider Eigenvalues and Eigenvectors the single most important concept(s) in linear algebra. I am not 100% sure about that, but I must admit those two things confused me a lot during my university years.
+I think my teacher lost me somewhere in between The basis of a vector space and Linear transformations. N-dimensional vectors rotating ?! That was too much for me. So I’ve stopped caring, learned the formulas, and passed the exam. So here I am more than ten years later, interested in A.I. algorithms and realizing those two notions are much simpler than I’ve thought.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-01-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2021-01-20T00:00:00+00:00">
+    <meta property="article:tag" content="Linear-Algebra">
+    <meta property="article:tag" content="Algorithm">
+    <meta property="article:tag" content="Computer-Science">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Linear transformations, Eigenvectors and Eigenvalues - an easy explanation">
+  <meta name="twitter:description" content="This article is in early editing. It may suffer changes or corrections. If you spot any error please contact me.
+There are rumors saying Computer Vision Engineers consider Eigenvalues and Eigenvectors the single most important concept(s) in linear algebra. I am not 100% sure about that, but I must admit those two things confused me a lot during my university years.
+I think my teacher lost me somewhere in between The basis of a vector space and Linear transformations. N-dimensional vectors rotating ?! That was too much for me. So I’ve stopped caring, learned the formulas, and passed the exam. So here I am more than ten years later, interested in A.I. algorithms and realizing those two notions are much simpler than I’ve thought.">
+
+
+
+
+  <meta itemprop="name" content="Linear transformations, Eigenvectors and Eigenvalues - an easy explanation">
+  <meta itemprop="description" content="This article is in early editing. It may suffer changes or corrections. If you spot any error please contact me.
+There are rumors saying Computer Vision Engineers consider Eigenvalues and Eigenvectors the single most important concept(s) in linear algebra. I am not 100% sure about that, but I must admit those two things confused me a lot during my university years.
+I think my teacher lost me somewhere in between The basis of a vector space and Linear transformations. N-dimensional vectors rotating ?! That was too much for me. So I’ve stopped caring, learned the formulas, and passed the exam. So here I am more than ten years later, interested in A.I. algorithms and realizing those two notions are much simpler than I’ve thought.">
+  <meta itemprop="datePublished" content="2021-01-20T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2021-01-20T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1923">
+  <meta itemprop="keywords" content="Linear-Algebra,Algorithm,Computer-Science">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: var(--background-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: var(--text-color);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  a {
+    color: var(--link-color);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px dashed;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: var(--blockquote-color);
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+</style>
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/math.css">
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Personal Site of Andrei N. Ciobanu</h2>
+</a>
+<nav>
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+<a href="/links/">Links</a>
+
+<a href="/tags/">Tags</a>
+
+</nav>
+</header>
+  <main>
+
+<content>
+  <blockquote>
+<p>This article is in early editing. It may suffer changes or corrections. If you spot any error please contact me.</p>
+</blockquote>
+<p>There are rumors saying Computer Vision Engineers consider <code>Eigenvalues</code> and <code>Eigenvectors</code> the single most important concept(s) in linear algebra. I am not 100% sure about that, but I must admit those two things confused me a lot during my university years.</p>
+<p>I think my teacher lost me somewhere in between <em>The basis of a vector space</em> and <em>Linear transformations</em>. N-dimensional vectors rotating ?! That was too much for me. So I&rsquo;ve stopped caring, learned the formulas, and passed the exam. So here I am more than ten years later, interested in A.I. algorithms and realizing those two notions are much simpler than I&rsquo;ve thought.</p>
+<p>But, before jumping directly into the subject, we must first talk about a few auxiliary concepts that will help us better understand the mystery behind <code>Eigenvectors</code> and <code>Eigenvalues</code>.</p>
+<h1 id="think-of-matrices-as-functions-fx--">Think of matrices as functions f(x) = &hellip;</h1>
+<p>In mathematics, a function is a <em>rule</em> that accepts an input and produces an output.</p>
+<p>For example $f(x) = x + 1 , f : N \rightarrow N$ is a function that accepts a natural number <code>x</code>, increments the number with <code>1</code> and returns the result. As expected $f(0) = 0 + 1 = 1$ and $f(5) = 5 + 1 = 6$. If <code>x</code> varies, then the result will vary.</p>
+<p>Now let&rsquo;s think of matrix <code>A</code> with <code>m</code> rows and <code>n</code> columns (<code>A[mxn]</code>), and we consider the following equation $b=A * x$ where:</p>
+<ul>
+<li><code>x</code> is an n-dimensional vector, $x \in R^n$</li>
+<li><code>b</code> is an m-dimensional vector, $b \in R^m$</li>
+</ul>
+<p>Looking closer, we can see that if we change <code>x</code>, <code>b</code> will probably be changed. So <code>A</code> acts exactly like a function.</p>
+<p>Forcing the mathematical notation a little, we can say $A(x) = b \text{,where } A : R^n \rightarrow R^m$.</p>
+<p><strong>Example 1</strong>:</p>
+<p>Let&rsquo;s consider a bi-dimensional vector $V = \begin{bmatrix} 2 \ 3 \end{bmatrix} \text{, where } V \in R^2$.</p>
+<p>If we were to plot this vector in the 2-d plane, it would look like this:</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2021-01-24-eigenvalues-and-eigenvectors-explained/x-2d-vector-001.png" alt="vect"></p>
+<p>Now, let&rsquo;s define a matrix <code>A</code> = $\begin{bmatrix} 1 &amp; 0 \ 0 &amp; 0 \end{bmatrix}$ and we compute $A * V$:</p>
+<h1 id="endbmatrix">$V^{&rsquo;}=
+\begin{bmatrix}
+1 &amp; 0 \
+0 &amp; 0
+\end{bmatrix}
+*
+\begin{bmatrix}
+2 \
+3
+\end{bmatrix}</h1>
+<p>\begin{bmatrix}
+2 \
+0
+\end{bmatrix}
+\text{ ,where } V^{&rsquo;} \in R^2$.</p>
+<p>As we can see, applying the &ldquo;matrix&rdquo; function to our vector, $A(V)=V^{&rsquo;}$, we removed the <code>y</code> information from it. So if we plot it in the two-dimensional space:</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2021-01-24-eigenvalues-and-eigenvectors-explained/x-2d-vector-002.png" alt="vect"></p>
+<p>We can observe that $V^{&rsquo;}$ is the $V$ projection on the <code>x-axis</code> of our system, thus the matrix <code>A</code> works as a function that projects any vector to the <code>x-axis</code>.</p>
+<p><code>A</code> works the same for every vector $V = \begin{bmatrix} x \ y \end{bmatrix} \text{ ,where } V \in R^2 $, it will always retrieve the orthogonal projection of point <code>(x, y)</code> on the <code>x-axis</code>.</p>
+<h1 id="matrix-transformations">Matrix transformations</h1>
+<p>A transformation $T$, is a &ldquo;rule&rdquo; that assigns to each vector $v \in R^n$ a vector $T(v) \in R^m$.</p>
+<ul>
+<li>$T(x) \in R^m$ is the <strong>image</strong> of $x \in R^n$ under $T$;</li>
+<li>All images $T(x)$ are called the <strong>range</strong> of $T$;</li>
+<li>$R^n$ is the <strong>domain</strong> of $T$;</li>
+<li>$R^m$ is the <strong>co-domain</strong> of $T$;</li>
+</ul>
+<p><code>n</code> is not necessarily different than <code>m</code>, as we saw in our previous example.</p>
+<p>Let <code>A</code> be an <code>nxm</code> matrix. The <strong>matrix transformation</strong> associated with A is the transformation: $T : R^n \rightarrow R^m \text{ ,defined by } T(x) = A * x$.</p>
+<p><strong>Example: Projection on the (x, y) plane</strong></p>
+<p>Let <code>A[3x3]</code> be:</p>
+<p>$A=
+\begin{bmatrix}
+1 &amp; 0 &amp; 0 \
+0 &amp; 1 &amp; 0 \
+0 &amp; 0 &amp; 0 \
+\end{bmatrix}
+$</p>
+<p>If we form the matrix transformation equation $A * v = b \text{ ,where } v \in R^3$:</p>
+<h1 id="endbmatrix-1">$
+A * v =
+\begin{bmatrix}
+1 &amp; 0 &amp; 0 \
+0 &amp; 1 &amp; 0 \
+0 &amp; 0 &amp; 0
+\end{bmatrix}
+*
+\begin{bmatrix}
+x \
+y \
+z
+\end{bmatrix}</h1>
+<h1 id="endbmatrix-2">\begin{bmatrix}
+x \
+y \
+0
+\end{bmatrix}</h1>
+<p>v^{&rsquo;}
+$</p>
+<p>We see that the <code>z</code> information of our vector $v$ has &ldquo;evaporated&rdquo;. The matrix $A$ projected our vector $v$ on the <code>&lt;x, y&gt;</code> plane.</p>
+<p>To visualise better, let&rsquo;s say $v=\begin{bmatrix}1 \ 2 \ 1\end{bmatrix}$ and we plot $v^{&rsquo;} = A * v = \begin{bmatrix}1 \ 2 \ 0\end{bmatrix}$:</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2021-01-24-eigenvalues-and-eigenvectors-explained/v-3d-vector-001.png" alt="vect"></p>
+<h1 id="linear-transformations">Linear Transformations</h1>
+<p>A linear transformation is a Transformation $T:R^n \rightarrow R^m$ satisfying the following conditions:</p>
+<p>$
+T(u+v) = T(u) + T(v) \
+T(cu) = c * T(u)
+$</p>
+<p>where $u, v \in R^n$ and $c$ is a scalar.</p>
+<p>If we write this with a matrix notation, given $T(x) = A*x =&gt;$, we have:</p>
+<p>$
+A(u+v) = A * u + A * v \
+A(c*u) = c * A * u
+$</p>
+<ul>
+<li>It&rsquo;s important to remember that a linear transformation <strong>takes the zero vector to the zero vector</strong>: $T(0) = 0$</li>
+<li>Also, for all/any vectors $v_{1}, v_{2}, &hellip;, v_{n}$ from $R^n$, and scalars $c_{1}, c_2{}, &hellip;, c_{n}$ we have: $T(c_{1}*v_{1} + c_{2}*v_{2}+ &hellip; + c_{k}*v_{k}) = c_{1} * T(v_{1}) + c_{2} * T(v_{2}) + &hellip; + c_{k} * T(v_{k})$.</li>
+</ul>
+<p>At this point, it&rsquo;s important to note that not all the transformations we&rsquo;ve discussed are <strong>linear transformations</strong>.</p>
+<p>For example a &ldquo;translation&rdquo; in the form: $T(x) = x + \begin{bmatrix} 1 \ 2 \ 3 \end{bmatrix}$ is <strong>not</strong> a linear transformation, because $T(0) = \begin{bmatrix} 1 \ 2 \ 3 \end{bmatrix} =&gt; T(0) != 0$.</p>
+<p>But without going into all the demonstration, we can state something very important:</p>
+<blockquote>
+<p>Every linear transformation is a matrix transformation!</p>
+</blockquote>
+<p>For example the matrix $A = \begin{bmatrix} 3 &amp; 1 \ 1 &amp; 2 \end{bmatrix}$ describes a linear transformation because:</p>
+<h1 id="endbmatrix-3">$
+A * [0] = [0] \text{, and}\
+A(u + v) =
+\begin{bmatrix}
+3 &amp; 1 \
+1 &amp; 2
+\end{bmatrix}
+*
+\begin{bmatrix}
+u_{1} + v_{1} \
+u_{2} + v_{2}
+\end{bmatrix}</h1>
+<p>\begin{bmatrix}
+3 * (u_{1} + v_{1}) + (u_{2} + v_{2}) \
+(u_{2} + v_{2}) + 2 * (u_{2} + v_{2})
+\end{bmatrix}
+=\
+\begin{bmatrix}
+(3 * u_{1} + u_2{}) + (3 * v_{1} + v_{2}) \
+(u_{1} + 2 * u_{2}) + (v_{1} + 2 * v_{2})
+\end{bmatrix}
+=\
+A * v + A * u
+$</p>
+<p>If we apply this linear transformation to an existing vector $v=\begin{bmatrix} 1 \ 2\end{bmatrix}$ the resulting vector will be:</p>
+<h1 id="endbmatrix-4">$
+v^{&rsquo;}=
+\begin{bmatrix}
+3 &amp; 1 \
+1 &amp; 2
+\end{bmatrix}
+*
+\begin{bmatrix}
+1 \
+2
+\end{bmatrix}</h1>
+<p>\begin{bmatrix}
+5 \
+5
+\end{bmatrix}
+$</p>
+<p>To visualise $v$ and $v^{-1}$ we can plot them together:</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2021-01-24-eigenvalues-and-eigenvectors-explained/custom_transformation_01.png" alt="vect"></p>
+<p>As you can see the initial vector was &ldquo;stretched&rdquo;, and changed it&rsquo;s span.</p>
+<h1 id="eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors</h1>
+<p>Let there be a transformation matrix <code>A[nxn]</code>. We say:</p>
+<ul>
+<li>An <strong>eigenvector</strong> is a non zero vector $v \in R^n$, and the equation $A * v = \lambda * v$ is true, for some scalar $\lambda$.</li>
+<li>An <strong>eigenvalue</strong> of $A$ is a scalar $\lambda$, so that the previous equation $A * v = \lambda * v$ has a non-trivial solution.</li>
+</ul>
+<p>Looking at the equation $A * v = \lambda *v$ we can say that an eigenvector of linear transformation is a &ldquo;characteristic vector&rdquo; (something intrinsically related with the transformation) that changes by a scalar factor when that linear transformation is applied to it. The corresponding scalar, $\lambda$, that stretches the vector is the <strong>eigenvalue</strong>.</p>
+<p>The process of computing the eigenvectors and eigenvalues can be the following</p>
+<p>$
+A * v = \lambda * v\
+A * v = (\lambda * I) * v \
+A * v - (\lambda * I) * v = 0 \
+(A - \lambda * I) * v = 0 \
+\text{determinant(} A - \lambda * I\text{)} = 0
+$</p>
+<p>Let&rsquo;s take the matrix $A = \begin{bmatrix} 3 &amp; 1 \ 0 &amp; 1 \end{bmatrix}$ as an example.</p>
+<p>After calculating $ A - \lambda * I =
+\begin{bmatrix}
+3 - \lambda &amp; 1 \
+0 &amp; 1 - \lambda
+\end{bmatrix}
+$, we need to check the solutions of $\lambda$ for which the $det(A - \lambda * I) = 0$.</p>
+<p>But $det(A - \lambda * I) = (3 - \lambda) * (1 - \lambda) = 0$, thus we find the two eigenvalues $\lambda_{1}=3, \lambda_{2}=1$.</p>
+<p>Now that we have the eigenvalues, we can compute the two eigenvectors, but solving two linear systems of equations in the form:</p>
+<h1 id="endbmatrix-5">$
+\begin{bmatrix}
+3 - 1 &amp; 1 \
+0 &amp; 1 - 1
+\end{bmatrix}
+*
+\begin{bmatrix}
+v_{1x} \
+v_{1y}
+\end{bmatrix}</h1>
+<h1 id="endbmatrix-6">\begin{bmatrix}
+0 \
+0
+\end{bmatrix}
+\
+\begin{bmatrix}
+3 - 3 &amp; 1 \
+0 &amp; 1 - 3
+\end{bmatrix}
+*
+\begin{bmatrix}
+v_{2x} \
+v_{2y}
+\end{bmatrix}</h1>
+<p>\begin{bmatrix}
+0 \
+0
+\end{bmatrix}
+$</p>
+<p>If we solve the two systems of equations, we will realize that our matrix &ldquo;A&rdquo; has multiple eigenvectors/eigenvalues pairs.</p>
+<p>$
+\text{For } \lambda_{1} = 1 \text{, we have the eigenvectors } v_{1} = \begin{bmatrix} x \ -2x \end{bmatrix} = \begin{bmatrix} \frac{-1}{2} \ 1 \end{bmatrix} * x\
+\text{For } \lambda_{2} = 3 \text{, we have the eigenvectors } v_{2} = \begin{bmatrix} x \ 0 \end{bmatrix} = \begin{bmatrix} 1 \ 0 \end{bmatrix} * x
+$</p>
+<blockquote>
+<p>Wait! If you look closer, the eigenvalues $\lambda_{1}=1$ and $\lambda_{2}=3$ are exactly the elements of the first diagonal of our matrix $A$. That&rsquo;s not a pure coincidence. The matrix $A$ is an upper diagonal matrix (has only zero elements under the first diagonal). So we can generalize the following: the eigenvalues for a diagonal matrix are the elements of the first diagonal.</p>
+</blockquote>
+<p>Now, we can visually see why eigenvectors are so &ldquo;special&rdquo;.</p>
+<p>Using our transformation $A= \begin{bmatrix} 3 &amp; 1 \ 0 &amp; 1 \end{bmatrix}$ on a &ldquo;normal&rdquo;, &ldquo;non-eigenvector&rdquo; vector $v = \begin{bmatrix} 2 \ 3 \end{bmatrix}$, we obtain a new vector $v&rsquo; = \begin{bmatrix} 3 &amp; 1 \ 0 &amp; 1 \end{bmatrix} * \begin{bmatrix} 2 \ 3 \end{bmatrix} = \begin{bmatrix} 9 \ 3 \end{bmatrix}$, and project:</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2021-01-24-eigenvalues-and-eigenvectors-explained/non_eigen_01.png" alt="vect"></p>
+<p>We see that $v_{1}$ changed its span in comparison with the initial $v$, from before the transformation.</p>
+<p>But on the contrary if we use a eigenvector $v_{eig} = \begin{bmatrix} 2 \ 0 \end{bmatrix} = v_{eig}^{&rsquo;}$, and we apply the transformation associated with $A$ on it: $A * v_{eig} = \begin{bmatrix} 3 &amp; 1 \ 0 &amp; 1 \end{bmatrix} * \begin{bmatrix} 2 \ 0 \end{bmatrix} = \begin{bmatrix} 6 \ 0 \end{bmatrix}$, and we project:</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/2021-01-24-eigenvalues-and-eigenvectors-explained/eigen_01.png" alt="vect"></p>
+<p>We can see that $v_{eig}^{&rsquo;}$ didn&rsquo;t change its span compared to $v_{eig}$.</p>
+<p>Conclusion: <strong>Eigenvectors</strong> and <strong>Eigenvalues</strong> are essential because, in a way, they act like an &ldquo;axis&rdquo;, along which a linear transformation works simply by &ldquo;shrinking/stretching&rdquo; and not performing any other alterations.</p>
+<p>So <strong>Eigenvectors</strong> helps us model and understand the complex ways in which a linear transformation work by decoupling their actions into &ldquo;independent&rdquo; &ldquo;axes&rdquo;.</p>
+<blockquote>
+<p>Not every linear transformation has &ldquo;real&rdquo; eigenvectors, but all linear transformations have &ldquo;complex&rdquo; eigenvectors.</p>
+</blockquote>
+<p>For example the matrix associated with a linear transformation that performs a planar rotation clockwise is $A = \begin{bmatrix} 0 &amp; 1 \ -1 &amp; 0 \end{bmatrix}$.</p>
+<p>If we compute the eigenvalues for $A$ we will obtain: $\lambda_{1}=-i$ and $\lambda_{2}=i$. In this case the two associated eigenvectors will be:  $v_{1} = \begin{bmatrix} i \ 1 \end{bmatrix}$ and $v_{2} = \begin{bmatrix} -i \ 1 \end{bmatrix}$.</p>
+<p>The results are not surprising because $A$ will rotate every vector, and the span of the vector changes automatically.</p>
+<h1 id="why-are-eigenvectors-and-eigenvalues-important">Why are Eigenvectors and Eigenvalues important</h1>
+<p>From a &ldquo;Computer Engineering&rdquo; perspective, <code>Eigenvectors</code> and <code>Eigenvalues</code> are important in the following areas:</p>
+<ul>
+<li>Statistics;</li>
+<li>Computer Vision (e.g., Principal Component Analysis);</li>
+<li>Image compression.</li>
+<li>etc.</li>
+</ul>
+<h1 id="where-to-go-next">Where to go next</h1>
+<p>If you want to find out how to compute <strong>Eigenvectors</strong> and <strong>Eigenvalues</strong>, please refer to <a href="/2021/01/25/computing-eigenvalues-and-eigenvectors-using-qr-decomposition">my next article</a> on this topic.</p>
+
+</content>
+
+
+
+<p>
+  
+  <a href="http://localhost:1313/tags/linear-algebra/">#Linear-Algebra</a>
+  
+  <a href="http://localhost:1313/tags/algorithm/">#Algorithm</a>
+  
+  <a href="http://localhost:1313/tags/computer-science/">#Computer-Science</a>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+  
+</body>
+
+</html>

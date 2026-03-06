@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hello world, mapneat! | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="Hello world, mapneat!" />
+<meta name="description" content="
+mapneat is a library I&rsquo;ve written a long time ago. I am biased.
+
+Introduction
+One of the most common challenges I&rsquo;ve encountered in Software Engineering is data manipulation: taking a raw data structure, applying business logic, restructuring it, and finally serializing it into a JSON format for external consumption.
+mapneat is designed for exactly this purpose. It provides a declarative DSL for transforming JSON, XML, and POJOs into JSON with minimal boilerplate. While written in Kotlin, it is fully compatible with Java projects." />
+<meta name="keywords" content="kotlin," /><meta name="referrer" content="no-referrer-when-downgrade" />
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: #F6F8FA;  
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #222222;  
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #111111;  
+  }
+
+  a {
+    color: #0056b3;  
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #003d80;  
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  strong {
+    color: #222222;  
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  hr {
+    border: none;  
+    border-top: 1px solid #e5e5e5;  
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 4px solid #0056b3;  
+    color: #444444;  
+    padding-left: 1rem;  
+    font-style: italic;
+    background: #fafafa;  
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+  .mp {
+    border: thin solid #ccc;
+    background-color: #F0F0F0;
+    padding: 25px;
+    width: inherit;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .mpl {
+    position: relative;
+    font: 0.7rem/1.1 sans-serif;  
+    font-style: italic;
+    text-decoration: none;        
+    background: #F0F0F0;
+    border-radius: 1px;
+    border: 0px solid #ccd;
+  }
+
+  .mpt {
+    padding: 25px;
+    font-style: italic;
+    color: #666;
+  }
+
+  .mpc {
+    text-align: center;
+  }
+
+  .mpn {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 0.8rem;
+    color: #777;
+  }
+
+  .meta, .post-meta {
+    color: #555555;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+   
+  table {
+    width: 100%;
+    border-collapse: collapse;  
+    margin: 1.5rem 0;           
+    font-size: 0.95rem;         
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #ddd;
+  }
+
+  tbody td {
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+   
+  tbody tr:hover {
+    background: #fafafa;
+  }
+
+   
+  table code {
+    background: #f3f3f3;
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+   
+  .site-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .global-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-bottom: 1px solid #e5e5e5;  
+  }
+
+  .global-nav a {
+    font-weight: 550;
+    color: #222222;
+    font-size: 1.05rem;
+    transition: color 0.5s ease;
+  }
+
+  .global-nav a:hover {
+    color: #0056b3;  
+    text-decoration: underline;
+  }
+
+   
+  .global-nav a.active {
+    color: #0056b3;
+  }
+</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof renderMathInElement !== "function") {
+    console.error("KaTeX auto-render not loaded");
+    return;
+  }
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false }
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+  <header><header class="site-header">
+  <nav class="global-nav">
+    
+      <a href="/">home</a>
+    
+      <a href="/about/">about</a>
+    
+      <a href="/links/">links</a>
+    
+      <a href="/blogroll/">blogroll</a>
+    
+      <a href="/rss.xml">rss</a>
+    
+  </nav>
+</header></header>
+  <main>
+
+
+<h1>Hello world, mapneat!</h1>
+<p>
+  <i>
+    <time datetime='2021-01-31'>
+      31 Jan, 2021
+    </time>
+  </i>
+</p>
+
+<content>
+  <blockquote>
+<p>mapneat is a library I&rsquo;ve written a long time ago. I am biased.</p>
+</blockquote>
+<h1 id="introduction">Introduction</h1>
+<p>One of the most common challenges I&rsquo;ve encountered in Software Engineering is data manipulation: taking a raw data structure, applying business logic, restructuring it, and finally serializing it into a JSON format for external consumption.</p>
+<p><a href="https://github.com/nomemory/mapneat">mapneat</a> is designed for exactly this purpose. It provides a declarative <a href="https://en.wikipedia.org/wiki/Domain-specific_language">DSL</a> for transforming <code>JSON</code>, <code>XML</code>, and <code>POJO</code>s into <code>JSON</code> with minimal boilerplate. While written in <a href="https://kotlinlang.org/">Kotlin</a>, it is fully compatible with Java projects.</p>
+<h1 id="the-tech-stack">The Tech Stack</h1>
+<p>Under the hood, <strong>mapneat</strong> leverages several proven libraries:</p>
+<ul>
+<li><strong>Jackson &amp; JsonPath</strong>: For high-performance JSON querying and processing.</li>
+<li><strong>JSON In Java</strong>: To handle XML-to-JSON conversions.</li>
+<li><strong>JSONAssert</strong>: To simplify unit testing of JSON outputs.</li>
+</ul>
+<h1 id="a-simple-example">A Simple Example</h1>
+<p>Consider the following domain model for a travel-focused social application:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#5317ac">class</span> User(
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> id: Long,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> firstName: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> lastName: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> birthDate: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> friends: MutableList&lt;Long&gt;,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> visits: Set&lt;Visit&gt;,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> creditCards: Set&lt;CreditCardInfo&gt;,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> pwd: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> email: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#5317ac">val</span> userName: String
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">class</span> Visit(<span style="color:#5317ac">val</span> id: Long, <span style="color:#5317ac">val</span> country: String, <span style="color:#5317ac">val</span> enter: String)
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">class</span> CreditCardInfo(<span style="color:#5317ac">val</span> number: String, <span style="color:#5317ac">val</span> cvv: String, <span style="color:#5317ac">val</span> expirationDate: String)
+</span></span></code></pre></div><p>If we serialized a <code>User</code> object directly, the output would include sensitive data like passwords and financial info—not ideal for a public REST API.</p>
+<h3 id="the-transformation-goal">The Transformation Goal</h3>
+<p>Instead of the raw dump, we want a &ldquo;morphed&rdquo; version that:</p>
+<ol>
+<li><strong>Redacts</strong> <code>pwd</code> and <code>creditCards</code>.</li>
+<li><strong>Flattens</strong> <code>visits</code> to just a list of unique country names.</li>
+<li><strong>Normalizes</strong> the <code>lastName</code> to uppercase.</li>
+<li><strong>Resolves</strong> friend IDs into their actual full names.</li>
+</ol>
+<p>Here is how you express that transformation using the <strong>mapneat</strong> DSL:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#5317ac">val</span> users : Map&lt;Long, User&gt; = getUsers(<span style="color:#0000c0">100</span>)
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">val</span> aRandomUser = users[<span style="color:#0000c0">10</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">val</span> out = json(fromObject(aRandomUser)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;&#34;</span> <span style="color:#00538b">*=</span> <span style="color:#2544bb">&#34;$&#34;</span>             <span style="color:#505050">// Start by shifting everything from source to target
+</span></span></span><span style="display:flex;"><span>    - <span style="color:#2544bb">&#34;visits&#34;</span>            <span style="color:#505050">// Delete specific nodes
+</span></span></span><span style="display:flex;"><span>    - <span style="color:#2544bb">&#34;creditCards&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#2544bb">&#34;pwd&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;visited&#34;</span> <span style="color:#00538b">*=</span> {        <span style="color:#505050">// Extract and process countries
+</span></span></span><span style="display:flex;"><span>        expression = <span style="color:#2544bb">&#34;$.visits[*].country&#34;</span>
+</span></span><span style="display:flex;"><span>        processor = {
+</span></span><span style="display:flex;"><span>            (<span style="color:#5317ac">it</span> <span style="color:#5317ac">as</span> Iterable&lt;String&gt;).toSet()
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Modify existing target data
+</span></span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;lastName&#34;</span> <span style="color:#00538b">/=</span> { targetCtx().read&lt;String&gt;(<span style="color:#2544bb">&#34;$.lastName&#34;</span>).toUpperCase() }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#505050">// Resolve IDs to Names
+</span></span></span><span style="display:flex;"><span>    <span style="color:#2544bb">&#34;friends&#34;</span> <span style="color:#00538b">/=</span> {
+</span></span><span style="display:flex;"><span>        targetCtx()
+</span></span><span style="display:flex;"><span>            .read&lt;List&lt;Long&gt;&gt;(<span style="color:#2544bb">&#34;$.friends&#34;</span>)
+</span></span><span style="display:flex;"><span>            .map { id <span style="color:#00538b">-&gt;</span> <span style="color:#2544bb">&#34;</span><span style="color:#2544bb">${users[id]?.firstName}</span><span style="color:#2544bb"> </span><span style="color:#2544bb">${users[id]?.lastName}</span><span style="color:#2544bb">&#34;</span> }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>println(<span style="color:#5317ac">out</span>)
+</span></span></code></pre></div><h3 id="the-result">The Result</h3>
+<p>The &ldquo;morphed&rdquo; JSON output is clean, safe, and ready for the client:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  &#34;id&#34; : <span style="color:#0000c0">490</span>,
+</span></span><span style="display:flex;"><span>  &#34;firstName&#34; : <span style="color:#2544bb">&#34;Rhea&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;lastName&#34; : <span style="color:#2544bb">&#34;ORLICH&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;birthDate&#34; : <span style="color:#2544bb">&#34;1925-07-09&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;friends&#34; : [ <span style="color:#2544bb">&#34;Bunny Winstanley&#34;</span>, <span style="color:#2544bb">&#34;Dianna Imaizumi&#34;</span>, <span style="color:#2544bb">&#34;Verdell Aguillar&#34;</span> ],
+</span></span><span style="display:flex;"><span>  &#34;email&#34; : <span style="color:#2544bb">&#34;crinedbotfly@msn.com&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;userName&#34; : <span style="color:#2544bb">&#34;fainleif&#34;</span>,
+</span></span><span style="display:flex;"><span>  &#34;visited&#34; : [ <span style="color:#2544bb">&#34;Saint Lucia&#34;</span>, <span style="color:#2544bb">&#34;Falkland Islands (malvinas)&#34;</span>, <span style="color:#2544bb">&#34;Malawi&#34;</span>, <span style="color:#2544bb">&#34;Kenya&#34;</span>, <span style="color:#2544bb">&#34;Lesotho&#34;</span> ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="understanding-the-operations">Understanding the Operations</h1>
+<p>A <strong>mapneat</strong> transformation always wraps a series of operations within a <code>json()</code> block.</p>
+<h2 id="1-the-shift-operation-">1. The Shift Operation (<code>*=</code>)</h2>
+<p>This is the core of the library. It uses <a href="https://github.com/json-path/JsonPath">JsonPath</a> to move data from the source to the target.</p>
+<ul>
+<li><code>&quot;&quot; *= &quot;$&quot;</code> means &ldquo;copy the entire source into the target root.&rdquo;</li>
+<li><code>&quot;visited&quot; *= { ... }</code> extracts a nested list and applies a <code>processor</code> lambda to transform the data during the move.</li>
+</ul>
+<h2 id="2-the-delete-operation--">2. The Delete Operation (<code>-</code>)</h2>
+<p>The <code>-</code> operator removes a node and all of its descendants from the target. It is used here to scrub sensitive fields.</p>
+<h2 id="3-the-assign-operation-">3. The Assign Operation (<code>/=</code>)</h2>
+<p>Unlike the shift operation which pulls from the <em>source</em>, the assign operation is typically used to set a value in the target based on logic, often reading from the current <code>targetCtx()</code>. In our example, we used it to uppercase the name and map IDs to names.</p>
+<h1 id="moving-forward">Moving Forward</h1>
+<p>This example only scratches the surface. <strong>mapneat</strong> supports complex nested mapping, XML sources, and more.</p>
+<p>For deep-dives into every supported operation, check out the <a href="https://github.com/nomemory/mapneat">official documentation</a> or explore the <a href="https://github.com/nomemory/mapneat-examples">example repository</a>.</p>
+
+</content>
+
+<div style="font-size:0.8em;display:flex;gap:16px;justify-content:center;">
+  <p>
+    
+    <a href="http://localhost:1313/2021/01/25/computing-eigenvalues-and-eigenvectors-using-qr-decomposition/">
+      &lt;&lt; Previous Post</a>
+        
+  </p>
+  <p>|</p>
+  <p>
+    
+    <a href="http://localhost:1313/2021/02/01/xml-to-json-using-mapneat/">Next Post >></a>
+    
+  </p>
+</div>
+
+
+
+
+
+  <div class="related-posts" style="border: 2px solid #d3d6db; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; background-color: #fafafa;">
+    <h1 style="margin-top: 0;">Related Articles</h3>
+    <p style="font-size: 0.95em; color: #555;">I'm so glad you made it to the end. The following articles are loosely related to this one:</p>
+    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-03-28">
+            Mar 28, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/03/28/my-list-of-challenging-software-projects-some-programmers-should-try/" style="margin-left: 0.25rem;">My list of challenging software projects some programmers should try</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2023-02-01">
+            Feb 01, 2023
+          </time>
+          &mdash; 
+          <a href="/2023/02/01/demystifying-bitwise-operations-a-gentle-c-tutorial/" style="margin-left: 0.25rem;">Demystifying bitwise operations, a gentle C tutorial</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-09-01">
+            Sep 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/09/01/building-pathological-input-for-java-hashmaps-hash-collisions-generator/" style="margin-left: 0.25rem;">Building pathological input for Java HashMaps - hash collisions generator</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-05-01">
+            May 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/05/01/4-integers-are-enough-to-write-a-snake-game/" style="margin-left: 0.25rem;">4 integers are enough to write a Snake Game</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-10">
+            Apr 10, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/10/a-blog-that-is-a-single-executable-binary/" style="margin-left: 0.25rem;">A blog that is a single executable binary</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+  </main>
+  <footer>
+    <div class="mpt">
+        <div id="quote-container">
+            <p id="quote-text">Loading inspiration...</p>
+            <small id="quote-author"></small>
+        </div>
+    </div>
+    <script>
+    (function() {
+        const quotes = [
+            { text: "It is so shocking to find out how many people do not believe that they can learn, and how many more believe learning to be difficult.", author: "Frank Herbert, Dune" },
+            { text: "Highly organized research is guaranteed to produce nothing new.", author: "Frank Herbert, Dune" },
+            { text: "Proper teaching is recognized with ease. You can know it without fail because it awakens within you that sensation which tells you this is something you have always known.", author: "Frank Herbert, Dune" },
+            { text: "Thou shalt not make a machine in the likeness of a human mind.", author: "Frank Herbert, Dune"},
+            { text: "What senses do we lack that we cannot see or hear another world all around us?", author: "Frank Herbert, Dune"},
+            { text: "Humans are almost always lonely.", author: "Frank Herbert, Dune"},
+            { text: "Science is made up of so many things that appear obvious after they are explained.", author: "Frank Herbert, Dune"},
+            { text: "Anti-intellectualism has been a constant thread winding its way through our political and cultural life, nurtured by the false notion that democracy means that 'my ignorance is just as good as your knowledge.", author: "Isaac Asimov"},
+            { text: "I write for the same reason I breathe - because if I didn't, I would die.", author: "Isaac Asimov"},
+            { text: "If knowledge can create problems, it is not through ignorance that we can solve them.", author: "Isaac Asimov"},
+            { text: "People think of education as something they can finish.", author: "Isaac Asimov"},
+            { text: "A robot may not injure a human being or, through inaction, allow a human being to come to harm.", author: "Isaac Asimov, I, Robot"},
+            { text: "Part of the inhumanity of the computer is that, once it is competently programmed and working smoothly, it is completely honest.", author: "Isaac Asimov"},
+            { text: "The true delight is in the finding out rather than in the knowing.", author: "Isaac Asimov"},
+            { text: "Scientific truth is beyond loyalty and disloyalty.", author: "Isaac Asimov"},
+            { text: "THERE IS AS YET INSUFFICIENT DATA FOR A MEANINGFUL ANSWER.", author: "Isaac Asimov, The Last Question"},
+            { text: "Every idea, extended into infinity, becomes its own opposite.", author: "Georg Wilhelm Friedrich Hegel"},
+            { text: "An idea is always a generalization, and generalization is a property of thinking. To generalize means to think.", author: "Georg Wilhelm Friedrich Hegel"},
+            { text: "We become what we contemplate.", author: "Plato"},
+            { text: "Welcome out of the cave, my friend. It's a bit colder out here, but the stars are just beautiful.", author: "Plato"},
+            { text: "Numbers have a way of taking a man by the hand and leading him down the path of reason.", author: "Pythagoras"},
+            { text: "There is geometry in the humming of the strings, there is music in the spacing of the spheres.", author: "Pythagoras"},
+            { text: "Music is a secret and unconscious mathematical problem of the soul.", author: "Gottfried Leibniz"},
+            { text: "We live in the best of all possible worlds!", author: "Gottfried Leibniz"},
+            { text: "The pleasure we obtain from music comes from counting, but counting unconsciously. Music is nothing but unconscious arithmetic.", author: "Gottfried Leibniz"},
+            { text: "Nature does not make leaps.", author: "Gottfried Leibniz"},
+            { text: "It is worth noting that the notation facilitates discovery. This, in a most wonderful way, reduces the mind's labour.", author: "Gottfried Leibniz"},
+            { text: "Imaginary numbers are a fine and wonderful refuge of the divine spirit almost an amphibian between being and non-being.", author: "Gottfried Leibniz"},
+            { text: "Mathematicians have tried in vain to this day to discover some order in the sequence of prime numbers, and we have reason to believe that it is a mystery into which the human mind will never penetrate.", author: "Leonhard Euler"},
+            { text: "For the sake of brevity, we will always represent this number 2.718281828459... by the letter e.", author: "Leonhard Euler"},
+            { text: "If you don't see why, someone can't tell you. I know numbers are beautiful. If they aren’t beautiful, nothing is.", author: "Paul Erdos"},
+            { text: "God may not play dice with the universe, but something strange is going on with the prime numbers.", author: "Paul Erdos"},
+            { text: "I visualize a time when we will be to robots what dogs are to humans. And I am rooting for the machines.", author: "Claude Shannon"},
+            { text: "If I feel unhappy, I do mathematics to become happy. If I am happy, I do mathematics to keep happy.", author: "Alfred Renyi"},
+            { text: "Use the word 'cybernetics', Norbert, because nobody knows what it means. This will always put you at an advantage in arguments.", author: "Claude Shannon"},
+            { text: "All stable processes we shall predict. All unstable processes we shall control.", author: "John von Neumann"},
+            { text: "Anyone who attempts to generate random numbers by deterministic means is, of course, living in a state of sin.", author: "John von Neumann"},
+            { text: "Static sites are the future, and the past.", author: "'Anoyingmous'" }
+        ];
+
+        
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const selected = quotes[randomIndex];
+
+        
+        document.getElementById('quote-text').innerText = `"${selected.text}"`;
+        document.getElementById('quote-author').innerText = `- ${selected.author}`;
+    })();
+    </script>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Calculus on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/calculus/</link>
+    <description>Recent content in Calculus on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 18 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/calculus/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A joke in approximating numbers raised to irrational powers</title>
+      <link>http://localhost:1313/2024/11/18/a-joke-in-approximating-numbers-raised-to-irrational-powers/</link>
+      <pubDate>Mon, 18 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2024/11/18/a-joke-in-approximating-numbers-raised-to-irrational-powers/</guid>
+      <description>&lt;h2 id=&#34;how-it-started&#34;&gt;How it started&lt;/h2&gt;&#xA;&lt;p&gt;This story began, unexpectedly, on Facebook in a math-focused group. A teacher asked the group to determine the value of: $\lfloor 3^{\sqrt{3}}\rfloor$ without using a calculator.&lt;/p&gt;&#xA;&lt;p&gt;Naturally, the challenge was to prove whether $\lfloor 3^{\sqrt{3}}\rfloor=6$ or $\lfloor 3^{\sqrt{3}}\rfloor=7$ (my intuition leaned toward 7).&lt;/p&gt;&#xA;&lt;p&gt;Eventually, the most convincing solution, proposed by Mihai Cris, was accepted by the group:&lt;/p&gt;&#xA;&lt;p&gt;&lt;div class=&#34;mp&#34;&gt;&#xA;\[&#xA;3^{7}&gt;2^{10} \Rightarrow 3^{7}*3^{10}&gt;2^{10}*3^{10} \Rightarrow 3^{17} &gt; 6^{10} \Rightarrow 3^{\frac{17}{10}}&gt;6 \Rightarrow 3^{1.7} &gt; 6&#xA;\]&#xA;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

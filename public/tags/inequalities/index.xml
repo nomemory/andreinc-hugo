@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Inequalities on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/tags/inequalities/</link>
+    <description>Recent content in Inequalities on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 17 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/inequalities/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Trickonometry of Math Olympiad Inequalities</title>
+      <link>http://localhost:1313/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/</link>
+      <pubDate>Mon, 17 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/</guid>
+      <description>&lt;nav class=&#34;toc&#34;&gt;&#xA;  &lt;h2&gt;Contents&lt;/h2&gt;&#xA;  &lt;nav id=&#34;TableOfContents&#34;&gt;&#xA;  &lt;ul&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#disclaimer&#34;&gt;Disclaimer&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#introduction&#34;&gt;Introduction&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#inequations-vs-inequalities&#34;&gt;Inequations vs. Inequalities&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#weak-inequalities-vs-strict-inequalities&#34;&gt;Weak Inequalities vs. Strict inequalities&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#being-playful-with-algebraic-identities&#34;&gt;Being playful with algebraic identities&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#the-am-gm-inequality&#34;&gt;The AM-GM Inequality&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#cyclic-and-symmetrical-inequalities&#34;&gt;Cyclic and Symmetrical Inequalities&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#grouping-and-splitting-terms&#34;&gt;Grouping and Splitting Terms&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#muirheads-theorem&#34;&gt;Muirhead&amp;rsquo;s Theorem&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#the-mean-inequality-chain&#34;&gt;The mean inequality chain&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#the-weighted-am-gm-inequality&#34;&gt;The weighted AM-GM inequality&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#the-power-of-substitutions&#34;&gt;The power of substitutions&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#ravi-substitutions&#34;&gt;Ravi Substitutions&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#nesbitts-inequality&#34;&gt;Nesbitt&amp;rsquo;s Inequality&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#the-cauchy-bunyakovsky-schwartz-inequality&#34;&gt;The Cauchy-Bunyakovsky-Schwartz Inequality&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#an-interesting-refinement-for-nesbitts-inequality&#34;&gt;An interesting refinement for Nesbitt&amp;rsquo;s inequality&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#titus-lemma-bergstrom&#34;&gt;Titu&amp;rsquo;s Lemma (Bergstrom)&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#more-challenges&#34;&gt;More challenges&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#in-part-2&#34;&gt;In Part 2&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#where-to-go-next-&#34;&gt;Where to go next ?&lt;/a&gt;&lt;/li&gt;&#xA;  &lt;/ul&gt;&#xA;&lt;/nav&gt;&#xA;&lt;/nav&gt;&#xA;&lt;h1 id=&#34;disclaimer&#34;&gt;Disclaimer&lt;/h1&gt;&#xA;&lt;p&gt;If you&amp;rsquo;d like to help out with reviewing, feel free to drop me a message (see the &lt;a href=&#34;%7B%7Bsite.url%7D%7D/about&#34;&gt;&lt;em&gt;About Page&lt;/em&gt;&lt;/a&gt;) or leave a comment.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>A selection of problems with logarithms</title>
+      <link>http://localhost:1313/2024/06/26/a-selection-of-problems-with-logarithms/</link>
+      <pubDate>Wed, 26 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2024/06/26/a-selection-of-problems-with-logarithms/</guid>
+      <description>&lt;p&gt;In the landscape of the Romanian 10th-grade Math Olympiad, &lt;strong&gt;logarithms&lt;/strong&gt; are a distinct and recurring theme. While they don&amp;rsquo;t dominate the entire curriculum, a problem involving them is bound to appear, often requiring a deep understanding of algebraic inequalities and identities.&lt;/p&gt;&#xA;&lt;p&gt;This collection is curated specifically as a training ground for that level. The problems below are a mix of the new and the battle-tested. Some are original compositions/exercises I designed to explore specific algebraic relationships.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>10 algebra problems selected from the Romanian Olympiad (Part 2)</title>
+      <link>http://localhost:1313/2024/03/25/10-algebra-problems-selected-from-the-romanian-olympiad-part-2/</link>
+      <pubDate>Mon, 25 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2024/03/25/10-algebra-problems-selected-from-the-romanian-olympiad-part-2/</guid>
+      <description>&lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;&#xA;&lt;p&gt;This article is a continuation of &lt;a href=&#34;http://localhost:1313/2024/02/23/20-algebra-problems-part-1&#34;&gt;my previous selection&lt;/a&gt; of non-trivial algebra problems from the Romanian Math Olympiad for high-school students. However, this time I have included a few harder problems from the National Phase that would definitely provide a challenge to any reader.&lt;/p&gt;&#xA;&lt;p&gt;Personally, I found problems &lt;strong&gt;5.&lt;/strong&gt; and &lt;strong&gt;9.&lt;/strong&gt; to be the most difficult.&lt;/p&gt;&#xA;&lt;h1 id=&#34;the-problems&#34;&gt;The Problems&lt;/h1&gt;&#xA;&lt;p&gt;&#xA;&lt;div class=&#34;mp&#34; id=&#34;palg01&#34;&gt;&#xA;    &lt;p&gt;&lt;a class=&#34;mpl&#34; href=&#34;#palg01&#34;&gt;Problem ALG01&lt;/a&gt;&lt;/p&gt; &#xA;    &lt;p&gt;Find all integers \(m, n \in \mathbb{Z}\) such that:&lt;/p&gt;&#xA;    &lt;p class=&#34;mpc&#34;&gt;&#xA;        \[&#xA;            9m^2 + 3n = n^2 + 8&#xA;        \]&#xA;    &lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>20 Algebra Problems Selected from the Romanian Olympiad (Part 1)</title>
+      <link>http://localhost:1313/2024/02/23/20-algebra-problems-selected-from-the-romanian-olympiad-part-1/</link>
+      <pubDate>Fri, 23 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2024/02/23/20-algebra-problems-selected-from-the-romanian-olympiad-part-1/</guid>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;This is a &amp;ldquo;follow-up&amp;rdquo; to the previous article: &lt;a href=&#34;%7B%7Bsite.url%7D%7D/2024/01/09/the-most-important-math-exams-of-my-life&#34;&gt;&amp;ldquo;The math exams of my life&amp;rdquo;&lt;/a&gt;, as some readers were curious to see some examples of Math Olympiad exercises.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;This is a selection of &lt;em&gt;cute&lt;/em&gt;, &lt;em&gt;non-trivial&lt;/em&gt; algebra problems (with a hint of &lt;em&gt;number theory&lt;/em&gt;) &lt;em&gt;compiled&lt;/em&gt; from the Romanian Math Olympiad (regional phase or &lt;em&gt;faza judeteana&lt;/em&gt;) for 8th, 9th, and 10th graders (13-15 years old).&lt;/p&gt;&#xA;&lt;p&gt;The solutions are surprising and involve a good understanding of algebraic concepts, pattern spotting, or tricks that, in the long run, help students develop &lt;a href=&#34;https://en.wikipedia.org/wiki/Logical_intuition&#34;&gt;mathematical intuition&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

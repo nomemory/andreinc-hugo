@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Adding custom annotations to your java beans | Personal Site of Andrei N. Ciobanu</title>
+<meta name="title" content="Adding custom annotations to your java beans" />
+<meta name="description" content="
+title: &ldquo;Adding custom annotations to your java beans&rdquo;
+date: &ldquo;2013-09-05&rdquo;
+excerpt: &ldquo;On writing your own annotations&rdquo;
+classes: wide
+categories:
+
+&ldquo;java&rdquo;
+tags:
+&ldquo;annotations&rdquo;
+&ldquo;csv-export&rdquo;
+&ldquo;custom-annotations&rdquo;
+&ldquo;java-2&rdquo;
+&ldquo;java-beans&rdquo;
+&ldquo;refection&rdquo;
+
+
+Java annotations are syntactic meta-information that can be added to your Java source code. You can annotate classes, methods, variables, method parameters, and even packages.
+The great advantage of Java annotations over Javadoc tags is that those bits of information can be reflective. Thus they can be made available to the VM at runtime (using the Java Reflection API)." />
+<meta name="keywords" content="java," /><meta name="referrer" content="no-referrer-when-downgrade" />
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: #F6F8FA;  
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #222222;  
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #111111;  
+  }
+
+  a {
+    color: #0056b3;  
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #003d80;  
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  strong {
+    color: #222222;  
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  hr {
+    border: none;  
+    border-top: 1px solid #e5e5e5;  
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 4px solid #0056b3;  
+    color: #444444;  
+    padding-left: 1rem;  
+    font-style: italic;
+    background: #fafafa;  
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+  .mp {
+    border: thin solid #ccc;
+    background-color: #F0F0F0;
+    padding: 25px;
+    width: inherit;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .mpl {
+    position: relative;
+    font: 0.7rem/1.1 sans-serif;  
+    font-style: italic;
+    text-decoration: none;        
+    background: #F0F0F0;
+    border-radius: 1px;
+    border: 0px solid #ccd;
+  }
+
+  .mpt {
+    padding: 25px;
+    font-style: italic;
+    color: #666;
+  }
+
+  .mpc {
+    text-align: center;
+  }
+
+  .mpn {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 0.8rem;
+    color: #777;
+  }
+
+  .meta, .post-meta {
+    color: #555555;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+   
+  table {
+    width: 100%;
+    border-collapse: collapse;  
+    margin: 1.5rem 0;           
+    font-size: 0.95rem;         
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #ddd;
+  }
+
+  tbody td {
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+   
+  tbody tr:hover {
+    background: #fafafa;
+  }
+
+   
+  table code {
+    background: #f3f3f3;
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+   
+  .site-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .global-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e5e5;  
+  }
+
+  .global-nav a {
+    font-weight: 600;
+    color: #222222;  
+    text-decoration: none;
+    font-size: 1.05rem;
+    transition: color 0.2s ease;
+  }
+
+  .global-nav a:hover {
+    color: #0056b3;  
+    text-decoration: underline;
+  }
+
+   
+  .global-nav a.active {
+    color: #0056b3;
+  }
+</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof renderMathInElement !== "function") {
+    console.error("KaTeX auto-render not loaded");
+    return;
+  }
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false }
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+  <header><header class="site-header">
+  <nav class="global-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/about/">About</a>
+    
+      <a href="/links/">Links</a>
+    
+      <a href="/index.xml">RSS</a>
+    
+  </nav>
+</header></header>
+  <main>
+
+
+<h1>Adding custom annotations to your java beans</h1>
+<p>
+  <i>
+    <time datetime='2012-06-30'>
+      30 Jun, 2012
+    </time>
+  </i>
+</p>
+
+<content>
+  <hr>
+<p>title: &ldquo;Adding custom annotations to your java beans&rdquo;
+date: &ldquo;2013-09-05&rdquo;
+excerpt: &ldquo;On writing your own annotations&rdquo;
+classes: wide
+categories:</p>
+<ul>
+<li>&ldquo;java&rdquo;
+tags:</li>
+<li>&ldquo;annotations&rdquo;</li>
+<li>&ldquo;csv-export&rdquo;</li>
+<li>&ldquo;custom-annotations&rdquo;</li>
+<li>&ldquo;java-2&rdquo;</li>
+<li>&ldquo;java-beans&rdquo;</li>
+<li>&ldquo;refection&rdquo;</li>
+</ul>
+<hr>
+<p>Java annotations are syntactic meta-information that can be added to your Java source code. You can annotate classes, methods, variables, method parameters, and even <a href="https://puredanger.github.io/tech.puredanger.com/2007/02/28/package-annotations/">packages</a>.</p>
+<p>The great advantage of Java annotations over Javadoc tags is that those bits of information can be reflective. Thus they can be made available to the VM at runtime (using the <a href="http://docs.oracle.com/javase/tutorial/reflect/">Java Reflection API</a>).</p>
+<p>Other than this, modern Java frameworks (like Spring) make heavy annotations to let the developer extend, inject data and configure existent behaviors.</p>
+<p>In this article, we will define our custom annotations, and we will use reflection to analyze and enhance the behavior of our Java beans at runtime. So, let&rsquo;s suppose we want to write a mechanism that transforms (let&rsquo;s say serialize) a given collection of java beans instances to a CSV file.</p>
+<p>We don&rsquo;t want to &ldquo;serialize&rdquo; all the fields, so we will use annotations to mark only the fields we wish to <em>export</em>.</p>
+<p>The first step will be the write the annotations class. We will call this one <code>CSVExport.java</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">package</span> net.andreinc.utils;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.lang.annotation.*;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@Retention(RetentionPolicy.RUNTIME)
+</span></span><span style="display:flex;"><span>@Target(ElementType.METHOD)
+</span></span><span style="display:flex;"><span>@interface CSVExport {
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>As you can see, all annotations related classes are included in the <code>java.lang.annotation.*</code> package. Other than this, we will need to mark this annotation with a RetentionPolicy that will make it available at runtime. We will specify that the annotation can only be used in conjunction with class methods.</p>
+<p>The next step is to write Java Bean and to &ldquo;mark&rdquo; the getters we want to serialize with our newly defined custom annotation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">package</span> net.andreinc.utils;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">class</span> TestModel {
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> String p1;
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> <span style="color:#005a5f">int</span> p2;
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> Double p3;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> <span style="color:#721045">TestModel</span>(String p1, <span style="color:#005a5f">int</span> p2, Double p3) {
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">super</span>();
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">this</span>.p1 <span style="color:#00538b">=</span> p1;
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">this</span>.p2 <span style="color:#00538b">=</span> p2;
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">this</span>.p3 <span style="color:#00538b">=</span> p3;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	@CSVExport
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> String <span style="color:#721045">getP1</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">return</span> p1;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">setP1</span>(String p1) {
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">this</span>.p1 <span style="color:#00538b">=</span> p1;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	@CSVExport
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> <span style="color:#005a5f">int</span> <span style="color:#721045">getP2</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">return</span> p2;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">setP2</span>(<span style="color:#005a5f">int</span> p2) {
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">this</span>.p2 <span style="color:#00538b">=</span> p2;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	@CSVExport
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> Double <span style="color:#721045">getP3</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">return</span> p3;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">setP3</span>(Double p3) {
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">this</span>.p3 <span style="color:#00538b">=</span> p3;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Only the methods annotated with @CSVExport serialize to the resulting file. If no annotations are present, nothing will be exported.</p>
+<p>The next step is to write the actual exporting mechanism.</p>
+<div class="highlight"><pre tabindex="0" style="color:#000;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#5317ac">package</span> net.andreinc.utils;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.beans.BeanInfo;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.beans.IntrospectionException;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.beans.Introspector;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.beans.PropertyDescriptor;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.io.PrintStream;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.util.Collection;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.util.Iterator;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.util.LinkedList;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.util.List;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.lang.annotation.Annotation;
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">import</span> java.lang.reflect.*;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5317ac">public</span> <span style="color:#5317ac">class</span> CollectionToCSV {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">private</span> Collection collection;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> <span style="color:#721045">CollectionToCSV</span>(Collection collection) {
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">this</span>.collection <span style="color:#00538b">=</span> (Collection) collection;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> <span style="color:#005a5f">void</span> <span style="color:#721045">export</span>(PrintStream out) {
+</span></span><span style="display:flex;"><span>		out <span style="color:#00538b">=</span> System.out;
+</span></span><span style="display:flex;"><span>		Iterator iterator <span style="color:#00538b">=</span> <span style="color:#5317ac">this</span>.collection.iterator();
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">while</span> (iterator.hasNext()) {
+</span></span><span style="display:flex;"><span>			<span style="color:#5317ac">try</span> {
+</span></span><span style="display:flex;"><span>				out.println(buildCSVRow(iterator.next()));
+</span></span><span style="display:flex;"><span>			} <span style="color:#5317ac">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>				<span style="color:#505050">//TODO</span>
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">private</span> String <span style="color:#721045">buildCSVRow</span>(T element) <span style="color:#5317ac">throws</span> IllegalArgumentException,
+</span></span><span style="display:flex;"><span>			IllegalAccessException, IntrospectionException, InvocationTargetException {
+</span></span><span style="display:flex;"><span>		Method readMethod <span style="color:#00538b">=</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>		Annotation<span style="color:#00538b">[]</span> annotations <span style="color:#00538b">=</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>		Object value <span style="color:#00538b">=</span> <span style="color:#0000c0">null</span>;
+</span></span><span style="display:flex;"><span>		StringBuilder buff <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> StringBuilder(<span style="color:#2544bb">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>		BeanInfo beanInfo <span style="color:#00538b">=</span> Introspector.getBeanInfo(element.getClass());
+</span></span><span style="display:flex;"><span>		PropertyDescriptor<span style="color:#00538b">[]</span> propertyDescriptors <span style="color:#00538b">=</span> beanInfo.getPropertyDescriptors();
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">for</span> (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+</span></span><span style="display:flex;"><span>			readMethod <span style="color:#00538b">=</span> propertyDescriptor.getReadMethod();
+</span></span><span style="display:flex;"><span>			<span style="color:#5317ac">if</span> (<span style="color:#0000c0">null</span> <span style="color:#00538b">!=</span> readMethod) {
+</span></span><span style="display:flex;"><span>				annotations <span style="color:#00538b">=</span> readMethod.getAnnotations();
+</span></span><span style="display:flex;"><span>				<span style="color:#5317ac">for</span> (Annotation annotation : annotations) {
+</span></span><span style="display:flex;"><span>					<span style="color:#5317ac">if</span> (annotation <span style="color:#5317ac">instanceof</span> CSVExport) {
+</span></span><span style="display:flex;"><span>						value <span style="color:#00538b">=</span> readMethod.invoke(element);
+</span></span><span style="display:flex;"><span>						buff.append(value <span style="color:#00538b">+</span> <span style="color:#2544bb">&#34;,&#34;</span>);
+</span></span><span style="display:flex;"><span>					}
+</span></span><span style="display:flex;"><span>				}
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		buff.deleteCharAt(buff.length()<span style="color:#00538b">-</span>1);
+</span></span><span style="display:flex;"><span>		<span style="color:#5317ac">return</span> buff.toString();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#5317ac">public</span> <span style="color:#5317ac">static</span> <span style="color:#005a5f">void</span> <span style="color:#721045">main</span>(String args<span style="color:#00538b">[]</span>) <span style="color:#5317ac">throws</span> IllegalArgumentException, IllegalAccessException, IntrospectionException, InvocationTargetException {
+</span></span><span style="display:flex;"><span>		TestModel t1 <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> TestModel(<span style="color:#2544bb">&#34;a&#34;</span>, 1, 2.0);
+</span></span><span style="display:flex;"><span>		TestModel t2 <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> TestModel(<span style="color:#2544bb">&#34;b&#34;</span>, 2, 4.0);
+</span></span><span style="display:flex;"><span>		TestModel t3 <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> TestModel(<span style="color:#2544bb">&#34;c&#34;</span>, 3, 6.0);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		List tl <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> LinkedList();
+</span></span><span style="display:flex;"><span>		tl.add(t1);
+</span></span><span style="display:flex;"><span>		tl.add(t2);
+</span></span><span style="display:flex;"><span>		tl.add(t3);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		CollectionToCSV ccsv <span style="color:#00538b">=</span> <span style="color:#5317ac">new</span> CollectionToCSV(tl);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		ccsv.export(System.out);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Running the code, the output will be:</p>
+<pre tabindex="0"><code>a,1,2.0
+b,2,4.0
+c,3,6.0
+</code></pre><p>By removing any of the <code>@CsvExport</code> annotations from <code>TestModel</code>, nothing will be exported.</p>
+
+</content>
+
+<div style="font-size:0.8em;display:flex;gap:16px;justify-content:center;">
+  <p>
+    
+    <a href="http://localhost:1313/2012/06/30/writing-a-simple-file-monitor-in-java-using-commons-io/">
+      &lt;&lt; Previous Post</a>
+        
+  </p>
+  <p>|</p>
+  <p>
+    
+    <a href="http://localhost:1313/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c/">Next Post >></a>
+    
+  </p>
+</div>
+
+
+
+
+
+  <div class="related-posts" style="border: 2px solid #d3d6db; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; background-color: #fafafa;">
+    <h1 style="margin-top: 0;">Related Articles</h3>
+    <p style="font-size: 0.95em; color: #555;">I'm so glad you made it to the end. The following articles are loosely related to this one:</p>
+    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2024-03-28">
+            Mar 28, 2024
+          </time>
+          &mdash; 
+          <a href="/2024/03/28/my-list-of-challenging-software-projects-some-programmers-should-try/" style="margin-left: 0.25rem;">My list of challenging software projects some programmers should try</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2023-02-01">
+            Feb 01, 2023
+          </time>
+          &mdash; 
+          <a href="/2023/02/01/demystifying-bitwise-operations-a-gentle-c-tutorial/" style="margin-left: 0.25rem;">Demystifying bitwise operations, a gentle C tutorial</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-09-01">
+            Sep 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/09/01/building-pathological-input-for-java-hashmaps-hash-collisions-generator/" style="margin-left: 0.25rem;">Building pathological input for Java HashMaps - hash collisions generator</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-05-01">
+            May 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/05/01/4-integers-are-enough-to-write-a-snake-game/" style="margin-left: 0.25rem;">4 integers are enough to write a Snake Game</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-10">
+            Apr 10, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/10/a-blog-that-is-a-single-executable-binary/" style="margin-left: 0.25rem;">A blog that is a single executable binary</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-04-01">
+            Apr 01, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/04/01/ive-promised-myself-never-to-use-gradle/" style="margin-left: 0.25rem;">I&#39;ve promised myself never to use gradle</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-03-15">
+            Mar 15, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/03/15/hash-displace-and-compress-perfect-hashing-with-java/" style="margin-left: 0.25rem;">Hash, displace, and compress: Perfect hashing with Java</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2022-03-15">
+            Mar 15, 2022
+          </time>
+          &mdash; 
+          <a href="/2022/03/15/on-implementing-bloom-filters-in-c/" style="margin-left: 0.25rem;">On implementing Bloom Filters in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-12-01">
+            Dec 01, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/12/01/writing-a-simple-16-bit-vm-in-less-than-125-lines-of-c/" style="margin-left: 0.25rem;">Writing a simple 16 bit VM in less than 125 lines of C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-11-08">
+            Nov 08, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/11/08/a-tale-of-java-hash-tables/" style="margin-left: 0.25rem;">A tale of Java Hash Tables</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-10-02">
+            Oct 02, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/10/02/implementing-hash-tables-in-c/" style="margin-left: 0.25rem;">Implementing Hash Tables in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-04-22">
+            Apr 22, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/04/22/writing-a-universal-chess-interface-uci-client-in-java/" style="margin-left: 0.25rem;">Writing a Universal Chess Interface (UCI) Client in Java</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-25">
+            Jan 25, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/25/computing-eigenvalues-and-eigenvectors-using-qr-decomposition/" style="margin-left: 0.25rem;">Computing Eigenvalues and Eigenvectors using QR Decomposition</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-20">
+            Jan 20, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/20/generate-random-sql-inserts-using-pysert/" style="margin-left: 0.25rem;">Generate random SQL inserts using pysert</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2021-01-20">
+            Jan 20, 2021
+          </time>
+          &mdash; 
+          <a href="/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c/" style="margin-left: 0.25rem;">Writing your own linear algebra matrix library in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2012-06-30">
+            Jun 30, 2012
+          </time>
+          &mdash; 
+          <a href="/2012/06/30/writing-a-simple-file-monitor-in-java-using-commons-io/" style="margin-left: 0.25rem;">Writing a simple file monitor in Java using Commons IO</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2011-09-04">
+            Sep 04, 2011
+          </time>
+          &mdash; 
+          <a href="/2011/09/04/bash-scripting-best-practices/" style="margin-left: 0.25rem;">Bash Scripting - Best Practices</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2011-06-01">
+            Jun 01, 2011
+          </time>
+          &mdash; 
+          <a href="/2011/06/01/implementing-a-generic-priority-queue-in-c/" style="margin-left: 0.25rem;">Implementing a generic Priority Queue in C</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2011-01-03">
+            Jan 03, 2011
+          </time>
+          &mdash; 
+          <a href="/2011/01/03/evaluate-rpn-expressions-using-haskell-scala-and-python/" style="margin-left: 0.25rem;">Evaluate RPN expressions using Haskell, Scala, and python</a>
+        </li>
+      
+        <li style="margin-bottom: 0.5rem;">
+          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="2010-10-05">
+            Oct 05, 2010
+          </time>
+          &mdash; 
+          <a href="/2010/10/05/converting-infix-to-rpn-shunting-yard-algorithm/" style="margin-left: 0.25rem;">Converting infix to RPN (shunting-yard algorithm)</a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+  </main>
+  <footer>
+    <div class="mpt">The opinions expressed on this blog are highly personal.</div>
+
+</footer>
+</body>
+
+</html>

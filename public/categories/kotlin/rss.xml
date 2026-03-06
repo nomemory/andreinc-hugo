@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kotlin on Personal Site of Andrei N. Ciobanu</title>
+    <link>http://localhost:1313/categories/kotlin/</link>
+    <description>Recent content in Kotlin on Personal Site of Andrei N. Ciobanu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 31 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/kotlin/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hello world, mapneat!</title>
+      <link>http://localhost:1313/2021/01/31/hello-world-mapneat/</link>
+      <pubDate>Sun, 31 Jan 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/2021/01/31/hello-world-mapneat/</guid>
+      <description>&lt;p&gt;One of the most common scenarios I had to solve during my Software Engineering career is manipulating data, applying some logic on top, eventually changing the way the data is structured, and then serializing it to JSON to be consumed by other systems.&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/nomemory/mapneat&#34;&gt;&lt;strong&gt;mapneat&lt;/strong&gt;&lt;/a&gt; does precisely this; it provides an easy to use &lt;a href=&#34;https://en.wikipedia.org/wiki/Domain-specific_language&#34;&gt;DSL&lt;/a&gt; for transforming &lt;code&gt;JSON&lt;/code&gt; to &lt;code&gt;JSON&lt;/code&gt;, &lt;code&gt;XML&lt;/code&gt; to &lt;code&gt;JSON&lt;/code&gt;, &lt;code&gt;POJO&lt;/code&gt;(s) to &lt;code&gt;JSON&lt;/code&gt; in a declarative way. The library is written in &lt;a href=&#34;https://kotlinlang.org/&#34;&gt;Kotlin&lt;/a&gt; (JVM), but it can be easily used from Java.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
