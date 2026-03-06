@@ -1,17 +1,18 @@
 {{ $related := where .Site.RegularPages ".Params.categories" "intersect" .Params.categories }}
 {{ $related = $related | complement (slice .) }}
+
 {{ if $related }}
-  <div class="related-posts" style="border: 2px solid #d3d6db; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; background-color: #fafafa;">
-    <h1 style="margin-top: 0;">Related Articles</h3>
-    <p style="font-size: 0.95em; color: #555;">I'm so glad you made it to the end. The following articles are loosely related to this one:</p>
-    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+  <div class="mp related-posts">
+    <h3>Related Articles</h3>
+    <p class="related-posts-intro">I'm so glad you made it to the end. The following articles are loosely related to this one:</p>
+    <ul class="related-posts-list">
       {{ range first 5 $related }}
-        <li style="margin-bottom: 0.5rem;">
-          <time style="color: #888; margin-right: 0.5rem; font-size: 0.9em;" datetime="{{ .Date.Format "2006-01-02" }}">
+        <li class="related-post-item">
+          <time class="related-post-date" datetime="{{ .Date.Format "2006-01-02" }}">
             {{ .Date.Format "Jan 02, 2006" }}
           </time>
           &mdash; 
-          <a href="{{ .RelPermalink }}" style="margin-left: 0.25rem;">{{ .Title }}</a>
+          <a class="related-post-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
         </li>
       {{ end }}
     </ul>

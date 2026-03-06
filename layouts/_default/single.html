@@ -14,9 +14,18 @@
   {{ .Content }}
 </content>
 
+<br/><hr/><br/>
+
+{{ partial "related.html" . }}
+
+<br/>
+
+{{ partial "git.html" . }}
+
+<br/>
+
 {{ if eq .Type "posts" }}{{ if (.Param "enablePostNavigator")}}
   {{- partial "post_navigator.html" . -}}
 {{ end }}{{ end }}
 
-{{ partial "related.html" . }}
 {{ end }}

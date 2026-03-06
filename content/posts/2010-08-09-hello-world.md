@@ -3,6 +3,7 @@ title = "Hello world!"
 date = "2010-08-09"
 usekatex = true
 excerpt = "Hello world!"
+gitLink = "https://github.com/nomemory/andreinc-hugo"
 categories = ["programming"]
 tags = ["c"]
 +++
