@@ -7,6 +7,8 @@ tags = ['blog']
 usekatex = true
 +++
 
+
+
 It's 2026, and my interest in writing was at a new all-time low. Naturally, instead of actually writing, I did what any self-respecting developer does: I spent a week migrating the entire blog from the venerable Jekyll to Hugo. Does this count as ~~programming~~ sophisticated procrastination?
 
 This isn't exactly a spectacular feat. A lot of people are jumping ship nowadays, usually for reasons related to the fragility of the Ruby ecosystem rather than Jekyll's actual capabilities (which are perfectly fine for most humans). All in all, I like Hugo more. I won't miss the cryptic failed builds I had to endure while deploying to Netlify.
@@ -96,7 +98,11 @@ I'm not sure if this is a Millennial nostalgia thing, but I’ve added this "ins
 {{ end }}
 ```
 
-The quotes are mostly features Frank Herbert, Isaac Asimov, Leibniz, the occasional Ancient Greek Mathematician and Philosopher + some of the more modern figures you encounter in your math text books. It gives the blog an air of intellectuality which, by modern standards, is probably a little cringy. I'm okay with that.
+The quotes are mostly from Frank Herbert, Isaac Asimov, Leibniz, the occasional Ancient Greek Mathematician and Philosopher + some of the more modern figures you encounter in your math text books. 
+
+It gives the blog an air of intellectuality which, by modern standards, is probably a little cringy. I'm okay with that.
+
+Also people will refresh the pages more. Does it mean more visits ?
 
 # Related articles
 

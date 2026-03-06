@@ -4,7 +4,7 @@ title = 'Personal Site of Andrei N. Ciobanu'
 
 [outputFormats]
   [outputFormats.RSS]
-    baseName = "rss"
+    baseName = "feed"
 
 [markup]
   [markup.goldmark]
