@@ -60,7 +60,7 @@ enable = true
 [[menu.main]]
     identifier = "rss"
     name = "rss"
-    url = "/rss.xml"
+    url = "/index.xml"
     weight = 100
 
 [taxonomies]
