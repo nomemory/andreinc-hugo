@@ -1,0 +1,10 @@
+# macOS metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Hugo build outputs
+public/
+resources/
+_vendor/
+.hugo_build.lock
