@@ -5,6 +5,9 @@ usekatex = true
 excerpt = "Implementing Hash Tables in C"
 categories = ["programming"]
 tags = ["c", "algorithms"]
+aliases = [
+    "/2021/10/02/implementing-hash-tables-in-c-part-1"
+]
 +++
 
 # Table of contents

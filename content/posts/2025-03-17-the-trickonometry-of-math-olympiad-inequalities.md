@@ -75,6 +75,14 @@ The purpose of this article is to highlight some techniques and methods that can
 
 > An edgy teacher, names excluded, once said: "In an ideal world people would solve inequality problems instead of Sudoku!". We haven't spoken since, I like Sudoku.
 
+# On saving this article
+
+Some people prefer saving articles as PDF files. If you plan to save this article as a .PDF run this code in the console so the hints and solutions are automtically expanded:
+
+```js
+ document.querySelectorAll("details").forEach(d => d.open = true);
+```
+
 # Inequations vs. Inequalities
 
 There is a subtle distinction between an *inequality* and an *inequation*, although the terms are often used interchangeably in everyday mathematical language. 
