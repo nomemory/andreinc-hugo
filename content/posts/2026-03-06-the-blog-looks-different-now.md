@@ -4,10 +4,8 @@ draft = false
 title = 'The blog looks different now'
 categories = ['persona']
 tags = ['blog']
-usekatex = true
+usekatex = false
 +++
-
-
 
 It's 2026, and my interest in writing was at a new all-time low. Naturally, instead of actually writing, I did what any self-respecting developer does: I spent a week migrating the entire blog from the venerable Jekyll to Hugo. Does this count as ~~programming~~ sophisticated procrastination?
 
