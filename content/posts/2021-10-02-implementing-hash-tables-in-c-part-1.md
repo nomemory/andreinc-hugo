@@ -123,7 +123,7 @@ In this definition:
 
 Let's take a look at the following example:
 
-{{< img src="/images/2021-10-02-hashing-and-hashtables-in-c/hashfunction.png" width="400">}}
+{{< img src="/images/2021-10-02-implementing-hash-tables-in-c-part-1/hashfunction.png" width="400">}}
 
 In the diagram above, `Paris`, `Berlin`, `Warsaw`, `Bucharest`, and `Athens` are elements of $X$. If $X$ is the set of all European Capitals, then the size of the set, $n(X)$, is 48. 
 
