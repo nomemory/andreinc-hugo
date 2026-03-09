@@ -2,6 +2,10 @@
 title = "About"
 +++
 
+<div class="mp">
+I will be flattered to receive your email: gnomemory (hosted on @pm.me). 
+</div>
+
 My name is Andrei Nicolin Ciobanu. 
 
 {{< img src="/about/me-it.jpg" width="450" caption="Myself, Saint-Paul-de-Vence, France, 2019" >}}
@@ -40,4 +44,3 @@ Romanian is my native language, and I am fluent in English and French. I *almost
 
 The opinions expressed on this blog are highly personal. 
 
-I will be flattered to receive your email: `gnomemory` (with an `@yahoo.com` or `@pm.me` endings). 

@@ -2,34 +2,24 @@
 title = "Links"
 +++
 
-This place is my *garden of curiosities*, or *a chocolate factory*, or *artifacts from an alternative Internet that never quite happened*. 
-
-This section is a work in progress, and if the number of links increases, I will need to find a better solution to manage them.
+This place is my *garden of curiosities*, or *a chocolate factory*, or *artifacts from an alternative Internet that never quite happened*. This section is a work in progress, and if the number of links increases, I will need to find a better solution to manage them.
 
 ---
 
-You can also [https://cloudhiker.net/](https://cloudhiker.net/) to discover the most interesting, weird and awesome websites of the Internet.
+To find your lucky site... search:
+- [https://marginalia-search.com/](https://marginalia-search.com/)
+- [https://searchmysite.net/](https://searchmysite.net/)
+- [https://wiby.me/](https://wiby.me/)
+
+Or you can let [https://cloudhiker.net/](https://cloudhiker.net/) surprise you.
+
+Or you can browse the blogs that are linked on [hn](https://news.ycombinator.com/): [https://blogs.hn/](https://blogs.hn/).
+
+Or you can check this directory of sites that have pages with interesting links: [https://bukmark.club/directory/](https://bukmark.club/directory/).
 
 ---
 
-- [Algorithms and Data Structures](#algorithms-and-data-structures)
-- [Art & Computers & Mathematics](#art--computers--mathematics)
-- [Blogging](#blogging)
-- [Books](#books)
-- [C Programming](#c-programming)
-- [Command Line](#command-line)
-- [Esoteric](#esoteric)
-- [Essays](#essays)
-- [Funny](#funny)
-- [Games](#games)
-- [Low Level](#low-level)
-- [Math](#math)
-- [Others](#others)
-- [Physics](#physics)
-- [Programming Languages \& Compilers](#programming-languages--compilers)
-- [Tools](#tools)
-- [Webrings \& Blogrolls](#webrings--blogrolls)
-- [Wikipedia \& TIL](#wikipedia--til)
+{{<toc>}}
 
 ---
 
@@ -47,6 +37,8 @@ You can also [https://cloudhiker.net/](https://cloudhiker.net/) to discover the 
     * A collection of practice problems for Competitive Programming contests.
 * [D3GT](https://d3gt.com/index.html)
     * D3 Graph Theory
+* [DADS](https://xlinux.nist.gov/dads/)
+    * Dictionary of Algorithms and Data Structures
 * [Great Ideas in Theoretical Computer Science](https://www.cs251.com/)
     * This course is about the rigorous study of computation, which is a fundamental component of our universe, the societies we live in, the new technologies we discover, as well as the minds we use to understand these things. 
 * [neetcode.io](https://neetcode.io/)
@@ -134,6 +126,8 @@ You can also [https://cloudhiker.net/](https://cloudhiker.net/) to discover the 
     * Fractal to infinity.
 
 # Blogging
+* [AI makes you boring/](https://www.marginalia.nu/log/a_132_ai_bores/)
+    * "This isn’t something that is limited to Show HN or even Hacker News, it’s something you see everywhere."
 * [Full-text RSS feed is an offline-friendly act](https://hamatti.org/posts/full-text-rss-feed-is-offline-friendly-act/)
     * "An excerpt-only feed is unreadable when there is no Internet access."
 * [How Google helped destroy adoption of RSS feeds](https://openrss.org/blog/how-google-helped-destroy-adoption-of-rss-feeds)
@@ -280,9 +274,11 @@ You can also [https://cloudhiker.net/](https://cloudhiker.net/) to discover the 
 * [The humble programmer](https://www.cs.utexas.edu/~EWD/ewd03xx/EWD340.PDF)
     * Dijkstra's overview of the programming universe as he saw it in 1972
 * [The night watch](https://scholar.harvard.edu/files/mickens/files/thenightwatch.pdf)
+* [The slow death of the poweruser](https://fireborn.mataroa.blog/blog/the-slow-death-of-the-power-user/)
 * [There are 665 open licences, most are pretty rubbish](https://csvbase.com/blog/14) 
 * [This word doesn't exist](https://www.thisworddoesnotexist.com/)
     * But it should.
+* [“token anxiety”; or, a slot machine by any other name](https://jkap.io/token-anxiety-or-a-slot-machine-by-any-other-name/)
 * [VPN - a Very Precarious Narrative](https://overengineer.dev/blog/2019/04/08/very-precarious-narrative/)
     * "In most circumstances, VPNs do very little to enhance your data security or privacy unless paired with other changes."
 * [Why Bloat Is Still Software’s Biggest Vulnerability](https://spectrum.ieee.org/lean-software-development)
@@ -296,6 +292,7 @@ You can also [https://cloudhiker.net/](https://cloudhiker.net/) to discover the 
 * [Connnnngratulations! This project won China 2014 State Science and Technology Prizes ! FIRST PRIZE!!!!! ](https://github.com/iiordanov/remote-desktop-clients/issues/39)
 * [EPIGRAMS IN PROGRAMMING](https://www.cs.yale.edu/homes/perlis-alan/quotes.html)
     * One man's constant is another man's variable. 
+* [Fizz Buzz with cosines](https://susam.net/fizz-buzz-with-cosines.html)
 * [How To Write Unmaintainable Code](https://cs.fit.edu/~kgallagher/Schtick/How%20To%20Write%20Unmaintainable%20Code.html)
     * Ensure a job for life. 
 * [Make Front-End Shit Again](https://makefrontendshitagain.party/)
@@ -353,6 +350,7 @@ You can also [https://cloudhiker.net/](https://cloudhiker.net/) to discover the 
 * [Quantum Soccer](https://gregegan.net/BORDER/Soccer/Soccer.html) 
     * In the game of Quantum Soccer, the aim is to shape the wave function of a quantum-mechanical “ball” so that the probability of it being inside one of the goals rises above a set threshold.
 * [Fantasy Map of GitHub](https://anvaka.github.io/map-of-github/#0.79/0/5.6)
+* [Museum Of Screens](https://museumofscreens.wordpress.com/)
 * [Retrogrames.cz](https://www.retrogames.cz/)
     * An online museum of old video games.
 * [Retromags](https://www.retromags.com/)
@@ -486,6 +484,8 @@ You can also [https://cloudhiker.net/](https://cloudhiker.net/) to discover the 
 * [Grandpa's Photos](https://grandpas-photos.com)
     * "This is Grandpa, otherwise known as Stephen Clarke. He was great at so many things. One of those was being a Grandpa. He was a WWII Air Force navigator, a husband, a Dad and we also discovered he was a great photographer."
 * [How games are used to control you ](https://unherd.com/2024/04/how-games-are-used-to-control-you/)
+* [Richard Feynman’s Extraordinary Letter to His Departed Wife](https://www.themarginalian.org/2026/02/18/richard-feynman-arline-letter/)
+    * "In a mass of unread papers sent to him by Feynman’s widow, Gweneth, Gleick found a letter that discomposed his most central understanding of Feynman’s character."
 * [Victorian Research](https://victorianresearch.org/)
     * The aim of the Victoria Research Web is to assist scholars, at whatever stage of their studies, in making their way through the complex and ever-changing landscape of research resources pertinent to the long nineteenth century. 
 * [Wiby](https://wiby.me/)
@@ -522,6 +522,8 @@ You can also [https://cloudhiker.net/](https://cloudhiker.net/) to discover the 
     * Read hacker news as an old paper.
 * [Random HackerNews](https://randomhackernews.com/)
     * Redirecting to a random date's front page.
+* [wweathrh](https://github.com/Veirt/weathr)
+    * A terminal weather app with ASCII animations driven by real-time weather data.
 
 # Webrings & Blogrolls
 * [512kb Club](https://512kb.club/)
@@ -548,6 +550,7 @@ You can also [https://cloudhiker.net/](https://cloudhiker.net/) to discover the 
 * [Ant-Fungus Mutualism](https://en.m.wikipedia.org/wiki/Ant%E2%80%93fungus_mutualism)
     * The ant–fungus mutualism is a symbiosis seen between certain ant and fungal species, in which ants actively cultivate fungus much like humans farm crops as a food source. 
 * [Autistic Assistant of Gauss used to check Primality](https://hsm.stackexchange.com/questions/15609/autistic-assistant-of-gauss-used-to-check-primality)
+* [Cistercian Numbers](https://www.omniglot.com/language/numbers/cistercian-numbers.htm)
 * [Darwin (Programming Language)](https://en.m.wikipedia.org/wiki/Darwin_(programming_game))
     * Darwin was a programming game invented in August 1961 by Victor A. Vyssotsky, Robert Morris Sr., and M. Douglas McIlroy.
 * [Effective Altruism](https://en.m.wikipedia.org/wiki/Effective_altruism)
