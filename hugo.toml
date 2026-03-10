@@ -1,4 +1,6 @@
-baseURL = 'andreinc.net/'
+baseURL = "https://andreinc.net/"
+canonifyURLs = false
+relativeURLs = true
 languageCode = 'en-us'
 title = 'Personal Site of Andrei N. Ciobanu'
 
