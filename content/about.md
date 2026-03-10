@@ -3,7 +3,7 @@ title = "About"
 +++
 
 <div class="mp">
-I will be flattered to receive your email: contact (hosted on @andreinc.net). 
+I will be flattered to receive your email: andrei.n.ciobanu (that sits on @pm.me). 
 </div>
 
 My name is Andrei Nicolin Ciobanu. 
