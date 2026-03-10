@@ -1,22 +1,15 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "andreinc-hugo",
   "compatibility_date": "2026-03-10",
   "assets": {
-    "directory": "./public"
+    "directory": "./public",
+    "html_handling": "auto-trailing-slash"
   },
   "routes": [
-    {
-      "pattern": "andreinc.net",
-      "custom_domain": true
-    },
-    {
-      "pattern": "www.andreinc.net",
-      "custom_domain": true
-    }
+    { "pattern": "andreinc.net", "custom_domain": true },
+    { "pattern": "www.andreinc.net", "custom_domain": true }
   ],
   "build": {
-    "command": "hugo",
-    "watch_dir": "content"
+    "command": "hugo"
   }
 }
