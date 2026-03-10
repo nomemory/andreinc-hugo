@@ -1086,7 +1086,7 @@ Whether you are looking for a fresh challenge or revisiting classic techniques, 
 </details>
 <details>
     <summary>Source</summary>
-    <p>Concursul interjudețean de matematică "Academician Radu Miron", 8 Noiembrie, 2008, Romania</p>
+    <p>Concursul interjudetean de matematică "Academician Radu Miron", 8 Noiembrie, 2008, Romania</p>
 </details>
 </div>
 </p>

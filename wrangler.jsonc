@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "andreinc-hugo",
+  "compatibility_date": "2026-03-10",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "build": {
+    "command": "hugo",
+    "watch_dir": "content"
+  }
+}
