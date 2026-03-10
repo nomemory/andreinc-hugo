@@ -5,6 +5,16 @@
   "assets": {
     "directory": "./public"
   },
+  "routes": [
+    {
+      "pattern": "andreinc.net",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.andreinc.net",
+      "custom_domain": true
+    }
+  ],
   "build": {
     "command": "hugo",
     "watch_dir": "content"
