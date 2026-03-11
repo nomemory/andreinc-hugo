@@ -42,5 +42,11 @@ I am a generalist, not a specialist. I know a bit about low-level programming an
     
 Romanian is my native language, and I am fluent in English and French. I *almost speak* a fourth language; I will put it here once I become fluent.
 
-The opinions expressed on this blog are highly personal. 
+---
+
+*If you want to learn (more) random facts about me, check out this **[FAQ](/faq)**.*
+
+*If you’re interested in seeing some of the code I've written through the ages, here is **[my GitHub profile](https://github.com/nomemory/)**.*
+
+*If you want to reach out for purely professional reasons, we can connect on LinkedIn. Here is **[my profile](https://www.linkedin.com/in/andrei-n-ciobanu-50708611/)**.*
 
