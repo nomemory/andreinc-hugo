@@ -1,10 +1,13 @@
 +++
 date = '2024-06-26'
 draft = false
-title = 'A selection of problems with logarithms'
+title = 'Logarithmic Challenges from Romanian Math Olympiads'
 categories = ['math']
 tags = ['logarithms', 'olympiad', 'inequalities']
 usekatex = true
+aliases = [
+    "/2024/06/26/a-selection-of-problems-with-logarithms/"
+]
 +++
 
 In the landscape of the Romanian 10th-grade Math Olympiad, **logarithms** are a distinct and recurring theme. While they don't dominate the entire curriculum, a problem involving them is bound to appear, often requiring a deep understanding of algebraic inequalities and identities.
@@ -56,6 +59,95 @@ Whether you are looking for a fresh challenge or revisiting classic techniques, 
              = \frac{1}{1+\frac{1}{x}+\frac{1}{y}} = \frac{xy}{xy+x+y}
         \]
     </p>
+</details>
+</div>
+</p>
+
+<p>
+<div class="mp" id="plg011">
+<p><a class="mpl" href="#plg011">Problem LG01.1</a></p>
+<p>Let \(n\) be a natural number, \(n \geq 2\), and \(a_1, a_2, \dots, a_n \in (1, +\infty)\). Show that:</p>
+<p class="mpc">
+    \[
+    \begin{aligned}
+        \text{a.)} \quad & \log_{a_1} a_2 + \log_{a_2} a_3 + \dots + \log_{a_n} a_1 \geq n \\
+        \text{b.)} \quad & \log_3(2a_1 + a_2) + \dots + \log_3(2a_n + a_1) \geq \sum_{i=1}^{n} \log_3(a_i) + n
+    \end{aligned}
+    \]
+</p>
+<details>
+    <summary>Hint 1</summary>
+    <p>For the first part, remember that the product of cyclic logarithms is always 1. For the second, try to isolate the "3" inside the log to get that constant \(n\) out.</p>
+</details>
+<details>
+    <summary>Solution</summary>
+    <p>a.)</p>
+    <p>By applying the AM-GM inequality, we get the result almost immediately:</p>
+    <p class="mpc">
+        \[ \log_{a_1} a_2 + \log_{a_2} a_3 + \dots + \log_{a_n} a_1 \geq n \cdot \sqrt[n]{\log_{a_1} a_2 \cdot \log_{a_2} a_3 \cdot \dots \cdot \log_{a_n} a_1} \]
+    </p>
+    <p>Since the product of these logarithms is \(1\), we have:</p>
+    <p class="mpc">
+        \[ n \cdot \sqrt[n]{1} = n \]
+    </p>
+    <p>b.)</b></p>
+    <p>We can use the AM-GM inequality again, but this time inside the logarithm. Observe that:</p>
+    <p class="mpc">
+        \[ \log_3 \left( \frac{2a_1 + a_2}{3} \right) \geq \log_3 \sqrt[3]{a_1^2 a_2} \]
+    </p>
+    <p>Which is equivalent to:</p>
+    <p class="mpc">
+        \[ \log_3(2a_1 + a_2) - \log_3 3 \geq \frac{2\log_3 a_1 + \log_3 a_2}{3} \]
+        \[ \log_3(2a_1 + a_2) - 1 \geq \frac{2\log_3 a_1 + \log_3 a_2}{3} \]
+    </p>
+    <p>By summing up all the analogous inequalities for \(a_2, a_3, \dots, a_n\), the terms on the right side will perfectly balance out to \(\sum \log_3 a_i\). Adding the \(1\)s back to the other side gives us the \(n\) we were looking for, concluding the proof.</p>
+</details>
+<details>
+    <summary>Source</summary>
+    <p>Concursul Interjudetean de Matematica "UNIREA", Focsani, 23 Februarie 2013, Romania</p>
+</details>
+</div>
+</p>
+
+<p>
+<div class="mp" id="plg012">
+<p><a class="mpl" href="#plg012">Problem LG01.2</a></p>
+<p>Prove that:</p>
+<p class="mpc">
+    \[
+        \lg 2 \cdot \lg 3 \cdot \dots \cdot \lg 2014 < (\lg 1008)^{2013}
+    \]
+</p>
+<details>
+    <summary>Solution</summary>
+    <p>Applying the AM-GM inequality to the product of the 2013 terms, we get:</p>
+    <p class="mpc">
+        \[
+            \sqrt[2013]{\lg 2 \cdot \lg 3 \cdot \dots \cdot \lg 2014} \overset{\text{AM-GM}}{\leq} \frac{\sum_{k=2}^{2014} \lg k}{2013}
+        \]
+    </p>
+    <p>Using the properties of logarithms, we can rewrite the arithmetic mean as the logarithm of a geometric mean:</p>
+    <p class="mpc">
+        \[
+            \frac{\sum_{k=2}^{2014} \lg k}{2013} = \lg \sqrt[2013]{2 \cdot 3 \cdot 4 \cdot \dots \cdot 2014}
+        \]
+    </p>
+    <p>Now, applying AM-GM again to the integers inside the logarithm, their arithmetic mean is simply the average of the first and last terms:</p>
+    <p class="mpc">
+        \[
+            \sqrt[2013]{2 \cdot 3 \cdot 4 \cdot \dots \cdot 2014} \leq \frac{2 + 2014}{2} = 1008 \implies
+        \]
+        \[
+            \implies \lg \sqrt[2013]{2 \cdot 3 \cdot \dots \cdot 2014} \overset{\text{AM-GM}}{\leq} \lg 1008
+        \]
+        \[
+            \implies \lg 2 \cdot \lg 3 \cdot \dots \cdot \lg 2014 < (\lg 1008)^{2013}
+        \]
+    </p>
+</details>
+<details>
+    <summary>Source</summary>
+    <p>Concursul Interjudetean de Matematică "UNIREA", Focsani, Februarie 2014, Romania</p>
 </details>
 </div>
 </p>
@@ -1087,6 +1179,139 @@ Whether you are looking for a fresh challenge or revisiting classic techniques, 
 <details>
     <summary>Source</summary>
     <p>Concursul interjudetean de matematică "Academician Radu Miron", 8 Noiembrie, 2008, Romania</p>
+</details>
+</div>
+</p>
+
+<p>
+<div class="mp" id="plg17">
+<p><a class="mpl" href="#plg17">Problem LG17</a></p>
+<p>Let the numbers \(a, b, c \in (0, 1)\) and \(x, y, z \in (0, +\infty)\) such that \(a = (bc)^x\), \(b = (ca)^y\), and \(c = (ab)^z\). Show that:</p>
+<p>
+    \[
+        \frac{1}{x+y+2} + \frac{1}{y+z+2} + \frac{1}{z+x+2} \leq 1
+    \]
+</p>
+<details>
+    <summary>Hint 1</summary>
+    <p>Try taking the natural logarithm of the initial equations to isolate \(x, y,\) and \(z\).</p>
+</details>
+<details>
+    <summary>Hint 2</summary>
+    <p>Can you use this inequality: 
+    \[ \frac{1}{A+B} \leq \frac{1}{4} \left(\frac{1}{A} + \frac{1}{B}\right) \]</p>
+</details>
+<details>
+    <summary>Solution</summary>
+    <p>We want to express \(x, y, z\) in terms of \(a, b, c\). By taking \(\ln\) on both sides, we can achieve that:</p>
+    <p class="mpc">
+        \[
+            a = (bc)^x \implies \ln a = x(\ln b + \ln c) \implies x = \frac{\ln a}{\ln b + \ln c}
+        \]
+        \[
+            b = (ca)^y \implies \ln b = y(\ln c + \ln a) \implies y = \frac{\ln b}{\ln c + \ln a}
+        \]
+        \[
+            c = (ab)^z \implies \ln c = z(\ln a + \ln b) \implies z = \frac{\ln c}{\ln a + \ln b}
+        \]
+    </p>
+    <p>To write less, we can substitute even further. Let \(u = \ln a\), \(v = \ln b\), and \(w = \ln c\). Since \(a, b, c \in (0,1)\), these values are negative. Thus:</p>
+    <p class="mpc">
+        \[
+            x = \frac{u}{v+w}, \quad y = \frac{v}{w+u}, \quad z = \frac{w}{u+v}
+        \]
+    </p>
+    <p>Now let's look at the inequality. We can strategically split the constant \(2\) in each denominator. Intuitively, we can write each term like this:</p>
+    <p class="mpc">
+        \[
+            \frac{1}{x+y+2} = \frac{1}{(x+1)+(y+1)}
+        \]
+        \[
+            \frac{1}{y+z+2} = \frac{1}{(y+1)+(z+1)}
+        \]
+        \[
+            \frac{1}{z+x+2} = \frac{1}{(z+1)+(x+1)}
+        \]
+    </p>
+    <p>The reason for doing this is to use an inequality that matches our structure:</p>
+    <p class="mpc">
+        \[
+            \frac{1}{A+B} \leq \frac{1}{4} \left(\frac{1}{A}+\frac{1}{B}\right)
+        \]
+    </p>
+    <p>The proof for the previous inequality can be found <a href="/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#pivi071">here</a>. Applying this to our terms:</p>
+    <p class="mpc">
+        \[
+            \frac{1}{x+y+2} \leq \frac{1}{4} \left(\frac{1}{x+1}+\frac{1}{y+1}\right) = \frac{1}{4} \left( \frac{v+w}{u+v+w} + \frac{w+u}{u+v+w}\right)
+        \]
+        \[
+            \frac{1}{y+z+2} \leq \frac{1}{4} \left(\frac{1}{y+1} + \frac{1}{z+1} \right) = \frac{1}{4} \left( \frac{w+u}{u+v+w} + \frac{u+v}{u+v+w}\right)
+        \]
+        \[
+            \frac{1}{z+x+2} \leq \frac{1}{4} \left( \frac{1}{z+1} + \frac{1}{x+1}\right) = \frac{1}{4} \left( \frac{u+v}{u+v+w} + \frac{v+w}{u+v+w} \right)
+        \]
+    </p>
+    <p>If we sum up all three relationships:</p>
+    <p class="mpc">
+        \[
+            \sum_{\text{cyc}} \frac{1}{x+y+2} \leq \frac{1}{4} \left[ \frac{2(v+w) + 2(w+u) + 2(u+v)}{u+v+w} \right] = \frac{1}{4} \left[ \frac{4(u+v+w)}{u+v+w} \right] = 1
+        \]
+    </p>
+    <p>Equality holds if the numbers are equal.</p>
+</details>
+<details>
+    <summary>Source</summary>
+    <p>Concursul Interjudețean de Matematica "Academician Radu Miron", Vaslui, 11-13 Noiembrie 2011, Romania</p>
+    <p>Problem selected from "Gazeta Matematica"</p>
+</details>
+</div>
+</p>
+
+<p>
+<div class="mp" id="plg18">
+<p><a class="mpl" href="#plg18">Problem LG18</a></p>
+<p>Determine the real numbers \(x \in (\log_3 2, +\infty)\) with the property that:</p>
+<p class="mpc">
+    \[
+        \log_2 \left( 3^{\log_2(3^x - 1)} - 1 \right) = \log_3 \left( 2^{\log_3(2^x + 1)} + 1 \right)
+    \]
+</p>
+<details>
+    <summary>Solution</summary>
+    <p>Let's define the function \(g: (\log_3 2, +\infty) \to \mathbb{R}\) as \(g(x) = \log_2(3^x - 1)\). To find its inverse \(g^{-1}(x)\), we set \(y = \log_2(3^x - 1)\) and solve for \(x\):</p>
+    <p class="mpc">
+        \[ 2^y = 3^x - 1 \implies 3^x = 2^y + 1 \implies x = \log_3(2^y + 1) \]
+    </p>
+    <p>So, \(g^{-1}(x) = \log_3(2^x + 1)\). Looking back at our original equation, we can rewrite it using this functional notation:</p>
+    <p class="mpc">
+        \[ g(g(x)) = g^{-1}(g^{-1}(x)) \]
+    </p>
+    <p>Since \(g\) is strictly increasing, the intersection of these nested iterations occurs at the fixed point. This allows us to simplify the problem to solving \(g(x) = g^{-1}(x) \implies g(x) = x\).</p>
+    <p>Let \(\log_2(3^x - 1) = a\). Substituting into the relationship \(g(a) = g^{-1}(x)\):</p>
+    <p class="mpc">
+        \[
+        \begin{cases}
+            3^x - 1 = 2^a \\
+            2^x + 1 = 3^a
+        \end{cases}
+        \]
+    </p>
+    <p>Adding these two equations together yields:</p>
+    <p class="mpc">
+        \[ 3^x + 2^x = 3^a + 2^a \]
+    </p>
+    <p>Because the function \(h(t) = 3^t + 2^t\) is strictly increasing, it must be that \(x = a\). Substituting this back into our first equation, we get:</p>
+    <p class="mpc">
+        \[ 3^x - 1 = 2^x \implies 3^x - 2^x = 1 \]
+    </p>
+    <p>Dividing by \(3^x\), the equation becomes \(1 - \left(\frac{2}{3}\right)^x = \left(\frac{1}{3}\right)^x\). Since the left side is increasing and the right side is decreasing, there is only one possible solution:</p>
+    <p class="mpc">
+        \[ x = 1 \]
+    </p>
+</details>
+<details>
+    <summary>Source</summary>
+    <p>Concursul Interjudetean de Matematica "UNIREA", Ediția 2014, Focsani, Romania</p>
 </details>
 </div>
 </p>
