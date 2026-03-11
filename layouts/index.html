@@ -22,6 +22,10 @@
   </div>
   {{ end }}
 
+  <br/>
+
+  {{ partial "gameoflife.html" . }}
+
   <ul class="blog-posts">
     {{ range where .Site.RegularPages "Type" "posts" }}
       <li>
@@ -36,4 +40,5 @@
       </li>
     {{ end }}
   </ul>
+
 {{ end }}

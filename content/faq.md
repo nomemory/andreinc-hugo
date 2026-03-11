@@ -119,6 +119,6 @@
     <p>I have different levels of concentration depending on the task. Most of the time I listen to music, but when I really need to put my brain to work at its full power, I need perfect silence. This is why I hate open-plan offices.</p>
 </details>
 <details open>
-    <summary><strong>10. If you could automate one non-coding task in your life, what would it be?</strong></summary>
+    <summary><strong>If you could automate one non-coding task in your life, what would it be?</strong></summary>
     <p>Moving dishes in and out of the dishwasher. The irony of wanting to automate a task involving a machine that is already supposed to be the automation.</p>
 </details>
