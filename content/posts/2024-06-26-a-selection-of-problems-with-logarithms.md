@@ -1277,6 +1277,10 @@ Whether you are looking for a fresh challenge or revisiting classic techniques, 
     \]
 </p>
 <details>
+    <summary>Hint</summary>
+    <p>When a function is equal to its inverse, it's called an involution. Can you spot an involution?</p>
+</details>
+<details>
     <summary>Solution</summary>
     <p>Let's define the function \(g: (\log_3 2, +\infty) \to \mathbb{R}\) as \(g(x) = \log_2(3^x - 1)\). To find its inverse \(g^{-1}(x)\), we set \(y = \log_2(3^x - 1)\) and solve for \(x\):</p>
     <p class="mpc">
@@ -1287,7 +1291,7 @@ Whether you are looking for a fresh challenge or revisiting classic techniques, 
         \[ g(g(x)) = g^{-1}(g^{-1}(x)) \]
     </p>
     <p>Since \(g\) is strictly increasing, the intersection of these nested iterations occurs at the fixed point. This allows us to simplify the problem to solving \(g(x) = g^{-1}(x) \implies g(x) = x\).</p>
-    <p>Let \(\log_2(3^x - 1) = a\). Substituting into the relationship \(g(a) = g^{-1}(x)\):</p>
+    <p>Let \(\log_2(3^x - 1) = a\), which means \(g(x) = a\). Since we know \(g(x) = g^{-1}(x)\), we also have \(g^{-1}(x) = a\). This gives us the system:</p>
     <p class="mpc">
         \[
         \begin{cases}
@@ -1304,7 +1308,7 @@ Whether you are looking for a fresh challenge or revisiting classic techniques, 
     <p class="mpc">
         \[ 3^x - 1 = 2^x \implies 3^x - 2^x = 1 \]
     </p>
-    <p>Dividing by \(3^x\), the equation becomes \(1 - \left(\frac{2}{3}\right)^x = \left(\frac{1}{3}\right)^x\). Since the left side is increasing and the right side is decreasing, there is only one possible solution:</p>
+    <p>Dividing by \(3^x\), the equation becomes \(1 - \left(\frac{2}{3}\right)^x = \left(\frac{1}{3}\right)^x\). Since the left side is strictly increasing and the right side is strictly decreasing, there is only one possible solution:</p>
     <p class="mpc">
         \[ x = 1 \]
     </p>
@@ -1312,6 +1316,234 @@ Whether you are looking for a fresh challenge or revisiting classic techniques, 
 <details>
     <summary>Source</summary>
     <p>Concursul Interjudetean de Matematica "UNIREA", Ediția 2014, Focsani, Romania</p>
+</details>
+</div>
+</p>
+
+<div class="mp" id="plg19">
+<p><a class="mpl" href="#plg19">Problem LG19</a></p>
+<p>Find \(a, b, c > 1\) with the properties:</p>
+<p class="mpc">
+    \[
+        \begin{cases}
+        abc = 10^6 \\
+        \lg a \cdot \sqrt{\lg b \cdot \lg c} + \lg b \cdot \sqrt{\lg c \cdot \lg a} + \lg c \cdot \sqrt{\lg a \cdot \lg b} \geq 12
+        \end{cases}
+    \]
+</p>
+<details>
+    <summary>Solution</summary>
+    <p>Let's do the following substition:</p>
+    <p class="mpc">
+        \[
+            x = \lg a \quad y = \lg b \quad and z = \lg c 
+        \] 
+    </p>
+    <p>Because \(a, b, c > 1 \implies x, y, z > 0\).</p>
+    <p>From the first condition \(abc = 10^6\), we apply \(\lg\) to both sides:</p>
+    <p class="mpc">
+        \[ 
+            \lg(abc) = \lg(10^6) \implies \lg a + \lg b + \lg c = 6 \implies x + y + z = 6 
+        \]
+    </p>
+    <p>Now, substitute \(x, y,\) and \(z\) into the inequality given in the problem. This is the "new thing" we have to prove:</p>
+    <p class="mpc">
+        \[ 
+            x \sqrt{yz} + y \sqrt{zx} + z \sqrt{xy} \geq 12 
+        \]
+    </p>
+    <p>To find the maximum possible value of the left-hand side, we can apply the AM-GM inequality to the terms under the square roots:</p>
+    <p class="mpc">
+        \[ 
+            \sqrt{yz} \leq \frac{y+z}{2}, \quad \sqrt{zx} \leq \frac{z+x}{2}, \quad \sqrt{xy} \leq \frac{x+y}{2} 
+        \]
+    </p>
+    <p>Multiplying these inequalities by \(x, y,\) and \(z\) respectively (remember \(x, y, z > 0\)), we get:</p>
+    <p class="mpc">
+        \[ 
+            x \sqrt{yz} + y \sqrt{zx} + z \sqrt{xy} \leq \frac{x(y+z)}{2} + \frac{y(z+x)}{2} + \frac{z(x+y)}{2} \iff
+        \]
+        \[ 
+            x \sqrt{yz} + y \sqrt{zx} + z \sqrt{xy} \leq \frac{xy + xz + yz + yx + zx + zy}{2} \iff
+        \]
+        \[
+            x \sqrt{yz} + y \sqrt{zx} + z \sqrt{xy} \leq xy + yz + zx 
+        \]
+    </p>
+    <p>Next, we use a well-known algebraic inequality relating the sum of products to the square of the sum:</p>
+    <p class="mpc">
+        \[ 
+            xy + yz + zx \leq \frac{(x+y+z)^2}{3} 
+        \]
+    </p>
+    <p>Since \(x+y+z = 6\):</p>
+    <p class="mpc">
+        \[ 
+            xy + yz + zx \leq \frac{6^2}{3} = \frac{36}{3} = 12 
+        \]
+    </p>
+    <p>Linking our inequalities together, we have proven that:</p>
+    <p class="mpc">
+        \[ 
+            x \sqrt{yz} + y \sqrt{zx} + z \sqrt{xy} \leq 12 
+        \]
+    </p>
+    <p>However, this expression must be \(\geq 12\). The only way an expression can be both \(\leq 12\) and \(\geq 12\) is if it is exactly equal to \(12\).</p>
+    <p>For equality to hold in the AM-GM and the sum-of-products inequalities, all variables must be equal. Therefore, \(x = y = z\). Given our constraint that \(x + y + z = 6\), it must be true that:</p>
+    <p class="mpc">
+        \[ x = y = z = 2 \]
+    </p>
+    <p>Returning to our original logarithmic substitutions to find \(a, b,\) and \(c\):</p>
+    <p class="mpc">
+        \[ \lg a = 2 \implies a = 10^2 = 100 \]
+        \[ \lg b = 2 \implies b = 10^2 = 100 \]
+        \[ \lg c = 2 \implies c = 10^2 = 100 \]
+    </p>
+    <p>The solution is \(a = 100, b = 100, c = 100\).</p>
+</details>
+<details>
+    <summary>Source</summary>
+    <p>Concursul Interjudetean de Matematica "Petru Morosan - Trident", Editia a IX-a, Sectiunea A, Braila, 2011, Romania</p>
+</details>
+</div>
+</p>
+
+<p>
+<div class="mp" id="plg20">
+<p><a class="mpl" href="#plg20">Problem LG20</a></p>
+<p>Show that the equation \((x-4)^{\log_4 5} = x - 1 + (2x-5)^{\log_5 4}\), for \(x > 4\), has a unique solution.</p>
+<details>
+    <summary>Hint</summary>
+    <p>To eliminate the logarithm in the term \((x-4)^{\log_4 5}\), try to leverage the identity \(a^{\log_a b} = b\). If you substitute \(x - 4 = 4^u\), you can use exponent rules to swap the powers: \((4^u)^{\log_4 5} = (4^{\log_4 5})^u\). What does this simplify to?</p>
+</details>
+<details>
+    <summary>Solution</summary>
+    <p>Let's use a substitution to simplify the logarithms. Since \(x > 4\), we can set \(x - 4 = 4^u\) for some \(u \in \mathbb{R}\). This gives us \(x = 4^u + 4\).</p>
+    <p>Substituting this into our original equation:</p>
+    <p class="mpc">
+        \[ (4^u)^{\log_4 5} = (4^u + 4) - 1 + (2(4^u + 4) - 5)^{\log_5 4} \iff \]
+        \[ \iff 5^u = 4^u + 3 + (2 \cdot 4^u + 3)^{\log_5 4} \]
+    </p>
+    <p>Now, let's introduce a second variable \(v \in \mathbb{R}\) such that \(5^v = 2 \cdot 4^u + 3\). Basically we are applying the same trick to the right:</p>
+    <p class="mpc">
+        \[ (2 \cdot 4^u + 3)^{\log_5 4} = (5^v)^{\log_5 4} = 4^v \]
+    </p>
+    <p>We can now construct a system of two equations:</p>
+    <p class="mpc">
+        \[
+        \begin{cases}
+            5^u = 4^u + 3 + 4^v \implies 5^u - 4^u - 4^v = 3 \\
+            5^v = 2 \cdot 4^u + 3 \implies 5^v - 2 \cdot 4^u = 3
+        \end{cases}
+        \]
+    </p>
+    <p>Because both expressions are equal to 3, we can equate them to each other:</p>
+    <p class="mpc">
+        \[ 5^u - 4^u - 4^v = 5^v - 2 \cdot 4^u \iff \]
+        \[ \iff 5^u + 4^u = 5^v + 4^v \]
+    </p>
+    <p>Consider the function \(f(t) = 5^t + 4^t\). Because it is the sum of two strictly increasing exponential functions, \(f(t)\) itself must be strictly increasing, and therefore injective. Thus, \(f(u) = f(v)\) implies that \(u = v\).</p>
+    <p>Substituting \(v = u\) back into the second equation of our system yields:</p>
+    <p class="mpc">
+        \[ 5^u - 2 \cdot 4^u = 3 \]
+    </p>
+    <p>Dividing the entire equation by \(4^u\) gives us:</p>
+    <p class="mpc">
+        \[ \left(\frac{5}{4}\right)^u - 2 = 3\left(\frac{1}{4}\right)^u \implies \left(\frac{5}{4}\right)^u - 3\left(\frac{1}{4}\right)^u = 2 \]
+    </p>
+    <p>Let \(g(u) = \left(\frac{5}{4}\right)^u - 3\left(\frac{1}{4}\right)^u\). The first term \(\left(\frac{5}{4}\right)^u\) is strictly increasing. The second term, \(-3\left(\frac{1}{4}\right)^u\), is also strictly increasing because \(\left(\frac{1}{4}\right)^u\) is strictly decreasing and we are multiplying it by a negative constant.</p>
+    <p>Since \(g(u)\) is the sum of two strictly increasing functions, \(g(u)\) is strictly increasing on \(\mathbb{R}\). Therefore, the equation \(g(u) = 2\) can have at most one solution for \(u\).</p>
+    <p>Because \(\lim_{u \to -\infty} g(u) = -\infty\) and \(\lim_{u \to \infty} g(u) = \infty\), the continuous function \(g(u)\) crosses the value 2 exactly once. Since there is exactly one valid \(u\), and our initial mapping \(x = 4^u + 4\) is bijective, there exists a unique solution for \(x\).</p>
+</details>
+<details>
+    <summary>Source</summary>
+    <p>Concursul Interjudetean de Matematică "Victor Valcovici", Ediția a XVII-a, Braila, 2009, Romania</p>
+</details>
+</div>
+</p>
+
+<p>
+<div class="mp" id="plg21">
+<p><a class="mpl" href="#plg21">Problem LG21</a></p>
+<p>Determine the real numbers \(x\) and \(y\) that satisfy the equality:</p>
+<p class="mpc">
+    \[
+        14 \left[ (x+y)^2 + 16x^2 + 16 \log_2^2 y \right] = (9x + y + 12 \log_2 y)^2
+    \]
+</p>
+<details>
+    <summary>Hint</summary>
+    <p>Look the constant 14 on the left side.</p>
+    <p>Notice that $14 = 1^2 + 2^2 + 3^2$. Now look at the terms inside the square brackets on the left and rewrite them as perfect squares: $(x+y)^2$, $(4x)^2$, and $(4\log_2 y)^2$.</p> 
+    <p>Can you relate these bases to the expression on the right side using the Cauchy-Schwarz inequality:</p>
+    <p class="mpc">
+        \[
+            (a^2+b^2+c^2)(X^2+Y^2+Z^2) \ge (aX+bY+cZ)^2
+        \]
+    </p>
+    <p>Since the problem gives you an exact equality, what condition must the terms satisfy?</p>
+</details>
+<details>
+    <summary>Solution</summary>
+    <p>The structure of this equation is a perfect setup for the Cauchy-Schwarz inequality. With a little intuition, the expression can be written as:</p>
+    <p class="mpc">
+        \[ 
+            14 \left[ (x+y)^2 + 16x^2 + 16\log_2^2 y \right] = (9x + y + 12\log_2 y)^2 \iff
+        \]
+        \[
+            \iff (1^2 + 2^2 + 3^2) \left[ (x+y)^2 + (4x)^2 + (4\log_2 y)^2 \right] = \\
+            = \left[ 1(x+y) + 2(4x) + 3(4\log_2 y) \right]^2
+        \]
+    </p>
+    <p>But CBS states that:</p>
+    <p class="mpc">
+        \[
+            \iff (1^2 + 2^2 + 3^2) \left[ (x+y)^2 + (4x)^2 + (4\log_2 y)^2 \right] \geq \\
+            = \left[ 1(x+y) + 2(4x) + 3(4\log_2 y) \right]^2
+        \]
+    </p>
+    <p>We know that equality happens only if the components (of the vectors) are proportional:</p>
+    <p class="mpc">
+        \[ 
+            \frac{x+y}{1} = \frac{4x}{2} = \frac{4\log_2 y}{3} 
+        \]
+    </p>
+    <p>From the first part:</p>
+    <p class="mpc">
+        \[ x+y = 2x \implies y = x \]
+    </p>
+    <p>Now, substitute \(y = x\) into the second part of the proportion:</p>
+    <p class="mpc">
+        \[ 2x = \frac{4\log_2 x}{3} \implies 6x = 4\log_2 x \implies \log_2 x = \frac{3}{2}x \implies \]
+        \[\implies \frac{\log_2 x}{x} = \frac{3}{2}\]
+    </p>
+    <p>We need to find if there are any real solutions for \(x > 0\). Let's define a function \(f(x) = \frac{\log_2 x}{x}\). To find its maximum, we take the derivative:</p>
+    <p class="mpc">
+        \[ 
+            f'(x) = \frac{\frac{1}{x \ln 2} \cdot x - \log_2 x \cdot 1}{x^2} = \frac{1 - \ln x}{x^2 \ln 2} 
+        \]
+    </p>
+    <p>Setting \(f'(x) = 0\) reveals a maximum at \(\ln x = 1\), meaning \(x = e\). The maximum value of the function is therefore:</p>
+    <p class="mpc">
+        \[ 
+            f(e) = \frac{\log_2 e}{e} = \frac{1}{e \ln 2} \approx 0.53 
+        \]
+    </p>
+    <p>Mathematicians don't like te \(\approx\) sign, but I am enigneer.</p>
+    <p>But \(\frac{\log_2 x}{x} \approx 0.53 \neq \frac{3}{2}\).</p>
+    <p>The equation \(\log_2 x = \frac{3}{2}x\) has no real solutions. There are no real numbers \(x\) and \(y\) that satisfy the initial equality.</p>
+    <p class="mpc">
+        \[ x, y \in \emptyset \]
+    </p>
+    <p>Surprise!</p>
+</details>
+<details>
+    <summary>Source</summary>
+    <p>Concursul Interjudetean de Matematica "Victor Valcovici", Editia a XXI-a, Braila, 2013, Romania</p>
+</details>
+<details>
+    <summary>Note</summary>
+    <p>I've used derivatives to obtain the maximum, this is not exactly in the 10th school curriculum. If you have a better idea...</p>
 </details>
 </div>
 </p>

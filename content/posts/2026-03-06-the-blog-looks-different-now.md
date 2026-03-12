@@ -154,6 +154,89 @@ The separation isn't perfect, but it's a start.
 
 Now, if only I could find the motivation to actually write the content I'm so busy Categorizing.
 
+# A "partial" canvas with game of life
+
+Because why not.
+
+```js
+(function() {
+    const initGame = () => {
+        const canvas = document.getElementById('gameOfLife');
+        const resetBtn = document.getElementById('golReset');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const res = 6; 
+        let grid, cols, rows;
+        let isVisible = false;
+        const seed = (e) => {
+            if (e) e.preventDefault();
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            cols = Math.floor(canvas.width / res);
+            rows = Math.floor(canvas.height / res);
+            grid = Array.from({ length: cols }, () => 
+                Array.from({ length: rows }, () => Math.random() > 0.90 ? 1.0 : 0.0));
+        };
+        seed();
+        resetBtn.addEventListener('click', seed);
+        canvas.addEventListener('click', seed);
+        const observer = new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+        }, { threshold: 0.1 });
+        observer.observe(canvas);
+        let lastUpdate = 0;
+        const interval = 120; 
+        function play(timestamp) {
+            if (!isVisible) {
+                requestAnimationFrame(play);
+                return;
+            }
+            if (timestamp - lastUpdate < interval) {
+                requestAnimationFrame(play);
+                return;
+            }
+            lastUpdate = timestamp;
+            let next = grid.map(arr => [...arr]);
+            for (let c = 0; c < cols; c++) {
+                for (let r = 0; r < rows; r++) {
+                    let neighbors = 0;
+                    for (let i = -1; i <= 1; i++) {
+                        for (let j = -1; j <= 1; j++) {
+                            if (i === 0 && j === 0) continue;
+                            const x = (c + i + cols) % cols;
+                            const y = (r + j + rows) % rows;
+                            if (grid[x][y] >= 1.0) neighbors++;
+                        }
+                    }
+                    if (grid[c][r] >= 1.0) {
+                        if (neighbors < 2 || neighbors > 3) next[c][r] = 0.8; 
+                        else next[c][r] = 1.0; 
+                    } else {
+                        if (neighbors === 3) next[c][r] = 1.0; 
+                        else next[c][r] = Math.max(0, grid[c][r] - 0.2); 
+                    }
+                }
+            }
+            grid = next;
+            ctx.fillStyle = "#F6F8FA";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            for (let c = 0; c < cols; c++) {
+                for (let r = 0; r < rows; r++) {
+                    if (grid[c][r] > 0) {
+                        ctx.fillStyle = `rgba(0, 0, 0, ${grid[c][r]})`;
+                        ctx.fillRect(c * res, r * res, res - 1, res - 1);
+                    }
+                }
+            }
+            requestAnimationFrame(play);
+        }
+        requestAnimationFrame(play);
+    };
+    if (document.readyState === 'complete') initGame();
+    else window.addEventListener('load', initGame);
+})();
+```
+
 # Things I haven't managed to do *yet*
 
 These are the items I've wrestled with but haven't quite conquered:

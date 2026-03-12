@@ -58,8 +58,8 @@ Which method is better? That’s [left to the reader](https://academia.stackexch
 
 ## The new problem
 
-That problem was charming—but it sparked a bigger question:  
-Could we approximate small numbers raised to irrational powers without using calculators, logs, or radicals—just **addition** and **multiplication**?
+That problem was charming, but it sparked a bigger question:  
+Could we approximate small numbers raised to irrational powers without using calculators, logs, or radicals, just *addition* and *multiplication*?
 
 This was more of a joke than a serious challenge, so here’s my final formula (if you don’t want to read the rest):
 
@@ -206,7 +206,7 @@ Computing $3^{\sqrt{3}}$ with our function yields: $6.58$ instead of $6.70$. Not
 
 ## Final thoughts
 
-* The monster function is clearly impractical—especially in the era of logic gates and floating-point math. But that wasn't the point.
+* The monster function is clearly impractical, especially in the era of logic gates and floating-point math. But that wasn't the point.
 
 * This post was just a fun excuse to explore Padé Approximations firsthand.
 
