@@ -1,0 +1,23 @@
+.fresco-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem auto; /* The 'auto' here centers the smaller container on your page */
+    width: 100%;
+    max-width: 350px; /* Change this number (e.g., 400px or 600px) to fit your theme perfectly */
+}
+.fresco-wrapper canvas {
+    max-width: 100%;
+    border: 1px solid #111111;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    cursor: crosshair;
+    background-color: #FFFFFF;
+}
+
+.fresco-hint {
+    margin-top: 12px;
+    font-family: monospace;
+    font-size: 12px;
+    color: #888888;
+}
