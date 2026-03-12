@@ -1,33 +1,415 @@
-<div style="position: relative; width: 100%;">
-    <canvas id="gameOfLife" style="display: block; width: 100%; height: 80px; background: #F6F8FA; cursor: crosshair;"></canvas>
-    <a id="golReset" style="position: absolute; bottom: 5px; right: 10px; font-family: monospace; font-size: 10px; color: #888; cursor: pointer; text-decoration: none; background: rgba(246, 248, 250, 0.8); padding: 2px 4px; border-radius: 2px;">[reset]</a>
+<div style="position: relative; width: 100%; font-family: monospace; user-select: none;">
+    <div id="golSelector" style="display: flex; gap: 12px; overflow-x: auto; padding: 10px 0; background: transparent; scrollbar-width: none; -ms-overflow-style: none;">
+    </div>
+
+    <canvas id="gameOfLife" style="display: block; width: 100%; height: 100px; background: #F5F5F5; cursor: crosshair; border: 1px solid #000; box-sizing: border-box;"></canvas>
 </div>
 
+<style>
+    #golSelector::-webkit-scrollbar { display: none; }
+    .gol-link {
+        white-space: nowrap;
+        font-size: 11px;
+        color: #888;
+        cursor: pointer;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    .gol-link:hover { color: #333; text-decoration: underline; }
+    .gol-link.active {
+        color: #000;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: default;
+    }
+</style>
+
 <script>
-(function() {
+(function () {
     const initGame = () => {
-        const canvas = document.getElementById('gameOfLife');
-        const resetBtn = document.getElementById('golReset');
+        const canvas = document.getElementById("gameOfLife");
+        const selector = document.getElementById("golSelector");
+
         if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        const res = 6; 
+        const ctx = canvas.getContext("2d");
+        const res = 6;
+        
         let grid, cols, rows;
-        let isVisible = false;
+        let modeIndex = 0, gen = 0, isVisible = false;
+        let mouse = { x: 0, y: 0, over: false };
+        let arc = {}; 
 
-        const seed = (e) => {
-            if (e) e.preventDefault();
+        const SHAPES = [
+            { s: [[1, 1, 1, 1]], c: "#222" },
+            { s: [[1, 1], [1, 1]], c: "#444" },
+            { s: [[0, 1, 0], [1, 1, 1]], c: "#666" },
+            { s: [[1, 1, 0], [0, 1, 1]], c: "#888" },
+            { s: [[0, 1, 1], [1, 1, 0]], c: "#AAA" },
+            { s: [[1, 0, 0], [1, 1, 1]], c: "#CCC" },
+            { s: [[0, 0, 1], [1, 1, 1]], c: "#555" }
+        ];
+
+        const MODES = [
+            { name: "Game of Life", s: [2, 3], b: [3], d: 0.15, c: [0, 0, 0], t: "ca" },
+            { name: "HighLife", s: [2, 3], b: [3, 6], d: 0.12, c: [80, 80, 80], t: "ca" },
+            { name: "Maze", s: [1, 2, 3, 4, 5], b: [3], d: 0.05, c: [60, 60, 60], t: "ca" },
+            { name: "Day & Night", s: [3, 4, 6, 7, 8], b: [3, 6, 7, 8], d: 0.45, c: [40, 40, 40], t: "ca" },
+            { name: "Walled Cities", s: [2, 3, 4, 5], b: [4, 5, 6, 7, 8], d: 0.2, c: [100, 100, 100], t: "ca" },
+            { name: "Snake", t: "snake" },
+            { name: "Pong", t: "pong" },
+            { name: "Tetris", t: "tetris" },
+            { name: "Breakout", t: "breakout" },
+            { name: "Frogger", t: "frog" },
+            { name: "Tron", t: "tron" }
+        ];
+
+        MODES.forEach((m, i) => {
+            const link = document.createElement("div");
+            link.className = "gol-link";
+            link.innerText = "#" + m.name.toLowerCase().replace(/\s+/g, "");
+            link.onclick = () => { modeIndex = i; seed(); };
+            selector.appendChild(link);
+        });
+
+        const updateUI = () => {
+            document.querySelectorAll(".gol-link").forEach((p, i) => {
+                p.classList.toggle("active", i === modeIndex);
+            });
+            const activeLink = selector.children[modeIndex];
+            if (activeLink) {
+                selector.scrollTo({ left: activeLink.offsetLeft - 20, behavior: "smooth" });
+            }
+        };
+
+        const initSnake = () => {
+            arc = { b: [{ x: 5, y: 5 }], f: { x: 15, y: 5 } };
+        };
+
+        const initPong = () => {
+            arc = { x: cols / 2, y: rows / 2, dx: 0.7, dy: 0.4, p1: 5, p2: 5 };
+        };
+
+        const initTetris = () => {
+            arc = { 
+                s: Array.from({ length: cols }, () => Array(rows).fill(0)), 
+                sc: Array.from({ length: cols }, () => Array(rows).fill("#DDD")), 
+                cur: null, color: "#000", x: 0, y: 0 
+            };
+            spawnTetromino();
+        };
+
+        const initBreakout = () => {
+            arc = { 
+                x: cols / 2, y: rows / 2, dx: 0.4, dy: 0.4, p: cols / 2, 
+                b: Array.from({ length: cols }, (_, i) => (i % 3 === 0 ? 1 : 0)) 
+            };
+        };
+
+        const initFrogger = () => {
+            arc = { 
+                y: rows - 1, x: Math.floor(cols / 2), 
+                obs: Array.from({ length: rows }, (_, i) => ({ 
+                    x: Math.random() * cols, 
+                    s: (i % 2 ? 1 : -1) * (Math.random() + 0.5) 
+                })) 
+            };
+        };
+
+        const initTron = () => {
+            arc = {
+                grid: Array.from({ length: cols }, () => Array(rows).fill(0)),
+                p: [
+                    { x: Math.min(cols - 1, 5), y: Math.floor(rows / 3), dx: 1, dy: 0, c: [50, 50, 50], dead: false },
+                    { x: Math.max(0, cols - 6), y: Math.floor(rows / 1.5), dx: -1, dy: 0, c: [150, 150, 150], dead: false }
+                ]
+            };
+        };
+
+        const updateCA = (m) => {
+            let nx = grid.map((arr) => [...arr]);
+            for (let c = 0; c < cols; c++) {
+                for (let r = 0; r < rows; r++) {
+                    let n = 0;
+                    for (let i = -1; i <= 1; i++) {
+                        for (let j = -1; j <= 1; j++) {
+                            if (i === 0 && j === 0) continue;
+                            if (grid[(c + i + cols) % cols][(r + j + rows) % rows] >= 1.0) n++;
+                        }
+                    }
+                    if (grid[c][r] >= 1.0) nx[c][r] = m.s.includes(n) ? 1.0 : 0.7;
+                    else nx[c][r] = m.b.includes(n) ? 1.0 : Math.max(0, grid[c][r] - 0.15);
+                    
+                    if (nx[c][r] > 0) {
+                        ctx.fillStyle = `rgba(${m.c[0]},${m.c[1]},${m.c[2]},${nx[c][r]})`;
+                        ctx.fillRect(c * res, r * res, res - 1, res - 1);
+                    }
+                }
+            }
+            grid = nx;
+        };
+
+        const updateSnake = () => {
+            let h = { ...arc.b[0] };
+            if (h.x < arc.f.x) h.x++;
+            else if (h.x > arc.f.x) h.x--;
+            else if (h.y < arc.f.y) h.y++;
+            else if (h.y > arc.f.y) h.y--;
+            
+            arc.b.unshift(h);
+            if (h.x === arc.f.x && h.y === arc.f.y) {
+                arc.f = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+            } else {
+                arc.b.pop();
+            }
+
+            ctx.fillStyle = "#555";
+            arc.b.forEach((p) => ctx.fillRect(p.x * res, p.y * res, res - 1, res - 1));
+            ctx.fillStyle = "#000";
+            ctx.fillRect(arc.f.x * res, arc.f.y * res, res - 1, res - 1);
+        };
+
+        const updatePong = () => {
+            arc.x += arc.dx;
+            arc.y += arc.dy;
+            if (arc.y <= 0 || arc.y >= rows - 1) arc.dy *= -1;
+            
+            arc.p1 += (arc.y - (arc.p1 + 1.5)) * 0.3;
+            arc.p2 += (arc.y - (arc.p2 + 1.5)) * 0.3;
+            
+            if (arc.x <= 1 || arc.x >= cols - 1) arc.dx *= -1;
+            
+            ctx.fillStyle = "#000";
+            ctx.fillRect(arc.x * res, arc.y * res, res - 1, res - 1);
+            ctx.fillRect(0, arc.p1 * res, res - 1, res * 3);
+            ctx.fillRect((cols - 1) * res, arc.p2 * res, res - 1, res * 3);
+        };
+
+        const updateTetris = () => {
+            if (!checkTetrisCollision(arc.x, arc.y + 1, arc.cur)) {
+                arc.y++;
+            } else {
+                for (let r = 0; r < arc.cur.length; r++) {
+                    for (let c = 0; c < arc.cur[r].length; c++) {
+                        if (arc.cur[r][c]) {
+                            arc.s[arc.x + c][arc.y + r] = 1;
+                            arc.sc[arc.x + c][arc.y + r] = arc.color;
+                        }
+                    }
+                }
+                for (let r = rows - 1; r >= 0; r--) {
+                    let full = true;
+                    for (let c = 0; c < cols; c++) if (!arc.s[c][r]) full = false;
+                    if (full) {
+                        for (let rr = r; rr > 0; rr--) {
+                            for (let c = 0; c < cols; c++) {
+                                arc.s[c][rr] = arc.s[c][rr - 1];
+                                arc.sc[c][rr] = arc.sc[c][rr - 1];
+                            }
+                        }
+                        for (let c = 0; c < cols; c++) {
+                            arc.s[c][0] = 0;
+                            arc.sc[c][0] = "#DDD";
+                        }
+                        r++;
+                    }
+                }
+                let spawned = spawnTetromino();
+                if (!spawned) return; 
+            }
+
+            for (let c = 0; c < cols; c++) {
+                for (let r = 0; r < rows; r++) {
+                    if (arc.s[c][r]) {
+                        ctx.fillStyle = arc.sc[c][r];
+                        ctx.fillRect(c * res, r * res, res - 1, res - 1);
+                    }
+                }
+            }
+            if (arc.cur) {
+                ctx.fillStyle = arc.color;
+                for (let r = 0; r < arc.cur.length; r++) {
+                    for (let c = 0; c < arc.cur[r].length; c++) {
+                        if (arc.cur[r][c]) ctx.fillRect((arc.x + c) * res, (arc.y + r) * res, res - 1, res - 1);
+                    }
+                }
+            }
+        };
+
+        const updateBreakout = () => {
+            arc.x += arc.dx;
+            arc.y += arc.dy;
+            
+            if (arc.x <= 0 || arc.x >= cols - 1) arc.dx *= -1;
+            if (arc.y <= 0) arc.dy *= -1;
+            
+            if (arc.y >= rows - 1) {
+                seed();
+                return; 
+            }
+            
+            if (arc.y > rows - 2 && Math.abs(arc.x - arc.p) < 3) arc.dy = -Math.abs(arc.dy);
+            
+            let bx = Math.floor(arc.x);
+            if (arc.y < 3 && bx >= 0 && bx < cols && arc.b[bx]) {
+                arc.b[bx] = 0;
+                arc.dy = Math.abs(arc.dy);
+            }
+            
+            arc.p += (arc.x - arc.p) * 0.15;
+            
+            ctx.fillStyle = "#000";
+            ctx.fillRect((arc.p - 1) * res, (rows - 1) * res, res * 3, res - 1);
+            ctx.fillRect(arc.x * res, arc.y * res, res - 1, res - 1);
+            ctx.fillStyle = "#888";
+            arc.b.forEach((b, i) => {
+                if (b) ctx.fillRect(i * res, 0, res - 1, res * 2);
+            });
+        };
+
+        const updateTron = () => {
+            arc.p.forEach((p) => {
+                if (p.dead) return;
+                arc.grid[p.x][p.y] = 1;
+                let nx = p.x + p.dx, ny = p.y + p.dy;
+                
+                if (nx < 0 || nx >= cols || ny < 0 || ny >= rows || arc.grid[nx][ny] || Math.random() < 0.06) {
+                    const dirs = [
+                        { dx: 0, dy: 1 }, { dx: 0, dy: -1 },
+                        { dx: 1, dy: 0 }, { dx: -1, dy: 0 }
+                    ].filter((d) => !(d.dx === -p.dx && d.dy === -p.dy));
+                    
+                    const valid = dirs.filter((d) => {
+                        let tx = p.x + d.dx, ty = p.y + d.dy;
+                        return tx >= 0 && tx < cols && ty >= 0 && ty < rows && !arc.grid[tx][ty];
+                    });
+                    
+                    if (valid.length) {
+                        let c = valid[Math.floor(Math.random() * valid.length)];
+                        p.dx = c.dx;
+                        p.dy = c.dy;
+                    } else {
+                        p.dead = true;
+                    }
+                }
+                p.x += p.dx;
+                p.y += p.dy;
+            });
+
+            for (let c = 0; c < cols; c++) {
+                for (let r = 0; r < rows; r++) {
+                    if (arc.grid[c][r]) {
+                        ctx.fillStyle = "rgba(100,100,100,0.15)";
+                        ctx.fillRect(c * res, r * res, res - 1, res - 1);
+                    }
+                }
+            }
+            
+            arc.p.forEach((p) => {
+                ctx.fillStyle = `rgb(${p.c[0]},${p.c[1]},${p.c[2]})`;
+                ctx.fillRect(p.x * res, p.y * res, res - 1, res - 1);
+            });
+            
+            if (arc.p.every((p) => p.dead)) seed();
+        };
+
+        const updateFrogger = () => {
+            // Draw Obstacles (Cars) - skip top and bottom rows (safe zones)
+            arc.obs.forEach((o, i) => {
+                o.x = (o.x + o.s + cols) % cols;
+                if (i > 0 && i < rows - 1) {
+                    ctx.fillStyle = "#BBB";
+                    ctx.fillRect(o.x * res, i * res, res * 2, res - 1);
+                }
+            });
+            
+            // Move Frog Up
+            if (gen % 6 === 0) arc.y--;
+            
+            // Wrap Around / Win Condition
+            if (arc.y < 0) {
+                arc.y = rows - 1;
+                arc.x = Math.floor(Math.random() * cols);
+            }
+            
+            // Collision Detection 
+            if (arc.y > 0 && arc.y < rows - 1) {
+                let car = arc.obs[arc.y];
+                // Car is 2 units wide. Check if frog overlaps horizontally
+                if (arc.x < car.x + 2 && arc.x + 1 > car.x) {
+                    seed(); // Splat! Reset game.
+                    return;
+                }
+            }
+            
+            // Draw Frog
+            ctx.fillStyle = "#000";
+            ctx.fillRect(arc.x * res, arc.y * res, res - 1, res - 1);
+        };
+
+        const checkTetrisCollision = (tx, ty, shape) => {
+            if (!shape || !arc.s) return true;
+            for (let r = 0; r < shape.length; r++) {
+                for (let c = 0; c < shape[r].length; c++) {
+                    if (shape[r][c]) {
+                        let nx = tx + c, ny = ty + r;
+                        if (nx < 0 || nx >= cols || ny >= rows) return true;
+                        if (ny >= 0 && arc.s[nx][ny]) return true;
+                    }
+                }
+            }
+            return false;
+        };
+
+        const spawnTetromino = () => {
+            const piece = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+            arc.cur = piece.s;
+            arc.color = piece.c;
+            arc.x = Math.max(0, Math.floor(Math.random() * (cols - arc.cur[0].length)));
+            arc.y = 0;
+            if (checkTetrisCollision(arc.x, arc.y, arc.cur)) {
+                seed();
+                return false;
+            }
+            return true;
+        };
+
+        const seed = () => {
+            const m = MODES[modeIndex];
+            updateUI();
             canvas.width = canvas.clientWidth;
             canvas.height = canvas.clientHeight;
             cols = Math.floor(canvas.width / res);
             rows = Math.floor(canvas.height / res);
-            grid = Array.from({ length: cols }, () => 
-                Array.from({ length: rows }, () => Math.random() > 0.90 ? 1.0 : 0.0));
+
+            if (cols <= 0 || rows <= 0) return;
+
+            gen = 0;
+            grid = Array.from({ length: cols }, () => Array.from({ length: rows }, () => (m.d && Math.random() < m.d ? 1.0 : 0.0)));
+
+            switch (m.t) {
+                case "snake": initSnake(); break;
+                case "pong": initPong(); break;
+                case "tetris": initTetris(); break;
+                case "breakout": initBreakout(); break;
+                case "frog": initFrogger(); break;
+                case "tron": initTron(); break;
+            }
+        };
+
+        const next = () => {
+            modeIndex = (modeIndex + 1) % MODES.length;
+            seed();
         };
 
         seed();
-        resetBtn.addEventListener('click', seed);
-        canvas.addEventListener('click', seed);
+        canvas.onclick = (e) => { e.preventDefault(); seed(); };
+        canvas.onmousemove = (e) => {
+            const r = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - r.left;
+            mouse.y = e.clientY - r.top;
+            mouse.over = true;
+        };
+        canvas.onmouseleave = () => (mouse.over = false);
 
         const observer = new IntersectionObserver((entries) => {
             isVisible = entries[0].isIntersecting;
@@ -35,54 +417,38 @@
         observer.observe(canvas);
 
         let lastUpdate = 0;
-        const interval = 120; 
-
-        function play(timestamp) {
-            if (!isVisible) {
-                requestAnimationFrame(play);
-                return;
-            }
-
-            if (timestamp - lastUpdate < interval) {
-                requestAnimationFrame(play);
-                return;
-            }
-            lastUpdate = timestamp;
-
-            let next = grid.map(arr => [...arr]);
-
-            for (let c = 0; c < cols; c++) {
-                for (let r = 0; r < rows; r++) {
-                    let neighbors = 0;
-                    for (let i = -1; i <= 1; i++) {
-                        for (let j = -1; j <= 1; j++) {
-                            if (i === 0 && j === 0) continue;
-                            const x = (c + i + cols) % cols;
-                            const y = (r + j + rows) % rows;
-                            if (grid[x][y] >= 1.0) neighbors++;
-                        }
-                    }
-
-                    if (grid[c][r] >= 1.0) {
-                        if (neighbors < 2 || neighbors > 3) next[c][r] = 0.8; 
-                        else next[c][r] = 1.0; 
-                    } else {
-                        if (neighbors === 3) next[c][r] = 1.0; 
-                        else next[c][r] = Math.max(0, grid[c][r] - 0.2); 
-                    }
+        
+        function play(t) {
+            const m = MODES[modeIndex];
+            const speed = m.t === "ca" ? 100 : 45;
+            
+            if (isVisible && t - lastUpdate > speed) {
+                lastUpdate = t;
+                gen++;
+                
+                if (gen > 1000) {
+                    next();
+                    requestAnimationFrame(play);
+                    return; 
                 }
-            }
+                
+                ctx.fillStyle = "#F5F5F5";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            grid = next;
-            ctx.fillStyle = "#F6F8FA";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                switch (m.t) {
+                    case "ca": updateCA(m); break;
+                    case "snake": updateSnake(); break;
+                    case "pong": updatePong(); break;
+                    case "tetris": updateTetris(); break;
+                    case "breakout": updateBreakout(); break;
+                    case "tron": updateTron(); break;
+                    case "frog": updateFrogger(); break;
+                }
 
-            for (let c = 0; c < cols; c++) {
-                for (let r = 0; r < rows; r++) {
-                    if (grid[c][r] > 0) {
-                        ctx.fillStyle = `rgba(0, 0, 0, ${grid[c][r]})`;
-                        ctx.fillRect(c * res, r * res, res - 1, res - 1);
-                    }
+                if (mouse.over) {
+                    ctx.font = "9px monospace";
+                    ctx.fillStyle = "#888";
+                    ctx.fillText("click to restart", mouse.x + 10, mouse.y - 10);
                 }
             }
             requestAnimationFrame(play);
@@ -90,7 +456,7 @@
         requestAnimationFrame(play);
     };
 
-    if (document.readyState === 'complete') initGame();
-    else window.addEventListener('load', initGame);
+    if (document.readyState === "complete") initGame();
+    else window.addEventListener("load", initGame);
 })();
 </script>

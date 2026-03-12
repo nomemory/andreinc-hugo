@@ -26,6 +26,8 @@
 
   {{ partial "gameoflife.html" . }}
 
+  <br/>
+
   <ul class="blog-posts">
     {{ range where .Site.RegularPages "Type" "posts" }}
       <li>
