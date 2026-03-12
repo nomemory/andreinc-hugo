@@ -304,4 +304,52 @@
         color: #888;
         text-align: center;
     }
+
+/* This controls the placement of the container */
+.site-tagline {
+    text-align: left;
+    font-family: monospace;
+    font-size: 11px;
+    color: #888888;
+    margin-top: 8px;
+    padding-right: 10px;
+}
+
+.tagline-text {
+    cursor: help;
+    border-bottom: 1px dotted transparent;
+    transition: border-bottom-color 0.2s ease;
+    position: relative; /* Required to anchor the tooltip */
+    display: inline-block;
+}
+
+.tagline-text:hover {
+    border-bottom-color: #888888;
+}
+
+/* Custom Monochrome Tooltip Box */
+.tagline-text::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -28px; /* Drops the tooltip just below the text */
+    right: 0; /* Aligns it to the right side of the phrase */
+    background-color: #111111;
+    color: #FFFFFF;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 100;
+    pointer-events: none; /* Prevents the tooltip from blocking clicks */
+}
+
+/* Show the tooltip when hovering OR when clicked (active-tooltip class) */
+.tagline-text:hover::after,
+.tagline-text.active-tooltip::after {
+    opacity: 1;
+    visibility: visible;
+}
 </style>

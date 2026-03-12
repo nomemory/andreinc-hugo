@@ -1,0 +1,56 @@
+<div id="random-tagline" class="site-tagline"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const phrases = [
+        { ro: "Pe localhost merge.", en: "It works on localhost." },
+        { ro: "Merge și așa.", en: "Good enough. / It works as it is." },
+        { ro: "E de la cache.", en: "It's the cache." },
+        { ro: "A picat serverul.", en: "The server is down." },
+        { ro: "Fără deploy vinerea.", en: "No Friday deploys." },
+        { ro: "S-a stricat CSS-ul.", en: "The CSS broke." },
+        { ro: "Mai adaug un div.", en: "I'll just add another div." },
+        { ro: "Aștept să se compileze.", en: "Waiting for it to compile." },
+        { ro: "Așa a fost cerința.", en: "That was the requirement." },
+        { ro: "Am uitat să scriu teste.", en: "I forgot to write tests." },
+        { ro: "Nu da push pe master.", en: "Don't push to master." },
+        { ro: "Gata, am reparat!", en: "Done, I fixed it!" },
+        { ro: "Rulează în fundal...", en: "Running in the background..." },
+        { ro: "Nu am destul RAM.", en: "I don't have enough RAM." },
+        { ro: "Fără variabile globale.", en: "No global variables." },
+        { ro: "L-am testat doar la mine.", en: "I only tested it on my machine." },
+        { ro: "Codul ăsta e moștenit.", en: "This is legacy code." },
+        { ro: "Refactorizez totul de la zero.", en: "Refactoring everything from scratch." },
+        { ro: "Nu găsesc fișierul de config.", en: "Can't find the config file." },
+        { ro: "Am scris asta târziu în noapte.", en: "I wrote this late at night." },
+        { ro: "E făcut pe alt branch.", en: "It's done on another branch." },
+        { ro: "N-am pus comentarii în cod.", en: "I didn't put comments in the code." },
+        { ro: "Închide și deschide iar.", en: "Close it and open it again." },
+        { ro: "Versiunea următoare e mai stabilă.", en: "The next version is more stable." },
+        { ro: "Lipsesc niște paranteze.", en: "Some brackets are missing." }
+    ];
+
+    const randomIndex = Math.floor(Math.random() * phrases.length);
+    const selectedPhrase = phrases[randomIndex];
+
+    const taglineElement = document.getElementById("random-tagline");
+    
+    if (taglineElement) {
+        // Inject the text with the data-tooltip attribute
+        taglineElement.innerHTML = `Personal site of Andrei N. Ciobanu: <span class="tagline-text" data-tooltip="${selectedPhrase.en}">${selectedPhrase.ro}</span>`;
+        
+        const textSpan = taglineElement.querySelector('.tagline-text');
+        
+        // Toggle the tooltip visibility on click
+        textSpan.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevents the click from bubbling up
+            textSpan.classList.toggle('active-tooltip');
+        });
+
+        // Hide the tooltip if the user clicks anywhere else on the page
+        document.addEventListener('click', () => {
+            textSpan.classList.remove('active-tooltip');
+        });
+    }
+});
+</script>

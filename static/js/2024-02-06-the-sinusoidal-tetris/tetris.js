@@ -1,27 +1,9 @@
 /**
  Copyright (c) 2024 Andrei N. Ciobanu (www.andreinc.net)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
  */
 
-suggestions = true;
-dropInc = 0.2;
+window.suggestions = true;
+window.dropInc = 0.2;
 
 const tetris = (s) => {
 
@@ -29,226 +11,146 @@ const tetris = (s) => {
     // Game constants
     // -----------------------------------------------------------------------
 
-    const frameRate = 30; // the current framerate of the animation
-    const unit = 50; // the unit size (imagine this to be the grid size)
-    const radius = unit; // the radius is the same as the unit, we just use a different variable name in the context of the circle
-    const increment = 0.05; // the animation increment
+    const frameRate = 30; 
+    const unit = 50; 
+    const radius = unit; 
+    const increment = 0.05; 
 
-    const canPId = "tetris-sketch"; // the parent canvas id in the html file
-    const canW = 16 * unit; // the width of the canvas 
-    const canH = 16 * unit; // the height of the canvas
-    const canFront = "monospace"; // the font of the canvas
+    const canPId = "tetris-sketch"; 
+    const canW = 16 * unit; 
+    const canH = 16 * unit; 
+    const canFront = "monospace"; // Using monospace for a technical, crisp look
 
-    const mBuffW = canW; // the width of the main buffer 
-    const mBuffH = canH; // the height of the main buffer
-    const mBuffBorderStrokeWeight = 1; // the line weight for the main buffer
-    const gBuffW = 8 * unit; // the width of the game buffer
-    const gBuffH = 12 * unit; // the height of the game buffer
-    const gBuffBorderStrokeWeight = 1; // the line weight for the game buffer
-    const cBuffW = 4 * unit; // the circle buffer width
-    const cBuffH = 6 * unit; // the height of the circle buffer
-    const cBuffBorderStrokeWeight = 1; // the line weight of the circle buffer
-    const sBuffW = 4 * unit; // the score buffer width
-    const sBuffH = 4 * unit; // the score buffer height
-    const sBuffBorderStrokeWeight = 1; // the stroke for the scorebuffer
-    const kBuffW = 13 * unit; // the width of the keyboard buffer
-    const kBuffH = unit; // the height of the keyboard buffer
-    const kBuffBorderStrokeWeight = 1; // the stroke of the kbuff
+    const mBuffW = canW; 
+    const mBuffH = canH; 
+    const gBuffW = 8 * unit; 
+    const gBuffH = 12 * unit; 
+    const cBuffW = 4 * unit; 
+    const cBuffH = 6 * unit; 
+    const sBuffW = 4 * unit; 
+    const sBuffH = 4 * unit; 
+    const kBuffW = 13 * unit; 
+    const kBuffH = unit; 
+    
     const kBuffNumKeys = 7;
-    const kBuffKW = kBuffW / kBuffNumKeys;
     const defeatW = 200;
-    const defeatH = 100;
+    const defeatH = 110;
     const numResids = 4;
     const winThresh = unit / 3;
 
-
     // Buffers orientation
-    const mBuffTTO = s.createVector(0, 0); // translation vector for the mainbuffer
-    const gBuffTTO = s.createVector(6 * unit, 2 * unit); // translation vector for the game buffer
-    const cBuffTTO = s.createVector(unit, 2 * unit); // translation vector for the circle buffer
-    const sBuffTTO = s.createVector(unit, 10 * unit); // translation vector for the score buffer
+    const gBuffTTO = s.createVector(6 * unit, 2 * unit); 
+    const cBuffTTO = s.createVector(unit, 2 * unit); 
+    const sBuffTTO = s.createVector(unit, 10 * unit); 
 
-    const defDropSinsA = 1; // default amplitude of the dropping sinusoid
-    const defDropSinsFreq = 1; // default frequency of the dropping sinsuoid
-    const defDropSinsPhase = 0; // default phase of the dropping sinusoid
-    const defDropSinsAngl = 0; // default angle of the dropping sinsuoid
-    const dropSinsFreqInc = 0.1; // the frequency increase increment when we press the key
-    const dropSinsAInc = 0.1; // the amplitude increase increment when we press the key
-    const dropSinsPhaseInc = 0.1; // the phase increase increment when we press the key
-    const dropSinsMaxA = 1.5; // the maximum amplitude accepted
-    const dropSinsMinA = 0.5; // the minimum amplitude accepted
-    const dropSinsMaxFreq = 10; // the maximum frequency accepted
-    const dropSinsMinFreq = 0.1; // the minimum frequency accepted
-    const dropSinsMaxPhase = s.TWO_PI; // the maximum phase
-    const dropSinsSamplesLen = gBuffW / unit / increment; // the numbers of samples to use
-    const dropSinsMinPhase = 0; // the minimum phase accepted
-    const dropSinsCenterDiam = 3; // the diameter of the center of circle
-    const defDropSinsX = cBuffW / 2; // default value of the center (X) of the dropping sin
-    const defDropSinsY = dropSinsMaxA * radius; // default value of the center (Y) of the dropping sin 
+    const defDropSinsA = 1; 
+    const defDropSinsFreq = 1; 
+    const defDropSinsPhase = 0; 
+    const defDropSinsAngl = 0; 
+    const dropSinsFreqInc = 0.1; 
+    const dropSinsAInc = 0.1; 
+    const dropSinsPhaseInc = 0.1; 
+    const dropSinsMaxA = 1.5; 
+    const dropSinsMinA = 0.5; 
+    const dropSinsMaxFreq = 10; 
+    const dropSinsMinFreq = 0.1; 
+    const dropSinsMaxPhase = Math.PI * 2; 
+    const dropSinsSamplesLen = Math.round(gBuffW / unit / increment);
+    const dropSinsMinPhase = 0; 
+    const dropSinsCenterDiam = 6; 
+    const defDropSinsX = cBuffW / 2; 
+    const defDropSinsY = dropSinsMaxA * radius; 
 
-    const arrowHead = 7; // the size of the head of the arrow
-    const twoSqrt = Math.sqrt(2).toFixed(2); // needed to compute the position of the arrow
+    const arrowHead = 7; 
+    const stepX = increment * radius; 
 
-    // Color pallet
+    // Strict Monochrome Color Palette
     const colors = {
-        background: '#F6F8FA',
-        gBuffBorder: 'black',
-        gBufAxis: '#c1d7d7',
-        mBuffBorder: 'black',
-        cBuffBorder: 'black',
-        sBuffBorder: 'black',
-        kBuffBorder: 'black',
-        cBuffGraphLine: '#c1d7d7',
-        dropSinsCircle: 'red',
-        dropSinsCirclePhase: '#b0ffd0',
-        dropSinsCircleCenter: 'green',
-        dropSinsMovingPoint: 'green',
-        dropSinsRadius: '#c1d7d7',
-        keyHighlight: '#c1d7d7',
-        dropSins: 'red',
-        dropSinsOX: '#c1d7d7',
-        residSins: 'black',
-        gBuffAxis: '#c1d7d7',
-        mergePlus: 'green',
-        mergeMinus: 'red',
-        conLine: '#c1d7d7',
-        textColor: 'black',
-        defeatColor: 'lightgray',
-        defeatBorderColor: 'black',
-        defeatTextColor: 'red',
-        winColor: 'lightgray',
-        winBorderColor: 'black',
-        winTextColor: 'green'
+        background: '#EAEAEA', 
+        panelStroke: '#111111', 
+        gBufAxis: '#DDDDDD', 
+        cBuffGraphLine: '#DDDDDD',
+        dropSinsCircle: '#111111', 
+        dropSinsCirclePhase: 'rgba(0, 0, 0, 0.05)', 
+        dropSinsCircleCenter: '#333333',
+        dropSinsMovingPoint: '#333333', 
+        keyHighlight: '#111111', 
+        keyHover: '#F4F4F4',
+        dropSins: '#000000', 
+        dropSinsOX: '#CCCCCC', 
+        residSins: '#444444', 
+        mergePlus: '#333333', 
+        mergeMinus: '#888888', 
+        conLine: '#AAAAAA', 
+        textColor: '#111111',
+        defeatColor: '#FFFFFF', 
+        defeatBorderColor: '#111111', 
+        defeatTextColor: '#111111',
+        winColor: '#FFFFFF', 
+        winBorderColor: '#111111', 
+        winTextColor: '#111111',
+        buttonFill: '#FFFFFF', 
+        buttonStroke: '#111111'
     };
 
-    // Key codes
-    const keys = {
-        a: 65,
-        z: 90,
-        s: 83,
-        x: 88,
-        q: 81,
-        w: 87,
-        p: 80
-    }
+    const keys = { a: 65, z: 90, s: 83, x: 88, q: 81, w: 87, p: 80 };
+    const gameStates = Object.freeze({ DROP: 1, MERGE: 2, DEFEAT: 3, WIN: 4 });
 
-    // The game states 
-    // used to draw the animation
-    const gameStates = Object.freeze({
-        DROP: 1,
-        MERGE: 2,
-        DEFEAT: 3,
-        WIN: 4
-    });
-
-    // -----------------------------------------------------------------------
-    // Game related-functions and state variables
-    // -----------------------------------------------------------------------
-
-    let canvas; // the canvas where everything happens
-    let mBuff; // a buffer on top of the main canvas
-    let gBuff; // a game buffer
-    let cBuff; // the circle buffer
-    let sBuff;  // the score buffer
-    let kBuff;  // the keyboard buffer
-    let cDropSins; // information about the current dropping sinusoid
-    let cResidSins = []; // the resiudes
-    let cResidSinsSugg = []; // suggested sinusoids for winning the game
+    let canvas, gBuff, cBuff, sBuff, kBuff;
+    let cDropSins; 
+    let cResidSins = new Float32Array(dropSinsSamplesLen); 
+    let cResidSinsSugg = []; 
     let cResidMax = 0; 
-    let cMergeIdx = 0; // used for the merge animation
-    let cGameState = gameStates.DROP; // the default state when the game starts
-    let lScore = 0; // last score
-    let lStage = 0; // last stage
-    let cStage = 0; // current stage
-    let cScore = 0; // current score
-    let mInside = []; // for keeping track of rect is inside the rectangul
-    let hofg = true;
+    let cMergeIdx = 0; 
+    let cGameState = gameStates.DROP; 
+    let lScore = 0, lStage = 0, cStage = 0, cScore = 0;
+    let mInside = []; 
 
-    // Computes the samples for the dropping sinusoid
+    // -----------------------------------------------------------------------
+    // Core Engine Logic
+    // -----------------------------------------------------------------------
+
     let computeDropSinsSamples = (dS) => {
-        for (let i = 0, cAngl = 0; i < dropSinsSamplesLen; i += 1, cAngl += increment) {
-            dS.samples[i] = s.sin(dS.freq * cAngl + dS.phase) * dS.amp * radius;
+        const freq = dS.freq, phase = dS.phase, ampRad = dS.amp * radius;
+        for (let i = 0; i < dropSinsSamplesLen; i++) {
+            dS.samples[i] = Math.sin(freq * (i * increment) + phase) * ampRad;
         }
     }
 
-    // Computes the position of the moving radius for the circle
     let computeDropSinsMovingRadius = (dS) => {
-        dS.movRad = {};
-        dS.movRad.x = dS.pos.x + s.cos(dS.angl * dS.freq + dS.phase) * dS.amp * radius;
-        dS.movRad.y = dS.pos.y - s.sin(dS.angl * dS.freq + dS.phase) * dS.amp * radius;
+        dS.movRad = {
+            x: dS.pos.x + Math.cos(dS.angl * dS.freq + dS.phase) * dS.amp * radius,
+            y: dS.pos.y - Math.sin(dS.angl * dS.freq + dS.phase) * dS.amp * radius
+        };
     }
 
-    // The dropping sinusoid, i had to name it like this
     let createDropSins = (amp, freq, phase, pos, angl) => {
-        let r = {}; const defDropSinsPhase = 0;
-        r.amp = amp;
-        r.freq = freq;
-        r.phase = phase;
-        r.pos = pos;
-        r.angl = angl;
-        r.samples = [];
+        let r = { amp, freq, phase, pos, angl, samples: new Float32Array(dropSinsSamplesLen) };
         computeDropSinsSamples(r);
         computeDropSinsMovingRadius(r);
         return r;
     }
 
-    // Constructor-like function to create a default sinusoid
     let createDefaultDropSins = () => {
-        return createDropSins(
-            defDropSinsA,
-            defDropSinsFreq,
-            defDropSinsPhase,
-            {
-                x: defDropSinsX + unit,
-                y: defDropSinsY + defDropSinsA * radius
-            },
-            defDropSinsAngl,
-        );
+        return createDropSins(defDropSinsA, defDropSinsFreq, defDropSinsPhase, { x: defDropSinsX + unit, y: defDropSinsY + defDropSinsA * radius }, defDropSinsAngl);
     }
 
-    // Constructor-like function to create a random sinusoid
     let createRandomDropSins = () => {
-        return createDropSins(
-            random(dropSinsMinA, dropSinsMaxA*0.7),
-            random(dropSinsMinFreq, dropSinsMaxFreq),
-            random(dropSinsMinPhase, dropSinsMaxPhase),
-            {
-                x: defDropSinsX + unit,
-                y: defDropSinsY + defDropSinsA * radius
-            },
-            defDropSinsAngl
-        );
+        return createDropSins(random(dropSinsMinA, dropSinsMaxA*0.7), random(dropSinsMinFreq, dropSinsMaxFreq), random(dropSinsMinPhase, dropSinsMaxPhase), { x: defDropSinsX + unit, y: defDropSinsY + defDropSinsA * radius }, defDropSinsAngl);
     }
 
-    // Constructor-like function to creat the residue signal
     let createRandomResidSins = () => {
-        let r = new Array(dropSinsSamplesLen).fill(0);
+        let r = new Float32Array(dropSinsSamplesLen);
         cResidSinsSugg = [];
         for (let j = 0; j < numResids; j++) {
             const dS = createRandomDropSins();
-            // let createDropSins = (amp, freq, phase, pos, angl) => {
-            cResidSinsSugg.push(createDropSins(
-                dS.amp,
-                dS.freq,
-                dS.phase + s.PI,
-                dS.pos,
-                dS.angl
-            ));
-            for (let i = 0; i < dropSinsSamplesLen; i += 1) {
+            cResidSinsSugg.push(createDropSins(dS.amp, dS.freq, dS.phase + Math.PI, dS.pos, dS.angl));
+            for (let i = 0; i < dropSinsSamplesLen; i++) {
                 r[i] += dS.samples[i];
-                if (Math.abs(r[i]) > cResidMax) {
-                    cResidMax = Math.abs(r[i]);
-                }
+                if (Math.abs(r[i]) > cResidMax) cResidMax = Math.abs(r[i]);
             }
         }
         return r;
-    }
-
-    let updateRandomResidSins = (r) => {
-        let dS = createDropSins();
-        for (let i = 0; i < dropSinsSamplesLen; i++) {
-            r[i] += dS.samples[i];
-        }
     }
 
     let mergeResidSinsWithDropSins = () => {
@@ -256,13 +158,15 @@ const tetris = (s) => {
         for (let i = 0; i < dropSinsSamplesLen; i++) {
             cResidSins[i] += cDropSins.samples[i];
             cScore += gBuffH / 2 - Math.abs(cResidSins[i]);
-            if (Math.abs(cResidSins[i]) > cResidMax) {
-                cResidMax = Math.abs(cResidSins[i]);
-            }
+            if (Math.abs(cResidSins[i]) > cResidMax) cResidMax = Math.abs(cResidSins[i]);
         }
         cStage++;
         cResidSinsSugg.pop();
     }
+
+    // -----------------------------------------------------------------------
+    // UI Drawing Functions
+    // -----------------------------------------------------------------------
 
     let initCanvas = () => {
         canvas = s.createCanvas(canW, canH);
@@ -271,162 +175,40 @@ const tetris = (s) => {
         s.frameRate(frameRate);
     }
 
-    let initMainBuffer = () => {
-        mBuff = s.createGraphics(mBuffW, mBuffH);
-        drawBorderToBuff(mBuff, mBuffW, mBuffH, colors.mBuffBorder, mBuffBorderStrokeWeight);
-    }
+    let initGameBuffer = () => { gBuff = s.createGraphics(gBuffW, gBuffH); }
+    let initCircleBuffer = () => { cBuff = s.createGraphics(cBuffW, cBuffH); }
+    let initScoreBuffer = () => { sBuff = s.createGraphics(sBuffW, sBuffH); }
+    let initKeyBuffer = () => { kBuff = s.createGraphics(kBuffW, kBuffH); }
 
-    let initGameBuffer = () => {
-        gBuff = s.createGraphics(gBuffW, gBuffH);
-    }
+    // Renders the floating card effect behind the game areas
+    const drawPanel = (x, y, w, h, r = 12) => {
+        s.push();
+        s.drawingContext.shadowOffsetX = 0;
+        s.drawingContext.shadowOffsetY = 8;
+        s.drawingContext.shadowBlur = 16;
+        s.drawingContext.shadowColor = 'rgba(0,0,0,0.1)';
 
-    let initCircleBuffer = () => {
-        cBuff = s.createGraphics(cBuffW, cBuffH);
-        drawBorderToBuff(cBuff, cBuffW, cBuffH, colors.cBuffBorder, cBuffBorderStrokeWeight);
-    }
+        s.fill('#FFFFFF');
+        s.stroke(colors.panelStroke);
+        s.strokeWeight(2);
+        s.rect(x, y, w, h, r);
+        s.pop();
+    };
 
-    let initScoreBuffer = () => {
-        sBuff = s.createGraphics(sBuffW, sBuffH);
-        drawBorderToBuff(sBuff, sBuffW, sBuffH, colors.sBuffBorder, sBuffBorderStrokeWeight);
-    }
-
-    let initKeyBuffer = () => {
-        kBuff = s.createGraphics(kBuffW, kBuffH);
-        drawBorderToBuff(kBuff, kBuffW, kBuffH, colors.kBuffBorder, kBuffBorderStrokeWeight);
-    }
-
-    /**
-     * Draws the spinning circle
-     */
     let drawCircleBuffer = () => {
+        cBuff.clear();
         cBuff.push();
         cBuff.stroke(colors.cBuffGraphLine);
-        let halfW = cBuffW / 2;
-        cBuff.line(halfW, 0, halfW, cBuffH);
+        cBuff.strokeWeight(2);
+        cBuff.line(cBuffW / 2, 0, cBuffW / 2, cBuffH);
         cBuff.pop();
-        drawCoordinatesToBuffer(cBuff, cBuffW, cBuffH, unit, cBuffW / 2, cBuffH / 2);
+        drawCoordinatesToBuffer(cBuff, cBuffW, cBuffH, unit);
     }
 
-    /**
-     * Draw the current dropping sinusoid (cDropSin)
-     */
-    let drawDropSins = () => {
-        // draw arc
-        s.push();
-        s.fill(colors.dropSinsCirclePhase);
-        s.stroke(colors.dropSinsCircle);
-        s.arc(cDropSins.pos.x, cDropSins.pos.y, cDropSins.amp * 2 * unit - 2, cDropSins.amp * 2 * unit - 2, -cDropSins.phase, 0);
-        s.pop();
-        // draw lines to match the actula dropping sinusoid
-        s.push();
-        const x1 = cDropSins.pos.x;
-        const y1 = cDropSins.pos.y - cDropSins.amp * unit;
-        const x2 = cDropSins.pos.x + gBuffW / 2 + unit + gBuffW;
-        const y2 = y1;
-        const x3 = cDropSins.pos.x;
-        const y3 = cDropSins.pos.y + cDropSins.amp * unit;
-        const x4 = cDropSins.pos.x + gBuffW / 2 + unit + gBuffW;
-        const y4 = y3;
-        s.beginShape(s.LINES);
-        s.noFill();
-        s.stroke(colors.conLine);
-        s.vertex(x1, y1);
-        s.vertex(x2, y2);
-        s.vertex(x3, y3);
-        s.vertex(x4, y4);
-        s.endShape();
-        s.pop();
-        // draw the ox axis for the dropping sinusoid
-        s.push();
-        s.stroke(colors.dropSinsOX);
-        s.strokeWeight(2);
-        s.translate(gBuffTTO.x, 0);
-        s.line(0, cDropSins.pos.y, gBuffW, cDropSins.pos.y);
-        s.pop();
-        // draw the dropping circle
-        s.push();
-        s.noFill();
-        s.stroke(colors.dropSinsCircle);
-        s.circle(cDropSins.pos.x, cDropSins.pos.y, cDropSins.amp * radius * 2);
-        s.stroke(colors.dropSinsCircleCenter);
-        s.circle(cDropSins.pos.x, cDropSins.pos.y, dropSinsCenterDiam);
-        s.pop();
-        // draw the moving radius around the circle
-        s.push();
-        s.line(cDropSins.pos.x, cDropSins.pos.y, cDropSins.movRad.x, cDropSins.movRad.y);
-        s.pop();
-        // draw the dropping sinusoid
-        s.push();
-        s.translate(gBuffTTO.x, gBuffTTO.y);
-        s.stroke(colors.dropSins);
-        s.noFill();
-        s.beginShape();
-        for (let i = 0, cx = 0; i < dropSinsSamplesLen; i++, cx += increment) {
-            s.vertex(cx * radius, cDropSins.pos.y - 2 * unit - cDropSins.samples[i]);
-        }
-        s.endShape();
-        s.pop();
-        // draw the suggested sinusoid
-        let cSugg = cResidSinsSugg[cResidSinsSugg.length - 1];
-        if (cSugg !== undefined && suggestions) {
-            s.push();
-            s.translate(gBuffTTO.x, gBuffTTO.y);
-            s.stroke(colors.conLine);
-            s.noFill();
-            s.beginShape();
-            for (let i = 0, cx = 0; i < dropSinsSamplesLen; i++, cx += increment) {
-                s.vertex(cx * radius, cDropSins.pos.y - 2 * unit - cSugg.samples[i]);
-            }
-            s.endShape();
-            s.pop();
-        }
-        // draw the amplitude text
-        s.push();
-        s.fill(colors.textColor);
-        const textX = cDropSins.pos.x + gBuffW / 2 + gBuffW - unit / 2;
-        const textY = cDropSins.pos.y - cDropSins.amp * unit - 10;
-        s.text("A = " + cDropSins.amp.toFixed(2), textX, textY);
-        s.pop();
-        // draw the amplitude arrow(s)
-        s.push();
-        s.fill(colors.textColor);
-        s.stroke(colors.textColor);
-        const arrowX1 = textX - 10;
-        const arrowY1 = textY + 10;
-        const arrowX2 = arrowX1;
-        const arrowY2 = textY - unit / 2;
-        arrow(arrowX2, arrowY2, arrowX1, arrowY1, arrowHead);
-        const arrowX3 = arrowX1;
-        const arrowY3 = cDropSins.pos.y + cDropSins.amp * unit;
-        const arrowX4 = arrowX1;
-        const arrowY4 = cDropSins.pos.y + cDropSins.amp * unit + unit / 2;
-        arrow(arrowX4, arrowY4, arrowX3, arrowY3, arrowHead);
-        s.pop();
-        // draw the phase text 
-        s.push()
-        s.fill(colors.textColor);
-        const phTxtX = cDropSins.pos.x + cDropSins.amp * unit + 10;
-        const phTxtY = cDropSins.pos.y;
-        s.text("φ= " + cDropSins.phase.toFixed(2), phTxtX, phTxtY);
-        s.pop();
-        // draw frequency arrow
-        s.push();
-        s.fill(colors.textColor);
-        s.text("ω= " + cDropSins.freq.toFixed(2), cDropSins.movRad.x + 5, cDropSins.movRad.y + 5);
-        s.pop();
-    }
-
-    /**
-     * If draws the curent state of the game buffer
-     * The function doesn't perform any animation update
-     * So we need to manually increase the drop ( cDropSins.pos.y) and
-     * pontetially the spinning circle (cDropSins.angl)
-     */
     let drawGameBuffer = () => {
         gBuff.clear();
-        drawCoordinatesToBuffer(gBuff, gBuffW, gBuffH, unit, gBuffW / 2, gBuff / 2);
-        drawBorderToBuff(gBuff, gBuffW, gBuffH, colors.gBuffBorder, gBuffBorderStrokeWeight);
-        // Draw middle line
+        drawCoordinatesToBuffer(gBuff, gBuffW, gBuffH, unit);
+        
         let halfBuffer = gBuffH / 2;
         gBuff.push();
         gBuff.noFill();
@@ -434,106 +216,253 @@ const tetris = (s) => {
         gBuff.strokeWeight(2);
         gBuff.line(0, halfBuffer, gBuffW, halfBuffer);
         gBuff.pop();
-        // Draw residues
+        
         gBuff.push();
         gBuff.noFill();
         gBuff.stroke(colors.residSins);
+        gBuff.strokeWeight(2);
         gBuff.beginShape();
-        for (let i = 0, cx = 0; i < dropSinsSamplesLen; i++, cx += increment) {
-            s.vertex(cx * radius, halfBuffer - cResidSins[i]);
+        for (let i = 0; i < dropSinsSamplesLen; i++) {
+            gBuff.vertex(i * stepX, halfBuffer - cResidSins[i]);
         }
-        gBuff.endShape(); arrow
+        gBuff.endShape();
         gBuff.pop();
     }
 
     let drawScoreBuffer = () => {
         sBuff.clear();
-        drawBorderToBuff(sBuff, sBuffW, sBuffH, colors.sBuffBorder, sBuffBorderStrokeWeight);
         sBuff.push();
+
+        // Header Background
+        sBuff.fill('#F8F9FA');
+        sBuff.noStroke();
+        sBuff.rect(0, 0, sBuffW, 40, 10, 10, 0, 0); 
+        sBuff.stroke(colors.panelStroke);
+        sBuff.strokeWeight(2);
+        sBuff.line(0, 40, sBuffW, 40);
+
+        // Header Text
         sBuff.fill(colors.textColor);
-        sBuff.text("Current Score: " + (cScore / 1000).toFixed(2), 10, unit / 2);
-        sBuff.text("Current Stage: " + cStage, 10, 2 * unit / 2);
-        sBuff.text("Current Speed: " + dropInc, 10, 3 * unit / 2);
-        sBuff.text("Last Game Score: " + (lScore / 1000).toFixed(2), 10, 4 * unit / 2);
-        sBuff.text("Last Game Stages:" + lStage, 10, 5 * unit / 2);
+        sBuff.textAlign(s.CENTER, s.CENTER);
+        sBuff.textFont(canFront);
+        sBuff.textSize(16);
+        sBuff.textStyle(s.BOLD);
+        sBuff.text("SCOREBOARD", sBuffW / 2, 20);
+
+        sBuff.fill(colors.textColor);
+        sBuff.textAlign(s.LEFT, s.BASELINE);
+        sBuff.textSize(13);
+        sBuff.textStyle(s.NORMAL);
+
+        let padX = 20, startY = 75, rowH = 28;
+
+        // Current Stats Labels
+        sBuff.text("Current Score", padX, startY);
+        sBuff.text("Stage Level", padX, startY + rowH);
+        sBuff.text("Drop Speed", padX, startY + rowH * 2);
+
+        // Current Stats Values (Aligned Right)
+        sBuff.textAlign(s.RIGHT, s.BASELINE);
+        sBuff.textStyle(s.BOLD);
+        sBuff.text((cScore / 1000).toFixed(2), sBuffW - padX, startY);
+        sBuff.text(cStage, sBuffW - padX, startY + rowH);
+        sBuff.text(window.dropInc, sBuffW - padX, startY + rowH * 2);
+
+        // Divider Line
+        sBuff.stroke('#EEEEEE');
+        sBuff.strokeWeight(1);
+        sBuff.line(padX, startY + rowH * 2 + 15, sBuffW - padX, startY + rowH * 2 + 15);
+
+        // Previous Stats Labels
+        sBuff.noStroke();
+        sBuff.fill('#777777');
+        sBuff.textAlign(s.LEFT, s.BASELINE);
+        sBuff.textStyle(s.NORMAL);
+        sBuff.text("Prev Score", padX, startY + rowH * 4 - 5);
+        sBuff.text("Prev Stage", padX, startY + rowH * 5 - 5);
+
+        // Previous Stats Values
+        sBuff.textAlign(s.RIGHT, s.BASELINE);
+        sBuff.textStyle(s.BOLD);
+        sBuff.text((lScore / 1000).toFixed(2), sBuffW - padX, startY + rowH * 4 - 5);
+        sBuff.text(lStage, sBuffW - padX, startY + rowH * 5 - 5);
+
         sBuff.pop();
     }
 
-    /**
-     * When the game enters the merge state it takes each sample
-     * and computes the increase or decrease of the sample.
-     * 
-     * If there's an increase it adds on the canvas a colors.mergePlus line
-     * If there's an increaseit adds on the canvas a colors.mergeMinus line
-     * 
-     * The function doesn't perform an increment on the animation, so we need 
-     * to manuall cMergeIdx++, where cMergeIdx is the index of the sample
-     */
+    let drawDropSins = () => {
+        s.push();
+        s.fill(colors.dropSinsCirclePhase);
+        s.stroke(colors.dropSinsCircle);
+        s.strokeWeight(2);
+        s.arc(cDropSins.pos.x, cDropSins.pos.y, cDropSins.amp * 2 * unit - 2, cDropSins.amp * 2 * unit - 2, -cDropSins.phase, 0);
+        s.pop();
+        
+        s.push();
+        const x1 = cDropSins.pos.x;
+        const y1 = cDropSins.pos.y - cDropSins.amp * unit;
+        const x2 = cDropSins.pos.x + gBuffW / 2 + unit + gBuffW;
+        s.beginShape(s.LINES);
+        s.noFill();
+        s.stroke(colors.conLine);
+        s.vertex(x1, y1);
+        s.vertex(x2, y1);
+        s.vertex(x1, cDropSins.pos.y + cDropSins.amp * unit);
+        s.vertex(x2, cDropSins.pos.y + cDropSins.amp * unit);
+        s.endShape();
+        s.pop();
+
+        s.push();
+        s.stroke(colors.dropSinsOX);
+        s.strokeWeight(2);
+        s.translate(gBuffTTO.x, 0);
+        s.line(0, cDropSins.pos.y, gBuffW, cDropSins.pos.y);
+        s.pop();
+
+        s.push();
+        s.noFill();
+        s.stroke(colors.dropSinsCircle);
+        s.strokeWeight(2);
+        s.circle(cDropSins.pos.x, cDropSins.pos.y, cDropSins.amp * radius * 2);
+        s.noStroke();
+        s.fill(colors.dropSinsCircleCenter);
+        s.circle(cDropSins.pos.x, cDropSins.pos.y, dropSinsCenterDiam);
+        s.pop();
+
+        s.push();
+        s.stroke(colors.dropSinsMovingPoint);
+        s.strokeWeight(2);
+        s.line(cDropSins.pos.x, cDropSins.pos.y, cDropSins.movRad.x, cDropSins.movRad.y);
+        s.fill(colors.dropSinsMovingPoint);
+        s.circle(cDropSins.movRad.x, cDropSins.movRad.y, 5);
+        s.pop();
+
+        s.push();
+        s.translate(gBuffTTO.x, gBuffTTO.y);
+        s.stroke(colors.dropSins);
+        s.strokeWeight(3);
+        s.noFill();
+        
+        // Crisp drop shadow for the main sine wave
+        s.drawingContext.shadowOffsetX = 2;
+        s.drawingContext.shadowOffsetY = 2;
+        s.drawingContext.shadowBlur = 4;
+        s.drawingContext.shadowColor = 'rgba(0,0,0,0.2)';
+        
+        s.beginShape();
+        for (let i = 0; i < dropSinsSamplesLen; i++) {
+            s.vertex(i * stepX, cDropSins.pos.y - 2 * unit - cDropSins.samples[i]);
+        }
+        s.endShape();
+        s.pop();
+
+        let cSugg = cResidSinsSugg[cResidSinsSugg.length - 1];
+        if (cSugg !== undefined && window.suggestions) {
+            s.push();
+            s.translate(gBuffTTO.x, gBuffTTO.y);
+            s.stroke(colors.conLine);
+            s.strokeWeight(2);
+            s.noFill();
+            s.drawingContext.setLineDash([5, 5]); 
+            s.beginShape();
+            for (let i = 0; i < dropSinsSamplesLen; i++) {
+                s.vertex(i * stepX, cDropSins.pos.y - 2 * unit - cSugg.samples[i]);
+            }
+            s.endShape();
+            s.pop();
+        }
+
+        s.push();
+        s.fill(colors.textColor);
+        s.textFont(canFront);
+        s.textSize(12);
+        const textX = cDropSins.pos.x + gBuffW / 2 + gBuffW - unit / 2;
+        const textY = cDropSins.pos.y - cDropSins.amp * unit - 10;
+        s.text("A = " + cDropSins.amp.toFixed(2), textX, textY);
+        s.pop();
+
+        s.push();
+        s.fill(colors.textColor);
+        s.stroke(colors.textColor);
+        const arrowX1 = textX - 10;
+        const arrowY1 = textY + 10;
+        arrow(arrowX1, textY - unit / 2, arrowX1, arrowY1, arrowHead);
+        arrow(arrowX1, cDropSins.pos.y + cDropSins.amp * unit + unit / 2, arrowX1, cDropSins.pos.y + cDropSins.amp * unit, arrowHead);
+        s.pop();
+
+        s.push();
+        s.fill(colors.textColor);
+        s.textFont(canFront);
+        s.textSize(12);
+        s.text("φ= " + cDropSins.phase.toFixed(2), cDropSins.pos.x + cDropSins.amp * unit + 10, cDropSins.pos.y);
+        s.pop();
+
+        s.push();
+        s.fill(colors.textColor);
+        s.textFont(canFront);
+        s.textSize(12);
+        s.text("ω= " + cDropSins.freq.toFixed(2), cDropSins.movRad.x + 8, cDropSins.movRad.y + 8);
+        s.pop();
+    }
+
     let drawMerge = () => {
         let sum = cDropSins.samples[cMergeIdx] + cResidSins[cMergeIdx];
         let halfBuffer = gBuffH / 2;
-        let x1 = cMergeIdx * increment * unit;
+        let x1 = cMergeIdx * stepX;
         let y1 = halfBuffer - cResidSins[cMergeIdx];
-        let x2 = x1;
-        let y2 = halfBuffer - (cResidSins[cMergeIdx] + (sum - cResidSins[cMergeIdx]));
+        let y2 = halfBuffer - sum;
         let cColor = (sum > cResidSins[cMergeIdx]) ? colors.mergePlus : colors.mergeMinus;
         gBuff.push();
+        gBuff.strokeWeight(2);
         gBuff.stroke(cColor);
-        gBuff.line(x1, y1, x2, y2);
+        gBuff.line(x1, y1, x1, y2);
         gBuff.pop();
     }
 
-    let drawDefeat = () => {
+    let drawOverlay = (title, msg1, msg2) => {
         gBuff.push();
-        gBuff.fill(colors.defeatColor);
-        gBuff.stroke(colors.defeatBorderColor);
-        const x = (gBuffW - defeatW) / 2;
-        const y = (gBuffH - defeatH) / 2;
-        gBuff.rect(x, y, defeatW, defeatH);
+        let w = defeatW + 40;
+        let h = defeatH + 20;
+        const x = (gBuffW - w) / 2;
+        const y = (gBuffH - h) / 2;
+        
+        gBuff.drawingContext.shadowOffsetX = 0;
+        gBuff.drawingContext.shadowOffsetY = 10;
+        gBuff.drawingContext.shadowBlur = 20;
+        gBuff.drawingContext.shadowColor = 'rgba(0,0,0,0.2)';
+        
+        gBuff.fill('#FFFFFF');
+        gBuff.stroke('#111111');
+        gBuff.strokeWeight(3);
+        gBuff.rect(x, y, w, h, 12);
         gBuff.pop();
+        
         gBuff.push();
-        gBuff.fill(colors.defeatTextColor);
-        gBuff.text("You've lost!", x + 10, y + 15);
-        gBuff.text("There's no shame in losing", x + 10, y + 30);
-        gBuff.text("Your total score was:" + (cScore / 1000).toFixed(2), x + 10, y + 45);
-        gBuff.text("You survived " + cStage + " stages", x + 10, y + 60);
-        gBuff.text("To continue press DROP", x + 10, y + 90);
+        gBuff.fill('#111111');
+        gBuff.textFont(canFront);
+        gBuff.textAlign(s.CENTER, s.CENTER);
+        gBuff.textStyle(s.BOLD);
+        gBuff.textSize(22);
+        gBuff.text(title, gBuffW / 2, y + 30);
+        
+        gBuff.textStyle(s.NORMAL);
+        gBuff.textSize(14);
+        gBuff.text(msg1, gBuffW / 2, y + 65);
+        gBuff.text(msg2, gBuffW / 2, y + 85);
+        
+        gBuff.fill('#666666');
+        gBuff.textSize(12);
+        gBuff.text("Press DROP to restart", gBuffW / 2, y + 115);
         gBuff.pop();
     }
 
-    let drawWin = () => {
-        gBuff.push();
-        gBuff.fill(colors.winColor);
-        gBuff.stroke(colors.winBorderColor);
-        const x = (gBuffW - defeatW) / 2;
-        const y = (gBuffH - defeatH) / 2;
-        gBuff.rect(x, y, defeatW, defeatH);
-        gBuff.pop();
-        gBuff.push();
-        gBuff.fill(colors.winTextColor);
-        gBuff.text("You win!", x + 10, y + 15);
-        gBuff.text("You are the master of sinusoids", x + 10, y + 30);
-        gBuff.text("Your total score was:" + (cScore / 1000).toFixed(2), x + 10, y + 45);
-        gBuff.text("You finished the game in " + cStage + " stages", x + 10, y + 60);
-        gBuff.text("To continue press DROP", x + 10, y + 90);
-        gBuff.pop();
-    }
+    let drawDefeat = () => drawOverlay("GAME OVER", "Score: " + (cScore / 1000).toFixed(2), "Stages: " + cStage);
+    let drawWin = () => drawOverlay("YOU WIN!", "Score: " + (cScore / 1000).toFixed(2), "Stages: " + cStage);
 
-    let dropped = () => {
-        return cDropSins.pos.y >= canH / 2;
-    }
-
-    let merged = () => {
-        return cMergeIdx >= dropSinsSamplesLen;
-    }
-
-    let defeat = () => {
-        return cResidMax > gBuffH / 2;
-    }
-
-    let win = () => {
-        return cResidMax < winThresh;
-    }
+    let dropped = () => cDropSins.pos.y >= canH / 2;
+    let merged = () => cMergeIdx >= dropSinsSamplesLen;
+    let defeat = () => cResidMax > gBuffH / 2;
+    let win = () => cResidMax < winThresh;
 
     let newGameReset = () => {
         cDropSins = createDefaultDropSins();
@@ -550,75 +479,24 @@ const tetris = (s) => {
         if (cGameState === gameStates.DROP) {
             cDropSins.pos.y = canH / 2;
         } else if (cGameState === gameStates.MERGE) {
-            // Hasten the drop so we can skip the animation
-            for (; cMergeIdx < dropSinsSamplesLen; cMergeIdx++) {
-                drawMerge();
-            }
-        } else if (cGameState === gameStates.DEFEAT) {
-            newGameReset();
-            drawScoreBuffer();
-            cGameState = gameStates.DROP;
-        } else if (cGameState === gameStates.WIN) {
+            for (; cMergeIdx < dropSinsSamplesLen; cMergeIdx++) drawMerge();
+        } else if (cGameState === gameStates.DEFEAT || cGameState === gameStates.WIN) {
             newGameReset();
             drawScoreBuffer();
             cGameState = gameStates.DROP;
         }
     }
 
-    let ampInc = () => {
-        if (cDropSins.amp < dropSinsMaxA) {
-            cDropSins.amp += dropSinsAInc;
-            computeDropSinsSamples(cDropSins);
-            computeDropSinsMovingRadius(cDropSins);
-        }
-    };
-
-    let ampDec = () => {
-        if (cDropSins.amp > dropSinsMinA) {
-            cDropSins.amp -= dropSinsAInc;
-            computeDropSinsSamples(cDropSins);
-            computeDropSinsMovingRadius(cDropSins);
-        }
-    };
-
-    let freqInc = () => {
-        if (cDropSins.freq < dropSinsMaxFreq) {
-            cDropSins.freq += dropSinsFreqInc;
-            computeDropSinsSamples(cDropSins);
-            computeDropSinsMovingRadius(cDropSins);
-        }
-    };
-
-    let freqDec = () => {
-        if (cDropSins.freq > dropSinsMinFreq) {
-            cDropSins.freq -= dropSinsFreqInc;
-            computeDropSinsSamples(cDropSins);
-            computeDropSinsMovingRadius(cDropSins);
-        }
-    };
-
-    let phaseInc = () => {
-        // if (cDropSins.phase < dropSinsMaxPhase) {
-        cDropSins.phase += dropSinsPhaseInc;
-        computeDropSinsSamples(cDropSins);
-        computeDropSinsMovingRadius(cDropSins);
-        // }    
-    }
-
-    let phaseDec = () => {
-        // if (cDropSins.phase > dropSinsMinPhase) {
-        cDropSins.phase -= dropSinsPhaseInc;
-        computeDropSinsSamples(cDropSins);
-        computeDropSinsMovingRadius(cDropSins);
-        // }
-    }
+    let ampInc = () => { if (cDropSins.amp < dropSinsMaxA) { cDropSins.amp += dropSinsAInc; computeDropSinsSamples(cDropSins); computeDropSinsMovingRadius(cDropSins); } };
+    let ampDec = () => { if (cDropSins.amp > dropSinsMinA) { cDropSins.amp -= dropSinsAInc; computeDropSinsSamples(cDropSins); computeDropSinsMovingRadius(cDropSins); } };
+    let freqInc = () => { if (cDropSins.freq < dropSinsMaxFreq) { cDropSins.freq += dropSinsFreqInc; computeDropSinsSamples(cDropSins); computeDropSinsMovingRadius(cDropSins); } };
+    let freqDec = () => { if (cDropSins.freq > dropSinsMinFreq) { cDropSins.freq -= dropSinsFreqInc; computeDropSinsSamples(cDropSins); computeDropSinsMovingRadius(cDropSins); } };
+    let phaseInc = () => { cDropSins.phase += dropSinsPhaseInc; computeDropSinsSamples(cDropSins); computeDropSinsMovingRadius(cDropSins); }
+    let phaseDec = () => { cDropSins.phase -= dropSinsPhaseInc; computeDropSinsSamples(cDropSins); computeDropSinsMovingRadius(cDropSins); }
 
     let buttonChange = () => {
-        for (let i = 0; i < kBuffNumKeys - 1; i++) {
-            if (mInside[i].isMousePressed(s.mouseX, s.mouseY)) {
-                mInside[i].action();
-                mInside[i].highlight();
-            }
+        for (let i = 0; i < kBuffNumKeys; i++) {
+            if (mInside[i].isMouseHover(s.mouseX, s.mouseY)) mInside[i].action();
         }
     }
 
@@ -633,51 +511,79 @@ const tetris = (s) => {
 
     const mpActions = [ampInc, ampDec, freqInc, freqDec, phaseInc, phaseDec, dropNow]
     let initMInside = () => {
+        let gap = 14;
+        let bW = (kBuffW - gap * (kBuffNumKeys - 1)) / kBuffNumKeys;
+
         for (let i = 0; i < kBuffNumKeys; i++) {
             mInside[i] = {
-                isMousePressed: (x, y) => {
-                    return (x > (unit + i * kBuffKW)) && (x < (unit + (i + 1) * kBuffKW)) && (y > 14.5 * unit) && (y < 15.5 * unit)
+                isMouseHover: (x, y) => {
+                    let bx = unit + i * (bW + gap);
+                    let by = 14.5 * unit + 4;
+                    let bH = unit - 8;
+                    return (x >= bx) && (x <= bx + bW) && (y >= by) && (y <= by + bH);
                 },
-                action: mpActions[i],
-                highlight: () => {
-                    kBuff.push();
-                    kBuff.fill(colors.keyHighlight);
-                    kBuff.rect(i * kBuffKW, 0, kBuffKW, unit);
-                    kBuff.pop();
-                }
+                action: mpActions[i]
             }
         }
     }
 
-    const mpLabels = ["A++", "A--", "ω++", "ω--", "φ++", "φ--", "drop"];
+    const mpLabels = ["A++", "A--", "ω++", "ω--", "φ++", "φ--", "DROP"];
+    
+    // Improved Neubrutalism Monochrome Buttons
     let drawKeyBuffer = () => {
         kBuff.clear();
-        kBuff.push();
-        kBuff.noFill();
-        kBuff.stroke(colors.textColor);
+        let gap = 14;
+        let bW = (kBuffW - gap * (kBuffNumKeys - 1)) / kBuffNumKeys;
+
         for (let i = 0; i < kBuffNumKeys; i++) {
-            kBuff.rect(i * kBuffKW, 0, kBuffKW, unit);
+            let bx = i * (bW + gap);
+            let by = 4; // Padding for the 3D click effect
+            let bH = unit - 8;
+
+            let isHover = mInside[i].isMouseHover(s.mouseX, s.mouseY);
+            let isPressed = s.mouseIsPressed && isHover;
+
             kBuff.push();
+
+            // Static background shadow for 3D effect
+            if (!isPressed) {
+                kBuff.fill('#B0B0B0');
+                kBuff.noStroke();
+                kBuff.rect(bx + 3, by + 3, bW, bH, 6);
+            }
+
+            // Foreground Button movement
+            if (isPressed) {
+                kBuff.fill(colors.keyHighlight);
+                kBuff.translate(2, 2); // Simulates physical button depression
+            } else if (isHover) {
+                kBuff.fill(colors.keyHover);
+            } else {
+                kBuff.fill(colors.buttonFill);
+            }
+            
+            kBuff.stroke(colors.buttonStroke);
+            kBuff.strokeWeight(2);
+            kBuff.rect(bx, by, bW, bH, 6); 
+            
+            // Text alignment strictly to center
             kBuff.noStroke();
-            kBuff.fill(colors.textColor);
-            kBuff.textSize(15);
-            kBuff.text(mpLabels[i], i * kBuffKW + 30, unit / 2);
+            kBuff.fill(isPressed ? '#FFFFFF' : colors.textColor);
+            kBuff.textFont(canFront);
+            if (i === 6) kBuff.textStyle(s.BOLD);
+            kBuff.textSize(14);
+            kBuff.textAlign(s.CENTER, s.CENTER);
+            kBuff.text(mpLabels[i], bx + bW / 2, by + bH / 2);
+            
             kBuff.pop();
         }
-        kBuff.pop();
     }
-
-
-    // -----------------------------------------------------------------------
-    // p5.js functions
-    // -----------------------------------------------------------------------
 
     s.setup = () => {
         cDropSins = createDefaultDropSins();
         cResidSins = createRandomResidSins();
 
         initCanvas();
-        initMainBuffer();
         initGameBuffer();
         initCircleBuffer();
         initScoreBuffer();
@@ -687,69 +593,57 @@ const tetris = (s) => {
         drawCircleBuffer();
         drawGameBuffer();
         drawScoreBuffer();
-        drawKeyBuffer();
     }
 
     s.draw = () => {
         s.background(colors.background);
-        s.image(mBuff, 0, 0);
+        
+        // Draw the sleek floating cards directly to the main canvas
+        drawPanel(6 * unit, 2 * unit, gBuffW, gBuffH);
+        drawPanel(unit, 2 * unit, cBuffW, cBuffH);
+        drawPanel(unit, 10 * unit, sBuffW, sBuffH);
+
+        // Overlay transparent buffers containing the graphics
         s.image(gBuff, 6 * unit, 2 * unit);
         s.image(cBuff, unit, 2 * unit);
         s.image(sBuff, unit, 10 * unit);
+        
+        // Continuously update button interactions
+        drawKeyBuffer();
         s.image(kBuff, unit, 14.5 * unit);
 
-        if (defeat() && cGameState !== gameStates.DEFEAT) {
-            cGameState = gameStates.DEFEAT;
-        }
-
-        if (win() && cGameState !== gameStates.WIN) {
-            cGameState = gameStates.WIN;
-        }
-
         if (cGameState === gameStates.DROP) {
-            // Drawing the dropping sinusoid
             drawDropSins();
-            // Increment animation variables
-            // increment the drop
             computeDropSinsMovingRadius(cDropSins);
-            cDropSins.pos.y += dropInc;
+            cDropSins.pos.y += window.dropInc;
             cDropSins.angl += increment;
-            // Check key movements
+            
             keyboardChange();
-            // Button change
-            if (s.mouseIsPressed) {
-                buttonChange();
-            } else {
-                drawKeyBuffer();
-            }
-            // If dropped move to the merging state 
+            if (s.mouseIsPressed) buttonChange();
+
             if (dropped()) {
                 drawScoreBuffer();
                 cGameState = gameStates.MERGE;
             }
         } else if (cGameState === gameStates.MERGE) {
-            // We keep drawing the dropping sinusoid
-            // without incrementing anything
             drawDropSins();
-            // The merge "animation"
             drawMerge();
-            // Incremeting the animation
             cMergeIdx++;
-            // If merged is finished, we go back to 
-            // the drop state
+
             if (merged()) {
-                // We actually merge the two objects
                 mergeResidSinsWithDropSins();
-                // We create another random dropping sinusoid
-                cDropSins = createRandomDropSins();
-                // We draw the game buffer
-                drawGameBuffer();
-                // Update score
-                drawScoreBuffer();
-                // We reset the merge animation for next time
-                cMergeIdx = 0;
-                // We change the actual state of the animation
-                cGameState = gameStates.DROP;
+                
+                if (defeat()) {
+                    cGameState = gameStates.DEFEAT;
+                } else if (win()) {
+                    cGameState = gameStates.WIN;
+                } else {
+                    cDropSins = createRandomDropSins();
+                    drawGameBuffer();
+                    drawScoreBuffer();
+                    cMergeIdx = 0;
+                    cGameState = gameStates.DROP;
+                }
             }
         } else if (cGameState === gameStates.DEFEAT) {
             drawDefeat();
@@ -758,105 +652,42 @@ const tetris = (s) => {
         }
     }
 
-    s.keyPressed = () => {
-        if (s.keyCode == keys.p) {
-            dropNow();
-        }
-    }
+    s.keyPressed = () => { if (s.keyCode == keys.p) dropNow(); }
+    s.mouseReleased = () => { if (mInside[6].isMouseHover(s.mouseX, s.mouseY)) mInside[6].action(); }
+    s.touchReleased = () => { if (mInside[6].isMouseHover(s.mouseX, s.mouseY)) mInside[6].action(); }
 
-    s.mouseReleased = () => {
-        if (mInside[6].isMousePressed(s.mouseX, s.mouseY)) {
-            mInside[6].action();
-        }
-    }
-
-    s.touchReleased = () => {
-        if (mInside[6].isMousePressed(s.mouseX, s.mouseY)) {
-            mInside[6].action();
-        }
-    }
-
-
-    // -----------------------------------------------------------------------
-    // General, non-game related utilities
-    // -----------------------------------------------------------------------
-
-    /**
-     * Surronds an image buffer with a line border
-     */
-    let drawBorderToBuff = (buff, w, h, color, strokeWeight) => {
-        buff.push();
-        buff.stroke(color);
-        buff.noFill();
-        buff.strokeWeight(strokeWeight);
-        buff.rect(0, 0, w, h);
-        buff.pop();
-    }
-
-    let drawCoordinatesToBuffer = (buff, buffW, buffH, unit, centerX, centerY) => {
-        // horizontal
+    let drawCoordinatesToBuffer = (buff, buffW, buffH, unit) => {
         let hSteps = buffH / unit;
-        buff.push();
-        buff.noFill();
-        buff.stroke(colors.gBufAxis);
-        buff.beginShape(s.LINES);
-        for (let i = 0; i < hSteps; i++) {
-            buff.vertex(0, i * unit);
-            buff.vertex(buffW, i * unit);
-        }
-        buff.endShape();
-        buff.pop();
-        // vertical
+        buff.push(); buff.noFill(); buff.stroke(colors.gBufAxis); buff.beginShape(s.LINES);
+        for (let i = 0; i < hSteps; i++) { buff.vertex(0, i * unit); buff.vertex(buffW, i * unit); }
+        buff.endShape(); buff.pop();
+        
         let vSteps = buffW / unit;
-        buff.push();
-        buff.noFill();
-        buff.stroke(colors.gBufAxis);
-        buff.beginShape(s.LINES);
-        for (let i = 0; i < vSteps; i++) {
-            buff.vertex(i * unit, 0);
-            buff.vertex(i * unit, buffH);
-        }
-        buff.endShape();
-        buff.pop();
+        buff.push(); buff.noFill(); buff.stroke(colors.gBufAxis); buff.beginShape(s.LINES);
+        for (let i = 0; i < vSteps; i++) { buff.vertex(i * unit, 0); buff.vertex(i * unit, buffH); }
+        buff.endShape(); buff.pop();
     }
 
+    let random = (min, max) => Math.random() * (max - min) + min;
 
-    /**
-     * Returns a random value in a given interval 
-     */
-    let random = (min, max) => {
-        return Math.random() * (max - min) + min;
-    }
-
-    // Draws an arrow
     let arrow = (x1, y1, x2, y2, size) => {
         const dx = x2 - x1;
         const dy = y2 - y1;
-        const angle = s.atan2(dy, dx);
-        const d = s.dist(x1, y1, x2, y2);;
+        const angle = Math.atan2(dy, dx);
+        const d = s.dist(x1, y1, x2, y2);
         s.push();
         s.translate(x1, y1);
         s.rotate(angle);
         s.line(0, 0, d, 0);
-        s.triangle(d, 0,
-            d - size, -size / 3,
-            d - size, size / 3);
+        s.triangle(d, 0, d - size, -size / 3, d - size, size / 3);
         s.pop();
     }
-
-    // -----------------------------------------------------------------------
 }
 
-let tetrisSketch =
-    new p5(tetris, tetris.canPId);
+let tetrisSketch = new p5(tetris, "tetris-sketch");
 
 const suggBtn = document.querySelector("#suggestions");
 const turnBtn = document.querySelector("#turnBased");
 
-suggBtn.onclick = () => {
-    suggestions = suggBtn.checked;
-};
-
-turnBtn.onclick = () => {
-    dropInc = turnBtn.checked ? 0 : 0.2;
-}
+suggBtn.onclick = () => { window.suggestions = suggBtn.checked; };
+turnBtn.onclick = () => { window.dropInc = turnBtn.checked ? 0 : 0.2; }
