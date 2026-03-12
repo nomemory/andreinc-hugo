@@ -19,7 +19,7 @@ const tetris = (s) => {
     const canPId = "tetris-sketch"; 
     const canW = 16 * unit; 
     const canH = 16 * unit; 
-    const canFront = "monospace"; // Using monospace for a technical, crisp look
+    const canFront = "monospace"; 
 
     const mBuffW = canW; 
     const mBuffH = canH; 
@@ -31,6 +31,8 @@ const tetris = (s) => {
     const sBuffH = 4 * unit; 
     const kBuffW = 13 * unit; 
     const kBuffH = unit; 
+    const lBuffW = canW; 
+    const lBuffH = 2 * unit; 
     
     const kBuffNumKeys = 7;
     const defeatW = 200;
@@ -38,7 +40,29 @@ const tetris = (s) => {
     const numResids = 4;
     const winThresh = unit / 3;
 
-    // Buffers orientation
+    // Logo configuration
+    const logoTTO = s.createVector(0, 0); 
+    const logoText = "SINOIDAL TETRIS";
+    const logoCellW = 6; 
+    const logoCellH = 6; 
+    const logoFont = [
+        [ [1,1,1,1,1], [1,0,0,0,0], [1,1,1,1,1], [0,0,0,0,1], [1,1,1,1,1] ], // S
+        [ [1,1,1,1,1], [0,0,1,0,0], [0,0,1,0,0], [0,0,1,0,0], [1,1,1,1,1] ], // I
+        [ [1,0,0,0,1], [1,1,0,0,1], [1,0,1,0,1], [1,0,0,1,1], [1,0,0,0,1] ], // N
+        [ [1,1,1,1,1], [1,0,0,0,1], [1,0,0,0,1], [1,0,0,0,1], [1,1,1,1,1] ], // O
+        [ [1,1,1,1,1], [0,0,1,0,0], [0,0,1,0,0], [0,0,1,0,0], [1,1,1,1,1] ], // I
+        [ [1,1,1,1,0], [1,0,0,0,1], [1,0,0,0,1], [1,0,0,0,1], [1,1,1,1,0] ], // D
+        [ [1,1,1,1,1], [1,0,0,0,1], [1,1,1,1,1], [1,0,0,0,1], [1,0,0,0,1] ], // A
+        [ [1,0,0,0,0], [1,0,0,0,0], [1,0,0,0,0], [1,0,0,0,0], [1,1,1,1,1] ], // L
+        [ ], // SPACE
+        [ [1,1,1,1,1], [0,0,1,0,0], [0,0,1,0,0], [0,0,1,0,0], [0,0,1,0,0] ], // T
+        [ [1,1,1,1,1], [1,0,0,0,0], [1,1,1,1,1], [1,0,0,0,0], [1,1,1,1,1] ], // E
+        [ [1,1,1,1,1], [0,0,1,0,0], [0,0,1,0,0], [0,0,1,0,0], [0,0,1,0,0] ], // T
+        [ [1,1,1,1,1], [1,0,0,0,1], [1,1,1,1,1], [1,0,1,0,0], [1,0,0,1,1] ], // R
+        [ [1,1,1,1,1], [0,0,1,0,0], [0,0,1,0,0], [0,0,1,0,0], [1,1,1,1,1] ], // I
+        [ [1,1,1,1,1], [1,0,0,0,0], [1,1,1,1,1], [0,0,0,0,1], [1,1,1,1,1] ], // S
+    ];
+
     const gBuffTTO = s.createVector(6 * unit, 2 * unit); 
     const cBuffTTO = s.createVector(unit, 2 * unit); 
     const sBuffTTO = s.createVector(unit, 10 * unit); 
@@ -64,7 +88,6 @@ const tetris = (s) => {
     const arrowHead = 7; 
     const stepX = increment * radius; 
 
-    // Strict Monochrome Color Palette
     const colors = {
         background: '#EAEAEA', 
         panelStroke: '#111111', 
@@ -79,8 +102,8 @@ const tetris = (s) => {
         dropSins: '#000000', 
         dropSinsOX: '#CCCCCC', 
         residSins: '#444444', 
-        mergePlus: '#333333', 
-        mergeMinus: '#888888', 
+        mergePlus: '#FF3333', 
+        mergeMinus: '#3366FF', 
         conLine: '#AAAAAA', 
         textColor: '#111111',
         defeatColor: '#FFFFFF', 
@@ -90,13 +113,14 @@ const tetris = (s) => {
         winBorderColor: '#111111', 
         winTextColor: '#111111',
         buttonFill: '#FFFFFF', 
-        buttonStroke: '#111111'
+        buttonStroke: '#111111',
+        playingAreaBorder: '#000000' 
     };
 
     const keys = { a: 65, z: 90, s: 83, x: 88, q: 81, w: 87, p: 80 };
     const gameStates = Object.freeze({ DROP: 1, MERGE: 2, DEFEAT: 3, WIN: 4 });
 
-    let canvas, gBuff, cBuff, sBuff, kBuff;
+    let canvas, gBuff, cBuff, sBuff, kBuff, lBuff;
     let cDropSins; 
     let cResidSins = new Float32Array(dropSinsSamplesLen); 
     let cResidSinsSugg = []; 
@@ -161,7 +185,9 @@ const tetris = (s) => {
             if (Math.abs(cResidSins[i]) > cResidMax) cResidMax = Math.abs(cResidSins[i]);
         }
         cStage++;
-        cResidSinsSugg.pop();
+        if (cResidSinsSugg.length > 0) {
+            cResidSinsSugg.pop();
+        }
     }
 
     // -----------------------------------------------------------------------
@@ -179,8 +205,8 @@ const tetris = (s) => {
     let initCircleBuffer = () => { cBuff = s.createGraphics(cBuffW, cBuffH); }
     let initScoreBuffer = () => { sBuff = s.createGraphics(sBuffW, sBuffH); }
     let initKeyBuffer = () => { kBuff = s.createGraphics(kBuffW, kBuffH); }
+    let initLogoBuffer = () => { lBuff = s.createGraphics(lBuffW, lBuffH); }
 
-    // Renders the floating card effect behind the game areas
     const drawPanel = (x, y, w, h, r = 12) => {
         s.push();
         s.drawingContext.shadowOffsetX = 0;
@@ -227,13 +253,19 @@ const tetris = (s) => {
         }
         gBuff.endShape();
         gBuff.pop();
+
+        gBuff.push();
+        gBuff.noFill();
+        gBuff.stroke(colors.playingAreaBorder);
+        gBuff.strokeWeight(4); 
+        gBuff.rect(2, 2, gBuffW - 4, gBuffH - 4, 10); 
+        gBuff.pop();
     }
 
     let drawScoreBuffer = () => {
         sBuff.clear();
         sBuff.push();
 
-        // Header Background
         sBuff.fill('#F8F9FA');
         sBuff.noStroke();
         sBuff.rect(0, 0, sBuffW, 40, 10, 10, 0, 0); 
@@ -241,7 +273,6 @@ const tetris = (s) => {
         sBuff.strokeWeight(2);
         sBuff.line(0, 40, sBuffW, 40);
 
-        // Header Text
         sBuff.fill(colors.textColor);
         sBuff.textAlign(s.CENTER, s.CENTER);
         sBuff.textFont(canFront);
@@ -256,24 +287,20 @@ const tetris = (s) => {
 
         let padX = 20, startY = 75, rowH = 28;
 
-        // Current Stats Labels
         sBuff.text("Current Score", padX, startY);
         sBuff.text("Stage Level", padX, startY + rowH);
         sBuff.text("Drop Speed", padX, startY + rowH * 2);
 
-        // Current Stats Values (Aligned Right)
         sBuff.textAlign(s.RIGHT, s.BASELINE);
         sBuff.textStyle(s.BOLD);
         sBuff.text((cScore / 1000).toFixed(2), sBuffW - padX, startY);
         sBuff.text(cStage, sBuffW - padX, startY + rowH);
         sBuff.text(window.dropInc, sBuffW - padX, startY + rowH * 2);
 
-        // Divider Line
         sBuff.stroke('#EEEEEE');
         sBuff.strokeWeight(1);
         sBuff.line(padX, startY + rowH * 2 + 15, sBuffW - padX, startY + rowH * 2 + 15);
 
-        // Previous Stats Labels
         sBuff.noStroke();
         sBuff.fill('#777777');
         sBuff.textAlign(s.LEFT, s.BASELINE);
@@ -281,7 +308,6 @@ const tetris = (s) => {
         sBuff.text("Prev Score", padX, startY + rowH * 4 - 5);
         sBuff.text("Prev Stage", padX, startY + rowH * 5 - 5);
 
-        // Previous Stats Values
         sBuff.textAlign(s.RIGHT, s.BASELINE);
         sBuff.textStyle(s.BOLD);
         sBuff.text((lScore / 1000).toFixed(2), sBuffW - padX, startY + rowH * 4 - 5);
@@ -291,6 +317,7 @@ const tetris = (s) => {
     }
 
     let drawDropSins = () => {
+        // --- DRAWING THE CIRCLE PANEL ---
         s.push();
         s.fill(colors.dropSinsCirclePhase);
         s.stroke(colors.dropSinsCircle);
@@ -337,39 +364,36 @@ const tetris = (s) => {
         s.circle(cDropSins.movRad.x, cDropSins.movRad.y, 5);
         s.pop();
 
+        // --- DRAWING THE SINUSOID ---
         s.push();
         s.translate(gBuffTTO.x, gBuffTTO.y);
+        s.noFill();
         s.stroke(colors.dropSins);
         s.strokeWeight(3);
-        s.noFill();
-        
-        // Crisp drop shadow for the main sine wave
-        s.drawingContext.shadowOffsetX = 2;
-        s.drawingContext.shadowOffsetY = 2;
-        s.drawingContext.shadowBlur = 4;
-        s.drawingContext.shadowColor = 'rgba(0,0,0,0.2)';
-        
         s.beginShape();
         for (let i = 0; i < dropSinsSamplesLen; i++) {
-            s.vertex(i * stepX, cDropSins.pos.y - 2 * unit - cDropSins.samples[i]);
+            s.vertex(i * stepX, cDropSins.pos.y - 2 * unit - cDropSins.samples[i]); 
         }
         s.endShape();
         s.pop();
 
-        let cSugg = cResidSinsSugg[cResidSinsSugg.length - 1];
-        if (cSugg !== undefined && window.suggestions) {
-            s.push();
-            s.translate(gBuffTTO.x, gBuffTTO.y);
-            s.stroke(colors.conLine);
-            s.strokeWeight(2);
-            s.noFill();
-            s.drawingContext.setLineDash([5, 5]); 
-            s.beginShape();
-            for (let i = 0; i < dropSinsSamplesLen; i++) {
-                s.vertex(i * stepX, cDropSins.pos.y - 2 * unit - cSugg.samples[i]);
+        // Suggestions logic
+        if (window.suggestions && cResidSinsSugg.length > 0) {
+            let cSugg = cResidSinsSugg[cResidSinsSugg.length - 1];
+            if (cSugg && cSugg.samples) {
+                s.push();
+                s.translate(gBuffTTO.x, gBuffTTO.y);
+                s.stroke(colors.conLine);
+                s.strokeWeight(2);
+                s.noFill();
+                s.drawingContext.setLineDash([5, 5]); 
+                s.beginShape();
+                for (let i = 0; i < dropSinsSamplesLen; i++) {
+                    s.vertex(i * stepX, cDropSins.pos.y - 2 * unit - cSugg.samples[i]); 
+                }
+                s.endShape();
+                s.pop();
             }
-            s.endShape();
-            s.pop();
         }
 
         s.push();
@@ -412,6 +436,7 @@ const tetris = (s) => {
         let y1 = halfBuffer - cResidSins[cMergeIdx];
         let y2 = halfBuffer - sum;
         let cColor = (sum > cResidSins[cMergeIdx]) ? colors.mergePlus : colors.mergeMinus;
+        
         gBuff.push();
         gBuff.strokeWeight(2);
         gBuff.stroke(cColor);
@@ -478,8 +503,7 @@ const tetris = (s) => {
     let dropNow = () => {
         if (cGameState === gameStates.DROP) {
             cDropSins.pos.y = canH / 2;
-        } else if (cGameState === gameStates.MERGE) {
-            for (; cMergeIdx < dropSinsSamplesLen; cMergeIdx++) drawMerge();
+            computeDropSinsMovingRadius(cDropSins); 
         } else if (cGameState === gameStates.DEFEAT || cGameState === gameStates.WIN) {
             newGameReset();
             drawScoreBuffer();
@@ -518,7 +542,7 @@ const tetris = (s) => {
             mInside[i] = {
                 isMouseHover: (x, y) => {
                     let bx = unit + i * (bW + gap);
-                    let by = 14.5 * unit + 4;
+                    let by = 14.5 * unit + 4; 
                     let bH = unit - 8;
                     return (x >= bx) && (x <= bx + bW) && (y >= by) && (y <= by + bH);
                 },
@@ -529,7 +553,6 @@ const tetris = (s) => {
 
     const mpLabels = ["A++", "A--", "ω++", "ω--", "φ++", "φ--", "DROP"];
     
-    // Improved Neubrutalism Monochrome Buttons
     let drawKeyBuffer = () => {
         kBuff.clear();
         let gap = 14;
@@ -537,7 +560,7 @@ const tetris = (s) => {
 
         for (let i = 0; i < kBuffNumKeys; i++) {
             let bx = i * (bW + gap);
-            let by = 4; // Padding for the 3D click effect
+            let by = 4;
             let bH = unit - 8;
 
             let isHover = mInside[i].isMouseHover(s.mouseX, s.mouseY);
@@ -545,17 +568,15 @@ const tetris = (s) => {
 
             kBuff.push();
 
-            // Static background shadow for 3D effect
             if (!isPressed) {
                 kBuff.fill('#B0B0B0');
                 kBuff.noStroke();
                 kBuff.rect(bx + 3, by + 3, bW, bH, 6);
             }
 
-            // Foreground Button movement
             if (isPressed) {
                 kBuff.fill(colors.keyHighlight);
-                kBuff.translate(2, 2); // Simulates physical button depression
+                kBuff.translate(2, 2); 
             } else if (isHover) {
                 kBuff.fill(colors.keyHover);
             } else {
@@ -566,7 +587,6 @@ const tetris = (s) => {
             kBuff.strokeWeight(2);
             kBuff.rect(bx, by, bW, bH, 6); 
             
-            // Text alignment strictly to center
             kBuff.noStroke();
             kBuff.fill(isPressed ? '#FFFFFF' : colors.textColor);
             kBuff.textFont(canFront);
@@ -579,6 +599,41 @@ const tetris = (s) => {
         }
     }
 
+    let drawLogoBuffer = () => {
+        lBuff.clear();
+        lBuff.push();
+        lBuff.noStroke();
+        lBuff.fill(colors.textColor);
+        
+        let logoWidth = 0;
+        for (let i = 0; i < logoText.length; i++) {
+            logoWidth += (logoText[i] === " " ? 3 * logoCellW : 5 * logoCellW + logoCellW); 
+        }
+        logoWidth -= logoCellW; 
+
+        let xOffset = (lBuffW - logoWidth) / 2;
+        let yOffset = (lBuffH - 5 * logoCellH) / 2;
+        
+        for (let i = 0; i < logoText.length; i++) {
+            if (logoText[i] === " ") {
+                xOffset += 3 * logoCellW;
+                continue;
+            }
+            const charData = logoFont[i];
+            if (charData) {
+                for (let r = 0; r < 5; r++) {
+                    for (let c = 0; c < 5; c++) {
+                        if (charData[r][c] === 1) {
+                            lBuff.rect(xOffset + c * logoCellW, yOffset + r * logoCellH, logoCellW, logoCellH);
+                        }
+                    }
+                }
+            }
+            xOffset += 5 * logoCellW + logoCellW;
+        }
+        lBuff.pop();
+    }
+
     s.setup = () => {
         cDropSins = createDefaultDropSins();
         cResidSins = createRandomResidSins();
@@ -588,29 +643,29 @@ const tetris = (s) => {
         initCircleBuffer();
         initScoreBuffer();
         initKeyBuffer();
+        initLogoBuffer();
         initMInside();
 
         drawCircleBuffer();
         drawGameBuffer();
         drawScoreBuffer();
+        drawLogoBuffer();
     }
 
     s.draw = () => {
         s.background(colors.background);
         
-        // Draw the sleek floating cards directly to the main canvas
-        drawPanel(6 * unit, 2 * unit, gBuffW, gBuffH);
-        drawPanel(unit, 2 * unit, cBuffW, cBuffH);
-        drawPanel(unit, 10 * unit, sBuffW, sBuffH);
+        drawPanel(6 * unit, 2 * unit, gBuffW, gBuffH); 
+        drawPanel(unit, 2 * unit, cBuffW, cBuffH); 
+        drawPanel(unit, 10 * unit, sBuffW, sBuffH); 
 
-        // Overlay transparent buffers containing the graphics
-        s.image(gBuff, 6 * unit, 2 * unit);
-        s.image(cBuff, unit, 2 * unit);
-        s.image(sBuff, unit, 10 * unit);
-        
-        // Continuously update button interactions
+        s.image(gBuff, 6 * unit, 2 * unit); 
+        s.image(cBuff, unit, 2 * unit); 
+        s.image(sBuff, unit, 10 * unit); 
+        s.image(lBuff, logoTTO.x, logoTTO.y); 
+
         drawKeyBuffer();
-        s.image(kBuff, unit, 14.5 * unit);
+        s.image(kBuff, unit, 14.5 * unit); 
 
         if (cGameState === gameStates.DROP) {
             drawDropSins();
@@ -689,5 +744,5 @@ let tetrisSketch = new p5(tetris, "tetris-sketch");
 const suggBtn = document.querySelector("#suggestions");
 const turnBtn = document.querySelector("#turnBased");
 
-suggBtn.onclick = () => { window.suggestions = suggBtn.checked; };
-turnBtn.onclick = () => { window.dropInc = turnBtn.checked ? 0 : 0.2; }
+if(suggBtn) suggBtn.onclick = () => { window.suggestions = suggBtn.checked; };
+if(turnBtn) turnBtn.onclick = () => { window.dropInc = turnBtn.checked ? 0 : 0.2; }

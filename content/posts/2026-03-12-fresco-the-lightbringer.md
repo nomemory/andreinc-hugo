@@ -23,7 +23,9 @@ The view is absolutely stunning:
 
 So, if you ever find yourself in Bucharest and want to avoid melting into the pavement, visit this retreat. It is breezy, the monks are incredibly nice, the gardens are beautiful, and you can actually use the quiet moments for some deep introspection.
 
-And now for the funny part. On the inside of the monastery wall, there is a very old fresco featuring a devil painted in the classic Byzantine style. The inner walls are covered in beautiful paintings depicting various stories from the Bible. Well, at some point the monastery went through some renovations, and someone had to update the electrical wiring. 
+And now for the funny part...
+
+On the inside of the monastery wall there is a very old fresco featuring a devil painted in the classic Orthodox (Byzantine) style. Well, at some point the monastery went through some renovations, and someone had to update the electrical wiring. 
 
 Because our hero the electrician wanted to preserve the surrounding frescoes, he made the executive decision to install the modern light switch directly into the devil's outstretched hand.
 

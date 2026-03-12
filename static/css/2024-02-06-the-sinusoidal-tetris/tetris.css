@@ -3,3 +3,30 @@ body {
     user-select: none;
     touch-action: manipulation;
 }
+
+#tetris-sketch {
+    /* The Border */
+    border: 4px solid #000000;
+    
+    /* Rounded corners to match your in-game panels */
+    border-radius: 12px;
+    
+    /* Layout: ensures the div fits the canvas size exactly */
+    display: inline-block;
+    line-height: 0; /* Prevents tiny ghost spacing at the bottom */
+    
+    /* Optional: centering it on your blog page */
+    margin: 20px auto;
+    
+    /* Background color to avoid transparency issues */
+    background-color: #FFFFFF;
+    
+    /* Optional: A hard shadow to match your buttons */
+    box-shadow: 8px 8px 0px #000000;
+}
+
+#tetris-sketch canvas {
+    /* Ensures the canvas inside also respects the rounded corners */
+    border-radius: 8px;
+    display: block;
+}
