@@ -2,13 +2,27 @@
 {{ if eq .Type "posts" }}{{ if not .Params.menu }}
 
 <h1>{{ .Title }}</h1>
-<p>
+<p class="post-meta">
+  Written by <a href="/about" target="_blank">Andrei N. Ciobanu</a> on
   <i>
     <time datetime='{{ .Date.Format "2006-01-02" }}'>
-      {{ .Date.Format (default "02 Jan, 2006" .Site.Params.dateFormat) }}
+      {{ .Date.Format "02 Jan, 2006" }}
     </time>
   </i>
+</p>  
+
+{{/* Moon Phase Calculation */}}
+{{ $lp := 2551443 }} {{/* Lunar period in seconds */}}
+{{ $newMoon := 592500 }} {{/* A known new moon reference (Unix time) */}}
+{{ $phase := mod (sub .Date.Unix $newMoon) $lp }}
+{{ $age := div (mul $phase 8) $lp }}
+
+<p>
+<em><span title="Moon phase at time of writing" style="font-size: 0.7rem; cursor: help; color: #888;">
+  ... beneath a {{ if eq $age 0 }}🌑 New Moon{{ else if eq $age 1 }}🌒 Waxing Crescent{{ else if eq $age 2 }}🌓 First Quarter{{ else if eq $age 3 }}🌔 Waxing Gibbous{{ else if eq $age 4 }}Full Moon 🌕{{ else if eq $age 5 }}🌖 Waning Gibbous{{ else if eq $age 6 }}🌗 Last Quarter{{ else if eq $age 7 }}🌘 Waning Crescent{{ end }}
+</span></em>
 </p>
+
 {{ end }}{{ end }}
 <content>
   {{ .Content }}

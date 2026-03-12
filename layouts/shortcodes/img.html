@@ -2,7 +2,10 @@
   <img 
     src="{{ .Get "src" }}" 
     alt="{{ .Get "caption" }}" 
-    style="width:100%; height:auto; border:1px solid #ddd"
+    class="{{ if eq (.Get "grayscale") "true" }}grayscale-hover{{ end }}"
+    style="width:100%; height:auto; border:1px solid #ddd; transition: filter 0.3s ease; {{ if eq (.Get "grayscale") "true" }}filter: grayscale(100%);{{ end }}"
+    onmouseover="{{ if eq (.Get "grayscale") "true" }}this.style.filter='grayscale(0%)'{{ end }}"
+    onmouseout="{{ if eq (.Get "grayscale") "true" }}this.style.filter='grayscale(100%)'{{ end }}"
   >
   {{ with .Get "caption" }}
     <figcaption style="font-size: 0.85rem; color: #666; margin-top: 0.5rem; text-align: center;">
