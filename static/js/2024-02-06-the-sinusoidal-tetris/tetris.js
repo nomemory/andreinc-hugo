@@ -553,7 +553,7 @@ const tetris = (s) => {
         }
     }
 
-    const mpLabels = ["A++", "A--", "ω++", "ω--", "φ++", "φ--", "DROP"];
+    const mpLabels = ["A ▲", "A ▼", "ω ▲", "ω ▼", "φ ◀", "φ ▶", "DROP"];
     
     let drawKeyBuffer = () => {
         kBuff.clear();

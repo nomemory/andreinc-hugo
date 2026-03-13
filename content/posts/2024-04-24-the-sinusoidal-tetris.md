@@ -1,7 +1,7 @@
 +++
 date = '2024-04-24'
 draft = false
-title = 'The sinusoidal tetris'
+title = 'The Sinusoidal Tetris'
 categories = ['math']
 tags = ['fourier']
 usekatex = true
@@ -10,54 +10,50 @@ customDeferJS = ["/js/2024-02-06-the-sinusoidal-tetris/tetris.js"]
 customCSS = ["/css/2024-02-06-the-sinusoidal-tetris/tetris.css"]
 +++
 
-Let's play Tetris, but with a twist. No geometrical figures will *fall from the sky*. Instead, you control a [sinusoid](https://en.wikipedia.org/wiki/Sine_wave), defined by: $f(x)=A*sin(\omega x + \varphi)$:
-
----
-
-
-<input type="checkbox" id="suggestions" name="suggestions" value="yes" checked> Free suggestions in the beginning. If you follow all of them, you win.
-
-<input type="checkbox" id="turnBased" name="turnBased" value="no"> Turn-Based Mode (the sinusoid doesn't drop automatically)
-
-<div id="tetris-sketch"></div>
-
----
-
-Controls
-* To increase the angular frequency, $\omega$, press: `s`;
-* To decrease the angular frequency, $\omega$, press: `x`;
-* To increase the amplitude, $A$, press: `a`;
-* To decrease the amplitude, $A$, press: `z`;
-* To increase the phase: $\varphi$, press: `q`;
-* To decrease the phase: $\varphi$, press: `w`;
-* To *drop* the sinusoid, press `p`;
-
----
-
-To win the game, you need to reduce the signal as close to zero as possible. It's hard but not impossible. There's a current threshold of `unit * 0.3`. Surviving is not winning. The *Path of the Alternating Phases* is boredom.
-
-You lose if the original signal spikes outside the game buffer (canvas).
-
-A professional player turns off the suggestions, now enabled by default. If you are a savant, you can compute the [*Fourier Series Coefficients*](https://en.wikipedia.org/wiki/Fourier_series) in your head. Cancel that noise!
-
-To better understand what is happening, check out [this first article of a series](/2024/04/24/from-the-circle-to-epicycles).
-
---- 
-
-The game was developed using [p5js](https://p5js.org/).
-
-The source code [(here)](/js/2024-02-06-the-sinusoidal-tetris/tetris.js) is not something I am particularly proud of. 
-
----
-
-Some discussion from around the web:
-
-* [Hacker News](https://news.ycombinator.com/item?id=39275715)
-* [Lobste.rs](https://lobste.rs/s/h1y3ql/sinusoidal_tetris)
-* [Museum Of Screens](https://museumofscreens.wordpress.com/2024/02/07/web-game-of-the-day-sinusoidal-tetris/)
-* [hackaday - tetris goes full circle](khttps://hackaday.com/2024/02/07/tetris-goes-full-circle/#comments)
-* [microsiervos](https://www.microsiervos.com/archivo/juegos-y-diversion/tetris-sinusoidal-existe-encanto-matematicamente-especial.html)
-
----
-
-<sup>This game is a joke I put together during a weekend. I'm sorry for the graphics.</sup>
+<div style="font-family: 'Courier New', Courier, monospace; background-color: #F6F8FA; border: 2px solid #111; padding: 20px; color: #111; line-height: 1.6; max-width: 100%; box-sizing: border-box;">
+<h2 style="text-transform: uppercase; border-bottom: 2px solid #111; padding-bottom: 10px; margin-top: 0;">System Log: Sinusoidal Tetris</h2>
+<p>Let's play Tetris, but with a twist. No geometrical figures will <i>fall from the sky</i>. Instead, you control a <a href="https://en.wikipedia.org/wiki/Sine_wave" style="color: #000; text-decoration: underline;">sinusoid</a>, defined by:</p>
+<p style="text-align: center; font-size: 1.2rem; padding: 10px 0;">
+\[ f(x) = A \cdot \sin(\omega x + \varphi) \]
+</p>
+<hr style="border: 0; border-top: 1px dashed #111; margin: 20px 0;">
+<div style="background: #FFF; border: 1px solid #111; padding: 15px; margin-bottom: 20px;">
+<label style="display: block; margin-bottom: 10px; cursor: pointer;">
+<input type="checkbox" id="suggestions" name="suggestions" checked> [ENABLE_SUGGESTIONS]
+<span style="font-size: 0.85rem; display: block; margin-left: 25px; opacity: 0.7;">Free guidance in the beginning. If you follow all of them, you win.</span>
+</label>
+<label style="display: block; cursor: pointer;">
+<input type="checkbox" id="turnBased" name="turnBased"> [TURN_BASED_MODE]
+<span style="font-size: 0.85rem; display: block; margin-left: 25px; opacity: 0.7;">The sinusoid doesn't drop automatically.</span>
+</label>
+</div>
+<div style="width: 100%; display: flex; justify-content: center; margin: 20px 0;">
+<div id="tetris-sketch" style="max-width: 100%; overflow: hidden; border: 4px solid #111; background: #000; line-height: 0;">
+<style>
+#tetris-sketch canvas { max-width: 100% !important; height: auto !important; display: block; }
+</style>
+</div>
+</div>
+<hr style="border: 0; border-top: 1px dashed #111; margin: 20px 0;">
+<h3 style="text-transform: uppercase; font-size: 1rem;">Control Map</h3>
+<ul style="list-style-type: none; padding-left: 0; font-size: 0.9rem;">
+<li><span style="font-weight: bold;">[S]</span> Increase angular frequency (\(\omega\))</li>
+<li><span style="font-weight: bold;">[X]</span> Decrease angular frequency (\(\omega\))</li>
+<li><span style="font-weight: bold;">[A]</span> Increase amplitude (\(A\))</li>
+<li><span style="font-weight: bold;">[Z]</span> Decrease amplitude (\(A\))</li>
+<li><span style="font-weight: bold;">[Q]</span> Increase phase (\(\varphi\))</li>
+<li><span style="font-weight: bold;">[W]</span> Decrease phase (\(\varphi\))</li>
+<li><span style="font-weight: bold;">[P]</span> Drop the sinusoid</li>
+</ul>
+<hr style="border: 0; border-top: 1px dashed #111; margin: 20px 0;">
+<p>To win the game, you need to reduce the signal as close to zero as possible. It is hard but not impossible. There is a current threshold of <code>unit * 0.3</code>. Surviving is not winning. The <i>Path of the Alternating Phases</i> is boredom.</p>
+<p style="background: #111; color: #FFF; padding: 10px; font-size: 0.85rem;">
+PRO_TIP: A professional player turns off the suggestions. If you are a savant, you can compute the <a href="https://en.wikipedia.org/wiki/Fourier_series" style="color: #EEE;">Fourier Series Coefficients</a> in your head. Cancel that noise!
+</p>
+<div style="font-size: 0.8rem; margin-top: 40px; border-top: 1px solid #111; padding-top: 10px; opacity: 0.8;">
+<p>Built with <a href="https://p5js.org/" style="color: #000;">p5js</a>. Source code: <a href="https://github.com/nomemory/andreinc-hugo/blob/main/static/js/2024-02-06-the-sinusoidal-tetris/tetris.js" style="color: #000;">[REPOSITORY]</a>.</p>
+</div>
+<p style="font-size: 0.7rem; text-align: right; margin-top: 20px; opacity: 0.5;">
+<sup>* This game is a joke I put together during a weekend.</sup>
+</p>
+</div>

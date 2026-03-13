@@ -8,7 +8,7 @@
     // Hit area coordinates mapped to the light switch
     const hitArea = { xMin: 0.69, xMax: 0.76, yMin: 0.26, yMax: 0.32 };
     let sunIsVisible = false;
-    let hasInteracted = false; // Track if the user has clicked it at least once
+    let hasInteracted = false; 
 
     function init() {
         if (!imgSrc.complete || imgSrc.naturalWidth === 0) {
@@ -19,7 +19,6 @@
     }
 
     function setupCanvas() {
-        // Scale canvas to fit the blog post width dynamically
         const maxWidth = container.clientWidth || 800; 
         const aspectRatio = imgSrc.naturalWidth / imgSrc.naturalHeight;
         
@@ -29,24 +28,65 @@
         drawScene();
 
         canvas.addEventListener('mousedown', checkClick);
+        
+        // Mobile support
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             checkClick(e.touches[0]);
         }, { passive: false });
+
+        // Change cursor on hover to hint at interactivity
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const clickX = (e.clientX - rect.left) * scaleX;
+            const clickY = (e.clientY - rect.top) * scaleY;
+
+            if (
+                clickX >= hitArea.xMin * canvas.width &&
+                clickX <= hitArea.xMax * canvas.width &&
+                clickY >= hitArea.yMin * canvas.height &&
+                clickY <= hitArea.yMax * canvas.height
+            ) {
+                canvas.style.cursor = 'pointer';
+            } else {
+                canvas.style.cursor = 'default';
+            }
+        });
     }
 
     function drawScene() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(imgSrc, 0, 0, canvas.width, canvas.height);
         
+        // Draw the hint layer if the user hasn't clicked yet
+        if (!hasInteracted) {
+            drawHitAreaHint();
+        }
+
         if (sunIsVisible) {
             drawSun();
         }
+    }
+
+    function drawHitAreaHint() {
+        const x = hitArea.xMin * canvas.width;
+        const y = hitArea.yMin * canvas.height;
+        const w = (hitArea.xMax - hitArea.xMin) * canvas.width;
+        const h = (hitArea.yMax - hitArea.yMin) * canvas.height;
+
+        ctx.save();
+        // Dashed white border
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, w, h);
         
-        // Hide text after the first successful interaction
-        if (hasInteracted && hint) {
-            hint.style.display = 'none'; 
-        }
+        // Subtle blue-ish highlight
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.fillRect(x, y, w, h);
+        ctx.restore();
     }
 
     function checkClick(event) {
@@ -57,14 +97,13 @@
         const clickX = (event.clientX - rect.left) * scaleX;
         const clickY = (event.clientY - rect.top) * scaleY;
 
-        // Check if the click falls within the switch's boundaries
         if (
             clickX >= hitArea.xMin * canvas.width &&
             clickX <= hitArea.xMax * canvas.width &&
             clickY >= hitArea.yMin * canvas.height &&
             clickY <= hitArea.yMax * canvas.height
         ) {
-            sunIsVisible = !sunIsVisible; // Toggle the state (true -> false, false -> true)
+            sunIsVisible = !sunIsVisible; 
             hasInteracted = true;
             drawScene();
         }
@@ -75,8 +114,6 @@
         const sunCenter = { x: canvas.width * 0.8, y: canvas.height * 0.1 };
 
         ctx.save();
-        
-        // Outer glow
         ctx.shadowColor = 'rgba(255, 180, 0, 1)';
         ctx.shadowBlur = canvas.width * 0.05;
         
@@ -85,14 +122,12 @@
         ctx.fillStyle = 'rgba(255, 230, 0, 0.4)';
         ctx.fill();
 
-        // Inner solid core
         ctx.shadowBlur = 0;
         ctx.beginPath();
         ctx.arc(sunCenter.x, sunCenter.y, sunRadius, 0, Math.PI * 2);
         ctx.fillStyle = '#FFDD00';
         ctx.fill();
 
-        // Radiating rays
         const numRays = 16;
         const innerRayRadius = sunRadius * 1.1;
         const outerRayRadius = sunRadius * 2.2;

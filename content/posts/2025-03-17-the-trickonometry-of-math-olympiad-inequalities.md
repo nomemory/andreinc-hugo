@@ -1564,45 +1564,42 @@ With a bit of creativity, you can solve the next problem in a manner similar to 
             \]
         </p>
         <details>
-            <summary>Hint 1</summary>
-            <p>The inequality can be rewritten in an equivalent form:</p>
-            <p class="mpc">
-                \[
-                    \frac{1}{n}\left(n+\frac{1}{n}+\frac{1}{n+1}+\dots+\frac{1}{2n-1}\right) \gt \sqrt[n]{2}
-                \]
-            </p>
-        </details>
-        <details>
-            <summary>Hint 2</summary>
-            <p>Consider splitting \(n\) as a sum of ones:</p>
-            <p class="mpc">
-                \[
-                    \frac{1}{n}\left(\underbrace{1+1+\dots+1}_{n}+\frac{1}{n}+\frac{1}{n+1}+\dots+\frac{1}{2n-1}\right) \gt \sqrt[n]{2}
-                \]
-            </p>
+            <summary>Hint</summary>
+            <p>Try adding \(n\) to both sides of the inequality and then applying the AM-GM inequality to the \(n\) terms on the left-hand side.</p>
         </details>
         <details>
             <summary>Solution</summary>
-            <p>We start by rewriting the given inequality::</p>
+            <p>Adding \(n\) to both sides of the given inequality, we get:</p>
             <p class="mpc">
                 \[
-                    \frac{1}{n}+\frac{1}{n+1}+\dots+\frac{1}{2n-1} \gt n \left(\sqrt[n]{2} - 1\right) \Leftrightarrow \\
+                    n + \frac{1}{n} + \frac{1}{n+1} + \dots + \frac{1}{2n-1} \gt n\sqrt[n]{2}
                 \]
             </p>
-            <p>Which is equivalent to:</p>
+            <p>We can rewrite the left-hand side by distributing the \(n\) ones into each fraction:</p>
             <p class="mpc">
                 \[
-                    \frac{1}{n}\left(n+\frac{1}{n}+\frac{1}{n+1}+\dots+\frac{1}{2n-1}\right) \gt \sqrt[n]{2}
+                    \left(1+\frac{1}{n}\right) + \left(1+\frac{1}{n+1}\right) + \dots + \left(1+\frac{1}{2n-1}\right) \gt n\sqrt[n]{2}
                 \]
             </p>
-            <p>Now, split \(n\) into a sum of ones and distribute them across the terms inside the parentheses:</p>
+            <p>Simplifying the terms:</p>
             <p class="mpc">
                 \[
-                    \frac{1}{n}*\left[\left(1+\frac{1}{n}\right)+\left(1+\frac{1}{n+1}\right) + \dots + \left(1+\frac{1}{2n-1}\right)\right] \gt \sqrt[n]{2} \Leftrightarrow \\
-                    \frac{1}{n}*\left( \frac{n+1}{n} + \frac{n+2}{n+1} + \dots + \frac{2n}{2n-1} \right) \overbrace{\gt}^{AM-GM} \sqrt[n]{\frac{n+1}{n}*\dots*\frac{2n}{2n-1}} \gt \sqrt[n]{2}
+                    \frac{n+1}{n} + \frac{n+2}{n+1} + \dots + \frac{2n}{2n-1} \gt n\sqrt[n]{2}
                 \]
             </p>
-            <p>This proves our inequality. Equality would hold for \(n=1\), which is not possible given the constraints.</p>
+            <p>By the AM-GM inequality for \(n\) positive terms:</p>
+            <p class="mpc">
+                \[
+                    \frac{\frac{n+1}{n} + \frac{n+2}{n+1} + \dots + \frac{2n}{2n-1}}{n} \gt \sqrt[n]{\frac{n+1}{n} \cdot \frac{n+2}{n+1} \cdot \dots \cdot \frac{2n}{2n-1}}
+                \]
+            </p>
+            <p>The product inside the radical is a telescoping product that simplifies to \(\frac{2n}{n} = 2\). Thus:</p>
+            <p class="mpc">
+                \[
+                    \frac{LHS + n}{n} \gt \sqrt[n]{2} \implies LHS \gt n(\sqrt[n]{2} - 1)
+                \]
+            </p>
+            <p>This completes the proof. Equality holds only for \(n=1\), which is excluded by the problem constraints.</p>
         </details>
         <details>
             <summary>Source</summary>
