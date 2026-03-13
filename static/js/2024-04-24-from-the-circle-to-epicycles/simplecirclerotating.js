@@ -1,48 +1,41 @@
 const simpleCircleRotating = (s) => {
-
     addPaintGrid(s);
     addShowFps(s);
 
-    // Constants
     const d = 200;
     const r = d / 2;
     const f = theme.frequency;
     const rColor = s.color(theme.radiusColorLight);
 
-    // Angle
     let angl = s.HALF_PI;
-    let reset = s.TW0_PI + s.HALF_PI;
+    // Fixed typo: TWO_PI instead of TW0_PI
+    const reset = s.TWO_PI + s.HALF_PI; 
 
-    // Vectors
-    let vC; // the center of the cartesian grid
-    let vR; // the point on the circle that moves
-    let vCoord;
-    let vRLab;
-
-    // Buffers
-    let cBuff;
+    let vC, vR, cBuff;
 
     s.setup = () => {
-        // Create Canvas of given size 
         const canvas = s.createCanvas(theme.canvasX, theme.canvasY);
         canvas.parent("simple-circle-rotating-sketch");
+
+        // --- Intersection Observer for Performance ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                entry.isIntersecting ? s.loop() : s.noLoop();
+            });
+        }, { threshold: 0.1 });
+        observer.observe(canvas.elt);
+        // ---------------------------------------------
+
         s.textFont(theme.textFont);
         s.frameRate(theme.frameRate);
 
-        // Initialise circle in the center of the canvas
-        cBuff = s.createGraphics(s.width, s.height);
         vC = s.createVector(s.width / 2, s.height / 2);
-        vCoord = s.createVector(0, 0);
-        vRLab = s.createVector(0, 0);
         vR = s.createVector(0, 0);
 
-        // Draw the main circle exactly once on the buffer
+        cBuff = s.createGraphics(s.width, s.height);
         cBuff.noFill();
         s.paintGrid(cBuff, s.width, s.height, vC, r / 5, 5, {
-            showUnits: true,
-            showOrigin: true,
-            showY: true,
-            showX: true
+            showUnits: true, showOrigin: true, showY: true, showX: true
         });
         cBuff.circle(vC.x, vC.y, d);
     };
@@ -51,40 +44,41 @@ const simpleCircleRotating = (s) => {
         s.background(theme.bkgColor);
         s.image(cBuff, 0, 0);
 
-        // Painting the lines, adding a 'stroke' of 1
-        s.stroke(1);
+        // Pre-calculate sin/cos once
+        const sSin = s.sin(angl);
+        const sCos = s.cos(angl);
+        
+        vR.set(vC.x + sSin * r, vC.y + sCos * r);
 
-        // Updating and rendering the moving radius vector
-        vR.x = vC.x + s.sin(angl) * r;
-        vR.y = vC.y + s.cos(angl) * r;
-
+        // Draw Radius Line and Point
         s.stroke(rColor);
         s.line(vC.x, vC.y, vR.x, vR.y);
         s.circle(vR.x, vR.y, 3);
 
-        // At this point we are painting text, so we remove the 'stroke'
+        // Text rendering - No stroke for cleaner fonts
         s.noStroke();
+        s.fill(255); // Adjust based on your theme
 
-        // Paint moving coordinates
-        vCoord.x = (vR.x - vC.x) / r;
-        vCoord.y = (vR.y - vC.y) / r;
-        s.text("(x=" + vCoord.x.toFixed(2) + ",y=" + -  vCoord.y.toFixed(2) + ")", vR.x, vR.y);
+        // Coordinates (normalized to unit circle)
+        // x and y are derived directly from the sin/cos we already calculated
+        const unitX = sSin;
+        const unitY = -sCos; // Negative because p5 Y-axis points down
 
-        // Show Radius*frequency
-        vRLab.x = (vC.x + vR.x) / 2;
-        vRLab.y = (vC.y + vR.y) / 2;
-        s.text("r (radius)", vRLab.x, vRLab.y);
+        s.text(`(x=${unitX.toFixed(2)}, y=${unitY.toFixed(2)})`, vR.x + 5, vR.y);
 
-        // Show sum at the bottom of the canvas
-        let sqrX = (vCoord.x * vCoord.x).toFixed(2);
-        let sqrY = (vCoord.y * vCoord.y).toFixed(2);
-        s.text("x² + y² = " + sqrX + " + " + sqrY + " = 1", 5, s.height - 5);
+        // Radius Label (Positioned at midpoint)
+        s.text("r (radius)", (vC.x + vR.x) / 2, (vC.y + vR.y) / 2);
+
+        // Identity sum at bottom
+        const sqrX = (unitX * unitX).toFixed(2);
+        const sqrY = (unitY * unitY).toFixed(2);
+        s.text(`x² + y² = ${sqrX} + ${sqrY} = 1.00`, 10, s.height - 10);
 
         angl += f;
-        if (angl > reset) angl = s.HALF_PI; // reset angle once the circle is complete
+        if (angl > reset) angl = s.HALF_PI;
+        
         s.showFps();
     };
 };
 
-let simpleCircleRotatingSketch =
-    new p5(simpleCircleRotating, 'simple-circle-rotating-sketch');
+let simpleCircleRotatingSketch = new p5(simpleCircleRotating, 'simple-circle-rotating-sketch');

@@ -25,6 +25,7 @@ The animations used in this series are original, although I drew inspiration fro
 It all starts with [*The Circle*](https://en.wikipedia.org/wiki/Circle):
 
 <div id="simple-circle-sketch"></div>
+<sup><a href="/js/2024-04-24-from-the-circle-to-epicycles/simplecircle.js">[simplecircle.js]</a></sup>
 
 A circle is a geometric figure defined by its center $P(a, b)$ and its radius $r$. Algebraically, we describe it with the following equation:
 
