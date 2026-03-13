@@ -8,7 +8,6 @@ const simpleCircleRotating = (s) => {
     const rColor = s.color(theme.radiusColorLight);
 
     let angl = s.HALF_PI;
-    // Fixed typo: TWO_PI instead of TW0_PI
     const reset = s.TWO_PI + s.HALF_PI; 
 
     let vC, vR, cBuff;
@@ -17,14 +16,12 @@ const simpleCircleRotating = (s) => {
         const canvas = s.createCanvas(theme.canvasX, theme.canvasY);
         canvas.parent("simple-circle-rotating-sketch");
 
-        // --- Intersection Observer for Performance ---
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 entry.isIntersecting ? s.loop() : s.noLoop();
             });
         }, { threshold: 0.1 });
         observer.observe(canvas.elt);
-        // ---------------------------------------------
 
         s.textFont(theme.textFont);
         s.frameRate(theme.frameRate);
@@ -44,29 +41,23 @@ const simpleCircleRotating = (s) => {
         s.background(theme.bkgColor);
         s.image(cBuff, 0, 0);
 
-        // Pre-calculate sin/cos once
         const sSin = s.sin(angl);
         const sCos = s.cos(angl);
         
         vR.set(vC.x + sSin * r, vC.y + sCos * r);
 
-        // Draw Radius Line and Point
         s.stroke(rColor);
         s.line(vC.x, vC.y, vR.x, vR.y);
         s.circle(vR.x, vR.y, 3);
 
-        // Text rendering - No stroke for cleaner fonts
         s.noStroke();
-        s.fill(255); // Adjust based on your theme
+        // CHANGED: Using theme colors instead of hardcoded 255
+        s.fill(theme.radiusColor || 0); 
 
-        // Coordinates (normalized to unit circle)
-        // x and y are derived directly from the sin/cos we already calculated
         const unitX = sSin;
-        const unitY = -sCos; // Negative because p5 Y-axis points down
+        const unitY = -sCos; 
 
         s.text(`(x=${unitX.toFixed(2)}, y=${unitY.toFixed(2)})`, vR.x + 5, vR.y);
-
-        // Radius Label (Positioned at midpoint)
         s.text("r (radius)", (vC.x + vR.x) / 2, (vC.y + vR.y) / 2);
 
         // Identity sum at bottom

@@ -12,39 +12,36 @@ const simpleCircleRotatingTriangle = (s) => {
     let angle = s.HALF_PI;
     let bTxtY1, bTxtY2, bTxtY3;
     let buff;
-    let vC, vR, vRProj, vSL, vCL, vThet;
+    let vC, vR, vRProj, vThet;
 
     s.setup = () => {
-        // Create Canvas of given size 
         const canvas = s.createCanvas(theme.canvasX, theme.canvasY);
         canvas.parent('simple-circle-rotating-triangle-sketch');
+        
+        // --- Intersection Observer (Visibility Fix) ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                entry.isIntersecting ? s.loop() : s.noLoop();
+            });
+        }, { threshold: 0.10 });
+        observer.observe(canvas.elt);
+        // ----------------------------------------------
+
         s.textFont(theme.textFont);
         s.frameRate(theme.frameRate);
 
-        // Initialise
         vC = s.createVector(s.width / 2, s.height / 2);
-        vR = s.createVector(
-            vC.x + s.sin(angle) * r,
-            vC.y + s.cos(angle) * r
-        );
-        let halfAngle = angle / 2;
-        vThet = s.createVector(
-            vC.x + s.sin(halfAngle) * ar,
-            vC.y + s.cos(halfAngle) * ar
-        );
-        vRProj = s.createVector(vR.x, vC.y);
-        vSL = s.createVector(0, 0);
-        vCL = s.createVector(0, 0);
-        buff = s.createGraphics(s.width, s.width);
+        vR = s.createVector(0, 0);
+        vThet = s.createVector(0, 0);
+        vRProj = s.createVector(0, 0);
+
+        buff = s.createGraphics(s.width, s.height);
         s.paintGrid(buff, s.width, s.height, vC, r / 5, 5, {
-            showUnits: true,
-            showOrigin: true,
-            showY: true,
-            showX: true
+            showUnits: true, showOrigin: true, showY: true, showX: true
         });
+        buff.noFill();
         buff.circle(vC.x, vC.y, d);
 
-        // Initialise bottom text positions
         bTxtY1 = s.height - 5;
         bTxtY2 = bTxtY1 - 15;
         bTxtY3 = bTxtY2 - 15;
@@ -54,99 +51,80 @@ const simpleCircleRotatingTriangle = (s) => {
         s.background(theme.bkgColor);
         s.image(buff, 0, 0);
 
-        vR.x = vC.x + s.sin(angle) * r;
-        vR.y = vC.y + s.cos(angle) * r;
-        vRProj.x = vR.x;
+        // Pre-calculate trig once per frame
+        const sSin = s.sin(angle);
+        const sCos = s.cos(angle);
+        const rX = vC.x + sSin * r;
+        const rY = vC.y + sCos * r;
 
-        // Updating movement
-        const soff = (angle >= s.PI && angle < s.TWO_PI) ? -45 : 2;
-        const coff = (angle >= s.HALF_PI && angle) < 1.5 * s.TWO_PI ? 15 : -5;
-        vSL.x = vR.x + soff
-        vSL.y = (vC.y + vR.y) / 2;
-        vCL.x = (vC.x + vR.x) / 2 - 10;
-        vCL.y = vC.y + coff;
-        vThet.x = vC.x + s.sin(angle/2) * ar / 1.5;
-        vThet.y = vC.y + s.cos(angle/2) * ar / 1.5;
+        vR.set(rX, rY);
+        vRProj.set(rX, vC.y);
 
-        // Drawing arc
-        s.push();
+        // 1. Drawing Theta Arc
         s.stroke(theme.thetaColor);
         s.fill(theme.thetaColorLight);
-        s.arc(vC.x, vC.y, ar, ar, s.HALF_PI-angle, 0);
-        s.pop();
-
-        // Drawing arc text
-        s.push();
+        s.arc(vC.x, vC.y, ar, ar, s.HALF_PI - angle, 0);
+        
+        // Arc Label "θ"
+        const labelAng = s.HALF_PI - (angle / 2);
+        s.noStroke();
         s.fill(theme.thetaColor);
-        s.text("θ", vThet.x, vThet.y);
-        s.pop();
+        s.text("θ", vC.x + s.cos(labelAng) * (ar / 1.5), vC.y - s.sin(labelAng) * (ar / 1.5));
 
-        // Moving radius
-        s.push();
+        // 2. Lines (Hypotenuse, Opposite, Adjacent)
+        s.noFill();
         s.stroke(theme.radiusColorLight);
-        s.line(vC.x, vC.y, vR.x, vR.y);
-        s.circle(vR.x, vR.y, 3);
-        s.circle(vRProj.x, vRProj.y, 3);
-        s.pop();
+        s.line(vC.x, vC.y, vR.x, vR.y); // Radius
 
-        // Sine
-        s.push();
         s.stroke(theme.sineColor);
-        s.line(vRProj.x, vRProj.y, vR.x, vR.y);
-        s.pop();
+        s.line(vRProj.x, vRProj.y, vR.x, vR.y); // Sine line
 
-        // Sine label
-        s.push();
-        s.fill(theme.sineColor);
-        s.text("sin(θ)", vSL.x, vSL.y);
-        s.pop();
-
-        // Cosine
-        s.push();
         s.stroke(theme.cosineColor);
-        s.line(vRProj.x, vRProj.y, vC.x, vC.y);
-        s.pop();
+        s.line(vC.x, vC.y, vRProj.x, vRProj.y); // Cosine line
 
-        // Cosine label
-        s.push();
-        s.fill(theme.cosineColor);
-        s.text("cos(θ)", vCL.x, vCL.y)
-        s.pop();
+        // 3. Points
+        s.fill(theme.radiusColorLight);
+        s.noStroke();
+        s.circle(vR.x, vR.y, 4);
+        s.circle(vRProj.x, vRProj.y, 4);
 
-        // Moving Point
-        s.push();
-        s.text("(", vR.x + 2, vR.y);
+        // 4. Side Labels
+        const soff = (angle >= s.PI && angle < s.TWO_PI) ? -45 : 5;
         s.fill(theme.sineColor);
-        s.text("sin(θ)", vR.x + 7, vR.y)
-        s.fill(theme.textColor);
-        s.text(", ", vR.x + 48, vR.y);
-        s.fill(theme.cosineColor);
-        s.text("cos(θ)", vR.x + 60, vR.y);
-        s.fill(theme.textColor);
-        s.text(")", vR.x + 100, vR.y);
-        s.pop();
+        s.text("sin(θ)", vR.x + soff, (vC.y + vR.y) / 2);
 
-        // // Bottom left-side numbers
-        s.push();
+        const coff = (angle >= s.HALF_PI && angle < 1.5 * s.PI) ? 15 : -5;
+        s.fill(theme.cosineColor);
+        s.text("cos(θ)", (vC.x + vR.x) / 2 - 15, vC.y + coff);
+
+        // 5. Moving Coordinate Text (A bit cleaner)
+        s.fill(theme.textColor || 255);
+        let txtBaseX = vR.x + 10;
+        s.text("(", txtBaseX, vR.y);
+        s.fill(theme.sineColor);
+        s.text("sin(θ)", txtBaseX + 5, vR.y);
+        s.fill(theme.textColor || 255);
+        s.text(",", txtBaseX + 45, vR.y);
+        s.fill(theme.cosineColor);
+        s.text("cos(θ)", txtBaseX + 50, vR.y);
+        s.fill(theme.textColor || 255);
+        s.text(")", txtBaseX + 90, vR.y);
+
+        // 6. Bottom Status Values
+        const deg = ((angle - s.HALF_PI) * 180 / s.PI).toFixed(2);
         s.fill(theme.thetaColor);
-        s.text("    θ  = " + ((angle-s.HALF_PI)*180/s.PI).toFixed(2) + "°", 5, bTxtY3);
+        s.text(`θ = ${deg}°`, 5, bTxtY3);
         s.fill(theme.sineColor);
-        s.text("sin(θ) = " + s.sin(angle).toFixed(2), 5, bTxtY2);
+        s.text(`sin(θ) = ${sSin.toFixed(2)}`, 5, bTxtY2);
         s.fill(theme.cosineColor);
-        s.text("cos(θ) = " + s.cos(angle).toFixed(2), 5, bTxtY1);
-        s.pop();
+        s.text(`cos(θ) = ${(-sCos).toFixed(2)}`, 5, bTxtY1); // Negative because P5 Y is inverted
 
-        // Reset
+        // Update Angle
         angle += f;
-        if (angle > reset) {
-            angle = s.HALF_PI;
-        }
+        if (angle > reset) angle = s.HALF_PI;
 
         s.showFps();
     };
-
 };
 
-let simpleCircleRotatingTriangleSketch =
-    new p5(simpleCircleRotatingTriangle, 'simple-circle-rotating-triangle-sketch');
-
+let simpleCircleRotatingTriangleSketch = new p5(simpleCircleRotatingTriangle, 'simple-circle-rotating-triangle-sketch');

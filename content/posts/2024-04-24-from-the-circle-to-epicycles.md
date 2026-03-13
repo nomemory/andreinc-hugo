@@ -36,6 +36,7 @@ A circle is a geometric figure defined by its center $P(a, b)$ and its radius $r
 When we set the center at the origin ($a=0, b=0$) and the radius to $r=1$, we get a special case known as [**The Unit Circle**](https://en.wikipedia.org/wiki/Unit_circle):
 
 <div id="simple-circle-rotating-sketch"></div>
+<sup><a href="/js/2024-04-24-from-the-circle-to-epicycles/simplecirclerotating.js">[simplecirclerotating.js]</a></sup>
 
 The equation simplifies beautifully to:
 
@@ -48,24 +49,26 @@ One could argue *The Circle* is the epitome of [symmetry](https://en.wikipedia.o
 If you pick a point $A$ on the circumference and its reflection $A'$ on the opposite side, the relationship remains constant as they rotate. This rotational invariance is the "secret sauce" of Fourier Mathematics.
 
 <div id="triangle-in-circle-sketch"></div>
+<sup><a href="/js/2024-04-24-from-the-circle-to-epicycles/triangleincircle.js">[triangleincircle.js]</a></sup>
 
 What happens on the circle, stays on the circle. Everything is periodic, predictable, and perfectly balanced.
 
 # The number $\pi$
 
-In trigonometry and Fourier analysis, we rarely express angles in [degrees](https://en.wikipedia.org/wiki/Degree_(angle)). Instead, we use [**Radians**](https://en.wikipedia.org/wiki/Radian), which represent angles in relation to the number [$\pi$](https://en.wikipedia.org/wiki/Pi): $\pi$, $\frac{\pi}{2}$, $\frac{\pi}{3}$, $\frac{\pi}{4}$, and so on.
+In trigonometry and Fourier analysis, we rarely express angles in [degrees](https://en.wikipedia.org/wiki/Degree_(angle)). Instead, we use [Radians](https://en.wikipedia.org/wiki/Radian), which represent angles in relation to the number [$\pi$](https://en.wikipedia.org/wiki/Pi): $\pi$, $\frac{\pi}{2}$, $\frac{\pi}{3}$, $\frac{\pi}{4}$, and so on.
 
-By definition, $\pi$ is the ratio of a circle's **circumference** to its **diameter**. Regardless of the circle's size, this ratio is constant:$\pi \approx 3.14159...$.
+By definition, $\pi$ is the ratio of a circle's *circumference* to its *diameter*. Regardless of the circle's size, this ratio is constant:$\pi \approx 3.14159...$.
 
 <div id="rotating-PI-sketch"></div>
+<sup><a href="/js/2024-04-24-from-the-circle-to-epicycles/rotatingpi.js">[rotatingpi.js]</a></sup>
 
 Because of this relationship, the properties of a circle are inextricably linked to $\pi$. For any circle with a radius $r$:
-* **Perimeter (Circumference):** $P = 2\pi r$
-* **Area:** $A = \pi r^2$
+* Perimeter (Circumference): $P = 2\pi r$
+* Area: $A = \pi r^2$
 
 Beyond geometry, $\pi$ is a fascinating number in its own right:
-* **[Irrational](https://en.wikipedia.org/wiki/Irrational_number):** It cannot be expressed as a simple fraction, and its decimal representation never ends or repeats.
-* **[Transcendental](https://en.wikipedia.org/wiki/Transcendental_number):** It is not the root of any non-zero polynomial equation with rational coefficients.
+* [Irrational](https://en.wikipedia.org/wiki/Irrational_number): It cannot be expressed as a simple fraction, and its decimal representation never ends or repeats.
+* [Transcendental](https://en.wikipedia.org/wiki/Transcendental_number): It is not the root of any non-zero polynomial equation with rational coefficients. (Note: Transcedental numbers are trully amazing, because first, they are truly difficult to find, and second, almost all real numbers are transcendental. The great mathematician Georg Cantor, proved that transcedental numbers are not countable).
 
 # Radians
 
