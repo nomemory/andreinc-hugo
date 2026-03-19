@@ -2,7 +2,7 @@
 title = "Blogroll"
 +++
 
-Are you new to the web, and is your experience limited to apps and algorithms feeding you "content" (a term that carries a certain irony in my native Romanian language)? 
+Is your experience limited to apps and algorithms feeding you "content" ? 
 
 I recommend reading the following articles to understand the "alternative" ways you can consume information, rather than being consumed by it:
 

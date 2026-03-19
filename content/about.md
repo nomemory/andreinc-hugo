@@ -2,10 +2,6 @@
 title = "About"
 +++
 
-<div class="mp">
-I’d be flattered to hear from you; you can reach me at andrei.n.ciobanu (hosted on @pm.me). 
-</div>
-
 My name is Andrei Nicolin Ciobanu, pronounced `[anˈdrej] [t͡ʃoˈbanu] [nikoˈlin]`, or `ahn-DRAY nee-ko-LEEN cho-BAH-noo`.
 
 {{< img src="/about/me-it.jpg" width="450" caption="Myself, Saint-Paul-de-Vence, France, 2019" grayscale="true">}}
@@ -14,9 +10,9 @@ I was born in [Bailesti](https://en.wikipedia.org/wiki/B%C4%83ile%C8%99ti), [Sou
 
 {{< img src="/about/bailesti.jpg" width="450" caption="Bailesti, 1900" grayscale="true">}}
 
-My childhood was happy, rural, very Balkan, and defined by a permanent connection to the Internet. I was lucky enough to start browsing back in 1996. It was a completely different web then, people were actually clicking on links not knowing what to expect next. I have fond memories of the [modem’s screech](https://www.youtube.com/watch?v=vvr9AMWEU-c), the nights spent browsing or chatting on IRC, and the looming phone bill.
+My childhood was happy, somewhat rural, very [Balkan](https://en.wikipedia.org/wiki/Balkans), and defined by a permanent connection to the Internet. I was lucky enough to start browsing back in 1996. It was a completely different web then, people were actually clicking on links not knowing what to expect next. I have fond memories of the [modem’s screech](https://www.youtube.com/watch?v=vvr9AMWEU-c), the nights spent browsing or chatting on [IRC](https://en.wikipedia.org/wiki/IRC), and the looming phone bill.
 
-I’ve been tinkering with math, computers, and programming languages since I was a kid. My parents were engineers who instilled a deep curiosity for technology in me, while my grandfather and granduncle were math teachers who encouraged me to play with numbers. 
+I’ve been tinkering with math, computers, and programming languages since I was a kid. My parents were engineers who instilled a deep curiosity for technology in me, while my grandfather and granduncle were math teachers who encouraged me to play with numbers.
 
 {{< img src="/about/muscalu.png" width="450" caption="Me and Alexandru Muscalu, my cool grandfather and math teacher" grayscale="true">}}
 
@@ -24,7 +20,7 @@ My first micro-computer was [one of these](https://muzeuldecalculatoare.ro/2018/
 
 {{< img src="/about/hc91.jpg" width="450" caption="HC91, A ZX Spectrum Clone" grayscale="true">}}
  
-Eventually, I moved to [Craiova](https://en.wikipedia.org/wiki/Craiova) to attend [*Carol I National College*](https://en.wikipedia.org/wiki/Carol_I_National_College).
+Eventually, I moved to [Craiova](https://en.wikipedia.org/wiki/Craiova) to attend [*Carol I National College*](https://en.wikipedia.org/wiki/Carol_I_National_College). 
 
 {{< img src="/about/carol1_c.jpg" width="450" caption="Carol I National College, Craiova" grayscale="true">}}
 
