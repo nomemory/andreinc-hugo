@@ -1,5 +1,5 @@
 +++
-date = '2026-03-16'
+date = '2026-03-19'
 draft = false
 title = 'The Shape of Inequalities'
 categories = ['math']
