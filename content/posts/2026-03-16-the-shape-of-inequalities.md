@@ -1,5 +1,5 @@
 +++
-date = '2026-03-19'
+date = '2026-03-16'
 draft = false
 title = 'The Shape of Inequalities'
 categories = ['math']
@@ -24,9 +24,34 @@ After writing [my previous handout article](/2025/03/17/the-trickonometry-of-mat
 
 Some of the animations are standard and are taught in the right kind of schools, but others have some originality. For those, I actually developed the ideas using pen, paper, and my own imagination. If somebody else already did that, it's fine; I am not a fool to claim "real" originality when it comes to basic mathematics. The roads were already very circulated in the last 2000 years.
 
+<style>
+.math-canvas-wrap {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    margin: 2rem 0;
+}
+
+.math-canvas {
+    width: 600px;
+    height: 400px;
+    position: relative;
+    margin: 0 auto;
+    border: 2px solid #222;
+    background: #f6f8fa;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.math-canvas.tall {
+    height: 600px;
+}
+</style>
+
 # The HM-AM-GM-QM Inequality
 
-This is the most popular inequality we encounter during our school years. To remind you of it, in case you've forgotten, the simple version for three numbers $a, b, c > 0$ is:
+This is the most popular inequality chain we encounter during our school years. To remind you of it, in case you've forgotten, the simple version for three numbers $a, b, c > 0$ is:
 
 <div class="mp mpc">
     \[
@@ -34,7 +59,7 @@ This is the most popular inequality we encounter during our school years. To rem
     \]
 </div>
 
-Or, the two-variable case:
+Or, in the even simpler two-variable case:
 
 <div class="mp mpc">
     \[
@@ -42,15 +67,17 @@ Or, the two-variable case:
     \]
 </div>
 
+To decode the "alphabet soup," here is what those letters actually stand for:
+
 * `HM = Harmonic Mean`: Even if it sounds counterintuitive to an untrained eye, this mean appears in the very laws encoded in our universe. For example, if you go from point $A$ to point $B$ with a speed of $v_1$ and come back with a speed of $v_2$, what is your average speed? A bad student would say $v_{\text{avg}}=\frac{v_1+v_2}{2}$, but a good student would know it is actually the harmonic mean: $v_{\text{avg}} = \frac{2}{\frac{1}{v_1} + \frac{1}{v_2}}$.
 
 * `GM = Geometric Mean`: The "growth" mean, useful for scaling and compounding. Much like the HM, this one appears in nature and in... simple finance. For example, if you are a stock investor and in the first year your portfolio grows by `100%`, but the next year the market crashes by `50%`, what was your *average growth*? 
-    - An investor bad at math would say: $\frac{100 + (-50)}{2} = 25\$\%. 
-    - A good investor would look at the growth factors: in the first year, the factor is $2.0$; in the second, it is $0.5$. The it would average everything down like this: $ \text{Average Growth Factor} = \sqrt{2.0 \times 0.5} = 1.0$
+    - An investor bad at math would say: $\frac{100 + (-50)}{2} = 25\%\$.
+    - A good investor would look at the growth factors: in the first year, the factor is $2.0$; in the second, it is $0.5$. Then it would average everything down like this: $ \text{Average Growth Factor} = \sqrt{2.0 \times 0.5} = 1.0$
     - This means your average growth is actually $0\%$. You ended up exactly where you started, which, let's be honest, is already better than most traders.
 * `AM = Arithmetic Mean`: The classic average everyone knows and loves. Okay, maybe *love* is a strong word for an *average* math formula.
 * `QM = Quadratic Mean:` Also known as the *Root Mean Square (RMS)* appears in electrical engineering for example. 
-    - In Europe, the voltage is labeled as 230V. But this is not the actual *average* voltage *average* people think. The actual value is determined with the *RMS*.
+    - In Europe, the voltage is labeled as 230V. But this is not the actual *average* voltage people think. The actual value is determined with the *RMS*.
 
 Now that things are clearer, let's look at this inequality chain with a geometric eye. It's amazing to see how things come to life.
 
@@ -60,7 +87,9 @@ The first animation is actually the one I found in the picture.
 
 We are given a large circle with center $O$ and a diameter $a$, meaning the radius is $R = \frac{a}{2}$. Then, there is another smaller circle with center $O'$ touching the first circle's circumference from the outside. This second circle has a diameter $b$, so its radius is $r = \frac{b}{2}$. If we project the center of the smaller circle $O'$ onto the vertical line passing through $O$, we name that projected point $P$. 
 
-<div id="am-gm-viz" style="width: 100%; max-width: 600px; height: 400px; position: relative; margin: 2rem auto; border: 2px solid #222; background: #f6f8fa; border-radius: 4px; overflow: hidden;"></div>
+<div class="math-canvas-wrap">
+    <div id="am-gm-viz" class="math-canvas"></div>
+</div>
 
 A right triangle $OPO'$ is formed with the following lengths: 
 - The hypotenuse $OO'$ is the sum of the radii: $\frac{a}{2} + \frac{b}{2} = \frac{a+b}{2}$.
@@ -78,16 +107,17 @@ To compute $O'P$, we just apply Pythagoras's theorem:
 \]
 </div>
 
-
 $OO'$ is the `AM` for $a$ and $b$, while $O'P$ is the `GM` for $a$ and $b$. Notice how the `GM` (a leg) is always smaller than the `AM` (the hypotenuse). In the one particular case where the circles are the same size ($a=b$), the leg $OP$ becomes zero, and the `GM` coincides with the `AM`. Lovely!
 
 ## The Semicircle
 
-This is the "classroom" strategy, the visual I was taught in school. Of course, the visual was not moving back in my day.
+This is the "classroom" strategy, the visual I was taught in school. 
 
 We start with a semicircle with center $O$ and a total diameter of $a + b$. We pick a point $P$ on the circumference and project it down onto the diameter at point $P'$. This forms a right triangle $POP'$ (the letters were conveniently chosen so the visual "pops").
 
-<div id="am-gm-semicircle" style="width: 100%; max-width: 600px; height: 400px; position: relative; margin: 2rem auto; border: 2px solid #222; background: #f6f8fa; border-radius: 4px; overflow: hidden;"></div>
+<div class="math-canvas-wrap">
+    <div id="am-gm-semicircle" class="math-canvas"></div>
+</div>
 
 In this triangle:
 - The horizontal leg is $OP' = \frac{|a - b|}{2}$.
@@ -109,7 +139,9 @@ Now, to complicate things further, let's add the `QM` (Quadratic Mean) into the 
 - Draw a radius $OM$ that is perpendicular to our diameter $a+b$. Since $OM$ is a radius, we know $OM = \frac{a+b}{2}$.
 - Connect points $M$ and $P'$ with a new segment.
 
-<div id="am-gm-qm-semicircle" style="width: 100%; max-width: 600px; height: 400px; position: relative; margin: 2rem auto; border: 2px solid #222; background: #f6f8fa; border-radius: 4px; overflow: hidden;"></div>
+<div class="math-canvas-wrap">
+    <div id="am-gm-qm-semicircle" class="math-canvas"></div>
+</div>
 
 By looking at the visual, we can see a new right triangle ($MOP'$) is formed, with its two legs being:
 - $OM = \frac{a+b}{2}$
@@ -126,12 +158,13 @@ To compute the hypotenuse $MP'$, we simply apply Pythagoras again:
     \]
 </div>
 
-
 We observe now that $MP'$ plays the role of the `QM` of $a$ and $b$. Because $MP'$ is the hypotenuse and $OM$ (the radius/AM) is just a leg, the `QM` will always be bigger than the radius, unless $a=b$. In that specific case, $P'$ moves to the center $O$, the leg $OP'$ vanishes, and we get `QM = AM`.
 
 And finally, let's not forget about the `HM`. This is the most subtle of them all. To make it "appear," let's project the point $P'$ onto the segment $OP$. We will call this new projection point $N$.
 
-<div id="hm-am-gm-qm-semicircle" style="width: 100%; max-width: 600px; height: 400px; position: relative; margin: 2rem auto; border: 2px solid #222; background: #f6f8fa; border-radius: 4px; overflow: hidden;"></div>
+<div class="math-canvas-wrap">
+    <div id="hm-am-gm-qm-semicircle" class="math-canvas"></div>
+</div>
 
 To compute $PN$, which is the actual `HM`, we use the properties of the right triangle $OPP'$. Since $PN$ is a segment on the hypotenuse formed by the altitude from the right angle (wait, actually, we use the area or similarity here!), the math works out beautifully:
 
@@ -141,6 +174,7 @@ To compute $PN$, which is the actual `HM`, we use the properties of the right tr
     \]
 </div>
 
+We’ve done it! We have the whole "alphabet soup" chain packed into one single semicircle: 
 - $PN$ is the `HM` (the small segment)
 - $PP'$ is the `GM` (the vertical altitude)
 - $OP$ is the `AM` (the radius)
@@ -162,7 +196,9 @@ If we want to imagine filling this container with water (I know it's a 2D shape,
 
 Look at the following visual (the blue area represents the "liquid" (the product of $a \cdot b$)):
 
-<div id="am-gm-squares" style="width: 100%; max-width: 600px; height: 400px; position: relative; margin: 2rem auto; border: 2px solid #222; background: #f6f8fa; border-radius: 4px; overflow: hidden;"></div>
+<div class="math-canvas-wrap">
+    <div id="am-gm-squares" class="math-canvas"></div>
+</div>
 
 You’ll notice the water level fluctuates as the rectangle morphs (conditioned by $a+b=\text{constant}$), but it’s physically impossible for it to overflow the bounds of the square. The liquid only hits the brim at the "top of the stroke," right when $a=b$ and the rectangle becomes a perfect square. Any other time, there’s always some empty space left at the top.
 
@@ -185,7 +221,9 @@ For the people not comfortable using a 2D shape as a container, here is the 3D v
 
 We define a cube with a side length of $\frac{a+b+c}{3}$, giving it a volume of $V_{\text{cube}} = \left(\frac{a+b+c}{3}\right)^3$. In parallel, we have a rectangular prism with sides $a$, $b$, and $c$. No matter how we morph that rectangular prism, as long as we keep the sum $a+b+c$ constant, our theoretical blue liquid from the prism will never overflow if we try to pour it into the cube.
 
-<div id="am-gm-cubes" style="width: 100%; max-width: 600px; height: 400px; position: relative; margin: 2rem auto; border: 2px solid #222; background: #f6f8fa; border-radius: 4px; overflow: hidden;"></div>
+<div class="math-canvas-wrap">
+    <div id="am-gm-cubes" class="math-canvas"></div>
+</div>
 
 Just like before, the "prism" container only reaches the brim of the "cube" container when $a=b=c$. Any deviation from perfect symmetry results in a loss of volume. In mathematical terms:
 
@@ -207,16 +245,18 @@ There is a "cute" inequality you might know it simply as the "Sum of Squares":
     \]
 </div>
 
-There are multiple ways to prove this, and I’ve already spoke about it in a previous posts: [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#pivi08), [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#pgtm12), [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#pmrt01)... and [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#pcbs04). 
+There are multiple ways to prove this, and I’ve already spoken about it in previous posts: [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#pivi08), [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#pgtm12), [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#pmrt01)... and [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#pcbs04). 
 
-But instead of algebra, we can visualize this as a configuration of squares (the hint was in title):
+But instead of algebra, we can visualize this as a configuration of squares:
 - Imagine a square $ABCD$ with side length $a$;
 - Another square $BEFG$ with side length $b$;
 - And a third square $EHIJ$ with side length $c$.
 
 The total area of the combined polygon formed by these three is exactly $a^2 + b^2 + c^2$ (the left-hand side of our inequality).
 
-<div id="abc-squares-overlap" style="width: 100%; max-width: 600px; height: 400px; position: relative; margin: 2rem auto; border: 2px solid #222; background: #f6f8fa; border-radius: 4px; overflow: hidden;"></div>
+<div class="math-canvas-wrap">
+    <div id="abc-squares-overlap" class="math-canvas"></div>
+</div>
 
 If we draw some new lines, as shown in the animation, new rectangles appear:
 - $ABKL$ with area $ca$;
@@ -237,12 +277,13 @@ Nesbitt's inequality is a classical result in the world of mathematics, and it s
     \]
 </div>
 
-If you are curious about its various proofs, I recommend reading about them [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#nesbitts-inequality), [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#pcbs12), and [here](http://localhost:1313/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#an-interesting-refinement-for-nesbitts-inequality).
+If you are curious about its various proofs, I recommend reading about them [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#nesbitts-inequality), [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#pcbs12), and [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/#an-interesting-refinement-for-nesbitts-inequality).
 
 As a challenge, I wanted to see if I could create a visual representation of the Nesbitt structure using basic geometric forms. I "failed" a little, because this specific algebraic structure isn't exactly geometry-friendly, but with a twist of imagination and some documentation, I’ve come up with this:
 
-<div id="nesbitt-equilateral" style="width: 100%; max-width: 600px; height: 600px; position: relative; margin: 2rem auto; border: 2px solid #222; background: #f6f8fa; border-radius: 4px; overflow: hidden;"></div>
-
+<div class="math-canvas-wrap">
+    <div id="nesbitt-equilateral" class="math-canvas tall"></div>
+</div>
 
 The main idea was to play with [Viviani's Theorem](https://en.wikipedia.org/wiki/Viviani%27s_theorem). I started by drawing an equilateral triangle, knowing that the sum of the distances from an interior point $Q$ to the sides is always constant.
 
@@ -293,13 +334,14 @@ const COLORS = {
     black: 0x111111,
     dark: 0x222222,
     border: 0x333333,
-    rightAngle: 0x444444,
+    right: 0x444444,
 
     gray: 0x666666,
+    aux: 0x777777,
+    lightAux: 0x999999,
     guide: 0xaaaaaa,
     guideLight: 0xcccccc,
     grid: 0xeeeeee,
-    aux: 0x999999,
 
     red: 0xff0000,
     blue: 0x0000ff,
@@ -308,11 +350,11 @@ const COLORS = {
     purple: 0xaa00aa,
     orange: 0xffa500,
 
-    softPurple: 0x9370db,
-    softBlue: 0x66b5ff,
-    softRed: 0xff6b6b,
-    softGreen: 0x66c2a5,
-    softSky: 0x4dabf7
+    violet: 0x9370db,
+    sky: 0x66b5ff,
+    coral: 0xff6b6b,
+    mint: 0x66c2a5,
+    azure: 0x4dabf7
 };
 
 const TEXT = {
@@ -326,15 +368,21 @@ const TEXT = {
     cyan: '#00aaaa'
 };
 
-function vec(x = 0, y = 0, z = 0) {
-    return new THREE.Vector3(x, y, z);
-}
+const vec = (x = 0, y = 0, z = 0) => new THREE.Vector3(x, y, z);
 
 function setLinePoints(line, points) {
-    line.geometry.setFromPoints(points);
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+    if (line.geometry) {
+        line.geometry.dispose();
+    }
+
+    line.geometry = geometry;
+
     if (typeof line.computeLineDistances === 'function') {
         line.computeLineDistances();
     }
+
     return line;
 }
 
@@ -365,15 +413,17 @@ function createLine({
     return line;
 }
 
-function createLineSegments(points, color = COLORS.black, opacity = 1) {
-    return new THREE.LineSegments(
-        new THREE.BufferGeometry().setFromPoints(points),
+function createLineSegments(points = [], color = COLORS.black, opacity = 1) {
+    const line = new THREE.LineSegments(
+        new THREE.BufferGeometry(),
         new THREE.LineBasicMaterial({
             color,
             transparent: opacity < 1,
             opacity
         })
     );
+    if (points.length) setLinePoints(line, points);
+    return line;
 }
 
 function createPoint(radius = 0.08, color = COLORS.black) {
@@ -383,7 +433,7 @@ function createPoint(radius = 0.08, color = COLORS.black) {
     );
 }
 
-function createRectMesh(color, width = 1, height = 0.22, opacity = 0.9) {
+function createPlaneRect(width = 1, height = 0.22, color = COLORS.black, opacity = 0.9) {
     return new THREE.Mesh(
         new THREE.PlaneGeometry(width, height),
         new THREE.MeshBasicMaterial({
@@ -394,18 +444,18 @@ function createRectMesh(color, width = 1, height = 0.22, opacity = 0.9) {
     );
 }
 
-function createEllipseLoop(rx, ry, color = COLORS.border, numPoints = 128) {
-    const curve = new THREE.EllipseCurve(0, 0, rx, ry);
+function createCircleLoop(radius, color = COLORS.border, points = 128) {
+    const curve = new THREE.EllipseCurve(0, 0, radius, radius);
     return new THREE.LineLoop(
-        new THREE.BufferGeometry().setFromPoints(curve.getPoints(numPoints)),
+        new THREE.BufferGeometry().setFromPoints(curve.getPoints(points)),
         new THREE.LineBasicMaterial({ color })
     );
 }
 
-function createSemicircle(radius, yOffset = 0, color = COLORS.rightAngle, numPoints = 128) {
+function createSemicircle(radius, yOffset = 0, color = COLORS.right, points = 128) {
     const curve = new THREE.EllipseCurve(0, yOffset, radius, radius, 0, Math.PI);
     return new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints(curve.getPoints(numPoints)),
+        new THREE.BufferGeometry().setFromPoints(curve.getPoints(points)),
         new THREE.LineBasicMaterial({ color })
     );
 }
@@ -421,6 +471,7 @@ function createAnchoredRect(fillMaterial, lineMaterial) {
     shape.lineTo(0, 0);
 
     const mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), fillMaterial);
+
     const border = new THREE.Line(
         new THREE.BufferGeometry().setFromPoints([
             vec(0, 0, 0),
@@ -451,7 +502,7 @@ function createAnchoredBox(meshMaterial, edgeMaterial) {
     return group;
 }
 
-function createBoxLabels(createLabel, names, color) {
+function createLabels(createLabel, names, color = TEXT.black) {
     const out = {};
     names.forEach((name) => {
         out[name] = createLabel(name, color);
@@ -482,6 +533,24 @@ function setRightAngleMarker(line, F, sideU, towardP, size = 0.24) {
     const p3 = F.clone().add(n.clone().multiplyScalar(size));
 
     setLinePoints(line, [F, p1, p2, p3]);
+}
+
+function makeFillMaterial(color, opacity = 0.45) {
+    return new THREE.MeshBasicMaterial({
+        color,
+        transparent: opacity < 1,
+        opacity,
+        side: THREE.DoubleSide,
+        depthWrite: false
+    });
+}
+
+function makeLineMaterial(color, opacity = 1) {
+    return new THREE.LineBasicMaterial({
+        color,
+        transparent: opacity < 1,
+        opacity
+    });
 }
 
 function createDoubleArrow({
@@ -554,10 +623,16 @@ function setDoubleArrow(arrow, start, end) {
     headEnd.setLength(headLength, headLength, headWidth);
 }
 
-function createMathGrid(scene) {
-    const grid = new THREE.GridHelper(100, 100, COLORS.guideLight, COLORS.grid);
+function createMathGrid(scene, {
+    size = 100,
+    divisions = 100,
+    centerColor = COLORS.guideLight,
+    gridColor = COLORS.grid,
+    z = -0.1
+} = {}) {
+    const grid = new THREE.GridHelper(size, divisions, centerColor, gridColor);
     grid.rotation.x = Math.PI / 2;
-    grid.position.z = -0.1;
+    grid.position.z = z;
     scene.add(grid);
     return grid;
 }
@@ -566,33 +641,54 @@ function createMathEngine(id, setupFn, updateFn, showGrid = true) {
     const container = document.getElementById(id);
     if (!container) return;
 
+    const FIXED_WIDTH = 600;
+    const FIXED_HEIGHT = container.classList.contains('tall') ? 600 : 400;
+
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(COLORS.bg);
 
     const camera = new THREE.PerspectiveCamera(
         45,
-        container.clientWidth / container.clientHeight,
+        FIXED_WIDTH / FIXED_HEIGHT,
         0.1,
         1000
     );
     camera.position.z = 18;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setSize(FIXED_WIDTH, FIXED_HEIGHT, false);
+    renderer.domElement.style.width = `${FIXED_WIDTH}px`;
+    renderer.domElement.style.height = `${FIXED_HEIGHT}px`;
+    renderer.domElement.style.display = 'block';
     container.appendChild(renderer.domElement);
 
     const labelRenderer = new CSS2DRenderer();
-    labelRenderer.setSize(container.clientWidth, container.clientHeight);
+    labelRenderer.setSize(FIXED_WIDTH, FIXED_HEIGHT);
     labelRenderer.domElement.style.position = 'absolute';
     labelRenderer.domElement.style.top = '0px';
+    labelRenderer.domElement.style.left = '0px';
+    labelRenderer.domElement.style.width = `${FIXED_WIDTH}px`;
+    labelRenderer.domElement.style.height = `${FIXED_HEIGHT}px`;
     labelRenderer.domElement.style.pointerEvents = 'none';
     container.appendChild(labelRenderer.domElement);
+
+    container.style.width = `${FIXED_WIDTH}px`;
+    container.style.height = `${FIXED_HEIGHT}px`;
+    container.style.position = 'relative';
+    container.style.overflow = 'hidden';
 
     const createLabel = (tex, color = TEXT.black) => {
         const div = document.createElement('div');
         div.style.background = 'transparent';
         div.style.color = color;
-        if (window.katex) window.katex.render(tex, div);
+        div.style.position = 'absolute';
+        div.style.userSelect = 'none';
+        if (window.katex) {
+            window.katex.render(tex, div);
+        } else {
+            div.textContent = tex;
+        }
         return new CSS2DObject(div);
     };
 
@@ -609,15 +705,12 @@ function createMathEngine(id, setupFn, updateFn, showGrid = true) {
         labelRenderer.render(scene, camera);
     }
 
-    window.addEventListener('resize', () => {
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        labelRenderer.setSize(container.clientWidth, container.clientHeight);
-    });
-
     animate();
 }
+
+/* ===========================
+   SCENES
+   =========================== */
 
 createMathEngine(
     'am-gm-viz',
@@ -625,35 +718,22 @@ createMathEngine(
         const radiusA = 4.0;
         const radiusB = 1.5;
         const centerX_A = -2.0;
-        const dimColor = COLORS.gray;
 
-        const circleA = createEllipseLoop(radiusA, radiusA, COLORS.dark);
+        const circleA = createCircleLoop(radiusA, COLORS.dark);
         circleA.position.x = centerX_A;
 
-        const circleB = createEllipseLoop(radiusB, radiusB, COLORS.dark);
+        const circleB = createCircleLoop(radiusB, COLORS.dark);
 
-        const refLineMat = new THREE.LineBasicMaterial({
-            color: dimColor,
-            transparent: true,
-            opacity: 0.25
+        const diameterA = createLine({
+            color: COLORS.gray,
+            opacity: 0.25,
+            points: [vec(centerX_A, -radiusA, 0), vec(centerX_A, radiusA, 0)]
         });
 
-        const diameterA = new THREE.Line(
-            new THREE.BufferGeometry(),
-            refLineMat
-        );
-        setLinePoints(diameterA, [
-            vec(centerX_A, -radiusA, 0),
-            vec(centerX_A, radiusA, 0)
-        ]);
-
-        const diameterB = new THREE.Line(
-            new THREE.BufferGeometry(),
-            refLineMat
-        );
+        const diameterB = createLine({ color: COLORS.gray, opacity: 0.25 });
 
         const axisO = createLine({
-            color: dimColor,
+            color: COLORS.gray,
             points: [vec(centerX_A, -radiusA, 0), vec(centerX_A, radiusA, 0)]
         });
 
@@ -665,12 +745,12 @@ createMathEngine(
         const rightAngleIcon = createLineSegments([
             vec(0, raSize, 0), vec(raSize, raSize, 0),
             vec(raSize, raSize, 0), vec(raSize, 0, 0)
-        ], COLORS.rightAngle);
+        ], COLORS.right);
 
         const leftArrowX = centerX_A - radiusA - 1.0;
 
         const aDimLine = createLine({
-            color: dimColor,
+            color: COLORS.gray,
             points: [vec(leftArrowX, -radiusA, 0), vec(leftArrowX, radiusA, 0)]
         });
 
@@ -678,7 +758,7 @@ createMathEngine(
             vec(0, 1, 0),
             vec(leftArrowX, radiusA, 0),
             0.35,
-            dimColor,
+            COLORS.gray,
             0.35,
             0.18
         );
@@ -687,7 +767,7 @@ createMathEngine(
             vec(0, -1, 0),
             vec(leftArrowX, -radiusA, 0),
             0.35,
-            dimColor,
+            COLORS.gray,
             0.35,
             0.18
         );
@@ -696,13 +776,13 @@ createMathEngine(
         const bHeadLen = 0.28;
         const bHeadWid = 0.14;
 
-        const bDimLine = createLine({ color: dimColor });
+        const bDimLine = createLine({ color: COLORS.gray });
 
         const arrowB_up = new THREE.ArrowHelper(
             vec(0, 1, 0),
             vec(0, radiusB, 0),
             bHeadLen,
-            dimColor,
+            COLORS.gray,
             bHeadLen,
             bHeadWid
         );
@@ -711,45 +791,39 @@ createMathEngine(
             vec(0, -1, 0),
             vec(0, -radiusB, 0),
             bHeadLen,
-            dimColor,
+            COLORS.gray,
             bHeadLen,
             bHeadWid
         );
 
         const tangentTop = createLine({
-            color: COLORS.aux,
+            color: COLORS.lightAux,
             opacity: 0.7,
             dashed: true,
             dashSize: 0.14,
-            gapSize: 0.08
+            gapSize: 0.08,
+            points: [vec(leftArrowX, radiusA, 0), vec(centerX_A, radiusA, 0)]
         });
+
         const tangentBottom = createLine({
-            color: COLORS.aux,
+            color: COLORS.lightAux,
             opacity: 0.7,
             dashed: true,
             dashSize: 0.14,
-            gapSize: 0.08
+            gapSize: 0.08,
+            points: [vec(leftArrowX, -radiusA, 0), vec(centerX_A, -radiusA, 0)]
         });
-
-        setLinePoints(tangentTop, [
-            vec(leftArrowX, radiusA, 0),
-            vec(centerX_A, radiusA, 0)
-        ]);
-
-        setLinePoints(tangentBottom, [
-            vec(leftArrowX, -radiusA, 0),
-            vec(centerX_A, -radiusA, 0)
-        ]);
 
         const tangentSmallTop = createLine({
-            color: COLORS.aux,
+            color: COLORS.lightAux,
             opacity: 0.7,
             dashed: true,
             dashSize: 0.14,
             gapSize: 0.08
         });
+
         const tangentSmallBottom = createLine({
-            color: COLORS.aux,
+            color: COLORS.lightAux,
             opacity: 0.7,
             dashed: true,
             dashSize: 0.14,
@@ -775,36 +849,13 @@ createMathEngine(
         const diffLabel = createLabel('\\frac{a-b}{2}', TEXT.green);
 
         scene.add(
-            circleA,
-            circleB,
-            diameterA,
-            diameterB,
-            axisO,
-            gmLine,
-            amLine,
-            diffLine,
-            rightAngleIcon,
-            aDimLine,
-            arrowA_up,
-            arrowA_down,
-            bDimLine,
-            arrowB_up,
-            arrowB_down,
-            tangentTop,
-            tangentBottom,
-            tangentSmallTop,
-            tangentSmallBottom,
-            centerA,
-            centerB,
-            projP,
-            labelO,
-            labelOp,
-            labelP,
-            labelA,
-            labelB,
-            amLabel,
-            gmLabel,
-            diffLabel
+            circleA, circleB, diameterA, diameterB, axisO,
+            gmLine, amLine, diffLine, rightAngleIcon,
+            aDimLine, arrowA_up, arrowA_down, bDimLine, arrowB_up, arrowB_down,
+            tangentTop, tangentBottom, tangentSmallTop, tangentSmallBottom,
+            centerA, centerB, projP,
+            labelO, labelOp, labelP, labelA, labelB,
+            amLabel, gmLabel, diffLabel
         );
 
         return {
@@ -934,7 +985,7 @@ createMathEngine(
     (scene, createLabel) => {
         const radius = 5.0;
 
-        const semiLine = createSemicircle(radius, 0, COLORS.rightAngle);
+        const semiLine = createSemicircle(radius, 0, COLORS.right);
 
         const diameterLine = createLine({
             color: COLORS.dark,
@@ -944,12 +995,12 @@ createMathEngine(
         const gmLine = createLine({ color: COLORS.blue });
         const amLine = createLine({ color: COLORS.red });
 
-        const highA = createLine({ color: COLORS.softPurple, opacity: 0.6 });
+        const highA = createLine({ color: COLORS.violet, opacity: 0.6 });
         const highB = createLine({ color: COLORS.orange, opacity: 0.6 });
         const highDiff = createLine({ color: COLORS.green, opacity: 0.6 });
 
         const separator = createLine({
-            color: COLORS.black,
+            color: 0x000000,
             opacity: 0.1,
             points: [vec(0, 0.1, 0), vec(0, -1.8, 0)]
         });
@@ -1041,6 +1092,7 @@ createMathEngine(
 
         setLinePoints(obj.gmLine, [vec(x, 0, 0), vec(x, y, 0)]);
         setLinePoints(obj.amLine, [vec(0, 0, 0), vec(x, y, 0)]);
+
         setLinePoints(obj.highA, [vec(-obj.radius, trayY, 0), vec(x, trayY, 0)]);
         setLinePoints(obj.highB, [vec(x, trayY, 0), vec(obj.radius, trayY, 0)]);
         setLinePoints(obj.highDiff, [vec(0, diffY, 0), vec(x, diffY, 0)]);
@@ -1075,7 +1127,7 @@ createMathEngine(
         const radius = 7.0;
         const yOffset = -0.45 * radius;
 
-        const semiLine = createSemicircle(radius, yOffset, COLORS.rightAngle);
+        const semiLine = createSemicircle(radius, yOffset, COLORS.right);
 
         const diameterLine = createLine({
             color: COLORS.dark,
@@ -1086,12 +1138,12 @@ createMathEngine(
         const amLine = createLine({ color: COLORS.red });
         const qmLine = createLine({ color: COLORS.cyan });
 
-        const highA = createLine({ color: COLORS.softPurple, opacity: 0.6 });
+        const highA = createLine({ color: COLORS.violet, opacity: 0.6 });
         const highB = createLine({ color: COLORS.orange, opacity: 0.6 });
         const highDiff = createLine({ color: COLORS.green, opacity: 0.6 });
 
         const separator = createLine({
-            color: COLORS.black,
+            color: 0x000000,
             opacity: 0.1,
             points: [vec(0, yOffset + 0.1, 0), vec(0, yOffset - 2.0, 0)]
         });
@@ -1214,20 +1266,9 @@ createMathEngine(
         setLinePoints(obj.omLine, [O, M]);
         setLinePoints(obj.qmLine, [Pp, M]);
 
-        setLinePoints(obj.highA, [
-            vec(-obj.radius, trayY, 0),
-            vec(x, trayY, 0)
-        ]);
-
-        setLinePoints(obj.highB, [
-            vec(x, trayY, 0),
-            vec(obj.radius, trayY, 0)
-        ]);
-
-        setLinePoints(obj.highDiff, [
-            vec(0, diffY, 0),
-            vec(x, diffY, 0)
-        ]);
+        setLinePoints(obj.highA, [vec(-obj.radius, trayY, 0), vec(x, trayY, 0)]);
+        setLinePoints(obj.highB, [vec(x, trayY, 0), vec(obj.radius, trayY, 0)]);
+        setLinePoints(obj.highDiff, [vec(0, diffY, 0), vec(x, diffY, 0)]);
 
         obj.separator.position.set(x, obj.yOffset, 0);
 
@@ -1271,7 +1312,7 @@ createMathEngine(
         const radius = 7.0;
         const yOffset = -0.45 * radius;
 
-        const semiLine = createSemicircle(radius, yOffset, COLORS.rightAngle);
+        const semiLine = createSemicircle(radius, yOffset, COLORS.right);
 
         const diameterLine = createLine({
             color: COLORS.dark,
@@ -1281,15 +1322,16 @@ createMathEngine(
         const gmLine = createLine({ color: COLORS.blue });
         const amLine = createLine({ color: COLORS.red });
         const qmLine = createLine({ color: COLORS.cyan });
+
         const pPrimeNLine = createLine({ color: COLORS.black, opacity: 0.6 });
         const pnLine = createLine({ color: COLORS.purple });
 
-        const highA = createLine({ color: COLORS.softPurple, opacity: 0.6 });
+        const highA = createLine({ color: COLORS.violet, opacity: 0.6 });
         const highB = createLine({ color: COLORS.orange, opacity: 0.6 });
         const highDiff = createLine({ color: COLORS.green, opacity: 0.6 });
 
         const separator = createLine({
-            color: COLORS.black,
+            color: 0x000000,
             opacity: 0.1,
             points: [vec(0, yOffset + 0.1, 0), vec(0, yOffset - 2.0, 0)]
         });
@@ -1437,20 +1479,9 @@ createMathEngine(
         setLinePoints(obj.pPrimeNLine, [Pp, N]);
         setLinePoints(obj.pnLine, [P, N]);
 
-        setLinePoints(obj.highA, [
-            vec(-obj.radius, trayY, 0),
-            vec(x, trayY, 0)
-        ]);
-
-        setLinePoints(obj.highB, [
-            vec(x, trayY, 0),
-            vec(obj.radius, trayY, 0)
-        ]);
-
-        setLinePoints(obj.highDiff, [
-            vec(0, diffY, 0),
-            vec(x, diffY, 0)
-        ]);
+        setLinePoints(obj.highA, [vec(-obj.radius, trayY, 0), vec(x, trayY, 0)]);
+        setLinePoints(obj.highB, [vec(x, trayY, 0), vec(obj.radius, trayY, 0)]);
+        setLinePoints(obj.highDiff, [vec(0, diffY, 0), vec(x, diffY, 0)]);
 
         obj.separator.position.set(x, obj.yOffset, 0);
 
@@ -1494,7 +1525,7 @@ createMathEngine(
         const p2 = p1.clone().add(npPrimeDir.clone().multiplyScalar(s));
         const p3 = N.clone().add(npPrimeDir.clone().multiplyScalar(s));
 
-        obj.rightAngleMarker.geometry.setFromPoints([p1, p2, p2, p3]);
+        setLinePoints(obj.rightAngleMarker, [p1, p2, p2, p3]);
     },
     false
 );
@@ -1510,31 +1541,11 @@ createMathEngine(
         const groundY = -sideAM / 2;
         const z = 0;
 
-        const squareMat = new THREE.MeshBasicMaterial({
-            color: COLORS.softBlue,
-            transparent: true,
-            opacity: 0.12,
-            side: THREE.DoubleSide,
-            depthWrite: false
-        });
+        const squareMat = makeFillMaterial(COLORS.sky, 0.12);
+        const fillMat = makeFillMaterial(COLORS.sky, 0.45);
 
-        const fillMat = new THREE.MeshBasicMaterial({
-            color: COLORS.softBlue,
-            transparent: true,
-            opacity: 0.45,
-            side: THREE.DoubleSide,
-            depthWrite: false
-        });
-
-        const squareBorderMat = new THREE.LineBasicMaterial({
-            color: COLORS.border,
-            transparent: true,
-            opacity: 0.5
-        });
-
-        const rectBorderMat = new THREE.LineBasicMaterial({
-            color: COLORS.softBlue
-        });
+        const squareBorderMat = makeLineMaterial(COLORS.border, 0.5);
+        const rectBorderMat = makeLineMaterial(COLORS.sky);
 
         const square = createAnchoredRect(squareMat, squareBorderMat);
         square.scale.set(sideAM, sideAM, 1);
@@ -1553,18 +1564,15 @@ createMathEngine(
             dashed: true,
             dashSize: 0.12,
             gapSize: 0.10,
-            points: [
-                vec(leftX, groundY, z + 0.01),
-                vec(rightX + sideAM, groundY, z + 0.01)
-            ]
+            points: [vec(leftX, groundY, z + 0.01), vec(rightX + sideAM, groundY, z + 0.01)]
         });
 
         const arrowSideAM = createDoubleArrow({ color: COLORS.gray });
         const arrowA = createDoubleArrow({ color: COLORS.gray });
         const arrowB = createDoubleArrow({ color: COLORS.gray });
 
-        const squarePts = createBoxLabels(createLabel, ['A', 'B', 'C', 'D'], TEXT.gray);
-        const rectPts = createBoxLabels(createLabel, ["A'", "B'", "C'", "D'"], TEXT.gray);
+        const squarePts = createLabels(createLabel, ['A', 'B', 'C', 'D'], TEXT.gray);
+        const rectPts = createLabels(createLabel, ["A'", "B'", "C'", "D'"], TEXT.gray);
 
         const labelSideAM = createLabel('\\frac{a+b}{2}', TEXT.black);
         const labelA = createLabel('a', TEXT.black);
@@ -1714,32 +1722,22 @@ createMathEngine(
         const groundY = -sideAM / 2;
         const frontZ = 0;
 
-        const liquidMat = new THREE.MeshBasicMaterial({
-            color: COLORS.softBlue,
-            transparent: true,
-            opacity: 0.45,
-            side: THREE.DoubleSide,
-            depthWrite: false
-        });
+        const liquidMat = makeFillMaterial(COLORS.sky, 0.45);
+        const prismEdgeMat = new THREE.LineBasicMaterial({ color: COLORS.sky });
 
-        const prismEdgeMat = new THREE.LineBasicMaterial({ color: COLORS.softBlue });
-
-        const makeCubeOutline = () =>
-            createAnchoredBox(
-                new THREE.MeshBasicMaterial({
-                    color: COLORS.border,
-                    transparent: true,
-                    opacity: 0.10,
-                    depthWrite: false
-                }),
-                new THREE.LineBasicMaterial({
-                    color: COLORS.border,
-                    transparent: true,
-                    opacity: 0.35
-                })
-            );
-
-        const cube = makeCubeOutline();
+        const cube = createAnchoredBox(
+            new THREE.MeshBasicMaterial({
+                color: COLORS.border,
+                transparent: true,
+                opacity: 0.10,
+                depthWrite: false
+            }),
+            new THREE.LineBasicMaterial({
+                color: COLORS.border,
+                transparent: true,
+                opacity: 0.35
+            })
+        );
         cube.scale.set(sideAM, sideAM, sideAM);
         cube.position.set(leftX, groundY, frontZ);
 
@@ -1756,10 +1754,7 @@ createMathEngine(
             dashed: true,
             dashSize: 0.12,
             gapSize: 0.10,
-            points: [
-                vec(leftX, groundY, frontZ + 0.015),
-                vec(rightX + sideAM, groundY, frontZ + 0.015)
-            ]
+            points: [vec(leftX, groundY, frontZ + 0.015), vec(rightX + sideAM, groundY, frontZ + 0.015)]
         });
 
         const arrowSideAM = createDoubleArrow({ color: COLORS.gray });
@@ -1767,13 +1762,13 @@ createMathEngine(
         const arrowB = createDoubleArrow({ color: COLORS.gray });
         const arrowC = createDoubleArrow({ color: COLORS.gray });
 
-        const cubeCorners = createBoxLabels(
+        const cubeCorners = createLabels(
             createLabel,
             ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
             TEXT.gray
         );
 
-        const prismCorners = createBoxLabels(
+        const prismCorners = createLabels(
             createLabel,
             ["A'", "B'", "C'", "D'", "E'", "F'", "G'", "H'"],
             TEXT.gray
@@ -1974,17 +1969,6 @@ createMathEngine(
         const originY = -3.0;
         const z = 0;
 
-        const C = {
-            outline: 0x223344,
-            squareFill: 0xf5f7fb,
-            ab: COLORS.softRed,
-            ac: COLORS.softGreen,
-            bc: COLORS.softSky,
-            guide: 0x888888,
-            text: TEXT.black,
-            point: COLORS.black
-        };
-
         const createRect = (fillColor, fillOpacity, lineColor, lineOpacity = 1) => {
             const group = new THREE.Group();
 
@@ -2025,18 +2009,16 @@ createMathEngine(
             return group;
         };
 
-        const makePoint = () => createPoint(0.07, C.point);
+        const squareA = createRect(COLORS.bg, 0.12, 0x223344, 0.9);
+        const squareB = createRect(COLORS.bg, 0.12, 0x223344, 0.9);
+        const squareC = createRect(COLORS.bg, 0.12, 0x223344, 0.9);
 
-        const squareA = createRect(C.squareFill, 0.12, C.outline, 0.9);
-        const squareB = createRect(C.squareFill, 0.12, C.outline, 0.9);
-        const squareC = createRect(C.squareFill, 0.12, C.outline, 0.9);
-
-        const rectAB = createRect(C.ab, 0.40, C.ab, 0.9);
-        const rectAC = createRect(C.ac, 0.40, C.ac, 0.9);
-        const rectBC = createRect(C.bc, 0.40, C.bc, 0.9);
+        const rectAB = createRect(COLORS.coral, 0.40, COLORS.coral, 0.9);
+        const rectAC = createRect(COLORS.mint, 0.40, COLORS.mint, 0.9);
+        const rectBC = createRect(COLORS.azure, 0.40, COLORS.azure, 0.9);
 
         const guideB = createLine({
-            color: C.guide,
+            color: 0x888888,
             opacity: 0.55,
             dashed: true,
             dashSize: 0.18,
@@ -2044,7 +2026,7 @@ createMathEngine(
         });
 
         const guideC = createLine({
-            color: C.guide,
+            color: 0x888888,
             opacity: 0.55,
             dashed: true,
             dashSize: 0.18,
@@ -2054,47 +2036,31 @@ createMathEngine(
         const pointNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'];
         const pointLabels = {};
         const pointMarkers = {};
+
         pointNames.forEach((name) => {
-            pointLabels[name] = createLabel(name, C.text);
-            pointMarkers[name] = makePoint();
+            pointLabels[name] = createLabel(name, TEXT.black);
+            pointMarkers[name] = createPoint(0.07, COLORS.black);
             scene.add(pointLabels[name], pointMarkers[name]);
         });
 
-        const labelTotalArea = createLabel(
-            'A_{\\text{AHIJFGCD}}=a^2+b^2+c^2',
-            C.text
-        );
+        const labelTotalArea = createLabel('A_{\\text{AHIJFGCD}}=a^2+b^2+c^2', TEXT.black);
+        const labelRects1 = createLabel('A_{\\text{ABGM}}+A_{\\text{BEFG}}+A_{\\text{ABKL}}=', TEXT.black);
+        const labelRects2 = createLabel('=ab+bc+ca', TEXT.black);
 
-        const labelRects1 = createLabel(
-            'A_{\\text{ABGM}}+A_{\\text{BEFG}}+A_{\\text{ABKL}}=',
-            C.text
-        );
-
-        const labelRects2 = createLabel('=ab+bc+ca', C.text);
-
-        const labelSegA = createLabel('a', C.text);
-        const labelSegB = createLabel('b', C.text);
-        const labelSegC = createLabel('c', C.text);
+        const labelSegA = createLabel('a', TEXT.black);
+        const labelSegB = createLabel('b', TEXT.black);
+        const labelSegC = createLabel('c', TEXT.black);
 
         squareA.position.set(originX, originY, z);
         rectAB.position.set(originX, originY, z + 0.01);
         rectAC.position.set(originX, originY, z + 0.02);
 
         scene.add(
-            squareA,
-            squareB,
-            squareC,
-            rectAB,
-            rectAC,
-            rectBC,
-            guideB,
-            guideC,
-            labelTotalArea,
-            labelRects1,
-            labelRects2,
-            labelSegA,
-            labelSegB,
-            labelSegC
+            squareA, squareB, squareC,
+            rectAB, rectAC, rectBC,
+            guideB, guideC,
+            labelTotalArea, labelRects1, labelRects2,
+            labelSegA, labelSegB, labelSegC
         );
 
         return {
@@ -2165,15 +2131,8 @@ createMathEngine(
         obj.rectBC.scale.set(b, c, 1);
         obj.rectBC.position.set(x0 + a, y0, 0.03);
 
-        setLinePoints(obj.guideB, [
-            vec(x0, y0 + b, 0),
-            vec(x0 + a + b, y0 + b, 0)
-        ]);
-
-        setLinePoints(obj.guideC, [
-            vec(x0, y0 + c, 0),
-            vec(x0 + a + b + c, y0 + c, 0)
-        ]);
+        setLinePoints(obj.guideB, [vec(x0, y0 + b, 0), vec(x0 + a + b, y0 + b, 0)]);
+        setLinePoints(obj.guideC, [vec(x0, y0 + c, 0), vec(x0 + a + b + c, y0 + c, 0)]);
 
         const pts = { A, B, C, D, E, F, G, H, I, J, K, L, M };
         Object.entries(pts).forEach(([name, p]) => {
@@ -2226,9 +2185,9 @@ createMathEngine(
         const py = createLine({ color: 0x3b82f6, opacity: 0.95 });
         const pz = createLine({ color: 0x10b981, opacity: 0.95 });
 
-        const BM = createLine({ color: COLORS.aux, opacity: 0.75, dashed: true, dashSize: 0.16, gapSize: 0.10 });
-        const AN = createLine({ color: COLORS.aux, opacity: 0.75, dashed: true, dashSize: 0.16, gapSize: 0.10 });
-        const CP = createLine({ color: COLORS.aux, opacity: 0.75, dashed: true, dashSize: 0.16, gapSize: 0.10 });
+        const BM = createLine({ color: COLORS.lightAux, opacity: 0.75, dashed: true, dashSize: 0.16, gapSize: 0.10 });
+        const AN = createLine({ color: COLORS.lightAux, opacity: 0.75, dashed: true, dashSize: 0.16, gapSize: 0.10 });
+        const CP = createLine({ color: COLORS.lightAux, opacity: 0.75, dashed: true, dashSize: 0.16, gapSize: 0.10 });
 
         const segNNp = createLine({ color: 0xef4444 });
         const segMMp = createLine({ color: 0x3b82f6 });
@@ -2238,14 +2197,14 @@ createMathEngine(
         const segBMp = createLine({ color: 0x3b82f6, opacity: 0.55 });
         const segCPp = createLine({ color: 0x10b981, opacity: 0.55 });
 
-        const qM = createLine({ color: 0x777777, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
-        const fyMp = createLine({ color: 0x777777, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
+        const qM = createLine({ color: COLORS.aux, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
+        const fyMp = createLine({ color: COLORS.aux, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
 
-        const qN = createLine({ color: 0x777777, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
-        const fxNp = createLine({ color: 0x777777, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
+        const qN = createLine({ color: COLORS.aux, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
+        const fxNp = createLine({ color: COLORS.aux, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
 
-        const qP = createLine({ color: 0x777777, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
-        const fzPp = createLine({ color: 0x777777, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
+        const qP = createLine({ color: COLORS.aux, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
+        const fzPp = createLine({ color: COLORS.aux, opacity: 0.9, dashed: true, dashSize: 0.16, gapSize: 0.10 });
 
         const rightX = createLine({ color: 0x555555 });
         const rightY = createLine({ color: 0x555555 });
@@ -2307,9 +2266,9 @@ createMathEngine(
         const tick32 = createLine({ color: COLORS.black });
         const tick2 = createLine({ color: COLORS.gray, opacity: 0.65 });
 
-        const segX = createRectMesh(0xef4444, 1, 0.24, 0.90);
-        const segY = createRectMesh(0x3b82f6, 1, 0.24, 0.90);
-        const segZ = createRectMesh(0x10b981, 1, 0.24, 0.90);
+        const segX = createPlaneRect(1, 0.24, 0xef4444, 0.90);
+        const segY = createPlaneRect(1, 0.24, 0x3b82f6, 0.90);
+        const segZ = createPlaneRect(1, 0.24, 0x10b981, 0.90);
 
         const sumMarker = createLine({ color: COLORS.black });
 
@@ -2444,6 +2403,7 @@ createMathEngine(
             new THREE.Vector3().subVectors(Q, FX),
             0.22
         );
+
         setRightAngleMarker(
             obj.rightY,
             FY,
@@ -2451,6 +2411,7 @@ createMathEngine(
             new THREE.Vector3().subVectors(Q, FY),
             0.22
         );
+
         setRightAngleMarker(
             obj.rightZ,
             FZ,
