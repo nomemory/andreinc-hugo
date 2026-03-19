@@ -26,7 +26,7 @@ Some of the animations are standard and are taught in the right kind of schools,
 
 # The HM-AM-GM-QM Inequality
 
-This is the most popular inequality chain we encounter during our school years. To remind you of it, in case you've forgotten, the simple version for three numbers $a, b, c > 0$ is:
+This is the most popular inequality we encounter during our school years. To remind you of it, in case you've forgotten, the simple version for three numbers $a, b, c > 0$ is:
 
 <div class="mp mpc">
     \[
@@ -34,7 +34,7 @@ This is the most popular inequality chain we encounter during our school years. 
     \]
 </div>
 
-Or, in the even simpler two-variable case:
+Or, the two-variable case:
 
 <div class="mp mpc">
     \[
@@ -42,7 +42,7 @@ Or, in the even simpler two-variable case:
     \]
 </div>
 
-To decode the "alphabet soup," here is what those letters actually stand for:
+To decode the "letter soup," here is what those letters actually stand for:
 
 * `HM = Harmonic Mean`: Even if it sounds counterintuitive to an untrained eye, this mean appears in the very laws encoded in our universe. For example, if you go from point $A$ to point $B$ with a speed of $v_1$ and come back with a speed of $v_2$, what is your average speed? A bad student would say $v_{\text{avg}}=\frac{v_1+v_2}{2}$, but a good student would know it is actually the harmonic mean: $v_{\text{avg}} = \frac{2}{\frac{1}{v_1} + \frac{1}{v_2}}$.
 
@@ -85,7 +85,7 @@ $OO'$ is the `AM` for $a$ and $b$, while $O'P$ is the `GM` for $a$ and $b$. Noti
 
 ## The Semicircle
 
-This is the "classroom" strategy, the visual I was taught in school. 
+This is the "classroom" strategy, the visual I was taught in school. Of course, the visual was not moving back in my day.
 
 We start with a semicircle with center $O$ and a total diameter of $a + b$. We pick a point $P$ on the circumference and project it down onto the diameter at point $P'$. This forms a right triangle $POP'$ (the letters were conveniently chosen so the visual "pops").
 
@@ -143,7 +143,7 @@ To compute $PN$, which is the actual `HM`, we use the properties of the right tr
     \]
 </div>
 
-We’ve done it! We have the whole "alphabet soup" chain packed into one single semicircle: 
+We’ve done it! We have the whole "letter soup" chain packed into one single semicircle: 
 - $PN$ is the `HM` (the small segment)
 - $PP'$ is the `GM` (the vertical altitude)
 - $OP$ is the `AM` (the radius)
