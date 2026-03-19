@@ -42,8 +42,6 @@ Or, the two-variable case:
     \]
 </div>
 
-To decode the "letter soup," here is what those letters actually stand for:
-
 * `HM = Harmonic Mean`: Even if it sounds counterintuitive to an untrained eye, this mean appears in the very laws encoded in our universe. For example, if you go from point $A$ to point $B$ with a speed of $v_1$ and come back with a speed of $v_2$, what is your average speed? A bad student would say $v_{\text{avg}}=\frac{v_1+v_2}{2}$, but a good student would know it is actually the harmonic mean: $v_{\text{avg}} = \frac{2}{\frac{1}{v_1} + \frac{1}{v_2}}$.
 
 * `GM = Geometric Mean`: The "growth" mean, useful for scaling and compounding. Much like the HM, this one appears in nature and in... simple finance. For example, if you are a stock investor and in the first year your portfolio grows by `100%`, but the next year the market crashes by `50%`, what was your *average growth*? 
@@ -143,7 +141,6 @@ To compute $PN$, which is the actual `HM`, we use the properties of the right tr
     \]
 </div>
 
-We’ve done it! We have the whole "letter soup" chain packed into one single semicircle: 
 - $PN$ is the `HM` (the small segment)
 - $PP'$ is the `GM` (the vertical altitude)
 - $OP$ is the `AM` (the radius)
