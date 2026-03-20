@@ -591,7 +591,11 @@ And these associations can go even further. Some I have internalized completely,
 
 <div class="octopus-graph" style="width:100%; height:460px; margin:2rem 0; border: 2px solid #000;"></div>
 
-Returning to our initial canvas, I find it fascinating to think of our memory as an "Octopus" graph, reaching out with its multiple tentacles to accumulate new nodes. In my opinion, it was never about the vertices themselves, but the "edges", the connections we make. It is not about the chambers in the [Memory Palace](https://en.wikipedia.org/wiki/Method_of_loci), but about the corridors connecting them. 
+Returning to our initial canvas, I find it fascinating to think of our memory as an "Octopus" graph, reaching out with its multiple tentacles to accumulate new nodes. In my opinion, it was never about the vertices themselves, but the "edges", the connections we make. 
+
+It is not about the chambers in the [Memory Palace](https://en.wikipedia.org/wiki/Method_of_loci), but about the corridors connecting them. 
+
+Bonus: you will also see, that once the "absorbtion" is made, new associations are created, and probably some of the old ones dissapear.
 
 ---
 
