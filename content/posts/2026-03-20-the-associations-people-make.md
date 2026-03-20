@@ -609,18 +609,6 @@ For example, take the previous meme. It is only funny if:
 
 I wonder how people with [Aphantasia](https://en.wikipedia.org/wiki/Aphantasia) structure information and how their memory works.
 
---- 
-
-### Bonus thoight (3)
-
-Smart people, people who I really admire, are capable of making associations that are very profund. Those associations can appear in art, math, psychology. Those associations are not silly stories, but they might be starting from there. Isn't this power association exactly the thing we call intuition ?
-
-For example, I've recently read T.Tao's [association](https://mathstodon.xyz/@tao/116252708577614828) of `AI+MATH` and the impact of roads to cities.
-
-Jung was able to some "weird" associations in his [Red](https://en.wikipedia.org/wiki/The_Red_Book_(Jung)) and [Black](https://en.wikipedia.org/wiki/Black_Books_(Jung)) books. 
-
-... so many other examples.
-
 ---
 
 ### Question
