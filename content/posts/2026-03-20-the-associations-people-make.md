@@ -10,7 +10,7 @@ usethreejs = true
 
 <sub>A silly story is easier to remember</sub>
 
-This article is about "a vision" that I have:
+This article is about "a vision" that I have.
 
 <div class="octopus-graph" style="width:100%; height:460px; margin:2rem 0; border: 2px solid #000;"></div>
 
@@ -521,7 +521,12 @@ document.querySelectorAll('.octopus-graph').forEach((el) => {
 
 </script>
 
-But first, let me explain what I mean by this.
+I like to "visualise" stuff, and some of my favourite articles that I wrote have some form of visualisations:
+- [The Sinusoidal Tetris](/2024/04/24/the-sinusoidal-tetris/);
+- [The Fourier Machine](http://localhost:1313/2024/04/24/from-the-circle-to-epicycles/#the-fourier-series-machinery);
+- or the latest, [The shapes of inequalities](/2026/03/16/the-shape-of-inequalities/);
+
+But first, let me explain what I mean by that "Octopus Graph"...
 
 ---
 
