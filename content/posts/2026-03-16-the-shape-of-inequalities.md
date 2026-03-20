@@ -716,13 +716,15 @@ createMathEngine(
     'am-gm-viz',
     (scene, createLabel) => {
         const radiusA = 4.0;
-        const radiusB = 1.5;
-        const centerX_A = -2.0;
+        const radiusB0 = 1.5;
+
+        // SHIFT EVERYTHING LEFT (main fix)
+        const centerX_A = -4.0;
 
         const circleA = createCircleLoop(radiusA, COLORS.dark);
         circleA.position.x = centerX_A;
 
-        const circleB = createCircleLoop(radiusB, COLORS.dark);
+        const circleB = createCircleLoop(radiusB0, COLORS.dark);
 
         const diameterA = createLine({
             color: COLORS.gray,
@@ -780,7 +782,7 @@ createMathEngine(
 
         const arrowB_up = new THREE.ArrowHelper(
             vec(0, 1, 0),
-            vec(0, radiusB, 0),
+            vec(0, radiusB0, 0),
             bHeadLen,
             COLORS.gray,
             bHeadLen,
@@ -789,7 +791,7 @@ createMathEngine(
 
         const arrowB_down = new THREE.ArrowHelper(
             vec(0, -1, 0),
-            vec(0, -radiusB, 0),
+            vec(0, -radiusB0, 0),
             bHeadLen,
             COLORS.gray,
             bHeadLen,
@@ -884,45 +886,60 @@ createMathEngine(
             gmLabel,
             diffLabel,
             radiusA,
-            radiusB,
+            radiusB0,
             centerX_A,
             leftArrowX,
-            rightArrowOffset
+            rightArrowOffset,
+            bHeadLen,
+            bHeadWid
         };
     },
     (time, obj) => {
-        const maxY = obj.radiusA - obj.radiusB;
-        const dist = obj.radiusA + obj.radiusB;
-        const maxAngle = Math.asin(maxY / dist);
+        const R = obj.radiusA;
+        const r0 = obj.radiusB0;
+
+        const growT = 0.5 * (1 + Math.sin(time * 0.9));
+        const r = r0 + (R - r0) * growT;
+
+        const scale = r / r0;
+        obj.circleB.scale.set(scale, scale, 1);
+
+        const dist = R + r;
+
+        const maxY = Math.max(0, R - r);
+        const ratio = Math.min(1, maxY / dist);
+        const maxAngle = Math.asin(ratio);
         const angle = Math.sin(time * 1.2) * maxAngle;
 
         const posX = obj.centerX_A + Math.cos(angle) * dist;
         const posY = Math.sin(angle) * dist;
-        const rightArrowX = posX + obj.radiusB + obj.rightArrowOffset;
+        const rightArrowX = posX + r + obj.rightArrowOffset;
 
         obj.circleB.position.set(posX, posY, 0);
 
         setLinePoints(obj.diameterB, [
-            vec(posX, posY - obj.radiusB, 0),
-            vec(posX, posY + obj.radiusB, 0)
+            vec(posX, posY - r, 0),
+            vec(posX, posY + r, 0)
         ]);
 
         setLinePoints(obj.bDimLine, [
-            vec(rightArrowX, posY - obj.radiusB, 0),
-            vec(rightArrowX, posY + obj.radiusB, 0)
+            vec(rightArrowX, posY - r, 0),
+            vec(rightArrowX, posY + r, 0)
         ]);
 
-        obj.arrowB_up.position.set(rightArrowX, posY + obj.radiusB, 0);
-        obj.arrowB_down.position.set(rightArrowX, posY - obj.radiusB, 0);
+        obj.arrowB_up.position.set(rightArrowX, posY + r, 0);
+        obj.arrowB_down.position.set(rightArrowX, posY - r, 0);
+        obj.arrowB_up.setLength(obj.bHeadLen, obj.bHeadLen, obj.bHeadWid);
+        obj.arrowB_down.setLength(obj.bHeadLen, obj.bHeadLen, obj.bHeadWid);
 
         setLinePoints(obj.tangentSmallTop, [
-            vec(posX, posY + obj.radiusB, 0),
-            vec(rightArrowX, posY + obj.radiusB, 0)
+            vec(posX, posY + r, 0),
+            vec(rightArrowX, posY + r, 0)
         ]);
 
         setLinePoints(obj.tangentSmallBottom, [
-            vec(posX, posY - obj.radiusB, 0),
-            vec(rightArrowX, posY - obj.radiusB, 0)
+            vec(posX, posY - r, 0),
+            vec(rightArrowX, posY - r, 0)
         ]);
 
         obj.centerB.position.set(posX, posY, 0.01);
@@ -933,7 +950,7 @@ createMathEngine(
             vec(posX, posY, 0)
         ]);
 
-        const amPts = [vec(obj.centerX_A, 0, 0), obj.circleB.position.clone()];
+        const amPts = [vec(obj.centerX_A, 0, 0), vec(posX, posY, 0)];
         setLinePoints(obj.amLine, amPts);
 
         const greenOff = -0.15;
@@ -979,7 +996,6 @@ createMathEngine(
     },
     false
 );
-
 createMathEngine(
     'am-gm-semicircle',
     (scene, createLabel) => {
