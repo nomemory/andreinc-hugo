@@ -47,6 +47,27 @@ Some of the animations are standard and are taught in the right kind of schools,
 .math-canvas.tall {
     height: 600px;
 }
+
+.anim-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.anim-toggle:hover {
+    text-decoration: none;
+}
+
+.anim-toggle:focus {
+    outline: none;
+}
+
 </style>
 
 # The HM-AM-GM-QM Inequality
@@ -89,6 +110,9 @@ We are given a large circle with center $O$ and a diameter $a$, meaning the radi
 
 <div class="math-canvas-wrap">
     <div id="am-gm-viz" class="math-canvas"></div>
+    <div style="text-align:center">
+        <button class="anim-toggle">Pause [ ⏸ ]</button>
+    </div>
 </div>
 
 A right triangle $OPO'$ is formed with the following lengths: 
@@ -117,6 +141,9 @@ We start with a semicircle with center $O$ and a total diameter of $a + b$. We p
 
 <div class="math-canvas-wrap">
     <div id="am-gm-semicircle" class="math-canvas"></div>
+    <div style="text-align:center">
+        <button class="anim-toggle">Pause [ ⏸ ]</button>
+    </div>    
 </div>
 
 In this triangle:
@@ -141,6 +168,9 @@ Now, to complicate things further, let's add the `QM` (Quadratic Mean) into the 
 
 <div class="math-canvas-wrap">
     <div id="am-gm-qm-semicircle" class="math-canvas"></div>
+    <div style="text-align:center">
+        <button class="anim-toggle">Pause [ ⏸ ]</button>
+    </div>    
 </div>
 
 By looking at the visual, we can see a new right triangle ($MOP'$) is formed, with its two legs being:
@@ -164,6 +194,9 @@ And finally, let's not forget about the `HM`. This is the most subtle of them al
 
 <div class="math-canvas-wrap">
     <div id="hm-am-gm-qm-semicircle" class="math-canvas"></div>
+    <div style="text-align:center">
+        <button class="anim-toggle">Pause [ ⏸ ]</button>
+    </div>
 </div>
 
 To compute $PN$, which is the actual `HM`, we use the properties of the right triangle $OPP'$. Since $PN$ is a segment on the hypotenuse formed by the altitude from the right angle (wait, actually, we use the area or similarity here!), the math works out beautifully:
@@ -198,6 +231,9 @@ Look at the following visual (the blue area represents the "liquid" (the product
 
 <div class="math-canvas-wrap">
     <div id="am-gm-squares" class="math-canvas"></div>
+    <div style="text-align:center">
+        <button class="anim-toggle">Pause [ ⏸ ]</button>
+    </div>
 </div>
 
 You’ll notice the water level fluctuates as the rectangle morphs (conditioned by $a+b=\text{constant}$), but it’s physically impossible for it to overflow the bounds of the square. The liquid only hits the brim at the "top of the stroke," right when $a=b$ and the rectangle becomes a perfect square. Any other time, there’s always some empty space left at the top.
@@ -223,6 +259,9 @@ We define a cube with a side length of $\frac{a+b+c}{3}$, giving it a volume of 
 
 <div class="math-canvas-wrap">
     <div id="am-gm-cubes" class="math-canvas"></div>
+    <div style="text-align:center">
+        <button class="anim-toggle">Pause [ ⏸ ]</button>
+    </div>
 </div>
 
 Just like before, the "prism" container only reaches the brim of the "cube" container when $a=b=c$. Any deviation from perfect symmetry results in a loss of volume. In mathematical terms:
@@ -256,6 +295,9 @@ The total area of the combined polygon formed by these three is exactly $a^2 + b
 
 <div class="math-canvas-wrap">
     <div id="abc-squares-overlap" class="math-canvas"></div>
+    <div style="text-align:center">
+        <button class="anim-toggle">Pause [ ⏸ ]</button>
+    </div>
 </div>
 
 If we draw some new lines, as shown in the animation, new rectangles appear:
@@ -283,6 +325,9 @@ As a challenge, I wanted to see if I could create a visual representation of the
 
 <div class="math-canvas-wrap">
     <div id="nesbitt-equilateral" class="math-canvas tall"></div>
+    <div style="text-align:center">
+        <button class="anim-toggle">Pause [ ⏸ ]</button>
+    </div>
 </div>
 
 The main idea was to play with [Viviani's Theorem](https://en.wikipedia.org/wiki/Viviani%27s_theorem). I started by drawing an equilateral triangle, knowing that the sum of the distances from an interior point $Q$ to the sides is always constant.
@@ -369,6 +414,8 @@ const TEXT = {
 };
 
 const vec = (x = 0, y = 0, z = 0) => new THREE.Vector3(x, y, z);
+
+let isRunning = true;
 
 function setLinePoints(line, points) {
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
@@ -697,16 +744,41 @@ function createMathEngine(id, setupFn, updateFn, showGrid = true) {
     }
 
     const objects = setupFn(scene, createLabel);
-
-    function animate() {
+    
+    let simTime = 0;
+    let lastTimestamp = null;
+    function animate(timestamp) {
         requestAnimationFrame(animate);
-        updateFn(performance.now() * 0.001, objects);
-        renderer.render(scene, camera);
-        labelRenderer.render(scene, camera);
-    }
 
-    animate();
+        const now = timestamp * 0.001;
+
+        if (lastTimestamp === null) {
+            lastTimestamp = now;
+        }
+
+        const dt = now - lastTimestamp;
+        lastTimestamp = now;
+
+        if (isRunning) {
+            simTime += dt;
+            updateFn(simTime, objects);
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+        }
+    }
+    requestAnimationFrame(animate);
 }
+
+const btn = document.getElementById('toggleAnimBtn');
+
+document.querySelectorAll('.anim-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+        isRunning = !isRunning;
+        document.querySelectorAll('.anim-toggle').forEach((b) => {
+            b.textContent = isRunning ? 'Pause [ ⏸ ]' : 'Resume [ ▶ ]';
+        });
+    });
+});
 
 /* ===========================
    SCENES
@@ -717,8 +789,6 @@ createMathEngine(
     (scene, createLabel) => {
         const radiusA = 4.0;
         const radiusB0 = 1.5;
-
-        // SHIFT EVERYTHING LEFT (main fix)
         const centerX_A = -4.0;
 
         const circleA = createCircleLoop(radiusA, COLORS.dark);
@@ -904,15 +974,18 @@ createMathEngine(
         const scale = r / r0;
         obj.circleB.scale.set(scale, scale, 1);
 
-        const dist = R + r;
+        // Keep both circles on the same bottom horizontal line:
+        // big circle bottom: y = -R
+        // small circle bottom: y = posY - r
+        // so posY = -R + r
+        const posY = -R + r;
 
-        const maxY = Math.max(0, R - r);
-        const ratio = Math.min(1, maxY / dist);
-        const maxAngle = Math.asin(ratio);
-        const angle = Math.sin(time * 1.2) * maxAngle;
+        // External tangency:
+        // dx^2 + posY^2 = (R + r)^2
+        // with posY = -R + r  =>  dx = 2 * sqrt(R * r)
+        const dx = 2 * Math.sqrt(R * r);
+        const posX = obj.centerX_A + dx;
 
-        const posX = obj.centerX_A + Math.cos(angle) * dist;
-        const posY = Math.sin(angle) * dist;
         const rightArrowX = posX + r + obj.rightArrowOffset;
 
         obj.circleB.position.set(posX, posY, 0);
@@ -945,14 +1018,17 @@ createMathEngine(
         obj.centerB.position.set(posX, posY, 0.01);
         obj.projP.position.set(obj.centerX_A, posY, 0.01);
 
+        // OP = sqrt(ab)
         setLinePoints(obj.gmLine, [
             vec(obj.centerX_A, posY, 0),
             vec(posX, posY, 0)
         ]);
 
+        // OO' = (a+b)/2
         const amPts = [vec(obj.centerX_A, 0, 0), vec(posX, posY, 0)];
         setLinePoints(obj.amLine, amPts);
 
+        // Vertical green segment = (a-b)/2
         const greenOff = -0.15;
         setLinePoints(obj.diffLine, [
             vec(obj.centerX_A + greenOff, 0, 0),
@@ -974,6 +1050,7 @@ createMathEngine(
 
         obj.labelO.position.set(obj.centerX_A - 0.42, -0.45, 0);
         obj.labelOp.position.set(posX + 0.35, posY - 0.45, 0);
+
         obj.labelP.position.set(
             obj.centerX_A - 0.45,
             posY + (posY >= 0 ? 0.45 : -0.55),
@@ -996,6 +1073,7 @@ createMathEngine(
     },
     false
 );
+
 createMathEngine(
     'am-gm-semicircle',
     (scene, createLabel) => {
