@@ -10,15 +10,45 @@ usethreejs = true
 
 <sub>A silly story is easier to remember</sub>
 
+<style>
+.octo-canvas-wrap {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    margin: 2rem 0;
+}
+
+.octopus-graph {
+    width: 600px;
+    height: 460px;
+    position: relative;
+    margin: 0 auto;
+    border: 2px solid #000;
+    background: #fff;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.octopus-graph canvas {
+    display: block;
+}
+</style>
+
 This article is about "a vision" that I have.
 
-<div class="octopus-graph" style="width:100%; height:460px; margin:2rem 0; border: 2px solid #000;"></div>
+<div class="octo-canvas-wrap">
+    <div class="octopus-graph"></div>
+</div>
 
 <script type="module">
 import * as THREE from 'three';
 
 function initOctopusGraph(container) {
   if (!container) return;
+
+  const FIXED_WIDTH = 600;
+  const FIXED_HEIGHT = 460;
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xffffff);
@@ -27,10 +57,19 @@ function initOctopusGraph(container) {
     antialias: true,
     alpha: false
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(FIXED_WIDTH, FIXED_HEIGHT, false);
+  renderer.domElement.style.width = `${FIXED_WIDTH}px`;
+  renderer.domElement.style.height = `${FIXED_HEIGHT}px`;
+  renderer.domElement.style.display = 'block';
   container.appendChild(renderer.domElement);
 
-  const camera = new THREE.OrthographicCamera(-7, 7, 5.2, -5.2, 0.1, 100); // know your perspective
+  container.style.width = `${FIXED_WIDTH}px`;
+  container.style.height = `${FIXED_HEIGHT}px`;
+  container.style.position = 'relative';
+  container.style.overflow = 'hidden';
+
+  const camera = new THREE.OrthographicCamera(-7, 7, 5.2, -5.2, 0.1, 100);
   camera.position.set(0, 0, 10);
   camera.lookAt(0, 0, 0);
 
@@ -51,7 +90,6 @@ function initOctopusGraph(container) {
   let isolatedTarget = null;
 
   let phase = 0;
-  // should be an enum
   // 0 waiting
   // 1 extend
   // 2 pull
@@ -88,12 +126,11 @@ function initOctopusGraph(container) {
     return node;
   }
 
-  function removeNode(node) {
-    if (!node) return;
-    scene.remove(node.mesh);
-    node.mesh.geometry.dispose();
-    node.mesh.material.dispose();
-    nodes = nodes.filter(n => n !== node);
+  function removeEdge(edge) {
+    if (!edge) return;
+    scene.remove(edge.line);
+    edge.line.geometry.dispose();
+    edge.line.material.dispose();
   }
 
   function createEdge(a, b, opacity = 0.9) {
@@ -116,13 +153,6 @@ function initOctopusGraph(container) {
     permanentEdges.push(edge);
     updateEdge(edge);
     return edge;
-  }
-
-  function removeEdge(edge) {
-    if (!edge) return;
-    scene.remove(edge.line);
-    edge.line.geometry.dispose();
-    edge.line.material.dispose();
   }
 
   function updateEdge(edge) {
@@ -178,10 +208,6 @@ function initOctopusGraph(container) {
 
   function smoothstep(t) {
     return t * t * (3 - 2 * t);
-  }
-
-  function lerp(a, b, t) {
-    return a + (b - a) * t;
   }
 
   function clearSceneData() {
@@ -249,7 +275,6 @@ function initOctopusGraph(container) {
       arms.push(arm);
     }
 
-    // Dense cross-connections between nearby arms.
     for (let i = 0; i < arms.length - 1; i++) {
       const a1 = arms[i];
       const a2 = arms[i + 1];
@@ -265,8 +290,6 @@ function initOctopusGraph(container) {
       }
     }
 
-    // create some arbitrary edges so it doesn't look
-    // like an "octopus tree"
     createEdge(arms[1][3], arms[3][3], 0.18);
     createEdge(arms[2][4], arms[5][4], 0.14);
     createEdge(arms[3][5], arms[6][4], 0.14);
@@ -333,8 +356,6 @@ function initOctopusGraph(container) {
     isolatedNode.attached = true;
     isolatedNode.parentAnchor = captureAnchors[3];
 
-    // make the graph "denser" after each capture.
-    // 
     const attachSets = [
       [captureAnchors[1], captureAnchors[2], captureAnchors[4]],
       [captureAnchors[0], captureAnchors[3], captureAnchors[5]],
@@ -348,8 +369,6 @@ function initOctopusGraph(container) {
       createEdge(anchor, isolatedNode, 0.68);
     }
 
-    // connect to one previously captured node if available.
-    // --> the path of learning
     const attachedNodes = nodes.filter(n => n.attached && n !== isolatedNode);
     if (attachedNodes.length > 0) {
       const prev = attachedNodes[attachedNodes.length - 1];
@@ -368,22 +387,6 @@ function initOctopusGraph(container) {
       phase = 3;
       phaseClock = 0;
     }
-  }
-
-  function resize() {
-    const w = Math.max(200, container.clientWidth);
-    const h = Math.max(220, container.clientHeight || 460);
-
-    renderer.setSize(w, h);
-
-    const aspect = w / h;
-    const viewHeight = 5.0;
-
-    camera.left = -viewHeight * aspect;
-    camera.right = viewHeight * aspect;
-    camera.top = viewHeight;
-    camera.bottom = -viewHeight;
-    camera.updateProjectionMatrix();
   }
 
   function updateIdleMotion(t) {
@@ -498,15 +501,12 @@ function initOctopusGraph(container) {
     renderer.render(scene, camera);
   }
 
-  resize();
   startCycle();
-  window.addEventListener('resize', resize);
   animationId = requestAnimationFrame(animate);
 
   return () => {
     destroyed = true;
     if (animationId) cancelAnimationFrame(animationId);
-    window.removeEventListener('resize', resize);
     clearSceneData();
     renderer.dispose();
     if (renderer.domElement.parentNode === container) {
@@ -518,7 +518,6 @@ function initOctopusGraph(container) {
 document.querySelectorAll('.octopus-graph').forEach((el) => {
   initOctopusGraph(el);
 });
-
 </script>
 
 I like to "visualise" stuff, and some of my favourite articles that I wrote have some form of visualisations:
@@ -589,7 +588,9 @@ And these associations can go even further. Some I have internalized completely,
 
 ---
 
-<div class="octopus-graph" style="width:100%; height:460px; margin:2rem 0; border: 2px solid #000;"></div>
+<div class="octo-canvas-wrap">
+    <div class="octopus-graph"></div>
+</div>
 
 Returning to our initial canvas, I find it fascinating to think of our memory as an "Octopus" graph, reaching out with its multiple tentacles to accumulate new nodes. In my opinion, it was never about the vertices themselves, but the "edges", the connections we make. 
 
