@@ -1,0 +1,165 @@
+{{ define "main" }}
+
+<main class="links-page">
+  <header>
+    <h1>{{ .Title }}</h1>
+    {{ with .Content }}
+      <div>{{ . }}</div>
+    {{ end }}
+  </header>
+
+  {{ $links := .Params.links }}
+
+  {{ $allTags := slice }}
+  {{ range $links }}
+    {{ range .tags }}
+      {{ $allTags = $allTags | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $allTags = $allTags | uniq | sort }}
+
+  <section>
+    <p>
+      <a href="/links/">all</a>
+      {{ range $allTags }}
+        <a href="/links/?tag={{ . | urlquery }}">#{{ . | lower }}</a>
+      {{ end }}
+    </p>
+
+    <p>
+      <button id="feeling-lucky">Feeling lucky</button>
+    </p>
+  </section>
+
+  <br/>
+
+  <section id="links-list">
+    {{ range $links }}
+      <article
+        class="link-item"
+        data-tags="{{ delimit .tags "," }}"
+      >
+        <h2>
+          <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+            {{ .title }}
+          </a>
+        </h2>
+
+        {{ with .description }}
+          <p>{{ . }}</p>
+        {{ end }}
+
+        {{ with .tags }}
+          <p class="link-tags">
+            {{ range . }}
+              <a href="/links/?tag={{ . | urlquery }}">#{{ . | lower }}</a>
+            {{ end }}
+          </p>
+        {{ end }}
+      </article>
+    {{ end }}
+  </section>
+</main>
+
+<style>
+.links-page .link-item {
+    border: 1px solid #000;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.links-page .link-tags a,
+.links-page section p a {
+    font-size: 0.85em;
+    padding: 2px 6px;
+    text-decoration: none;
+}
+
+.links-page .active-tag {
+    background: #000;
+    color: #fff;
+}
+
+.links-page button {
+    font-size: 0.9em;
+    padding: 4px 8px;
+    border: 1px solid #000;
+    background: transparent;
+}
+
+.links-page button:hover {
+    background: #000;
+    color: #fff;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const root = document.querySelector(".links-page");
+  if (!root) return;
+
+  const items = root.querySelectorAll(".link-item");
+
+  function normalize(tag) {
+    return (tag || "").trim().toLowerCase();
+  }
+
+  function applyFilter(tag) {
+    const wanted = normalize(tag);
+
+    items.forEach((item) => {
+      const tags = (item.dataset.tags || "")
+        .split(",")
+        .map(normalize)
+        .filter(Boolean);
+
+      const visible = !wanted || wanted === "all" || tags.includes(wanted);
+      item.style.display = visible ? "" : "none";
+    });
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const tag = params.get("tag");
+  applyFilter(tag);
+
+  const currentTag = normalize(tag);
+
+  root.querySelectorAll('a[href*="/links/?tag="]').forEach((link) => {
+    const url = new URL(link.href);
+    const linkTag = normalize(url.searchParams.get("tag"));
+
+    if (currentTag && linkTag === currentTag) {
+      link.classList.add("active-tag");
+    }
+  });
+
+  if (!currentTag) {
+    const allLink = root.querySelector('a[href="/links/"]');
+    if (allLink) {
+      allLink.classList.add("active-tag");
+    }
+  }
+
+  const luckyBtn = root.querySelector("#feeling-lucky");
+
+  if (luckyBtn) {
+    luckyBtn.addEventListener("click", () => {
+      const visibleItems = Array.from(items).filter(
+        (item) => item.style.display !== "none"
+      );
+
+      if (visibleItems.length === 0) return;
+
+      const randomItem =
+        visibleItems[Math.floor(Math.random() * visibleItems.length)];
+
+      const link = randomItem.querySelector("h2 a");
+      if (link) {
+        window.open(link.href, "_blank");
+      }
+    });
+  }
+});
+</script>
+
+{{ end }}
