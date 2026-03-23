@@ -1,0 +1,376 @@
+{{ define "main" }}
+
+<main class="sounds-page">
+  <header>
+    <h1>{{ .Title }}</h1>
+    {{ with .Content }}
+      <div>{{ . }}</div>
+    {{ end }}
+  </header>
+
+  {{ $entries := slice }}
+
+  {{ range site.Data.albums.entries }}
+    {{ $entries = $entries | append . }}
+  {{ end }}
+
+  {{ range site.Data.songs.entries }}
+    {{ $entries = $entries | append . }}
+  {{ end }}
+
+  {{ $entries = sort $entries "title" }}
+
+  {{ $allGenres := slice }}
+  {{ range $entries }}
+    {{ range .genres }}
+      {{ $allGenres = $allGenres | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $allGenres = $allGenres | uniq | sort }}
+
+  <section class="sounds-filters">
+    <p class="sounds-filter-links">
+      <a href="/sounds/">all</a>
+      <a href="/sounds/?type=album">albums</a>
+      <a href="/sounds/?type=song">songs</a>
+      {{ range $allGenres }}
+        <a href="/sounds/?genre={{ . | urlquery }}">#{{ . | lower }}</a>
+      {{ end }}
+    </p>
+  </section>
+
+    <p class="sounds-actions">
+      <button id="random-entry">Random pick</button>
+    </p>
+
+  <br/>
+
+  <section id="sounds-list">
+    {{ range $entries }}
+      {{ $entryType := lower .type }}
+      <article
+        class="sounds-item sounds-item-{{ $entryType }}"
+        data-type="{{ $entryType }}"
+        data-genres="{{ delimit .genres "," | lower }}"
+      >
+        <div class="sounds-item-inner">
+          <div class="sounds-content">
+            <div class="sounds-heading">
+              <h2>
+                {{ .title }}
+                {{ with .artist }}
+                  <span class="sounds-artist">— {{ . }}</span>
+                {{ end }}
+              </h2>
+
+              <span class="sounds-badge">
+                {{ if eq $entryType "album" }}album{{ else }}song{{ end }}
+              </span>
+            </div>
+
+            <p class="sounds-meta">
+              {{ with .year }}<span>{{ . }}</span>{{ end }}
+            </p>
+
+            {{ with .thought }}
+              <p class="sounds-thought">{{ . }}</p>
+            {{ end }}
+
+            {{ with .genres }}
+              <p class="sounds-tags">
+                Tags:
+                {{ range . }}
+                  <a href="/sounds/?genre={{ . | urlquery }}">#{{ . | lower }}</a>
+                {{ end }}
+              </p>
+            {{ end }}
+
+            <p class="sounds-links">
+              Listen on:
+              {{ with .spotify }}
+                <a href="{{ . }}" target="_blank" rel="noopener noreferrer">Spotify</a>
+              {{ end }}
+              {{ with .youtube }}
+                <a href="{{ . }}" target="_blank" rel="noopener noreferrer">YouTube Music</a>
+              {{ end }}
+              {{ with .youtube_video }}
+                <a href="{{ . }}" target="_blank" rel="noopener noreferrer">YouTube Video</a>
+              {{ end }}
+            </p>
+
+            {{ if and (eq $entryType "album") .spotify }}
+              {{ $embed := replace .spotify "open.spotify.com/" "open.spotify.com/embed/" }}
+              <div class="sounds-preview-wrap">
+                <button
+                  class="sounds-preview-toggle"
+                  type="button"
+                  aria-expanded="false">
+                  Preview
+                </button>
+
+                <div class="sounds-embed" hidden>
+                  <iframe
+                    src="{{ $embed }}"
+                    width="100%"
+                    height="152"
+                    frameborder="0"
+                    allowfullscreen=""
+                    loading="lazy"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+                  </iframe>
+                </div>
+              </div>
+            {{ end }}
+          </div>
+        </div>
+      </article>
+    {{ end }}
+  </section>
+</main>
+
+<style>
+.sounds-page {
+    --sounds-border: #000;
+    --sounds-muted: #666;
+}
+
+.sounds-page header {
+    margin-bottom: 1rem;
+}
+
+.sounds-page .sounds-filters {
+    margin-bottom: 1rem;
+}
+
+.sounds-page .sounds-filter-links,
+.sounds-page .sounds-actions {
+    margin: 0.35rem 0;
+}
+
+.sounds-page .sounds-filter-links a,
+.sounds-page .sounds-tags a,
+.sounds-page .sounds-links a {
+    font-size: 0.85em;
+    padding: 2px 6px;
+    text-decoration: none;
+}
+
+.sounds-page .active-filter {
+    background: #000;
+    color: #fff;
+}
+
+.sounds-page button {
+    font-size: 0.9em;
+    padding: 4px 8px;
+    border: 1px solid #000;
+    background: transparent;
+    cursor: pointer;
+}
+
+.sounds-page button:hover {
+    background: #000;
+    color: #fff;
+}
+
+.sounds-page .sounds-item {
+    border: 1px solid var(--sounds-border);
+    padding: 0.5rem 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+.sounds-page .sounds-item-inner {
+    display: block;
+}
+
+.sounds-page .sounds-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.sounds-page .sounds-heading h2 {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.sounds-page .sounds-item-album .sounds-heading h2 {
+    font-size: 1.05rem;
+}
+
+.sounds-page .sounds-artist {
+    font-weight: normal;
+}
+
+.sounds-page .sounds-badge {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    border: 1px solid var(--sounds-border);
+    padding: 2px 5px;
+}
+
+.sounds-page .sounds-meta {
+    margin: 0 0 0.3rem 0;
+    color: var(--sounds-muted);
+    font-size: 0.85em;
+}
+
+.sounds-page .sounds-thought {
+    margin: 0.25rem 0 0.4rem 0;
+    line-height: 1.3;
+}
+
+.sounds-page .sounds-tags,
+.sounds-page .sounds-links {
+    margin: 0.2rem 0;
+}
+
+.sounds-page .sounds-links a {
+    margin-left: 0.3rem;
+}
+
+.sounds-page .sounds-preview-wrap {
+    margin-top: 0.45rem;
+}
+
+.sounds-page .sounds-preview-toggle {
+    font-size: 0.82em;
+    padding: 2px 6px;
+    border: 1px solid var(--sounds-border);
+    background: transparent;
+    cursor: pointer;
+}
+
+.sounds-page .sounds-preview-toggle:hover {
+    background: #000;
+    color: #fff;
+}
+
+.sounds-page .sounds-embed {
+    margin-top: 0.5rem;
+}
+
+.sounds-page .sounds-item-album {
+    border-left: 3px solid #000;
+}
+
+.sounds-page .sounds-item-song {
+    border-left: 1px solid #000;
+}
+
+@media (max-width: 700px) {
+    .sounds-page .sounds-heading {
+        display: block;
+    }
+
+    .sounds-page .sounds-badge {
+        display: inline-block;
+        margin-top: 0.3rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const root = document.querySelector(".sounds-page");
+  if (!root) return;
+
+  const items = root.querySelectorAll(".sounds-item");
+
+  function normalize(v) {
+    return (v || "").trim().toLowerCase();
+  }
+
+  function applyFilters(type, genre) {
+    const wantedType = normalize(type);
+    const wantedGenre = normalize(genre);
+
+    items.forEach((item) => {
+      const itemType = normalize(item.dataset.type);
+      const itemGenres = (item.dataset.genres || "")
+        .split(",")
+        .map(normalize)
+        .filter(Boolean);
+
+      const typeOk = !wantedType || wantedType === "all" || itemType === wantedType;
+      const genreOk = !wantedGenre || itemGenres.includes(wantedGenre);
+
+      item.style.display = (typeOk && genreOk) ? "" : "none";
+    });
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const currentType = normalize(params.get("type"));
+  const currentGenre = normalize(params.get("genre"));
+
+  applyFilters(currentType, currentGenre);
+
+  root.querySelectorAll("a").forEach((link) => {
+    try {
+      const url = new URL(link.href, window.location.origin);
+      const linkType = normalize(url.searchParams.get("type"));
+      const linkGenre = normalize(url.searchParams.get("genre"));
+      const isAll = url.pathname === "/sounds/" && !url.search;
+
+      if (!currentType && !currentGenre && isAll) {
+        link.classList.add("active-filter");
+      }
+
+      if (currentType && linkType === currentType && !linkGenre) {
+        link.classList.add("active-filter");
+      }
+
+      if (currentGenre && linkGenre === currentGenre) {
+        link.classList.add("active-filter");
+      }
+    } catch (e) {}
+  });
+
+  const randomBtn = root.querySelector("#random-entry");
+
+  if (randomBtn) {
+    randomBtn.addEventListener("click", () => {
+      const visibleItems = Array.from(items).filter(
+        (item) => item.style.display !== "none"
+      );
+
+      if (!visibleItems.length) return;
+
+      const randomItem =
+        visibleItems[Math.floor(Math.random() * visibleItems.length)];
+
+      randomItem.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+    });
+  }
+
+  root.querySelectorAll(".sounds-preview-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const wrap = btn.closest(".sounds-preview-wrap");
+      if (!wrap) return;
+
+      const embed = wrap.querySelector(".sounds-embed");
+      if (!embed) return;
+
+      const isHidden = embed.hasAttribute("hidden");
+
+      if (isHidden) {
+        embed.removeAttribute("hidden");
+        btn.setAttribute("aria-expanded", "true");
+        btn.textContent = "Hide preview";
+      } else {
+        embed.setAttribute("hidden", "");
+        btn.setAttribute("aria-expanded", "false");
+        btn.textContent = "Preview";
+      }
+    });
+  });
+});
+</script>
+
+{{ end }}

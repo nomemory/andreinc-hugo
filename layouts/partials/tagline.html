@@ -54,7 +54,53 @@ document.addEventListener("DOMContentLoaded", () => {
         { ro: "Am vrut să scriu, dar mi-a trecut repede.", en: "I wanted to write, but it passed quickly." },
         { ro: "Am pus punct de trei ori, ca să pară mister...", en: "I put three periods, just to make it seem like mystery." },
         { ro: "N-am chef, deci nu fac.", en: "I don't feel like it, therefore I won't." },
-        { ro: "Spațiul și timpul sunt doar forme de a întârzia la muncă.", en: "Space and time are just forms of being late for work." }
+        { ro: "Spațiul și timpul sunt doar forme de a întârzia la muncă.", en: "Space and time are just forms of being late for work." },
+        { ro: "Universul nu are sens, dar are latență.", en: "The universe has no meaning, but it has latency." },
+        { ro: "Totul converge, inclusiv entuziasmul.", en: "Everything converges, including enthusiasm." },
+        { ro: "Nu e haos. E doar complexitate prost înțeleasă.", en: "It's not chaos. It's just poorly understood complexity." },
+        { ro: "Dacă poate fi optimizat, probabil n-a meritat făcut.", en: "If it can be optimized, it probably wasn't worth doing." },
+        { ro: "Am înlocuit incertitudinea cu un model mai scump.", en: "I replaced uncertainty with a more expensive model." },
+        { ro: "Dacă AI-ul mă înlocuiește, măcar scap de ședințe.", en: "If AI replaces me, at least I escape meetings." },
+        { ro: "Am redus problema la o notație mai elegantă.", en: "I reduced the problem to a more elegant notation." },
+        { ro: "Tot ce imi place devine debt tehnic.", en: "Everything I love becomes technical debt." },
+        { ro: "Dacă nu poate fi formalizat, va fi ignorat.", en: "If it cannot be formalized, it will be ignored." },
+        { ro: "Am cerut sens. Am primit o distribuție.", en: "I asked for meaning. I got a distribution." },
+        { ro: "Mai întâi axiomele. Dezamăgirea vine singură.", en: "First the axioms. Disappointment comes on its own." },
+        { ro: "Ce nu poate fi măsurat va fi vândut ca viziune.", en: "What cannot be measured will be sold as vision." },
+        { ro: "Toate drumurile duc la o convenție de notație.", en: "All roads lead to a notation convention." },
+        { ro: "În fond, și absurdul are structură.", en: "In the end, even absurdity has structure." },
+        { ro: "Am generalizat dintr-un caz norocos.", en: "I generalized from a lucky case." },
+        { ro: "Am simplificat până am greșit.", en: "I simplified until it became wrong." },
+        { ro: "Edge case-ul e cazul real.", en: "The edge case is the real case." },
+        { ro: "Determinist, dar surprinzător.", en: "Deterministic, yet surprising." },
+        { ro: "E distribuit, deci nimeni nu știe.", en: "It's distributed, so no one knows." },
+        { ro: "Am cache-uit problema.", en: "I cached the problem." },
+        { ro: "Am paralelizat confuzia.", en: "I parallelized the confusion." },
+        { ro: "E reproducibil. Nu știu cum.", en: "It's reproducible. I don't know how." },
+        { ro: "Starea e superpusă: merge și nu merge.", en: "The state is superposed: it works and it doesn't." },
+        { ro: "Măsori o dată, strici tot.", en: "Measure once, ruin everything." },
+        { ro: "Nu e instabil, e sensibil la condiții inițiale.", en: "It's not unstable, it's sensitive to initial conditions." },
+        { ro: "Soluția diverge elegant.", en: "The solution diverges elegantly." },
+        { ro: "Am ales sistemul de referință greșit.", en: "I chose the wrong frame of reference." },
+        { ro: "Interacțiuni slabe, efecte mari.", en: "Weak interactions, large effects." },
+        { ro: "Aproape peste tot, dar nu unde trebuie.", en: "Almost everywhere, but not where needed." },
+        { ro: "Am ignorat condițiile la frontieră.", en: "I ignored the boundary conditions." },
+        { ro: "Seria converge. Prea târziu.", en: "The series converges. Too late." },
+        { ro: "Am derivat de prea multe ori.", en: "I differentiated too many times." },
+        { ro: "Nu e model, e interpretare.", en: "It's not a model, it's an interpretation." },
+        { ro: "Am confundat karma cu corelația.", en: "I confused karma with correlation." },
+        { ro: "Am atribuit sens unui zgomot.", en: "I assigned meaning to noise." },
+        { ro: "Bias de confirmare, dar liniștitor.", en: "Confirmation bias, but comforting." },
+        { ro: "Eșantion mic, concluzie mare.", en: "Small sample, big conclusion." },
+        { ro: "Am văzut intenție în varianță.", en: "I saw intention in variance." },
+        { ro: "Am confundat probabilul cu meritatul.", en: "I confused likely with deserved." },
+        { ro: "Funcționează. Nu atinge.", en: "It works. Don't touch it." },
+        { ro: "Nu e frumos, dar e în producție.", en: "It's not pretty, but it's in production." },
+        { ro: "Am citit codul. Am renunțat.", en: "I read the code. I gave up." },
+        { ro: "Am citit documentația. Nu ajută.", en: "I read the docs. It doesn't help." },
+        { ro: "La -O3 e alt program.", en: "At -O3 it's a different program." },
+        { ro: "Tail recursion. Sper.", en: "Tail recursion. Hopefully." },
+        { ro: "Fold() până la epuizare.", en: "Fold() until exhaustion." },
     ];
 
     const randomIndex = Math.floor(Math.random() * phrases.length);
@@ -64,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     if (taglineElement) {
         // Inject the text with the data-tooltip attribute
-        taglineElement.innerHTML = `Personal site of Andrei N. Ciobanu: <span class="tagline-text" data-tooltip="${selectedPhrase.en}">${selectedPhrase.ro}</span>`;
+        taglineElement.innerHTML = `Personal site of Andrei N. Ciobanu ≫ <span class="tagline-text" data-tooltip="${selectedPhrase.en}">${selectedPhrase.ro}</span>`;
         
         const textSpan = taglineElement.querySelector('.tagline-text');
         
