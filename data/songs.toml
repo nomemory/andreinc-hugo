@@ -267,3 +267,63 @@ year = 1979
 youtube_video = "https://www.youtube.com/watch?v=oDU6P01yvnU"
 youtube_video_id = "oDU6P01yvnU"
 thought = "Eerie chip."
+
+[[entries]]
+title = "String Theory"
+artist = "Teleman"
+type = "song"
+genres = ["alternative rock", "electronic"]
+year = 2023
+youtube_video = "https://www.youtube.com/watch?v=L1Y6W1FaSVQ"
+youtube_video_id = "mnFC8XYecVM"
+thought = "Retro."
+
+[[entries]]
+title = "Miasto Orchidei"
+artist = "Michał Szydłowski"
+type = "song"
+genres = ["ambient", "instrumental", "electronic"]
+year = 2003
+youtube_video = "https://www.youtube.com/watch?v=9zBQDGyt34o"
+youtube_video_id = "9zBQDGyt34o"
+thought = "Calm piano."
+
+[[entries]]
+title = "Falling in Trance"
+artist = "Eberhard Schoener"
+type = "song"
+genres = [ "electronic", "ambient" ]
+year = 2010
+youtube_video = "https://www.youtube.com/watch?v=xz7AbqB2dPc"
+youtube_video_id = "xz7AbqB2dPc"
+thought = "Retro meditative."
+
+[[entries]]
+title = "Lucky Seven"
+artist = "Chris Squire"
+type = "song"
+genres = ["progressive rock", "jazz rock"]
+year = 1975
+youtube_video = "https://www.youtube.com/watch?v=OzKqn5ehdSg"
+youtube_video_id = "OzKqn5ehdSg"
+thought = "Rhythmically playful."
+
+[[entries]]
+title = "Three of a Perfect Pair"
+artist = "King Crimson"
+type = "song"
+genres = ["progressive rock", "art rock"]
+year = 1984
+youtube_video = "https://www.youtube.com/watch?v=QdMHy074kNc"
+youtube_video_id = "QdMHy074kNc"
+thought = "Sharp with tension."
+
+[[entries]]
+title = "Sugar for the Pill"
+artist = "Slowdive"
+type = "song"
+genres = ["shoegaze"]
+year = 2017
+youtube_video = "https://www.youtube.com/watch?v=BxwAPBxc0lU"
+youtube_video_id = "BxwAPBxc0lU"
+thought = "Melancholic."

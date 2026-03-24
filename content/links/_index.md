@@ -59,6 +59,7 @@ tags = ["algorithms", "books"]
 [[links]]
 title = "Competitive Programmer's Handbook on GitHub"
 url = "https://github.com/pllk/cphb/"
+description = "Classical book to learn algorithms and data structures for competitive programming contests."
 tags = ["algorithms", "books"]
 
 [[links]]
@@ -76,7 +77,7 @@ tags = ["algorithms", "math"]
 [[links]]
 title = "DADS"
 url = "https://xlinux.nist.gov/dads/"
-description = "Dictionary of Algorithms and Data Structures."
+description = "A comprehensive, reference that provides concise definitions of algorithms, data structures, and related concepts used in computer science."
 tags = ["algorithms"]
 
 [[links]]
@@ -144,7 +145,7 @@ tags = ["algorithms", "tools"]
 [[links]]
 title = "A stacked clock"
 url = "https://www.danieldjohnson.com/2014/06/30/stacked-clock/"
-description = "Clock with hands connected end-to-tip."
+description = "A “stacked clock” reimagines a traditional clock by linking its hands tip-to-tail, creating a chained visualization of time."
 tags = ["art"]
 
 [[links]]
@@ -174,6 +175,7 @@ tags = ["art", "tools"]
 [[links]]
 title = "Chris Shier"
 url = "https://csh.bz/"
+description = "Browser experiments."
 tags = ["art"]
 
 [[links]]
@@ -345,6 +347,7 @@ tags = ["art"]
 [[links]]
 title = "AI makes you boring"
 url = "https://www.marginalia.nu/log/a_132_ai_bores/"
+description = "By outsourcing the effort to AI we risk producing more generic ideas and becoming 'boring' thinkers."
 tags = ["blogging", "essays"]
 
 [[links]]
@@ -382,6 +385,7 @@ tags = ["blogging", "essays"]
 [[links]]
 title = "Awesome Math"
 url = "https://github.com/rossant/awesome-math"
+description = "The 'awesome-math' GitHub repository is a large, curated collection of high-quality mathematics resources gathered in one place."
 tags = ["books", "math"]
 
 [[links]]
@@ -500,6 +504,7 @@ tags = ["c", "pl"]
 [[links]]
 title = "C Puzzles"
 url = "http://www.gowrikumar.com/c/index.php"
+description = "Test and deepen your understanding of the C language."
 tags = ["c"]
 
 [[links]]
@@ -706,6 +711,7 @@ tags = ["essays"]
 [[links]]
 title = "Algorithms interviews: theory vs. practice"
 url = "https://danluu.com/algorithms-interviews/"
+description = "The article argues that algorithm-heavy coding interviews are a poor proxy for real engineering ability."
 tags = ["algorithms", "essays"]
 
 [[links]]
@@ -823,16 +829,19 @@ tags = ["essays", "games"]
 [[links]]
 title = "Can you tell an assembly language when you see one?"
 url = "https://wordsandbuttons.online/can_you_tell_an_assembly_language_when_you_see_one.html"
-tags = ["funny"]
+description = "The main point is that modern assembly isn’t always obviously 'low-level' anymore."
+tags = ["funny", "pl"]
 
 [[links]]
 title = "Complaints Medieval Monks Scribbled in the Margins of Illuminated Manuscripts"
 url = "https://www.themarginalian.org/2012/03/21/monk-complaints-manuscripts"
+description = "Real complaints written by medieval monks in the margins of manuscripts."
 tags = ["funny"]
 
 [[links]]
 title = "Connnnngratulations!"
 url = "https://github.com/iiordanov/remote-desktop-clients/issues/39"
+description = "Not a confirmed or formally resolved report."
 tags = ["funny"]
 
 [[links]]
@@ -928,6 +937,7 @@ tags = ["games", "low-level"]
 [[links]]
 title = "Bonsai Builder"
 url = "https://vandervasgenerator.itch.io/bonsaibuilder"
+description = "Bonsai Builder is a small, relaxing browser game where you grow and shape your own bonsai tree."
 tags = ["games"]
 
 [[links]]
@@ -939,17 +949,13 @@ tags = ["games", "misc"]
 [[links]]
 title = "CEO Simulator"
 url = "https://ceosimulator.vercel.app/"
-description = "Startup Edition."
+description = "Startup Edition is a browser-based strategy game where you play as a startup CEO and make decisions under time pressure."
 tags = ["games"]
 
 [[links]]
 title = "Colossal Cave Adventure Page"
 url = "https://rickadams.org/adventure/"
-tags = ["games"]
-
-[[links]]
-title = "Play Colossal Cave Adventure"
-url = "https://rickadams.org/adventure/advent/"
+description = "The site is a playable online version of Colossal Cave Adventure, the classic 1970s text-based game widely considered the first interactive fiction."
 tags = ["games"]
 
 [[links]]
@@ -1176,21 +1182,25 @@ tags = ["art", "math"]
 [[links]]
 title = "A truly incredible fact about the number 37"
 url = "https://grossack.site/2023/11/08/37-median.html"
+description = "If you pick a large random integer, the median value of its second smallest prime factor is 37."
 tags = ["math"]
 
 [[links]]
 title = "All in one math sheet"
 url = "https://archive.org/details/all-in-one-math-cheat-sheet-v2.10/"
-tags = ["math"]
+description = "The 'All-in-One Mathematics Cheat Sheet' is a massive compilation of formulas, definitions, and identities spanning mathematics from elementary to university level."
+tags = ["math", "books"]
 
 [[links]]
 title = "Basics of Olympiad Inequalities"
 url = "https://web.williams.edu/Mathematics/sjmiller/public_html/161/articles/Riasat_BasicsOlympiadInequalities.pdf"
-tags = ["math"]
+description = "An introductory guide aimed at students preparing for math competitions, presenting core inequality techniques along with examples and exercises."
+tags = ["math", "books"]
 
 [[links]]
 title = "Calculus Made Easy"
 url = "https://calculusmadeeasy.org/"
+description = "calculusmadeeasy.org is an online version of Calculus Made Easy (1910) by Silvanus P. Thompson."
 tags = ["books", "math"]
 
 [[links]]
@@ -1208,6 +1218,7 @@ tags = ["math"]
 [[links]]
 title = "Does anybody know this fractal?"
 url = "https://www.gibney.org/does_anybody_know_this_fractal"
+description = "It’s likely not a standard named fractal."
 tags = ["art", "math"]
 
 [[links]]
@@ -1355,6 +1366,7 @@ tags = ["math"]
 [[links]]
 title = "Ancient Greek"
 url = "https://ancient-greek.net/"
+description = "ancient-greek.net is a personal, educational website dedicated to the Ancient Greek language and culture, offering resources like grammar notes, translations, vocabulary lists, articles, and (even) audio materials."
 tags = ["misc"]
 
 [[links]]
@@ -1366,21 +1378,25 @@ tags = ["misc"]
 [[links]]
 title = "ASK HN: Is there a point in school"
 url = "https://news.ycombinator.com/item?id=1182512"
+description = "This Hacker News thread is a discussion around a student questioning the value of school versus self-learning or jumping straight into programming/startups."
 tags = ["misc"]
 
 [[links]]
 title = "ASK HN: You have one shot to redesign the Internet – what do you change?"
 url = "https://news.ycombinator.com/item?id=27663618"
+description = "This Hacker News thread is a broad discussion on how the Internet should have been designed differently."
 tags = ["misc"]
 
 [[links]]
 title = "Balancing Cube"
 url = "https://willempennings.nl/balancing-cube/"
-tags = ["misc"]
+description = "The article describes a self-balancing cube that can stand on its corner by using three internal reaction wheels controlled by a feedback system."
+tags = ["misc", "physics"]
 
 [[links]]
 title = "Dear Photograph"
 url = "https://dearphotograph.com/"
+description = "Dear Photograph is a photography project where people recreate old photos by holding them up in their original location and photographing them again in the present."
 tags = ["art", "misc"]
 
 [[links]]
@@ -1422,7 +1438,8 @@ tags = ["pl"]
 [[links]]
 title = "Common Misconceptions about Compilers"
 url = "https://sbaziotis.com/compilers/common-misconceptions-about-compilers.html"
-tags = ["pl"]
+description = "The core message is that compilers don’t 'magically optimize everything'."
+tags = ["pl", "low-level"]
 
 [[links]]
 title = "Programming languages & resources"
@@ -1494,12 +1511,6 @@ description = "A curated collection of websites that deliberately keep their tot
 tags = ["webring"]
 
 [[links]]
-title = "bukmark.club"
-url = "https://bukmark.club/"
-description = "Curated collection of bookmarks and links."
-tags = ["webring"]
-
-[[links]]
 title = "Blogroll"
 url = "https://blogroll.org/"
 description = "Humanly curated list of independent blogs."
@@ -1543,21 +1554,25 @@ tags = ["wiki"]
 [[links]]
 title = "Ant-Fungus Mutualism"
 url = "https://en.m.wikipedia.org/wiki/Ant%E2%80%93fungus_mutualism"
+description = "Ant–fungus mutualism is a symbiotic relationship where certain ants 'farm' fungi as their primary food source, much like humans cultivate crops."
 tags = ["wiki"]
 
 [[links]]
 title = "Autistic Assistant of Gauss used to check Primality"
 url = "https://hsm.stackexchange.com/questions/15609/autistic-assistant-of-gauss-used-to-check-primality"
+description = "...there is no credible historical evidence for this."
 tags = ["math", "wiki"]
 
 [[links]]
 title = "Cistercian Numbers"
 url = "https://www.omniglot.com/language/numbers/cistercian-numbers.htm"
+description = "A medieval numeral system invented by monks in the 13th century to write numbers in a highly compact way."
 tags = ["math", "wiki"]
 
 [[links]]
 title = "Darwin (Programming Language)"
 url = "https://en.m.wikipedia.org/wiki/Darwin_(programming_game)"
+description = "Darwin (1961) is one of the earliest programming games, where players write small machine-code programs that compete inside a shared memory 'arena'."
 tags = ["games", "pl", "wiki"]
 
 [[links]]
@@ -1661,11 +1676,6 @@ description = "Basically read blogs and find a forum or two for social interacti
 tags = ["webring", "blogging"]
 
 [[links]]
-title = "Dictionary of Algorithms and Datastructures"
-url = "https://xlinux.nist.gov/dads/"
-tags = ["algorithms"]
-
-[[links]]
 title = "The Interim Computer Museum"
 url = "https://icm.museum/"
 tags = ["misc"]
@@ -1706,7 +1716,8 @@ tags = ["physics", "wiki"]
 [[links]]
 title = "Death to scroll fade"
 url = "https://dbushell.com/2026/01/09/death-to-scroll-fade/"
-tags = ["funny"]
+description = "Should designers favor clarity and instant visibility instead?"
+tags = ["funny", "essays"]
 
 [[links]]
 title = "The huge cloud of..."
@@ -1737,6 +1748,7 @@ tags = ["books"]
 [[links]]
 title = "deathgenerator"
 url = "https://deathgenerator.com/"
+description = "A playground for generating fake screenshots and memes in the style of old games."
 tags = ["misc"]
 
 [[links]]
