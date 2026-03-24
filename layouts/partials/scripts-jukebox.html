@@ -1,0 +1,166 @@
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+let jbxPlayer = null;
+let jbxPlaylist = [];
+let jbxCurrentSongIndex = 0;
+let jbxPlayerReady = false;
+let jbxInitStarted = false;
+
+function jbxUpdateNowPlaying() {
+  const label = document.getElementById("jbx-now-playing-text");
+  if (!label || !jbxPlaylist.length) return;
+
+  const current = jbxPlaylist[jbxCurrentSongIndex];
+  label.textContent = current.artist
+    ? `${current.title} — ${current.artist}`
+    : current.title;
+}
+
+function jbxUpdateSongButtons() {
+  document.querySelectorAll(".jbx-song-btn").forEach((btn, index) => {
+    btn.classList.toggle("active", index === jbxCurrentSongIndex);
+  });
+}
+
+function jbxLoadSong(index, autoplay = true) {
+  if (!jbxPlaylist.length) return;
+  if (index < 0) index = jbxPlaylist.length - 1;
+  if (index >= jbxPlaylist.length) index = 0;
+
+  jbxCurrentSongIndex = index;
+  jbxUpdateNowPlaying();
+  jbxUpdateSongButtons();
+
+  if (jbxPlayerReady && jbxPlayer) {
+    if (autoplay) {
+      jbxPlayer.loadVideoById(jbxPlaylist[jbxCurrentSongIndex].videoId);
+    } else {
+      jbxPlayer.cueVideoById(jbxPlaylist[jbxCurrentSongIndex].videoId);
+    }
+  }
+}
+
+function jbxPlayNextSong() {
+  jbxLoadSong(jbxCurrentSongIndex + 1, true);
+}
+
+function jbxPlayPrevSong() {
+  jbxLoadSong(jbxCurrentSongIndex - 1, true);
+}
+
+function jbxCanInit() {
+  const root = document.querySelector(".jbx-page");
+  const playerHost = document.getElementById("jbx-youtube-player");
+
+  return !!(
+    root &&
+    playerHost &&
+    jbxPlaylist.length &&
+    window.YT &&
+    window.YT.Player
+  );
+}
+
+function jbxInitPlayer() {
+  if (jbxInitStarted || !jbxCanInit()) return;
+
+  jbxInitStarted = true;
+
+  jbxPlayer = new YT.Player("jbx-youtube-player", {
+    width: "100%",
+    height: "100%",
+    videoId: jbxPlaylist[0].videoId,
+    playerVars: {
+      modestbranding: 1,
+      rel: 0
+    },
+    events: {
+      onReady: () => {
+        jbxPlayerReady = true;
+        jbxUpdateNowPlaying();
+        jbxUpdateSongButtons();
+      },
+      onStateChange: (event) => {
+        if (event.data === YT.PlayerState.ENDED) {
+          jbxPlayNextSong();
+        }
+      }
+    }
+  });
+}
+
+function jbxTryInitWithRetry(attemptsLeft = 40) {
+  if (jbxCanInit()) {
+    jbxInitPlayer();
+    return;
+  }
+
+  if (attemptsLeft <= 0) return;
+
+  window.setTimeout(() => {
+    jbxTryInitWithRetry(attemptsLeft - 1);
+  }, 100);
+}
+
+function onYouTubeIframeAPIReady() {
+  jbxTryInitWithRetry();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const root = document.querySelector(".jbx-page");
+  if (!root) return;
+
+  jbxPlaylist = [];
+
+  root.querySelectorAll(".jbx-song-btn").forEach((btn) => {
+    jbxPlaylist.push({
+      videoId: btn.dataset.videoId,
+      title: btn.dataset.title || "",
+      artist: btn.dataset.artist || ""
+    });
+  });
+
+  root.querySelectorAll(".jbx-song-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const index = Number(btn.dataset.index);
+      jbxLoadSong(index, true);
+    });
+  });
+
+  const prevBtn = document.getElementById("jbx-prev-song");
+  const playBtn = document.getElementById("jbx-play-song");
+  const pauseBtn = document.getElementById("jbx-pause-song");
+  const nextBtn = document.getElementById("jbx-next-song");
+  const randomSongBtn = document.getElementById("jbx-random-song");
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => jbxPlayPrevSong());
+  }
+
+  if (playBtn) {
+    playBtn.addEventListener("click", () => {
+      if (jbxPlayerReady && jbxPlayer) jbxPlayer.playVideo();
+    });
+  }
+
+  if (pauseBtn) {
+    pauseBtn.addEventListener("click", () => {
+      if (jbxPlayerReady && jbxPlayer) jbxPlayer.pauseVideo();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => jbxPlayNextSong());
+  }
+
+  if (randomSongBtn) {
+    randomSongBtn.addEventListener("click", () => {
+      if (!jbxPlaylist.length) return;
+      const randomIndex = Math.floor(Math.random() * jbxPlaylist.length);
+      jbxLoadSong(randomIndex, true);
+    });
+  }
+
+  jbxTryInitWithRetry();
+});
+</script>

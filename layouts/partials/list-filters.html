@@ -1,0 +1,17 @@
+{{ $base := .base }}
+{{ $genres := .genres }}
+{{ $showTypes := .showTypes }}
+{{ $prefix := .prefix }}
+
+<section class="{{ $prefix }}-filters">
+  <p class="{{ $prefix }}-filter-links">
+    <a href="{{ $base }}">all</a>
+    {{ if $showTypes }}
+      <a href="{{ $base }}?type=album">albums</a>
+      <a href="{{ $base }}?type=song">songs</a>
+    {{ end }}
+    {{ range $genres }}
+      <a href="{{ $base }}?genre={{ . | urlquery }}">#{{ . | lower }}</a>
+    {{ end }}
+  </p>
+</section>

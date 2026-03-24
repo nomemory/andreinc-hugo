@@ -253,3 +253,242 @@ year = 2018
 spotify = "https://open.spotify.com/album/3Jr1RhAyndBxtyi8rJs3Op?si=R8IcpVKRTwSzhS2owwltUg"
 youtube = "https://music.youtube.com/playlist?list=OLAK5uy_nM5FWR-VXWkRNrsU_XEPQLFP7gmh-dyVs&si=r6ZZk-06l5ljddCl"
 thought = "Delicious."
+
+[[entries]]
+title = "Flowers from Exile"
+artist = "Rome"
+type = "album"
+genres = ["neofolk"]
+year = 2009
+spotify = "https://open.spotify.com/album/7szbWc8zh1MwmkptbNVwM7?si=ZZQZab8LS3WaNmUtGocLmA"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_k1WTDsD1f-3EGg23fk00llzZcq0PWQW0o&si=geAVF5PDKkvEGRGG"
+thought = "Shaped by a quiet sense of exile."
+
+[[entries]]
+title = "Geometria"
+artist = "Thy Catafalque"
+type = "album"
+genres = ["avant-garde metal", "experimental"]
+year = 2018
+spotify = "https://open.spotify.com/album/76bSrJSE20rbODR36eSEQE?si=xazR5vwMSS-fh2yvVDIMsw"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_nPpPx0tDlgEFaY4iYXPn-skJdzZOvzy3M&si=SZxisq6fufKBB67K"
+thought = "Shape-shifting between styles and moods."
+
+[[entries]]
+title = "Hadal Sherpa"
+artist = "Hadal Sherpa"
+type = "album"
+genres = ["post-rock"]
+year = 2017
+spotify = "https://open.spotify.com/album/6Rk5ko5eaI3loJBDBFF38g?si=ZsU1RYxRSBagnH4Qku-zZQ"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_l96UaMHcExceTd33RwUks-py495KBPf4I&si=qXb5HM00V0s99fZF"
+thought = "Immersive and consistent."
+
+[[entries]]
+title = "Hall of the Mountain Grill"
+artist = "Hawkwind"
+type = "album"
+genres = ["space rock", "psychedelic"]
+year = 1974
+spotify = "https://open.spotify.com/album/..."
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_..."
+thought = "The psychedelic warlords, they seem to disspaear in smoke."
+
+[[entries]]
+title = "Heir to Despair"
+artist = "Sigh"
+type = "album"
+genres = ["avant-garde metal", "black metal"]
+year = 2018
+spotify = "https://open.spotify.com/album/2upGyOFfzDyAFptPpDsZNF?si=sn6twsGEQdesy4PypUAtyg"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_l8Kr7zKJ3SgZI86R-zcvELv_3mIwCkr7k&si=Xz92G-Ku6j5TSkaG"
+thought = "Theatrical black metal!?"
+
+[[entries]]
+title = "In the Passing Light of Day"
+artist = "Pain of Salvation"
+type = "album"
+genres = ["progressive metal"]
+year = 2017
+spotify = "https://open.spotify.com/album/3p3jOZI2RjHPVpu7kfgjOB?si=iTgKb3jxTPStGDGzCuyBpw"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_llI_az25fV7NRaTreWIqjpBDSTesN3jBA&si=dM_dDWSNLE0P59gA"
+thought = "On a Tuesday."
+
+[[entries]]
+title = "King for a Day… Fool for a Lifetime"
+artist = "Faith No More"
+type = "album"
+genres = ["alternative rock", "experimental"]
+year = 1995
+spotify = "https://open.spotify.com/album/198GsVgwHgoas39b8TcPYp?si=jfPSWYSEQFSZ4Zd0RigIpg"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_nY01Owhy867C4oAeSHjxBOV7C2C97lxuw&si=r44HlGqJ21w6kWyA"
+thought = "Highschool crush."
+
+[[entries]]
+title = "Lateralus"
+artist = "Tool"
+type = "album"
+genres = ["progressive metal"]
+year = 2001
+spotify = "https://open.spotify.com/album/5l5m1hnH4punS1GQXgEi3T?si=3wOUdj-9RFGGC72Mp8QYNw"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_lA0kWh6Mkkj3mZhzV0vJ429vsjwmBzF_Y"
+thought = "THE deliberate sense of progression."
+
+[[entries]]
+title = "Let My People Go"
+artist = "Darondo"
+type = "album"
+genres = ["soul", "funk"]
+year = 2005
+spotify = "https://open.spotify.com/album/3nD9Oab8M4sCLNmqmwSOdA?si=qBpMMcxySfayzfqM-gUfBw"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_lDve18nr-RZXwHk9W_ZhQ5ybEthMT-wHc&si=-Uahfcq2QGk8ih-b"
+thought = "Not my type, but this is my type."
+
+[[entries]]
+title = "Lioness"
+artist = "Sivert Høyem"
+type = "album"
+genres = ["alternative rock", "indie"]
+year = 2016
+spotify = "https://open.spotify.com/album/1phOHhRWB28yRLxPbCqtrV?si=MLrNt7D1Qn2ExIgDW0nC5Q"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_mnYQ699_CPS3t7Gz7GHZv6V0Y7phHPdYg&si=7M-6ZPhRWtK72obq"
+thought = "Ballads in the dark."
+
+[[entries]]
+title = "Lique Mekwas"
+artist = "Vespero"
+type = "album"
+genres = ["psychedelic rock", "space rock"]
+year = 2013
+spotify = "https://open.spotify.com/album/1R6MfUdkpCnzC0n1h2vU93?si=dCfAIomfSneOcXSms7p7GQ"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_ncywb4UKLouduMeuGvYlEUWBz4OkW39yQ&si=AMI6E1yMejsT0HSH"
+thought = "Tribal drifting in space."
+
+[[entries]]
+title = "Liquid Tension Experiment"
+artist = "Liquid Tension Experiment"
+type = "album"
+genres = ["progressive metal"]
+year = 1998
+spotify = "https://open.spotify.com/album/03GeIP6sDuMEQydiQgwJ9M?si=034qd5hQSl6X6YAFrHUymQ"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_kXSSFLXGt0ZR-uqOzvnSbr0XvlH4Y8tig&si=kXLYocw-DVVCy0cV"
+thought = "Virtuosic improvisation."
+
+[[entries]]
+title = "Mars Red Sky"
+artist = "Mars Red Sky"
+type = "album"
+genres = ["stoner rock", "psychedelic rock"]
+year = 2011
+spotify = "https://open.spotify.com/album/6nEiLfcZ4nJ5SW0o3VibX0?si=7XujPEZMTUOtvbKlL1WHMQ"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_lPl8G5wJTFGqhJuOU04EV0P-gAkUiWAfE&si=5zpeX2nQxeBoSE-q"
+thought = "Is it red?"
+
+[[entries]]
+title = "Mellon Collie and the Infinite Sadness"
+artist = "The Smashing Pumpkins"
+type = "album"
+genres = ["alternative rock", "art rock"]
+year = 1995
+spotify = "https://open.spotify.com/album/55RhFRyQFihIyGf61MgcfV?si=XjzJCWSGQcqS3MeoPXJ8Eg"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_k00TJUAla-j386Kzl12O6C8TBcyFxBo48&si=0Ykd93svgbpu9VRj"
+thought = "An expansive, emotional record—layered, contrasting, and moving between fragility and intensity."
+
+[[entries]]
+title = "Mirage"
+artist = "Camel"
+type = "album"
+genres = ["progressive rock"]
+year = 1974
+spotify = "https://open.spotify.com/album/2DZEwt8Lhz6PuqxsJWF7Ap?si=j0Hs-ozGSCWmz0XlbShdrA"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_nvxA8QAhM4Jtv_WSj_MTreQdp6qVFDLwg&si=s8A7yavChDyqdTnm"
+thought = "Where is the water?"
+
+[[entries]]
+title = "Moksha"
+artist = "My Sleeping Karma"
+type = "album"
+genres = ["psychedelic rock", "stoner rock"]
+year = 2015
+spotify = "https://open.spotify.com/album/0FqsHR28a9RnnhkjYMpzCm?si=9_Cwk51iSem9_qU-euEGpw"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_mfmGgK6N2Dk4YMk_ERInG3FPat7gXSOFI&si=SG2147VaYNDxNYfh"
+thought = "On a steady sense of balance and repetition."
+
+[[entries]]
+title = "Moondog"
+artist = "Moondog"
+type = "album"
+genres = ["jazz", "avant-garde"]
+year = 1969
+spotify = "https://open.spotify.com/album/56XJ7ZzFPvdvBqZXUJulVa?si=-FCzy7AITSulVzLWyBt3sg"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_k1O_TwGNsWizvv9gKLU17P01hMIVuGnp8"
+thought = "Merlin, is that you?"
+
+[[entries]]
+title = "Nemrud"
+artist = "Nemrud"
+type = "album"
+genres = ["psychedelic rock", "progressive rock"]
+year = 2016
+spotify = "https://open.spotify.com/album/1hEmW6wDNiRJzWKjwArfHX?si=YppoWjBFSc2NdWRhcOOnNQ"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_m63dkKbNnZr-34iQRa0VbbK2tXea6gUvA&si=vZZ3FJMDcMnjdLyQ"
+thought = "Hypnotic sense of groove."
+
+[[entries]]
+title = "New Decadence"
+artist = "Michelle Gurevich"
+type = "album"
+genres = ["indie"]
+year = 2016
+spotify = "https://open.spotify.com/album/5jT2cNK8V4ZuOox10oacMJ?si=6fAixxGJTAmY-YhVHaQ2Tg"
+thought = "Dark irony."
+
+[[entries]]
+title = "New Man, New Songs, Same Shit, Vol. 1"
+artist = "Me and That Man"
+type = "album"
+genres = ["dark folk", "blues rock"]
+year = 2020
+spotify = "https://open.spotify.com/album/2h9ySwSmXQpox7wfSOeCY7?si=_XRx8KpdS069ol8Eo_junQ"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_kXWW3hPc6nEmTVEM-f1To0i3IpAG_8qt0&si=TWI2dzi5lovEa4RG"
+thought = "Who is that man?"
+
+[[entries]]
+title = "Oxygène"
+artist = "Jean-Michel Jarre"
+type = "album"
+genres = ["electronic", "ambient"]
+year = 1976
+spotify = "https://open.spotify.com/album/3e7TxckusgnC1AYnAqbl2z?si=L5ujQPcDQTiNVd-4d3Zfxg"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_lxaFqQvfLf28FEKXr-WSlfphh1wDs2tiw&si=Tr0oSU-SemBVBIsx"
+thought = "Breathe."
+
+[[entries]]
+title = "Panther"
+artist = "Pain of Salvation"
+type = "album"
+genres = ["progressive metal"]
+year = 2020
+spotify = "https://open.spotify.com/album/1Y31kS1a9b6tyXA9aAN9Tw?si=oLpClWw5S2GmIbcK7f7Lag"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_lxGki4AOkEuNX_ujED-g4OwcxNVLfvh8A&si=XVXlHfoAPjXBSiDs"
+thought = "Tense but good."
+
+[[entries]]
+title = "Songs for the Deaf"
+artist = "Queens of the Stone Age"
+type = "album"
+genres = ["alternative rock", "stoner rock"]
+year = 2002
+spotify = "https://open.spotify.com/album/4w3NeXtywU398NYW4903rY?si=d0uZ2RJGS2mE7iCwtRrQ7Q"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_lay47Sjj2CnbcrwYPATRfmSA7LQAbDJRs"
+thought = "Desert-born momentum."
+
+[[entries]]
+title = "Without You I'm Nothing"
+artist = "Placebo"
+type = "album"
+genres = ["alternative rock", "indie"]
+year = 1998
+spotify = "https://open.spotify.com/album/2cDDG5rnwEgjNL8Q0cO9Zd?si=WNqD1QCzR4278mt-NJDvqA"
+youtube = "https://music.youtube.com/playlist?list=OLAK5uy_m5AmvFW6sbIUHpBYVrJJOGzhqf9dbQIOE&si=aJ09sFUuuVa8sZB7"
+thought = "Fragile."

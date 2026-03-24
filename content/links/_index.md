@@ -1,5 +1,6 @@
 +++
 title = "Links"
+layout = "links-list"
 
 [[links]]
 title = "Marginalia Search"
@@ -282,6 +283,7 @@ tags = ["art"]
 [[links]]
 title = "1d Reversible Automata"
 url = "https://richiejp.com/1d-reversible-automata"
+description = "A hands-on article demonstrating how one-dimensional cellular automata can be made reversible with small rule changes."
 tags = ["art", "math"]
 
 [[links]]
@@ -509,7 +511,7 @@ tags = ["c"]
 [[links]]
 title = "Cosmopolitan C"
 url = "https://justine.lol/cosmopolitan/index.html"
-description = "Build-anywhere run-anywhere C."
+description = "Cosmopolitan Libc, a C library and toolchain that lets you compile a program once into a single “fat” executable that runs natively across multiple operating systems (Linux, macOS, Windows, etc.) without requiring a virtual machine or interpreter."
 tags = ["c", "low-level"]
 
 [[links]]
@@ -698,6 +700,7 @@ tags = ["esoteric", "pl"]
 [[links]]
 title = "A Cypherpunk's Manifesto"
 url = "https://www.activism.net/cypherpunk/manifesto.html"
+description = "A short manifesto arguing that privacy is essential for a free society and must be actively defended using cryptography."
 tags = ["essays"]
 
 [[links]]
@@ -907,19 +910,19 @@ tags = ["essays", "funny"]
 [[links]]
 title = "A dark room"
 url = "http://adarkroom.doublespeakgames.com/"
-description = "Interesting text-adventure game."
+description = "A minimalist browser game that starts with a single action in a dark room and gradually unfolds into something just a little more complex."
 tags = ["games"]
 
 [[links]]
 title = "A slower speed of light"
 url = "http://gamelab.mit.edu/games/a-slower-speed-of-light/"
-description = "First-person game prototype where players reduce the speed of light."
+description = "A Slower Speed of Light was developed in hopes of being used as an educational tool to explain special relativity in an easy-to-understand fashion."
 tags = ["games", "physics"]
 
 [[links]]
 title = "Assembly Arena"
-url = "https://github.com/m2w4/assembly-arena"
-description = "Programming game with assembly programs competing for control of memory."
+url = "https://assemblyarena.com/"
+description = "Assembly Arena is a programming game where participants create software programs, known as warriors, to compete for control of a virtual computer's memory."
 tags = ["games", "low-level"]
 
 [[links]]
@@ -1098,11 +1101,13 @@ tags = ["games"]
 [[links]]
 title = "An IRC client in your motherboard"
 url = "https://axleos.com/an-irc-client-in-your-motherboard/"
+description = "A graphical IRC client that runs in UEFI. It’s written in Rust."
 tags = ["low-level"]
 
 [[links]]
 title = "Building an operating system for Raspberry Pi"
 url = "https://jsandler18.github.io/"
+description = "A hands-on tutorial series that teaches you how to build a simple operating system from scratch on a Raspberry Pi, explaining low-level hardware interaction and core OS concepts step by step."
 tags = ["low-level"]
 
 [[links]]
@@ -1126,6 +1131,7 @@ tags = ["low-level"]
 [[links]]
 title = "How wine works"
 url = "https://werat.dev/blog/how-wine-works-101/"
+description = "A clear, beginner-friendly explanation of how Wine works internally."
 tags = ["low-level"]
 
 [[links]]
@@ -1137,7 +1143,7 @@ tags = ["low-level", "tools"]
 [[links]]
 title = "Ray Tracing in Notepad.exe at 30 FPS"
 url = "https://kylehalladay.com/blog/2020/05/20/Rendering-With-Notepad.html"
-tags = ["art", "low-level"]
+tags = ["art", "low-level", "funny"]
 
 [[links]]
 title = "TempleOS"
@@ -1164,6 +1170,7 @@ tags = ["low-level", "math"]
 [[links]]
 title = "A journey and a method for drawing spheres"
 url = "https://medium.com/@refik/a-journey-and-a-method-for-drawing-spheres-5b24246ca479"
+description = "Tthe author developed a practical method for accurately drawing rotated spheres by combining geometric intuition with spherical coordinates and rotation formulas, then translating that theory into a simple step-by-step drawing technique."
 tags = ["art", "math"]
 
 [[links]]
@@ -1483,7 +1490,7 @@ tags = ["cli", "tools"]
 [[links]]
 title = "512kb Club"
 url = "https://512kb.club/"
-description = "Performance-focused web pages."
+description = "A curated collection of websites that deliberately keep their total size under 512KB to showcase that fast, efficient, and content-rich web design is possible without modern web bloat."
 tags = ["webring"]
 
 [[links]]
@@ -1530,7 +1537,7 @@ tags = ["webring"]
 [[links]]
 title = "1983 Soviet nuclear false alarm incident"
 url = "https://en.m.wikipedia.org/wiki/1983_Soviet_nuclear_false_alarm_incident"
-description = "Thank you, Mr. Petrov!"
+description = "In explaining the factors leading to his decision, Petrov cited his belief and training that any U.S. first strike would be massive, so five missiles seemed an illogical start."
 tags = ["wiki"]
 
 [[links]]

@@ -309,4 +309,362 @@
     opacity: 1;
     visibility: visible;
   }
+
+.jbx-page {
+    --jbx-border: #000;
+    --jbx-muted: #666;
+}
+
+.jbx-page header {
+    margin-bottom: 1rem;
+}
+
+.jbx-page .jbx-filters {
+    margin-bottom: 1rem;
+}
+
+.jbx-page .jbx-filter-links {
+    margin: 0.35rem 0;
+}
+
+.jbx-page .jbx-filter-links a {
+    font-size: 0.85em;
+    padding: 2px 6px;
+    text-decoration: none;
+}
+
+.jbx-page button {
+    font-size: 0.9em;
+    padding: 4px 8px;
+    border: 1px solid #000;
+    background: transparent;
+    cursor: pointer;
+}
+
+.jbx-page button:hover {
+    background: #000;
+    color: #fff;
+}
+
+.jbx-page .jbx-section {
+    margin-bottom: 1.5rem;
+}
+
+.jbx-page .jbx-box {
+    border: 1px solid var(--jbx-border);
+    padding: 0.6rem;
+}
+
+.jbx-page .jbx-player-wrap {
+    width: 100%;
+    max-width: 720px;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 0.6rem;
+}
+
+.jbx-page #jbx-youtube-player {
+    width: 100%;
+    height: 100%;
+}
+
+.jbx-page #jbx-youtube-player iframe {
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--jbx-border);
+}
+
+.jbx-page .jbx-controls,
+.jbx-page .jbx-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.jbx-page .jbx-controls {
+    margin-bottom: 0.5rem;
+}
+
+.jbx-page .jbx-now-playing {
+    margin: 0.4rem 0 0.6rem 0;
+    font-size: 0.9em;
+}
+
+.jbx-page .jbx-song-btn.active {
+    background: #000;
+    color: #fff;
+}
+
+.alb-page {
+    --alb-border: #000;
+    --alb-muted: #666;
+}
+
+.alb-page header {
+    margin-bottom: 1rem;
+}
+
+.alb-page .alb-back-link {
+    margin: 0 0 0.75rem 0;
+}
+
+.alb-page .alb-filters {
+    margin-bottom: 1rem;
+}
+
+.alb-page .alb-filter-links,
+.alb-page .alb-actions {
+    margin: 0.35rem 0;
+}
+
+.alb-page .alb-filter-links a,
+.alb-page .alb-tags a,
+.alb-page .alb-links a,
+.alb-page .alb-back-link a {
+    font-size: 0.85em;
+    padding: 2px 6px;
+    text-decoration: none;
+}
+
+.alb-page .alb-active-filter {
+    background: #000;
+    color: #fff;
+}
+
+.alb-page button {
+    font-size: 0.9em;
+    padding: 4px 8px;
+    border: 1px solid #000;
+    background: transparent;
+    cursor: pointer;
+}
+
+.alb-page button:hover {
+    background: #000;
+    color: #fff;
+}
+
+.alb-page .alb-item {
+    border: 1px solid var(--alb-border);
+    border-left: 3px solid #000;
+    padding: 0.5rem 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+.alb-page .alb-item-inner {
+    display: block;
+}
+
+.alb-page .alb-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.alb-page .alb-heading h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.2;
+}
+
+.alb-page .alb-artist {
+    font-weight: normal;
+}
+
+.alb-page .alb-badge {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    border: 1px solid var(--alb-border);
+    padding: 2px 5px;
+}
+
+.alb-page .alb-meta {
+    margin: 0 0 0.3rem 0;
+    color: var(--alb-muted);
+    font-size: 0.85em;
+}
+
+.alb-page .alb-thought {
+    margin: 0.25rem 0 0.4rem 0;
+    line-height: 1.3;
+}
+
+.alb-page .alb-tags,
+.alb-page .alb-links {
+    margin: 0.2rem 0;
+}
+
+.alb-page .alb-links a {
+    margin-left: 0.3rem;
+}
+
+.alb-page .alb-preview-wrap {
+    margin-top: 0.45rem;
+}
+
+.alb-page .alb-preview-toggle {
+    font-size: 0.82em;
+    padding: 2px 6px;
+    border: 1px solid var(--alb-border);
+    background: transparent;
+    cursor: pointer;
+}
+
+.alb-page .alb-preview-toggle:hover {
+    background: #000;
+    color: #fff;
+}
+
+.alb-page .alb-embed {
+    margin-top: 0.5rem;
+}
+
+.alb-page .alb-active-filter {
+    background: #000;
+    color: #fff;
+}
+
+@media (max-width: 700px) {
+    .alb-page .alb-heading {
+        display: block;
+    }
+
+    .alb-page .alb-badge {
+        display: inline-block;
+        margin-top: 0.3rem;
+    }
+}
+
+.sng-page {
+    --sng-border: #000;
+    --sng-muted: #666;
+}
+
+.sng-page header {
+    margin-bottom: 1rem;
+}
+
+.sng-page .sng-back-link {
+    margin: 0 0 0.75rem 0;
+}
+
+.sng-page .sng-filters {
+    margin-bottom: 1rem;
+}
+
+.sng-page .sng-filter-links,
+.sng-page .sng-actions {
+    margin: 0.35rem 0;
+}
+
+.sng-page .sng-filter-links a,
+.sng-page .sng-tags a,
+.sng-page .sng-links a,
+.sng-page .sng-back-link a {
+    font-size: 0.85em;
+    padding: 2px 6px;
+    text-decoration: none;
+}
+
+.sng-page .sng-active-filter {
+    background: #000;
+    color: #fff;
+}
+
+.sng-page button {
+    font-size: 0.9em;
+    padding: 4px 8px;
+    border: 1px solid #000;
+    background: transparent;
+    cursor: pointer;
+}
+
+.sng-page button:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* ITEMS */
+
+.sng-page .sng-item {
+    border: 1px solid var(--sng-border);
+    border-left: 1px solid #000;
+    padding: 0.5rem 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+.sng-page .sng-item-inner {
+    display: block;
+}
+
+.sng-page .sng-content {
+    display: block;
+}
+
+.sng-page .sng-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.sng-page .sng-heading h2 {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.sng-page .sng-artist {
+    font-weight: normal;
+}
+
+.sng-page .sng-badge {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    border: 1px solid var(--sng-border);
+    padding: 2px 5px;
+}
+
+.sng-page .sng-meta {
+    margin: 0 0 0.3rem 0;
+    color: var(--sng-muted);
+    font-size: 0.85em;
+}
+
+.sng-page .sng-thought {
+    margin: 0.25rem 0 0.4rem 0;
+    line-height: 1.3;
+}
+
+.sng-page .sng-tags,
+.sng-page .sng-links {
+    margin: 0.2rem 0;
+}
+
+.sng-page .sng-links a {
+    margin-left: 0.3rem;
+}
+
+/* FILTER ACTIVE STATE */
+
+.sng-page .sng-active-filter {
+    background: #000;
+    color: #fff;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+    .sng-page .sng-heading {
+        display: block;
+    }
+
+    .sng-page .sng-badge {
+        display: inline-block;
+        margin-top: 0.3rem;
+    }
+}
+
 </style>

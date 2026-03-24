@@ -50,9 +50,9 @@ enable = true
     url = "/about/"
     weight = 20
 [[menu.main]]
-    identifier = "sounds"
-    name = "sounds"
-    url = "/sounds/"
+    identifier = "jukebox"
+    name = "jukebox"
+    url = "/jukebox/"
     weight = 21
 [[menu.main]]
     identifier = "links"

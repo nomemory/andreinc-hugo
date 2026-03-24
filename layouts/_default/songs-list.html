@@ -1,0 +1,47 @@
+{{ define "main" }}
+
+<main class="sng-page">
+  <header>
+    <h1>{{ .Title }}</h1>
+    {{ with .Content }}
+      <div>{{ . }}</div>
+    {{ end }}
+  </header>
+
+  <p class="sng-back-link">
+    <a href="/jukebox/">← Listen to the songs at the /jukebox</a>
+  </p>
+
+  {{ $entries := sort site.Data.songs.entries "title" }}
+
+  {{ $allGenres := slice }}
+  {{ range $entries }}
+    {{ range .genres }}
+      {{ $allGenres = $allGenres | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $allGenres = $allGenres | uniq | sort }}
+
+  {{ partial "list-filters.html" (dict
+    "base" "/songs/"
+    "genres" $allGenres
+    "showTypes" false
+    "prefix" "sng"
+  ) }}
+
+  <p class="jukebox-actions">
+    <button id="random-entry">Random song</button>
+  </p>
+
+  <br/>
+
+  {{ partial "list-items.html" (dict
+    "entries" $entries
+    "genreBase" "/songs/"
+    "prefix" "sng"
+  ) }}
+</main>
+
+{{ partial "scripts-filters.html" . }}
+
+{{ end }}

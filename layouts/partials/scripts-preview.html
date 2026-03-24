@@ -1,0 +1,28 @@
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const root = document.querySelector(".alb-page");
+  if (!root) return;
+
+  root.querySelectorAll(".alb-preview-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const wrap = btn.closest(".alb-preview-wrap");
+      if (!wrap) return;
+
+      const embed = wrap.querySelector(".alb-embed");
+      if (!embed) return;
+
+      const isHidden = embed.hasAttribute("hidden");
+
+      if (isHidden) {
+        embed.removeAttribute("hidden");
+        btn.setAttribute("aria-expanded", "true");
+        btn.textContent = "Hide preview";
+      } else {
+        embed.setAttribute("hidden", "");
+        btn.setAttribute("aria-expanded", "false");
+        btn.textContent = "Preview";
+      }
+    });
+  });
+});
+</script>

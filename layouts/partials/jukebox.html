@@ -1,0 +1,39 @@
+{{ $songs := .songs }}
+{{ if gt (len $songs) 0 }}
+<section class="jbx-section">
+  <div class="jbx-box">
+    <div class="jbx-player-wrap">
+      <div id="jbx-youtube-player"></div>
+    </div>
+
+    <div class="jbx-controls">
+      <button type="button" id="jbx-prev-song">Prev</button>
+      <button type="button" id="jbx-play-song">Play</button>
+      <button type="button" id="jbx-pause-song">Pause</button>
+      <button type="button" id="jbx-next-song">Next</button>
+      <button type="button" id="jbx-random-song">Random song</button>
+    </div>
+
+    <p class="jbx-now-playing">
+      <strong>Now playing:</strong>
+      <span id="jbx-now-playing-text">
+        {{ with index $songs 0 }}{{ .title }}{{ with .artist }} — {{ . }}{{ end }}{{ end }}
+      </span>
+    </p>
+
+    <div class="jbx-list">
+      {{ range $i, $song := $songs }}
+        <button
+          type="button"
+          class="jbx-song-btn{{ if eq $i 0 }} active{{ end }}"
+          data-index="{{ $i }}"
+          data-video-id="{{ $song.youtube_video_id }}"
+          data-title="{{ $song.title }}"
+          data-artist="{{ $song.artist }}">
+          {{ $song.title }}{{ with $song.artist }} — {{ . }}{{ end }}
+        </button>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

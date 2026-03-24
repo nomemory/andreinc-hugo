@@ -1,0 +1,47 @@
+{{ define "main" }}
+
+<main class="alb-page">
+  <header>
+    <h1>{{ .Title }}</h1>
+    {{ with .Content }}
+      <div>{{ . }}</div>
+    {{ end }}
+  </header>
+
+  <p class="alb-back-link">
+    <a href="/jukebox/">← Listen to (some of) the songs at the /jukebox</a>
+  </p>
+
+  {{ $entries := sort site.Data.albums.entries "title" }}
+
+  {{ $allGenres := slice }}
+  {{ range $entries }}
+    {{ range .genres }}
+      {{ $allGenres = $allGenres | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $allGenres = $allGenres | uniq | sort }}
+
+  {{ partial "list-filters.html" (dict
+    "base" "/albums/"
+    "genres" $allGenres
+    "showTypes" false
+    "prefix" "alb"
+  ) }}
+
+  <p class="alb-actions">
+    <button id="alb-random-entry">Random album</button>
+  </p>
+
+  <br/>
+
+  {{ partial "list-items.html" (dict
+    "entries" $entries
+    "genreBase" "/albums/"
+    "prefix" "alb"
+  ) }}
+</main>
+
+{{ partial "scripts-filters.html" . }}
+
+{{ end }}
