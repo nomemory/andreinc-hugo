@@ -3,8 +3,8 @@ title = "Jukebox"
 layout = "jukebox-home"
 +++
 
-A small YouTube jukebox built from some of [my favorite songs](/songs), and from some of my [favourite albums](/albums). Most of the songs are already included in [this playlist](https://open.spotify.com/playlist/5EDticgl5dUjUuzNxgsTgr?si=42e773e6d9de490a).
+Multiple YouTube [Jukeboxes](https://en.wikipedia.org/wiki/Jukebox) built from some of [my favorite songs](/songs) and a selection of my [favourite albums](/albums).
 
-The jukebox features songs and bands that aren’t widely popular. This is intentional, while I do love the *classics*, it’s always nice to explore more experimental and underground scenes.
+Some of the jukeboxes feature songs and artists that aren’t widely known. This is intentional, while I do love the *classics*, I also enjoy exploring (more) experimental and *alternative* scenes. <sup>No coins needed.</p>
 
-Given YouTube limitations, you probably need to be logged-in to view/listen to all the content.
+<sup>AutoPlay is on by default, the music will play as long as you keep the tab open. Due to YouTube limitations, you may need to be logged in to view or listen to all content.</sup>

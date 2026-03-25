@@ -1,7 +1,45 @@
 {{ $songs := .songs }}
-{{ if gt (len $songs) 0 }}
+{{ $jukeboxes := .jukeboxes }}
+{{ if gt (len $jukeboxes) 0 }}
+  {{ $first := index $jukeboxes 0 }}
+  {{ $firstCount := len (where $songs "jukebox" "intersect" (slice $first.id)) }}
 <section class="jbx-section">
   <div class="jbx-box">
+    <div class="jbx-selector-box">
+      <div class="jbx-picker">
+        <label for="jbx-selector">Jukebox:</label>
+        <div class="jbx-selector-menu">
+          <button type="button" id="jbx-selector-toggle" class="jbx-selector-toggle" aria-haspopup="listbox" aria-expanded="false">
+            {{ with $first.emoticon }}{{ . }} {{ end }}{{ $first.title }} [{{ $firstCount }} songs]
+          </button>
+          <div id="jbx-selector-list" class="jbx-selector-list" role="listbox" hidden>
+            {{ range $jukeboxes }}
+              {{ $songCount := len (where $songs "jukebox" "intersect" (slice .id)) }}
+              <button
+                type="button"
+                class="jbx-selector-option"
+                data-jukebox-id="{{ .id }}"
+                data-song-count="{{ $songCount }}"
+                role="option"
+                aria-selected="{{ if eq .id $first.id }}true{{ else }}false{{ end }}">
+                {{ with .emoticon }}{{ . }} {{ end }}{{ .title }} [{{ $songCount }} songs]
+              </button>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+
+      <div class="jbx-jukebox-meta">
+        <p><span id="jbx-jukebox-description">{{ $first.description }}</span></p>
+        <button type="button" id="jbx-genre-cloud-toggle" class="jbx-genre-cloud-toggle" aria-expanded="false">
+          Show genres
+        </button>
+        <div class="jbx-genre-cloud-wrap" id="jbx-genre-cloud-wrap" hidden>
+          <div class="jbx-genre-cloud" id="jbx-genre-cloud"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="jbx-player-wrap">
       <div id="jbx-youtube-player"></div>
     </div>
@@ -12,28 +50,19 @@
       <button type="button" id="jbx-pause-song">Pause</button>
       <button type="button" id="jbx-next-song">Next</button>
       <button type="button" id="jbx-random-song">Random song</button>
+      <button type="button" id="jbx-autoplay-mode">AutoPlay - Random</button>
     </div>
 
-    <p class="jbx-now-playing">
+    <hr/>
+
+    <div class="jbx-now-playing">
       <strong>Now playing:</strong>
-      <span id="jbx-now-playing-text">
-        {{ with index $songs 0 }}{{ .title }}{{ with .artist }} — {{ . }}{{ end }}{{ end }}
-      </span>
-    </p>
-
-    <div class="jbx-list">
-      {{ range $i, $song := $songs }}
-        <button
-          type="button"
-          class="jbx-song-btn{{ if eq $i 0 }} active{{ end }}"
-          data-index="{{ $i }}"
-          data-video-id="{{ $song.youtube_video_id }}"
-          data-title="{{ $song.title }}"
-          data-artist="{{ $song.artist }}">
-          {{ $song.title }}{{ with $song.artist }} — {{ . }}{{ end }}
-        </button>
-      {{ end }}
+      <p><span id="jbx-now-playing-text">Loading jukebox…</span></p>
     </div>
+
+    <hr/>
+
+    <div class="jbx-list" id="jbx-song-list"></div>
   </div>
 </section>
 {{ end }}

@@ -8,7 +8,7 @@
     <article
       class="{{ $prefix }}-item {{ $prefix }}-item-{{ $entryType }}"
       data-type="{{ $entryType }}"
-      data-genres="{{ delimit .genres "," | lower }}"
+      data-genres="{{ with .genres }}{{ delimit . "," | lower }}{{ end }}"
     >
       <div class="{{ $prefix }}-item-inner">
         <div class="{{ $prefix }}-content">

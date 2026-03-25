@@ -6,16 +6,18 @@ genres = ["progressive metal"]
 year = 2001
 youtube_video = "https://www.youtube.com/watch?v=Y7JG63IuaWs"
 youtube_video_id = "Y7JG63IuaWs"
+jukebox = ["plural_nocturne"]
 thought = "On the sides."
 
 [[entries]]
 title = "Strong Reflection"
 artist = "Mars Red Sky"
 type = "song"
-genres = ["stoner rock", "psychedelic rock"]
+genres = ["psychedelic rock", "stoner rock"]
 year = 2011
 youtube_video = "https://www.youtube.com/watch?v=d9OxyM7J540"
 youtube_video_id = "d9OxyM7J540"
+jukebox = ["plural_nocturne"]
 thought = "In a dream."
 
 [[entries]]
@@ -26,26 +28,29 @@ genres = ["jazz", "psychedelic jazz", "world jazz"]
 year = 1967
 youtube_video = "https://www.youtube.com/watch?v=qdTpdzCKecQ"
 youtube_video_id = "qdTpdzCKecQ"
+jukebox = ["plural_nocturne"]
 thought = "Trance-like guitar."
 
 [[entries]]
 title = "The Salient Voyage"
 artist = "Sarah Longfield"
 type = "song"
-genres = ["progressive metal", "math metal"]
+genres = ["math metal", "progressive metal"]
 year = 2017
 youtube_video = "https://www.youtube.com/watch?v=kvpwiOXyOrw"
 youtube_video_id = "kvpwiOXyOrw"
+jukebox = ["plural_nocturne"]
 thought = "Technically."
 
 [[entries]]
 title = "The Moth"
 artist = "Kingcrow"
 type = "song"
-genres = ["progressive rock", "progressive metal"]
+genres = ["progressive metal", "progressive rock"]
 year = 2015
 youtube_video = "https://www.youtube.com/watch?v=a4Giy35m410"
 youtube_video_id = "a4Giy35m410"
+jukebox = ["plural_nocturne"]
 thought = "Blending emotions."
 
 [[entries]]
@@ -56,46 +61,51 @@ genres = ["electronic"]
 year = 2000
 youtube_video = "https://www.youtube.com/watch?v=RIFLPZUqXKw"
 youtube_video_id = "RIFLPZUqXKw"
+jukebox = ["plural_nocturne", "music_for_androids"]
 thought = "Vast."
 
 [[entries]]
 title = "Journey Through the Asteroid Belt"
 artist = "The Comet Is Coming"
 type = "song"
-genres = ["jazz", "electronic", "psychedelic jazz", "nu jazz"]
+genres = ["electronic", "jazz", "nu jazz", "psychedelic jazz"]
 year = 2016
 youtube_video = "https://www.youtube.com/watch?v=Mlpg-iyiEv0"
 youtube_video_id = "Mlpg-iyiEv0"
+jukebox = ["plural_nocturne"]
 thought = "Cosmic some sort of jazz."
 
 [[entries]]
 title = "Cosmic Messenger"
 artist = "Jean-Luc Ponty"
 type = "song"
-genres = ["jazz fusion", "progressive rock", "instrumental"]
+genres = ["instrumental", "jazz fusion", "progressive rock"]
 year = 1978
 youtube_video = "https://www.youtube.com/watch?v=bNUQBBM_c9E"
 youtube_video_id = "bNUQBBM_c9E"
+jukebox = ["plural_nocturne"]
 thought = "Message them!"
 
 [[entries]]
 title = "Rainbow Lollipop"
 artist = "Josefin Öhrn + The Liberation Mirage"
 type = "song"
-genres = ["psychedelic rock", "neo-psychedelia", "dream pop"]
+genres = ["dream pop", "neo-psychedelia", "psychedelic rock"]
 year = 2016
 youtube_video = "https://www.youtube.com/watch?v=LBKJ7icniZI"
 youtube_video_id = "LBKJ7icniZI"
+jukebox = ["plural_nocturne"]
 thought = "Hazy hypnotic."
 
 [[entries]]
 title = "Alight, Pt. II"
 artist = "Lucy in Blue"
 type = "song"
-genres = ["psychedelic rock", "progressive rock", "neo-psychedelia"]
+genres = ["neo-psychedelia", "progressive rock", "psychedelic rock"]
 year = 2019
 youtube_video = "https://www.youtube.com/watch?v=83_K52QM_S4"
 youtube_video_id = "83_K52QM_S4"
+jukebox = ["plural_nocturne"]
 thought = "Mood-driven in blue"
 
 [[entries]]
@@ -106,46 +116,51 @@ genres = ["ambient", "electronic", "post-rock"]
 year = 2018
 youtube_video = "https://www.youtube.com/watch?v=8sc7lemjItU"
 youtube_video_id = "8sc7lemjItU"
+jukebox = ["plural_nocturne"]
 thought = "Delicate."
 
 [[entries]]
 title = "Insight"
 artist = "Gleb Kolyadin"
 type = "song"
-genres = ["progressive rock", "neo-classical", "instrumental", "piano"]
+genres = ["instrumental", "neoclassical", "piano", "progressive rock"]
 year = 2018
 youtube_video = "https://www.youtube.com/watch?v=M_dAFqUWMTQ"
 youtube_video_id = "M_dAFqUWMTQ"
+jukebox = ["plural_nocturne"]
 thought = "Precise."
 
 [[entries]]
 title = "What Needs Must Be"
 artist = "Dead Meadow"
 type = "song"
-genres = ["psychedelic rock", "stoner rock", "space rock"]
+genres = ["psychedelic rock", "space rock", "stoner rock"]
 year = 2003
 youtube_video = "https://www.youtube.com/watch?v=gTXf0Rtp98s"
 youtube_video_id = "gTXf0Rtp98s"
+jukebox = ["plural_nocturne"]
 thought = "Slow and hazy."
 
 [[entries]]
 title = "Entering the Black Hole"
 artist = "Hugo Kant"
 type = "song"
-genres = ["trip hop", "downtempo", "electronic", "instrumental hip hop"]
+genres = ["downtempo", "electronic", "instrumental hip-hop", "trip-hop"]
 year = 2017
 youtube_video = "https://www.youtube.com/watch?v=VUJNkFUAH4o"
 youtube_video_id = "VUJNkFUAH4o"
+jukebox = ["plural_nocturne"]
 thought = "A cinematic entrance."
 
 [[entries]]
 title = "Bamboo and Rocks"
 artist = "Sven Wunder"
 type = "song"
-genres = ["jazz", "instrumental"]
+genres = ["instrumental", "jazz"]
 year = 2020
 youtube_video = "https://www.youtube.com/watch?v=CSLztmp1pMk"
 youtube_video_id = "CSLztmp1pMk"
+jukebox = ["plural_nocturne"]
 thought = "Easy listening."
 
 [[entries]]
@@ -156,46 +171,51 @@ genres = ["ambient", "experimental"]
 year = 2020
 youtube_video = "https://www.youtube.com/watch?v=oQsa9ON3j60"
 youtube_video_id = "oQsa9ON3j60"
+jukebox = ["plural_nocturne"]
 thought = "An ethereal voice."
 
 [[entries]]
 title = "Arabesque No. 1"
 artist = "Isao Tomita"
 type = "song"
-genres = ["electronic", "ambient"]
+genres = ["ambient", "electronic"]
 year = 1974
 youtube_video = "https://www.youtube.com/watch?v=igHOaMOzzUo"
 youtube_video_id = "igHOaMOzzUo"
+jukebox = ["plural_nocturne"]
 thought = "Cosmic serenity."
 
 [[entries]]
 title = "Rings Of Saturn"
 artist = "Nick Cave & The Bad Seeds"
 type = "song"
-genres = [ "alternative rock", "art rock" ]
+genres = ["alternative rock", "art rock"]
 year = 2016
 youtube_video = "https://www.youtube.com/watch?v=ugvL86i9Y-4"
 youtube_video_id = "ugvL86i9Y-4"
+jukebox = ["plural_nocturne"]
 thought = "A somber cosmos."
 
 [[entries]]
 title = "She Walks in Beauty"
 artist = "Marianne Faithfull & Warren Ellis"
 type = "song"
-genres = ["ambient", "experimental", "art rock"]
+genres = ["ambient", "art rock", "experimental"]
 year = 2021
 youtube_video = "https://www.youtube.com/watch?v=GMsM_zWvWvo"
 youtube_video_id = "GMsM_zWvWvo"
+jukebox = ["plural_nocturne"]
 thought = "Haunting."
 
 [[entries]]
 title = "When I'm Falling"
 artist = "Avishai Cohen"
 type = "song"
-genres = ["jazz", "nu jazz" ]
+genres = ["jazz", "nu jazz"]
 year = 2021
 youtube_video = "https://www.youtube.com/watch?v=q3gMaeGYMx0"
 youtube_video_id = "q3gMaeGYMx0"
+jukebox = ["plural_nocturne"]
 thought = "Lyrical."
 
 [[entries]]
@@ -206,16 +226,18 @@ genres = ["alternative rock", "art rock"]
 year = 2025
 youtube_video = "https://www.youtube.com/watch?v=k88UuciRe-Q"
 youtube_video_id = "k88UuciRe-Q"
+jukebox = ["plural_nocturne"]
 thought = "Pulsating."
 
 [[entries]]
 title = "Balek"
 artist = "Marc Moulin"
 type = "song"
-genres = [ "jazz fusion", "jazz" ]
+genres = ["jazz", "jazz fusion"]
 year = 1971
 youtube_video = "https://www.youtube.com/watch?v=lkxkmzWCPsc"
 youtube_video_id = "lkxkmzWCPsc"
+jukebox = ["plural_nocturne"]
 thought = "Smooth."
 
 [[entries]]
@@ -226,6 +248,7 @@ genres = ["jazz", "progressive rock"]
 year = 1969
 youtube_video = "https://www.youtube.com/watch?v=qnvobX9dAYU"
 youtube_video_id = "qnvobX9dAYU"
+jukebox = ["plural_nocturne"]
 thought = "Dynamic"
 
 [[entries]]
@@ -236,6 +259,7 @@ genres = ["progressive metal"]
 year = 2011
 youtube_video = "https://www.youtube.com/watch?v=34X7LrfEKC0"
 youtube_video_id = "34X7LrfEKC0"
+jukebox = ["plural_nocturne"]
 thought = "Introspective."
 
 [[entries]]
@@ -246,16 +270,18 @@ genres = ["psychedelic rock"]
 year = 2023
 youtube_video = "https://www.youtube.com/watch?v=MzFeoiScuzo"
 youtube_video_id = "MzFeoiScuzo"
-thought = "Balkan"
+jukebox = ["plural_nocturne"]
+thought = "Balkan."
 
 [[entries]]
 title = "Yellow Moon"
 artist = "The Neville Brothers"
 type = "song"
-genres = [ "soul", "funk" ]
+genres = ["funk", "soul"]
 year = 1989
 youtube_video = "https://www.youtube.com/watch?v=L1Y6W1FaSVQ"
 youtube_video_id = "L1Y6W1FaSVQ"
+jukebox = ["plural_nocturne"]
 thought = "Moody"
 
 [[entries]]
@@ -266,6 +292,7 @@ genres = ["electronic", "experimental"]
 year = 1979
 youtube_video = "https://www.youtube.com/watch?v=oDU6P01yvnU"
 youtube_video_id = "oDU6P01yvnU"
+jukebox = ["plural_nocturne"]
 thought = "Eerie chip."
 
 [[entries]]
@@ -276,46 +303,51 @@ genres = ["alternative rock", "electronic"]
 year = 2023
 youtube_video = "https://www.youtube.com/watch?v=L1Y6W1FaSVQ"
 youtube_video_id = "mnFC8XYecVM"
+jukebox = ["plural_nocturne"]
 thought = "Retro."
 
 [[entries]]
 title = "Miasto Orchidei"
 artist = "Michał Szydłowski"
 type = "song"
-genres = ["ambient", "instrumental", "electronic"]
+genres = ["ambient", "electronic", "instrumental"]
 year = 2003
 youtube_video = "https://www.youtube.com/watch?v=9zBQDGyt34o"
 youtube_video_id = "9zBQDGyt34o"
+jukebox = ["plural_nocturne"]
 thought = "Calm piano."
 
 [[entries]]
 title = "Falling in Trance"
 artist = "Eberhard Schoener"
 type = "song"
-genres = [ "electronic", "ambient" ]
+genres = ["ambient", "electronic"]
 year = 2010
 youtube_video = "https://www.youtube.com/watch?v=xz7AbqB2dPc"
 youtube_video_id = "xz7AbqB2dPc"
+jukebox = ["plural_nocturne"]
 thought = "Retro meditative."
 
 [[entries]]
 title = "Lucky Seven"
 artist = "Chris Squire"
 type = "song"
-genres = ["progressive rock", "jazz rock"]
+genres = ["jazz rock", "progressive rock"]
 year = 1975
 youtube_video = "https://www.youtube.com/watch?v=OzKqn5ehdSg"
 youtube_video_id = "OzKqn5ehdSg"
+jukebox = ["plural_nocturne"]
 thought = "Rhythmically playful."
 
 [[entries]]
 title = "Three of a Perfect Pair"
 artist = "King Crimson"
 type = "song"
-genres = ["progressive rock", "art rock"]
+genres = ["art rock", "progressive rock"]
 year = 1984
 youtube_video = "https://www.youtube.com/watch?v=QdMHy074kNc"
 youtube_video_id = "QdMHy074kNc"
+jukebox = ["plural_nocturne"]
 thought = "Sharp with tension."
 
 [[entries]]
@@ -326,4 +358,1095 @@ genres = ["shoegaze"]
 year = 2017
 youtube_video = "https://www.youtube.com/watch?v=BxwAPBxc0lU"
 youtube_video_id = "BxwAPBxc0lU"
+jukebox = ["plural_nocturne"]
 thought = "Melancholic."
+
+[[entries]]
+title = "Esty Point"
+artist = "David Borden"
+type = "song"
+genres = ["electronic", "minimalism"]
+youtube_video = "https://www.youtube.com/watch?v=wmPD1P1kEp0&list=RDwmPD1P1kEp0&start_radio=1"
+youtube_video_id = "wmPD1P1kEp0"
+jukebox = ["music_for_androids"]
+thought = "Synthetic."
+
+[[entries]]
+title = "Heimcomputer"
+artist = "Kraftwerk"
+type = "song"
+genres = ["electronic", "synth-pop"]
+youtube_video = "https://www.youtube.com/watch?v=muxIbq49qTM"
+youtube_video_id = "muxIbq49qTM"
+jukebox = ["music_for_androids"]
+thought = "Robotic."
+
+[[entries]]
+title = "Replicant"
+artist = "Musai Soundworks"
+type = "song"
+genres = ["electronic", "synthwave"]
+youtube_video = "https://www.youtube.com/watch?v=vyQ4hm0GSh0&list=RDvyQ4hm0GSh0&start_radio=1"
+youtube_video_id = "vyQ4hm0GSh0"
+jukebox = ["music_for_androids"]
+thought = "Neon."
+
+[[entries]]
+title = "Visions Of Circles, Pt. 2"
+artist = "Hans Lundin"
+type = "song"
+genres = ["progressive rock", "symphonic rock"]
+youtube_video = "https://www.youtube.com/watch?v=NnfrsaJEZEI&list=RDNnfrsaJEZEI&start_radio=1"
+youtube_video_id = "NnfrsaJEZEI"
+jukebox = ["music_for_androids"]
+thought = "Circular."
+
+[[entries]]
+title = "La Danse Des Méduses"
+artist = "Dominique Guiot"
+type = "song"
+genres = ["electronic", "progressive rock"]
+youtube_video = "https://www.youtube.com/watch?v=Q4ywEwCHc6s&list=RDQ4ywEwCHc6s&start_radio=1"
+youtube_video_id = "Q4ywEwCHc6s"
+jukebox = ["music_for_androids"]
+thought = "Gleaming."
+
+[[entries]]
+title = "In der Stadt und auf dem Land"
+artist = "Kosmischer Läufer"
+type = "song"
+genres = ["electronic", "kosmische musik"]
+youtube_video = "https://www.youtube.com/watch?v=T7eO47Xf5N8&list=RDT7eO47Xf5N8&start_radio=1"
+youtube_video_id = "T7eO47Xf5N8"
+jukebox = ["music_for_androids"]
+thought = "Motorik."
+
+[[entries]]
+title = "Onyx"
+artist = "Space Art"
+type = "song"
+genres = ["electronic", "space disco"]
+youtube_video = "https://www.youtube.com/watch?v=JRMqHLeRdAY&list=OLAK5uy_kAd_JKBrl8WG5_NW7GWgh43YgR9uEt0E4&index=1"
+youtube_video_id = "JRMqHLeRdAY"
+jukebox = ["music_for_androids"]
+thought = "Mineral."
+
+[[entries]]
+title = "Magic Fly"
+artist = "Space"
+type = "song"
+genres = ["electronic", "space disco"]
+youtube_video = "https://www.youtube.com/watch?v=c9JetRPRcxY&list=OLAK5uy_lvGeFTwSmNrpONskA5aL1n-s1iFylGhic&index=4"
+youtube_video_id = "c9JetRPRcxY"
+jukebox = ["music_for_androids"]
+thought = "Galactic."
+
+[[entries]]
+title = "Stuntman"
+artist = "Edgar Froese"
+type = "song"
+genres = ["ambient", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=rLhCzapQCds&list=RDrLhCzapQCds&start_radio=1"
+youtube_video_id = "rLhCzapQCds"
+jukebox = ["music_for_androids"]
+thought = "Kinetic."
+
+[[entries]]
+title = "Bicentennial Presentation"
+artist = "Peter Baumann"
+type = "song"
+genres = ["electronic", "new age"]
+youtube_video = "https://www.youtube.com/watch?v=L7GOksR3PsA&list=RDL7GOksR3PsA&start_radio=1"
+youtube_video_id = "L7GOksR3PsA"
+jukebox = ["music_for_androids"]
+thought = "Ceremonial."
+
+[[entries]]
+title = "Dance of the Mince Pie Martians"
+artist = "The Night Monitor"
+type = "song"
+genres = ["electronic", "synthwave"]
+youtube_video = "https://www.youtube.com/watch?v=fno8OjHyvyQ&list=RDfno8OjHyvyQ&start_radio=1"
+youtube_video_id = "fno8OjHyvyQ"
+jukebox = ["music_for_androids"]
+thought = "Playful."
+
+[[entries]]
+title = "Cinderella (Vlad Zhukov Remix)"
+artist = "Alexey Arkhipovskiy,Vlad Zhukov"
+type = "song"
+genres = ["electronic", "world fusion"]
+youtube_video = "https://www.youtube.com/watch?v=Ggsvq_8nIgo&list=RDGgsvq_8nIgo&start_radio=1"
+youtube_video_id = "Ggsvq_8nIgo"
+jukebox = ["music_for_androids"]
+thought = "Glass."
+
+[[entries]]
+title = "Candles"
+artist = "Jon Hopkins"
+type = "song"
+genres = ["ambient", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=ckXxPUvP5Ug&list=RDckXxPUvP5Ug&start_radio=1"
+youtube_video_id = "ckXxPUvP5Ug"
+jukebox = ["music_for_androids"]
+thought = "Flickering."
+
+[[entries]]
+title = "Topless Dancers Of Corfu"
+artist = "Dick Hyman"
+type = "song"
+genres = ["easy listening", "lounge"]
+youtube_video = "https://www.youtube.com/watch?v=gzoT9qZx8tE&list=RDgzoT9qZx8tE&start_radio=1"
+youtube_video_id = "gzoT9qZx8tE"
+jukebox = ["music_for_androids"]
+thought = "Camp."
+
+[[entries]]
+title = "Beyond the Clouds"
+artist = "Nino Nardini,Eddie Warner,Roger Roger"
+type = "song"
+genres = ["easy listening", "library music"]
+youtube_video = "https://www.youtube.com/watch?v=Ut3po6tBSMs&list=RDUt3po6tBSMs&start_radio=1"
+youtube_video_id = "Ut3po6tBSMs"
+jukebox = ["music_for_androids"]
+thought = "Cloudborne."
+
+[[entries]]
+title = "Born to Be Wild"
+artist = "The Moog Cookbook"
+type = "song"
+genres = ["electronic", "novelty"]
+youtube_video = "https://www.youtube.com/watch?v=FOY1uOZMSsA&list=RDFOY1uOZMSsA&start_radio=1"
+youtube_video_id = "FOY1uOZMSsA"
+jukebox = ["music_for_androids"]
+thought = "Cheeky."
+
+[[entries]]
+title = "Wichita Lineman"
+artist = "Gil Trythall"
+type = "song"
+genres = ["country", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=IIPP8NgwNAY&list=RDIIPP8NgwNAY&start_radio=1"
+youtube_video_id = "IIPP8NgwNAY"
+jukebox = ["music_for_androids"]
+thought = "Twangy."
+
+[[entries]]
+title = "Stuck in Pause"
+artist = "Astrid Sonne"
+type = "song"
+genres = ["chamber pop", "experimental"]
+youtube_video = "https://www.youtube.com/watch?v=AGFKbkRKn_0&list=RDAGFKbkRKn_0&start_radio=1"
+youtube_video_id = "AGFKbkRKn_0"
+jukebox = ["music_for_androids"]
+thought = "Suspended."
+
+[[entries]]
+title = "Mundus patet"
+artist = "Hiro Kone"
+type = "song"
+genres = ["electronic", "experimental"]
+youtube_video = "https://www.youtube.com/watch?v=DnzuXLcGYXs&list=RDDnzuXLcGYXs&start_radio=1"
+youtube_video_id = "DnzuXLcGYXs"
+jukebox = ["music_for_androids"]
+thought = "Abyssal."
+
+[[entries]]
+title = "Warp"
+artist = "H.Takahashi"
+type = "song"
+genres = ["ambient", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=WpbHBu6Z29A&list=RDWpbHBu6Z29A&start_radio=1"
+youtube_video_id = "WpbHBu6Z29A"
+jukebox = ["music_for_androids"]
+thought = "Elastic."
+
+[[entries]]
+title = "Cape Cira"
+artist = "K-Lone"
+type = "song"
+genres = ["bass", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=6ktFP_7anGM&list=RD6ktFP_7anGM&start_radio=1"
+youtube_video_id = "6ktFP_7anGM"
+jukebox = ["music_for_androids"]
+thought = "Coastal."
+
+[[entries]]
+title = "Angels Pharmacy"
+artist = "Actress,Zsela"
+type = "song"
+genres = ["art pop", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=X_g6RfJHjiw&list=RDX_g6RfJHjiw&start_radio=1"
+youtube_video_id = "X_g6RfJHjiw"
+jukebox = ["music_for_androids"]
+thought = "Ghostly."
+
+[[entries]]
+title = "Red Pill"
+artist = "Brazda Lui Novac"
+type = "song"
+genres = ["electronic", "experimental"]
+youtube_video = "https://www.youtube.com/watch?v=yOvmzVgMk-o&list=RDyOvmzVgMk-o&start_radio=1"
+youtube_video_id = "yOvmzVgMk-o"
+jukebox = ["music_for_androids"]
+thought = "Glitchy."
+
+[[entries]]
+title = "To the Other Side of the Sky"
+artist = "Michael Garrison"
+type = "song"
+genres = ["ambient", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=XRcU3ZbKYz0&list=RDXRcU3ZbKYz0&start_radio=1"
+youtube_video_id = "XRcU3ZbKYz0"
+jukebox = ["music_for_androids"]
+thought = "Ascendant."
+
+[[entries]]
+title = "Chasing The Dream"
+artist = "Peter Baumann"
+type = "song"
+genres = ["electronic", "new age"]
+youtube_video = "https://www.youtube.com/watch?v=C6LuKLwMkN4&list=RDC6LuKLwMkN4&start_radio=1"
+youtube_video_id = "C6LuKLwMkN4"
+jukebox = ["music_for_androids"]
+thought = "Dreaming."
+
+[[entries]]
+title = "A New World"
+artist = "Code Elektro"
+type = "song"
+genres = ["electronic", "synthwave"]
+youtube_video = "https://www.youtube.com/watch?v=8OJMimOouXY&list=RD8OJMimOouXY&start_radio=1"
+youtube_video_id = "8OJMimOouXY"
+jukebox = ["music_for_androids"]
+thought = "Futurist."
+
+[[entries]]
+title = "Rewind"
+artist = "Donbor"
+type = "song"
+genres = ["electronic", "synthwave"]
+youtube_video = "https://www.youtube.com/watch?v=tfpSFK4wqPc&list=RDtfpSFK4wqPc&start_radio=1"
+youtube_video_id = "tfpSFK4wqPc"
+jukebox = ["music_for_androids"]
+thought = "Rewound."
+
+[[entries]]
+title = "You Were Bigger Than Life"
+artist = "Shook"
+type = "song"
+genres = ["electronic", "synthwave"]
+youtube_video = "https://www.youtube.com/watch?v=By9-6haIRgQ&list=RDBy9-6haIRgQ&start_radio=1"
+youtube_video_id = "By9-6haIRgQ"
+jukebox = ["music_for_androids"]
+thought = "Radiant."
+
+[[entries]]
+title = "Lost in Space"
+artist = "Alonewolf"
+type = "song"
+genres = ["electronic", "synthwave"]
+youtube_video = "https://www.youtube.com/watch?v=D9yA_rLvBhA&list=RDD9yA_rLvBhA&start_radio=1"
+youtube_video_id = "D9yA_rLvBhA"
+jukebox = ["music_for_androids"]
+thought = "Adrift."
+
+[[entries]]
+title = "Above The Euromechopolis"
+artist = "OGRE Sound"
+type = "song"
+genres = ["electronic", "synthwave"]
+youtube_video = "https://www.youtube.com/watch?v=4FhTFj8NxTg&list=RD4FhTFj8NxTg&start_radio=1"
+youtube_video_id = "4FhTFj8NxTg"
+jukebox = ["music_for_androids"]
+thought = "Megacity."
+
+[[entries]]
+title = "Step"
+artist = "Brandt Brauer Frick"
+type = "song"
+genres = ["electronic", "minimalism"]
+youtube_video = "https://www.youtube.com/watch?v=J6A-OZjUA64&list=RDJ6A-OZjUA64&start_radio=1"
+youtube_video_id = "J6A-OZjUA64"
+jukebox = ["music_for_androids"]
+thought = "Percussive."
+
+[[entries]]
+title = "Indicatif Spatial - Spatial Jingle"
+artist = "Jean-Jacques Perrey"
+type = "song"
+genres = ["electronic", "novelty"]
+youtube_video = "https://www.youtube.com/watch?v=jJNDmRVMi1E&list=RDjJNDmRVMi1E&start_radio=1"
+youtube_video_id = "jJNDmRVMi1E"
+jukebox = ["music_for_androids"]
+thought = "Broadcast."
+
+[[entries]]
+title = "Deipkier"
+artist = "Craven Faults"
+type = "song"
+genres = ["ambient", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=_sHsuRZCmco&list=RD_sHsuRZCmco&start_radio=1"
+youtube_video_id = "_sHsuRZCmco"
+jukebox = ["music_for_androids"]
+thought = "Monolithic."
+
+[[entries]]
+title = "Second Love"
+artist = "Isa Gordon"
+type = "song"
+genres = ["ambient", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=zCbWkNrGIg0&list=RDzCbWkNrGIg0&start_radio=1"
+youtube_video_id = "zCbWkNrGIg0"
+jukebox = ["music_for_androids"]
+thought = "Tender."
+
+[[entries]]
+title = "Marking Time"
+artist = "Pauline Anna Strom"
+type = "song"
+genres = ["ambient", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=ZhdcCN5m3Lg&list=RDZhdcCN5m3Lg&start_radio=1"
+youtube_video_id = "ZhdcCN5m3Lg"
+jukebox = ["music_for_androids"]
+thought = "Luminous."
+
+[[entries]]
+title = "si00"
+artist = "Autechre"
+type = "song"
+genres = ["electronic", "idm"]
+youtube_video = "https://www.youtube.com/watch?v=xaxkQ0HlWDU&list=RDxaxkQ0HlWDU&start_radio=1"
+youtube_video_id = "xaxkQ0HlWDU"
+jukebox = ["music_for_androids"]
+thought = "Fractured."
+
+[[entries]]
+title = "LOVE IS STILL ALIVE V (Uranus, Prolactin)"
+artist = "Laibach"
+type = "song"
+genres = ["electronic", "industrial"]
+youtube_video = "https://www.youtube.com/watch?v=1RiHfi-OcLY&list=RD1RiHfi-OcLY&start_radio=1"
+youtube_video_id = "1RiHfi-OcLY"
+jukebox = ["music_for_androids"]
+thought = "Cold."
+
+[[entries]]
+title = "Krabs"
+artist = "Kettel"
+type = "song"
+genres = ["ambient", "idm"]
+youtube_video = "https://www.youtube.com/watch?v=5Uwq7B3Hfhs&list=RD5Uwq7B3Hfhs&start_radio=1"
+youtube_video_id = "5Uwq7B3Hfhs"
+jukebox = ["music_for_androids"]
+thought = "Bubbly."
+
+[[entries]]
+title = "Penjarul (Brigid Kaelin)"
+artist = ".orbix,Brigid Kaelin"
+type = "song"
+genres = ["ambient", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=5Uwq7B3Hfhs&list=RD5Uwq7B3Hfhs&start_radio=1"
+youtube_video_id = "5Uwq7B3Hfhs"
+jukebox = ["music_for_androids"]
+thought = "Misty."
+
+[[entries]]
+title = "Celestial Annihilation"
+artist = "UNKLE"
+type = "song"
+genres = ["electronic", "trip-hop"]
+youtube_video = "https://www.youtube.com/watch?v=ZNU1OFTRS_g&list=RDZNU1OFTRS_g&start_radio=1"
+youtube_video_id = "ZNU1OFTRS_g"
+jukebox = ["music_for_androids"]
+thought = "Terminal."
+
+[[entries]]
+title = "Donna"
+artist = "The Art Of Noise"
+type = "song"
+genres = ["art pop", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=pY7fI-Oa3-U&list=RDpY7fI-Oa3-U&start_radio=1"
+youtube_video_id = "pY7fI-Oa3-U"
+jukebox = ["music_for_androids"]
+thought = "Stylized."
+
+[[entries]]
+title = "Воскрешение (Robot's Outro)"
+artist = "PPK"
+type = "song"
+genres = ["electronic", "trance"]
+youtube_video = "https://www.youtube.com/watch?v=hgrg_T-ui7Y&list=RDhgrg_T-ui7Y&start_radio=1"
+youtube_video_id = "hgrg_T-ui7Y"
+jukebox = ["music_for_androids"]
+thought = "Resurrected."
+
+[[entries]]
+title = "Earth of No Horizon"
+artist = "Jakob Skøtt"
+type = "song"
+genres = ["psychedelic rock", "space rock"]
+youtube_video = "https://www.youtube.com/watch?v=8bTNJsfVib0&list=RD8bTNJsfVib0&start_radio=1"
+youtube_video_id = "8bTNJsfVib0"
+jukebox = ["music_for_androids"]
+thought = "Expansive."
+
+[[entries]]
+title = "Here"
+artist = "Jonas Munk,Nicklas Sørensen"
+type = "song"
+genres = ["ambient", "psychedelic rock"]
+youtube_video = "https://www.youtube.com/watch?v=okv8ACtReMs&list=RDokv8ACtReMs&start_radio=1"
+youtube_video_id = "okv8ACtReMs"
+jukebox = ["music_for_androids"]
+thought = "Present."
+
+[[entries]]
+title = "White Eagle - 1995 Remaster"
+artist = "Tangerine Dream"
+type = "song"
+genres = ["ambient", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=zCnOVFGnh_U&list=RDzCnOVFGnh_U&start_radio=1"
+youtube_video_id = "zCnOVFGnh_U"
+jukebox = ["music_for_androids"]
+thought = "Soaring."
+
+[[entries]]
+title = "Le départ"
+artist = "L'Impératrice"
+type = "song"
+genres = ["disco", "synth-pop"]
+youtube_video = "https://www.youtube.com/watch?v=ulKDXQw4xCQ&list=RDulKDXQw4xCQ&start_radio=1"
+youtube_video_id = "ulKDXQw4xCQ"
+jukebox = ["music_for_androids"]
+thought = "Velvet."
+
+[[entries]]
+title = "Luna"
+artist = "Karfagen,Antony Kalugin"
+type = "song"
+genres = ["progressive rock", "symphonic rock"]
+youtube_video = "https://www.youtube.com/watch?v=83xtaI4Kd-k&list=RD83xtaI4Kd-k&start_radio=1"
+youtube_video_id = "83xtaI4Kd-k"
+jukebox = ["music_for_androids"]
+thought = "Moonlit."
+
+[[entries]]
+title = "Electrified"
+artist = "Boris Blank"
+type = "song"
+genres = ["ambient", "electronic"]
+youtube_video = "https://www.youtube.com/watch?v=RFqetWRsyBA&list=PL-VNUJUWxaScmx58RmDl9DstU7vpkYQRb"
+youtube_video_id = "RFqetWRsyBA"
+jukebox = ["music_for_androids"]
+thought = "Charged."
+
+[[entries]]
+title = "The Humbling River"
+artist = "Puscifer"
+type = "song"
+genres = ["alternative rock", "art rock"]
+youtube_video = "https://www.youtube.com/watch?v=siWusSBld7k&list=RDsiWusSBld7k&start_radio=1"
+youtube_video_id = "siWusSBld7k"
+jukebox = ["to_stare_at_nothing"]
+thought = "Still."
+
+[[entries]]
+title = "You Want It Darker"
+artist = "Leonard Cohen"
+type = "song"
+genres = ["folk rock", "singer-songwriter"]
+youtube_video = "https://www.youtube.com/watch?v=v0nmHymgM7Y&list=RDv0nmHymgM7Y&start_radio=1"
+youtube_video_id = "v0nmHymgM7Y"
+jukebox = ["to_stare_at_nothing"]
+thought = "Grave."
+
+[[entries]]
+title = "Without You I'm Nothing"
+artist = "Placebo"
+type = "song"
+genres = ["alternative rock"]
+youtube_video = "https://www.youtube.com/watch?v=c14qMbmP9eg&list=RDc14qMbmP9eg&start_radio=1"
+youtube_video_id = "c14qMbmP9eg"
+jukebox = ["to_stare_at_nothing"]
+thought = "Hollow."
+
+[[entries]]
+title = "The Highwayman"
+artist = "Arbouretum"
+type = "song"
+genres = ["folk rock", "psychedelic rock"]
+youtube_video = "https://www.youtube.com/watch?v=P1tPWhYZkQo&list=RDP1tPWhYZkQo&start_radio=1"
+youtube_video_id = "P1tPWhYZkQo"
+jukebox = ["to_stare_at_nothing"]
+thought = "Windswept."
+
+[[entries]]
+title = "Slash'n'burn"
+artist = "ROME"
+type = "song"
+genres = ["dark folk", "neofolk"]
+youtube_video = "https://www.youtube.com/watch?v=TeXvAaOj_8k&list=RDTeXvAaOj_8k&start_radio=1"
+youtube_video_id = "TeXvAaOj_8k"
+jukebox = ["to_stare_at_nothing"]
+thought = "Ashen."
+
+[[entries]]
+title = "The Solitary Path of a Convicted Man"
+artist = "Bruce Soord"
+type = "song"
+genres = ["progressive rock", "singer-songwriter"]
+youtube_video = "https://www.youtube.com/watch?v=aIs7phuKyLE&list=RDaIs7phuKyLE&start_radio=1"
+youtube_video_id = "aIs7phuKyLE"
+jukebox = ["to_stare_at_nothing"]
+thought = "Solitary."
+
+[[entries]]
+title = "The Green Valley (Live)"
+artist = "Puscifer"
+type = "song"
+genres = ["alternative rock", "art rock"]
+youtube_video = "https://www.youtube.com/watch?v=EHPj40w_4sc&list=RDEHPj40w_4sc&start_radio=1"
+youtube_video_id = "EHPj40w_4sc"
+jukebox = ["to_stare_at_nothing"]
+thought = "Dusty."
+
+[[entries]]
+title = "Gods and Monsters (From American Horror Story)"
+artist = "Jessica Lange"
+type = "song"
+genres = ["cabaret", "soundtrack"]
+youtube_video = "https://www.youtube.com/watch?v=sv-as96dFJk&list=RDsv-as96dFJk&start_radio=1"
+youtube_video_id = "sv-as96dFJk"
+jukebox = ["to_stare_at_nothing"]
+thought = "Decadent."
+
+[[entries]]
+title = "Coming Home"
+artist = "Me And That Man,Sivert Høyem"
+type = "song"
+genres = ["dark folk", "folk rock"]
+youtube_video = "https://www.youtube.com/watch?v=2eX-lMxjfKI&list=RD2eX-lMxjfKI&start_radio=1"
+youtube_video_id = "2eX-lMxjfKI"
+jukebox = ["to_stare_at_nothing"]
+thought = "Returning."
+
+[[entries]]
+title = "A World Not So Beautiful [A Song 4 The Emperor]"
+artist = "Ordo Rosarius Equilibrio"
+type = "song"
+genres = ["dark folk", "neofolk"]
+youtube_video = "https://www.youtube.com/watch?v=-JMyo15hgM4&list=RD-JMyo15hgM4&start_radio=1"
+youtube_video_id = "-JMyo15hgM4"
+jukebox = ["to_stare_at_nothing"]
+thought = "Bleak."
+
+[[entries]]
+title = "First Six Months of Love"
+artist = "Michelle Gurevich"
+type = "song"
+genres = ["art pop", "chanson"]
+youtube_video = "https://www.youtube.com/watch?v=NqGQIO2m3YQ&list=RDNqGQIO2m3YQ&start_radio=1"
+youtube_video_id = "NqGQIO2m3YQ"
+jukebox = ["to_stare_at_nothing"]
+thought = "Faded."
+
+[[entries]]
+title = "Yes, I Have Ghosts"
+artist = "David Gilmour"
+type = "song"
+genres = ["folk rock", "psychedelic folk"]
+youtube_video = "https://www.youtube.com/watch?v=BwI1RmYaVB0&list=RDBwI1RmYaVB0&start_radio=1"
+youtube_video_id = "BwI1RmYaVB0"
+jukebox = ["to_stare_at_nothing"]
+thought = "Haunted."
+
+[[entries]]
+title = "Melody X"
+artist = "Bonaparte"
+type = "song"
+genres = ["art pop", "indie pop"]
+youtube_video = "https://www.youtube.com/watch?v=ZAPvZNgPfDE&list=RDZAPvZNgPfDE&start_radio=1"
+youtube_video_id = "ZAPvZNgPfDE"
+jukebox = ["to_stare_at_nothing"]
+thought = "Noir."
+
+[[entries]]
+title = "Death To Everyone"
+artist = "Bonnie Prince Billy"
+type = "song"
+genres = ["alternative country", "folk"]
+youtube_video = "https://www.youtube.com/watch?v=dgZJIOFLJGk&list=RDdgZJIOFLJGk&start_radio=1"
+youtube_video_id = "dgZJIOFLJGk"
+jukebox = ["to_stare_at_nothing"]
+thought = "Stark."
+
+[[entries]]
+title = "It Just Feels"
+artist = "Jihae, Leonard Cohen, Dave Stewart"
+type = "song"
+genres = ["art pop", "singer-songwriter"]
+youtube_video = "https://www.youtube.com/watch?v=3Muiy54AGwk&list=RD3Muiy54AGwk&start_radio=1"
+youtube_video_id = "3Muiy54AGwk"
+jukebox = ["to_stare_at_nothing"]
+thought = "Bruised."
+
+[[entries]]
+title = "Thursday's Child"
+artist = "David Bowie"
+type = "song"
+genres = ["art rock", "pop rock"]
+youtube_video = "https://www.youtube.com/watch?v=gfOKDB0ChQk&list=RDgfOKDB0ChQk&start_radio=1"
+youtube_video_id = "gfOKDB0ChQk"
+jukebox = ["to_stare_at_nothing"]
+thought = "Tender."
+
+[[entries]]
+title = "Crazy Love"
+artist = "Marianne Faithfull"
+type = "song"
+genres = ["art pop", "chanson"]
+youtube_video = "https://www.youtube.com/watch?v=2kc49W142Sc&list=RD2kc49W142Sc&start_radio=1"
+youtube_video_id = "2kc49W142Sc"
+jukebox = ["to_stare_at_nothing"]
+thought = "Smoky."
+
+[[entries]]
+title = "Disarm"
+artist = "The Smashing Pumpkins"
+type = "song"
+genres = ["alternative rock"]
+youtube_video = "https://www.youtube.com/watch?v=d1acEVmnVhI&list=RDd1acEVmnVhI&start_radio=1"
+youtube_video_id = "d1acEVmnVhI"
+jukebox = ["to_stare_at_nothing"]
+thought = "Bare."
+
+[[entries]]
+title = "Avec un brin de nostalgie"
+artist = "Charles Aznavour"
+type = "song"
+genres = ["chanson", "traditional pop"]
+youtube_video = "https://www.youtube.com/watch?v=pCBQzZI4ZKw&list=RDpCBQzZI4ZKw&start_radio=1"
+youtube_video_id = "pCBQzZI4ZKw"
+jukebox = ["to_stare_at_nothing"]
+thought = "Nostalgic."
+
+[[entries]]
+title = "The Green Valley"
+artist = "Puscifer"
+type = "song"
+genres = ["alternative rock", "art rock"]
+youtube_video = "https://www.youtube.com/watch?v=EHPj40w_4sc&list=RDEHPj40w_4sc&start_radio=1"
+youtube_video_id = "EHPj40w_4sc"
+jukebox = ["to_stare_at_nothing"]
+thought = "Desolate."
+
+[[entries]]
+title = "Man in the Long Black Coat"
+artist = "Mark Lanegan"
+type = "song"
+genres = ["alternative rock", "blues rock"]
+youtube_video = "https://www.youtube.com/watch?v=OWcCxotIBcg&list=RDOWcCxotIBcg&start_radio=1"
+youtube_video_id = "OWcCxotIBcg"
+jukebox = ["to_stare_at_nothing"]
+thought = "Shadowed."
+
+[[entries]]
+title = "The Future"
+artist = "Leonard Cohen"
+type = "song"
+genres = ["folk rock", "singer-songwriter"]
+youtube_video = "https://www.youtube.com/watch?v=8WlbQRoz3o4&list=RD8WlbQRoz3o4&start_radio=1"
+youtube_video_id = "8WlbQRoz3o4"
+jukebox = ["to_stare_at_nothing"]
+thought = "Inevitable."
+
+[[entries]]
+title = "The Night [Alternate Version]"
+artist = "Morphine"
+type = "song"
+genres = ["alternative rock", "jazz rock"]
+youtube_video = "https://www.youtube.com/watch?v=osub0ymvwjo&list=RDosub0ymvwjo&start_radio=1"
+youtube_video_id = "osub0ymvwjo"
+jukebox = ["to_stare_at_nothing"]
+thought = "Midnight."
+
+[[entries]]
+title = "Parabol"
+artist = "Amenra"
+type = "song"
+genres = ["post-metal", "sludge metal"]
+youtube_video = "https://www.youtube.com/watch?v=2gYiJq6SJWw&list=RD2gYiJq6SJWw&start_radio=1"
+youtube_video_id = "2gYiJq6SJWw"
+jukebox = ["to_stare_at_nothing"]
+thought = "Heavy."
+
+[[entries]]
+title = "Twist in My Sobriety"
+artist = "Tanita Tikaram"
+type = "song"
+genres = ["pop", "singer-songwriter"]
+youtube_video = "https://www.youtube.com/watch?v=7s8glZ-efMg&list=RD7s8glZ-efMg&start_radio=1l"
+youtube_video_id = "7s8glZ-efMg"
+jukebox = ["to_stare_at_nothing"]
+thought = "Wistful."
+
+[[entries]]
+title = "Avenue Of Hope"
+artist = "I Am Kloot"
+type = "song"
+genres = ["indie rock", "singer-songwriter"]
+youtube_video = "https://www.youtube.com/watch?v=ba9lqLRON08&list=RDba9lqLRON08&start_radio=1"
+youtube_video_id = "ba9lqLRON08"
+jukebox = ["to_stare_at_nothing"]
+thought = "Muted."
+
+[[entries]]
+title = "Forever"
+artist = "Siouxsie and the Banshees"
+type = "song"
+genres = ["gothic rock", "post-punk"]
+youtube_video = "https://www.youtube.com/watch?v=WCI8djYNiLA&list=RDWCI8djYNiLA&start_radio=1"
+youtube_video_id = "WCI8djYNiLA"
+jukebox = ["to_stare_at_nothing"]
+thought = "Lingering."
+
+[[entries]]
+title = "When You Leave"
+artist = "Mark Knopfler"
+type = "song"
+genres = ["folk rock", "singer-songwriter"]
+youtube_video = "https://www.youtube.com/watch?v=IDIH0p5DTtw&list=RDIDIH0p5DTtw&start_radio=1"
+youtube_video_id = "IDIH0p5DTtw"
+jukebox = ["to_stare_at_nothing"]
+thought = "Parting."
+
+[[entries]]
+title = "Death Singing"
+artist = "Patti Smith"
+type = "song"
+genres = ["art rock", "spoken word"]
+youtube_video = "https://www.youtube.com/watch?v=-_l-unNqjN4&list=RD-_l-unNqjN4&start_radio=1"
+youtube_video_id = "-_l-unNqjN4"
+jukebox = ["to_stare_at_nothing"]
+thought = "Ritual."
+
+[[entries]]
+title = "Bitter Taste"
+artist = "Billy Idol"
+type = "song"
+genres = ["pop rock", "singer-songwriter"]
+youtube_video = "https://www.youtube.com/watch?v=AFj0qmBMBa4&list=RDAFj0qmBMBa4&start_radio=1"
+youtube_video_id = "AFj0qmBMBa4"
+jukebox = ["to_stare_at_nothing"]
+thought = "Spent."
+
+[[entries]]
+title = "Oh Darlin' What Have I Done"
+artist = "The White Buffalo"
+type = "song"
+genres = ["americana", "folk rock"]
+youtube_video = "https://www.youtube.com/watch?v=48dQMECiv48&list=RD48dQMECiv48&start_radio=1"
+youtube_video_id = "48dQMECiv48"
+jukebox = ["to_stare_at_nothing"]
+thought = "Broken."
+
+[[entries]]
+title = "Redemption Day"
+artist = "Johnny Cash"
+type = "song"
+genres = ["country", "folk"]
+youtube_video = "https://www.youtube.com/watch?v=uU4W8944o_k&list=RDuU4W8944o_k&start_radio=1"
+youtube_video_id = "uU4W8944o_k"
+jukebox = ["to_stare_at_nothing"]
+thought = "Final."
+
+[[entries]]
+title = "Idlewild"
+artist = "Travis,Josephine Oniyama"
+type = "song"
+genres = ["indie pop", "indie rock"]
+youtube_video = "https://www.youtube.com/watch?v=WLKBOJ9jyQg&list=RDWLKBOJ9jyQg&start_radio=1"
+youtube_video_id = "WLKBOJ9jyQg"
+jukebox = ["to_stare_at_nothing"]
+thought = "Distant."
+
+[[entries]]
+title = "God's Gonna Cut You Down"
+artist = "Marilyn Manson"
+type = "song"
+genres = ["alternative rock", "industrial rock"]
+youtube_video = "https://www.youtube.com/watch?v=Nu__TzWfpss&list=RDNu__TzWfpss&start_radio=1"
+youtube_video_id = "Nu__TzWfpss"
+jukebox = ["to_stare_at_nothing"]
+thought = "Judgment."
+
+[[entries]]
+title = "The High Road"
+artist = "Broken Bells,Danger Mouse,James Mercer"
+type = "song"
+genres = ["electronic", "indie pop"]
+youtube_video = "https://www.youtube.com/watch?v=gWBG1j_flrg&list=RDgWBG1j_flrg&start_radio=1"
+youtube_video_id = "gWBG1j_flrg"
+jukebox = ["to_stare_at_nothing"]
+thought = "Weightless."
+
+[[entries]]
+title = "Boat On A River"
+artist = "Styx"
+type = "song"
+genres = ["folk rock", "soft rock"]
+youtube_video = "https://www.youtube.com/watch?v=K9Qs8-BkiLw&list=RDK9Qs8-BkiLw&start_radio=1"
+youtube_video_id = "K9Qs8-BkiLw"
+jukebox = ["to_stare_at_nothing"]
+thought = "Floating."
+
+[[entries]]
+title = "Set a Candle in the Night"
+artist = "In Gowan Ring"
+type = "song"
+genres = ["dark folk", "psychedelic folk"]
+youtube_video = "https://www.youtube.com/watch?v=ottvXE01Ufs&list=RDottvXE01Ufs&start_radio=1"
+youtube_video_id = "ottvXE01Ufs"
+jukebox = ["to_stare_at_nothing"]
+thought = "Candlelit."
+
+[[entries]]
+title = "Solitary Man"
+artist = "Johnny Cash"
+type = "song"
+genres = ["country", "folk rock"]
+youtube_video = "https://www.youtube.com/watch?v=Y3Tuq814_Ok&list=RDY3Tuq814_Ok&start_radio=1"
+youtube_video_id = "Y3Tuq814_Ok"
+jukebox = ["to_stare_at_nothing"]
+thought = "Alone."
+
+[[entries]]
+title = "Herd"
+artist = "O'Death"
+type = "song"
+genres = ["americana", "folk punk"]
+youtube_video = "https://www.youtube.com/watch?v=Xxd3IadfnsQ&list=RDXxd3IadfnsQ&start_radio=1"
+youtube_video_id = "Xxd3IadfnsQ"
+jukebox = ["to_stare_at_nothing"]
+thought = "Raw."
+
+[[entries]]
+title = "The Idealist"
+artist = "Yuko"
+type = "song"
+genres = ["indie rock", "post-punk"]
+youtube_video = "https://www.youtube.com/watch?v=4Ao1mHfHWbA&list=RD4Ao1mHfHWbA&start_radio=1"
+youtube_video_id = "4Ao1mHfHWbA"
+jukebox = ["to_stare_at_nothing"]
+thought = "Pensive."
+
+[[entries]]
+title = "Just Drifting"
+artist = "Psychic TV"
+type = "song"
+genres = ["experimental", "post-punk"]
+youtube_video = "https://www.youtube.com/watch?v=obiiJsC9w5I&list=RDobiiJsC9w5I&start_radio=1"
+youtube_video_id = "obiiJsC9w5I"
+jukebox = ["to_stare_at_nothing"]
+thought = "Drifting."
+
+[[entries]]
+title = "Washed Away"
+artist = "Emily Jane White"
+type = "song"
+genres = ["indie folk", "singer-songwriter"]
+youtube_video = "https://www.youtube.com/watch?v=7gc_OpSViI0&list=RD7gc_OpSViI0&start_radio=1"
+youtube_video_id = "7gc_OpSViI0"
+jukebox = ["to_stare_at_nothing"]
+thought = "Eroded."
+
+[[entries]]
+title = "Belong To Heaven"
+artist = "Cass McCombs"
+type = "song"
+genres = ["alternative country", "indie folk"]
+youtube_video = "https://www.youtube.com/watch?v=KXAEULWPzw4&list=RDKXAEULWPzw4&start_radio=1"
+youtube_video_id = "KXAEULWPzw4"
+jukebox = ["to_stare_at_nothing"]
+thought = "Hushed."
+
+[[entries]]
+title = "Mykonos"
+artist = "Fleet Foxes"
+type = "song"
+genres = ["indie folk", "indie rock"]
+youtube_video = "https://www.youtube.com/watch?v=DT-dxG4WWf4&list=RDDT-dxG4WWf4&start_radio=1"
+youtube_video_id = "DT-dxG4WWf4"
+jukebox = ["to_stare_at_nothing"]
+thought = "Salted."
+
+[[entries]]
+title = "Take Me Back"
+artist = "Arno"
+type = "song"
+genres = ["blues rock", "chanson"]
+youtube_video = "https://www.youtube.com/watch?v=1AFmQIQGPHA&list=RD1AFmQIQGPHA&start_radio=1"
+youtube_video_id = "1AFmQIQGPHA"
+jukebox = ["to_stare_at_nothing"]
+thought = "Yearning."
+
+[[entries]]
+title = "Take This Bottle"
+artist = "Faith No More"
+type = "song"
+genres = ["alternative rock"]
+youtube_video = "https://www.youtube.com/watch?v=9ImBIsrczFg&list=RD9ImBIsrczFg&start_radio=1"
+youtube_video_id = "9ImBIsrczFg"
+jukebox = ["to_stare_at_nothing"]
+thought = "Spent."
+
+[[entries]]
+title = "State Trooper"
+artist = "King Hannah"
+type = "song"
+genres = ["indie rock", "slowcore"]
+youtube_video = "https://www.youtube.com/watch?v=YEeyRUXqgEA&list=RDYEeyRUXqgEA&start_radio=1"
+youtube_video_id = "YEeyRUXqgEA"
+jukebox = ["to_stare_at_nothing"]
+thought = "Roadworn."
+
+[[entries]]
+title = "Algiers"
+artist = "The Afghan Whigs"
+type = "song"
+genres = ["alternative rock", "soul"]
+youtube_video = "https://www.youtube.com/watch?v=ovhzeqIaggY&list=RDovhzeqIaggY&start_radio=1"
+youtube_video_id = "ovhzeqIaggY"
+jukebox = ["to_stare_at_nothing"]
+thought = "Smoldering."
+
+[[entries]]
+title = "Your Name / My Game"
+artist = "Herman Düne"
+type = "song"
+genres = ["indie folk", "indie pop"]
+youtube_video = "https://www.youtube.com/watch?v=sYUfX2u-3TQ&list=RDsYUfX2u-3TQ&start_radio=1"
+youtube_video_id = "sYUfX2u-3TQ"
+jukebox = ["to_stare_at_nothing"]
+thought = "Frail."
+
+[[entries]]
+title = "Sound of Violence"
+artist = "Other Lives"
+type = "song"
+genres = ["indie folk", "indie rock"]
+youtube_video = "https://www.youtube.com/watch?v=_M1MXC_cosc&list=RD_M1MXC_cosc&start_radio=1"
+youtube_video_id = "_M1MXC_cosc"
+jukebox = ["to_stare_at_nothing"]
+thought = "Brooding."
+
+[[entries]]
+title = "Girl"
+artist = "Men I Trust"
+type = "song"
+genres = ["dream pop", "indie pop"]
+youtube_video = "https://www.youtube.com/watch?v=6Y9gxXsFoI8&list=RD6Y9gxXsFoI8&start_radio=1"
+youtube_video_id = "6Y9gxXsFoI8"
+jukebox = ["to_stare_at_nothing"]
+thought = "Soft."
+
+[[entries]]
+title = "If You Go Away"
+artist = "Dalis Car"
+type = "song"
+genres = ["art pop", "new wave"]
+youtube_video = "https://www.youtube.com/watch?v=ypE8U6xJW9M&list=RDypE8U6xJW9M&start_radio=1"
+youtube_video_id = "ypE8U6xJW9M"
+jukebox = ["to_stare_at_nothing"]
+thought = "Elegiac."
+
+[[entries]]
+title = "Ulysses and the Sea"
+artist = "Papooz"
+type = "song"
+genres = ["indie pop", "psychedelic pop"]
+youtube_video = "https://www.youtube.com/watch?v=SJaNOrG__6A&list=RDSJaNOrG__6A&start_radio=1"
+youtube_video_id = "SJaNOrG__6A"
+jukebox = ["to_stare_at_nothing"]
+thought = "Tidal."
+
+[[entries]]
+title = "Epitaph"
+artist = "Caballero Reynaldo"
+type = "song"
+genres = ["progressive rock", "psychedelic rock"]
+youtube_video = "https://www.youtube.com/watch?v=jC1h2bSFsCE&list=RDjC1h2bSFsCE&start_radio=1"
+youtube_video_id = "jC1h2bSFsCE"
+jukebox = ["to_stare_at_nothing"]
+thought = "Sepulchral."
+
+[[entries]]
+title = "Falling Mirages"
+artist = "Jonathan Hultén"
+type = "song"
+genres = ["folk", "gothic rock"]
+youtube_video = "https://www.youtube.com/watch?v=EwCjr9XfqmM&list=RDEwCjr9XfqmM&start_radio=1"
+youtube_video_id = "EwCjr9XfqmM"
+jukebox = ["to_stare_at_nothing"]
+thought = "Ethereal."
+
+[[entries]]
+title = "The Whistler"
+artist = "The White Buffalo"
+type = "song"
+genres = ["americana", "folk rock"]
+youtube_video = "https://www.youtube.com/watch?v=4eaKvZfDL4E&list=RD4eaKvZfDL4E&start_radio=1"
+youtube_video_id = "4eaKvZfDL4E"
+jukebox = ["to_stare_at_nothing"]
+thought = "Lonesome."
+
+[[entries]]
+title = "Wandering Star"
+artist = "TORRES"
+type = "song"
+genres = ["indie rock", "slowcore"]
+youtube_video = "https://www.youtube.com/watch?v=IA2zmXivtJU&list=RDIA2zmXivtJU&start_radio=1"
+youtube_video_id = "IA2zmXivtJU"
+jukebox = ["to_stare_at_nothing"]
+thought = "Wandering."
+
+[[entries]]
+title = "La sublime solitude"
+artist = "Keren Ann"
+type = "song"
+genres = ["chanson", "dream pop"]
+youtube_video = "https://youtu.be/JXcnJy2wNIQ?si=-s5Q7pwbRBJg3e8l"
+youtube_video_id = "JXcnJy2wNIQ"
+jukebox = ["to_stare_at_nothing"]
+thought = "Solitude."
+
+[[entries]]
+title = "The Beautiful Silence"
+artist = "And Also The Trees"
+type = "song"
+genres = ["gothic rock", "post-punk"]
+youtube_video = "https://youtu.be/G0Z2KpN6wWU?si=r5QynXEH7iNV2DC_"
+youtube_video_id = "G0Z2KpN6wWU"
+jukebox = ["to_stare_at_nothing"]
+thought = "Silent."
+
+[[entries]]
+title = "Jungle Full of Ghosts"
+artist = "Johnny Delaware"
+type = "song"
+genres = ["americana", "indie folk"]
+youtube_video = "https://youtu.be/o01XCuD-opU?si=Ss3CUaiMNNXFz-wR"
+youtube_video_id = "o01XCuD-opU"
+jukebox = ["to_stare_at_nothing"]
+thought = "Ghosted."
+
+[[entries]]
+title = "Rooks"
+artist = "Shearwater"
+type = "song"
+genres = ["indie rock", "post-rock"]
+youtube_video = "https://youtu.be/OCKCBnAZUXM?si=1dSRO6hRDs2rvlgL"
+youtube_video_id = "OCKCBnAZUXM"
+jukebox = ["to_stare_at_nothing"]
+thought = "Overcast."
