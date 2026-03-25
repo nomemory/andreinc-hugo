@@ -1461,12 +1461,6 @@ description = "A geometric-algebra flavored path into thinking about inverses an
 tags = ["math"]
 
 [[links]]
-title = "What is the inverse of a vector?"
-url = "https://mattferraro.dev/posts/geometric-algebra"
-description = "A geometric-algebra flavored explanation of what it means to invert a vector."
-tags = ["math"]
-
-[[links]]
 title = "Stacking triangles for fun and for profit"
 url = "https://www.oranlooney.com/post/angle-addition/"
 description = "A playful derivation of trigonometric identities from stacked triangles."
@@ -1885,18 +1879,6 @@ title = "The Interim Computer Museum"
 url = "https://icm.museum/"
 description = "A computer history museum focused on preserving and presenting old machines."
 tags = ["history", "archives"]
-
-[[links]]
-title = "The slow death of the power user"
-url = "https://fireborn.mataroa.blog/blog/the-slow-death-of-the-power-user/"
-description = "A lament for software that increasingly sidelines advanced users and local control."
-tags = ["essays"]
-
-[[links]]
-title = "Fizz Buzz with Cosines"
-url = "https://susam.net/fizz-buzz-with-cosines.html"
-description = "By the end, we will obtain a discrete Fourier series that can take any integer n and select the corresponding text to be printed."
-tags = ["humor", "math"]
 
 [[links]]
 title = "Bamagotchi"
