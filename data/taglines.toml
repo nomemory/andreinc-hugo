@@ -1,0 +1,391 @@
+[[taglines]]
+ro = "Pe localhost merge."
+en = "It works on localhost."
+
+[[taglines]]
+ro = "Merge și așa."
+en = "Good enough. / It works as it is."
+
+[[taglines]]
+ro = "E de la cache."
+en = "It's the cache."
+
+[[taglines]]
+ro = "A picat serverul."
+en = "The server is down."
+
+[[taglines]]
+ro = "Fără deploy vinerea."
+en = "No Friday deploys."
+
+[[taglines]]
+ro = "S-a stricat CSS-ul."
+en = "The CSS broke."
+
+[[taglines]]
+ro = "Mai adaug un div."
+en = "I'll just add another div."
+
+[[taglines]]
+ro = "Aștept să se compileze."
+en = "Waiting for it to compile."
+
+[[taglines]]
+ro = "Așa a fost cerința."
+en = "That was the requirement."
+
+[[taglines]]
+ro = "Am uitat să scriu teste."
+en = "I forgot to write tests."
+
+[[taglines]]
+ro = "Nu da push pe master."
+en = "Don't push to master."
+
+[[taglines]]
+ro = "Gata, am reparat!"
+en = "Done, I fixed it!"
+
+[[taglines]]
+ro = "Rulează în fundal..."
+en = "Running in the background..."
+
+[[taglines]]
+ro = "Nu am destul RAM."
+en = "I don't have enough RAM."
+
+[[taglines]]
+ro = "Fără variabile globale."
+en = "No global variables."
+
+[[taglines]]
+ro = "L-am testat doar la mine."
+en = "I only tested it on my machine."
+
+[[taglines]]
+ro = "Codul ăsta e moștenit."
+en = "This is legacy code."
+
+[[taglines]]
+ro = "Refactorizez totul de la zero."
+en = "Refactoring everything from scratch."
+
+[[taglines]]
+ro = "Nu găsesc fișierul de config."
+en = "Can't find the config file."
+
+[[taglines]]
+ro = "Am scris asta târziu în noapte."
+en = "I wrote this late at night."
+
+[[taglines]]
+ro = "E făcut pe alt branch."
+en = "It's done on another branch."
+
+[[taglines]]
+ro = "N-am pus comentarii în cod."
+en = "I didn't put comments in the code."
+
+[[taglines]]
+ro = "Închide și deschide iar."
+en = "Close it and open it again."
+
+[[taglines]]
+ro = "Versiunea următoare e mai stabilă."
+en = "The next version is more stable."
+
+[[taglines]]
+ro = "Lipsesc niște paranteze."
+en = "Some brackets are missing."
+
+[[taglines]]
+ro = "E o problemă de hardware."
+en = "It's a hardware issue."
+
+[[taglines]]
+ro = "Mergea ieri."
+en = "It worked yesterday."
+
+[[taglines]]
+ro = "Cine a scris codul ăsta?"
+en = "Who wrote this code?"
+
+[[taglines]]
+ro = "Documentația e în capul meu."
+en = "The documentation is in my head."
+
+[[taglines]]
+ro = "Se rezolvă cu un restart."
+en = "A restart will fix it."
+
+[[taglines]]
+ro = "E problemă de permisiuni."
+en = "It's a permissions issue."
+
+[[taglines]]
+ro = "Lăsăm așa, că oricum nu vede clientul."
+en = "Leave it, the client won't see it anyway."
+
+[[taglines]]
+ro = "E de la conexiunea la net."
+en = "It's the internet connection."
+
+[[taglines]]
+ro = "Am făcut push cu forța."
+en = "I did a force push."
+
+[[taglines]]
+ro = "E de la browser, încearcă în Chrome."
+en = "It's the browser, try Chrome."
+
+[[taglines]]
+ro = "Merge pe Docker-ul meu."
+en = "It works on my Docker."
+
+[[taglines]]
+ro = "Asta e problemă de backend."
+en = "That's a backend issue."
+
+[[taglines]]
+ro = "Mai dăm un build și vedem."
+en = "Let's run one more build and see."
+
+[[taglines]]
+ro = "E un bug cunoscut, dar nu-l reparăm."
+en = "It's a known bug, but we're not fixing it."
+
+[[taglines]]
+ro = "E de la API-ul lor, nu de la noi."
+en = "It's their API, not us."
+
+[[taglines]]
+ro = "O să refactorizez eu mai târziu."
+en = "I'll refactor it later."
+
+[[taglines]]
+ro = "Cerințele s-au schimbat în timpul sprintului."
+en = "The requirements changed mid-sprint."
+
+[[taglines]]
+ro = "Nu pot să reproduc eroarea."
+en = "I can't reproduce the error."
+
+[[taglines]]
+ro = "E doar un workaround temporar."
+en = "It's just a temporary workaround."
+
+[[taglines]]
+ro = "Mergea înainte de update."
+en = "It worked before the update."
+
+[[taglines]]
+ro = "Cerneală multă, talent cu porția."
+en = "Plenty of ink, talent in small portions."
+
+[[taglines]]
+ro = "Subiectul a fugit, am rămas cu verbul."
+en = "The subject fled, I'm left with the verb."
+
+[[taglines]]
+ro = "Stilul e bun, păcat de conținut."
+en = "The style is good, pity about the content."
+
+[[taglines]]
+ro = "Am vrut să scriu, dar mi-a trecut repede."
+en = "I wanted to write, but it passed quickly."
+
+[[taglines]]
+ro = "Am pus punct de trei ori, ca să pară mister..."
+en = "I put three periods, just to make it seem like mystery."
+
+[[taglines]]
+ro = "N-am chef, deci nu fac."
+en = "I don't feel like it, therefore I won't."
+
+[[taglines]]
+ro = "Spațiul și timpul sunt doar forme de a întârzia la muncă."
+en = "Space and time are just forms of being late for work."
+
+[[taglines]]
+ro = "Universul nu are sens, dar are latență."
+en = "The universe has no meaning, but it has latency."
+
+[[taglines]]
+ro = "Totul converge, inclusiv entuziasmul."
+en = "Everything converges, including enthusiasm."
+
+[[taglines]]
+ro = "Nu e haos. E doar complexitate prost înțeleasă."
+en = "It's not chaos. It's just poorly understood complexity."
+
+[[taglines]]
+ro = "Dacă poate fi optimizat, probabil n-a meritat făcut."
+en = "If it can be optimized, it probably wasn't worth doing."
+
+[[taglines]]
+ro = "Am înlocuit incertitudinea cu un model mai scump."
+en = "I replaced uncertainty with a more expensive model."
+
+[[taglines]]
+ro = "Dacă AI-ul mă înlocuiește, măcar scap de ședințe."
+en = "If AI replaces me, at least I escape meetings."
+
+[[taglines]]
+ro = "Am redus problema la o notație mai elegantă."
+en = "I reduced the problem to a more elegant notation."
+
+[[taglines]]
+ro = "Tot ce imi place devine debt tehnic."
+en = "Everything I love becomes technical debt."
+
+[[taglines]]
+ro = "Dacă nu poate fi formalizat, va fi ignorat."
+en = "If it cannot be formalized, it will be ignored."
+
+[[taglines]]
+ro = "Am cerut sens. Am primit o distribuție."
+en = "I asked for meaning. I got a distribution."
+
+[[taglines]]
+ro = "Mai întâi axiomele. Dezamăgirea vine singură."
+en = "First the axioms. Disappointment comes on its own."
+
+[[taglines]]
+ro = "Ce nu poate fi măsurat va fi vândut ca viziune."
+en = "What cannot be measured will be sold as vision."
+
+[[taglines]]
+ro = "Toate drumurile duc la o convenție de notație."
+en = "All roads lead to a notation convention."
+
+[[taglines]]
+ro = "În fond, și absurdul are structură."
+en = "In the end, even absurdity has structure."
+
+[[taglines]]
+ro = "Am generalizat dintr-un caz norocos."
+en = "I generalized from a lucky case."
+
+[[taglines]]
+ro = "Am simplificat până am greșit."
+en = "I simplified until it became wrong."
+
+[[taglines]]
+ro = "Edge case-ul e cazul real."
+en = "The edge case is the real case."
+
+[[taglines]]
+ro = "Determinist, dar surprinzător."
+en = "Deterministic, yet surprising."
+
+[[taglines]]
+ro = "E distribuit, deci nimeni nu știe."
+en = "It's distributed, so no one knows."
+
+[[taglines]]
+ro = "Am cache-uit problema."
+en = "I cached the problem."
+
+[[taglines]]
+ro = "Am paralelizat confuzia."
+en = "I parallelized the confusion."
+
+[[taglines]]
+ro = "E reproducibil. Nu știu cum."
+en = "It's reproducible. I don't know how."
+
+[[taglines]]
+ro = "Starea e superpusă: merge și nu merge."
+en = "The state is superposed: it works and it doesn't."
+
+[[taglines]]
+ro = "Măsori o dată, strici tot."
+en = "Measure once, ruin everything."
+
+[[taglines]]
+ro = "Nu e instabil, e sensibil la condiții inițiale."
+en = "It's not unstable, it's sensitive to initial conditions."
+
+[[taglines]]
+ro = "Soluția diverge elegant."
+en = "The solution diverges elegantly."
+
+[[taglines]]
+ro = "Am ales sistemul de referință greșit."
+en = "I chose the wrong frame of reference."
+
+[[taglines]]
+ro = "Interacțiuni slabe, efecte mari."
+en = "Weak interactions, large effects."
+
+[[taglines]]
+ro = "Aproape peste tot, dar nu unde trebuie."
+en = "Almost everywhere, but not where needed."
+
+[[taglines]]
+ro = "Am ignorat condițiile la frontieră."
+en = "I ignored the boundary conditions."
+
+[[taglines]]
+ro = "Seria converge. Prea târziu."
+en = "The series converges. Too late."
+
+[[taglines]]
+ro = "Am derivat de prea multe ori."
+en = "I differentiated too many times."
+
+[[taglines]]
+ro = "Nu e model, e interpretare."
+en = "It's not a model, it's an interpretation."
+
+[[taglines]]
+ro = "Am confundat karma cu corelația."
+en = "I confused karma with correlation."
+
+[[taglines]]
+ro = "Am atribuit sens unui zgomot."
+en = "I assigned meaning to noise."
+
+[[taglines]]
+ro = "Bias de confirmare, dar liniștitor."
+en = "Confirmation bias, but comforting."
+
+[[taglines]]
+ro = "Eșantion mic, concluzie mare."
+en = "Small sample, big conclusion."
+
+[[taglines]]
+ro = "Am văzut intenție în varianță."
+en = "I saw intention in variance."
+
+[[taglines]]
+ro = "Am confundat probabilul cu meritatul."
+en = "I confused likely with deserved."
+
+[[taglines]]
+ro = "Funcționează. Nu atinge."
+en = "It works. Don't touch it."
+
+[[taglines]]
+ro = "Nu e frumos, dar e în producție."
+en = "It's not pretty, but it's in production."
+
+[[taglines]]
+ro = "Am citit codul. Am renunțat."
+en = "I read the code. I gave up."
+
+[[taglines]]
+ro = "Am citit documentația. Nu ajută."
+en = "I read the docs. It doesn't help."
+
+[[taglines]]
+ro = "La -O3 e alt program."
+en = "At -O3 it's a different program."
+
+[[taglines]]
+ro = "Tail recursion. Sper."
+en = "Tail recursion. Hopefully."
+
+[[taglines]]
+ro = "Fold() până la epuizare."
+en = "Fold() until exhaustion."

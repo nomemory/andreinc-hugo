@@ -1,5 +1,6 @@
 +++
 title = "About"
+layout = "page"
 +++
 
 My name is Andrei Nicolin Ciobanu, pronounced `[anˈdrej] [t͡ʃoˈbanu] [nikoˈlin]`, or `ahn-DRAY nee-ko-LEEN cho-BAH-noo`.

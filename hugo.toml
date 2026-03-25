@@ -40,8 +40,8 @@ enable = true
   posts = '/:year/:month/:day/:slug/'
   
 [[menu.main]]
-    identifier = "home"
-    name = "home"
+    identifier = "blog"
+    name = "blog"
     url = "/"
     weight = 10
 [[menu.main]]
@@ -53,7 +53,12 @@ enable = true
     identifier = "jukebox"
     name = "jukebox"
     url = "/jukebox/"
-    weight = 21
+    weight = 22
+[[menu.main]]
+    identifier = "lists"
+    name = "lists"
+    url = "/lists/"
+    weight = 28
 [[menu.main]]
     identifier = "links"
     name = "links"
