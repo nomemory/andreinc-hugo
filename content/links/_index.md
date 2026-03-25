@@ -69,6 +69,12 @@ description = "Collection of practice problems for competitive programming conte
 tags = ["algorithms"]
 
 [[links]]
+title = "Bucket Sort"
+url = "https://algorithm-visualizer.org/"
+description = "An interactive site for exploring algorithms through visualizations and runnable examples."
+tags = ["algorithms", "tools"]
+
+[[links]]
 title = "D3GT"
 url = "https://d3gt.com/index.html"
 description = "D3 Graph Theory."
@@ -399,6 +405,24 @@ description = "A reflection on the shrinking visibility of personal websites on 
 tags = ["blogs", "essays", "web"]
 
 [[links]]
+title = "midnight.pub"
+url = "https://midnight.pub/"
+description = "A small, text-first online community centered on thoughtful posting and conversation."
+tags = ["blogs", "indieweb"]
+
+[[links]]
+title = "not my side hustle"
+url = "https://starbreaker.org/grimoire/entries/not-my-side-hustle/"
+description = "A short blog post pushing back against treating every hobby like a monetizable project."
+tags = ["blogs", "essays"]
+
+[[links]]
+title = "Old Web, New Web, Indie Web"
+url = "https://petermolnar.net/article/old-web-new-web-indie-web/"
+description = "A reflection on what changed between the old web, the modern web, and the indieweb."
+tags = ["blogs", "essays", "indieweb", "web"]
+
+[[links]]
 title = "Awesome Math"
 url = "https://github.com/rossant/awesome-math"
 description = "The 'awesome-math' GitHub repository is a large, curated collection of high-quality mathematics resources gathered in one place."
@@ -577,6 +601,12 @@ title = "The biggest shell programs in the world"
 url = "https://github.com/oils-for-unix/oils/wiki/The-Biggest-Shell-Programs-in-the-World"
 description = "A list of surprisingly large real-world programs written mostly in shell."
 tags = ["c", "cli"]
+
+[[links]]
+title = "Bitfield pitfalls"
+url = "https://www.os2museum.com/wp/bitfield-pitfalls/"
+description = "A deep dive into the portability traps and surprising behavior of C bitfields."
+tags = ["c", "systems"]
 
 [[links]]
 title = "Have a donut (2006)"
@@ -1473,6 +1503,12 @@ description = "An exploration of Kaprekar's constant and its surprising behavior
 tags = ["math"]
 
 [[links]]
+title = "Optical illusions"
+url = "https://brisray.com/optill/"
+description = "A large collection of optical illusions, visual tricks, and perception curiosities."
+tags = ["art", "science"]
+
+[[links]]
 title = "Ancient Greek"
 url = "https://ancient-greek.net/"
 description = "ancient-greek.net is a personal, educational website dedicated to the Ancient Greek language and culture, offering resources like grammar notes, translations, vocabulary lists, articles, and (even) audio materials."
@@ -1519,6 +1555,18 @@ title = "How games are used to control you"
 url = "https://unherd.com/2024/04/how-games-are-used-to-control-you/"
 description = "A critique of how game design ideas are used to shape behavior beyond games."
 tags = ["essays", "games"]
+
+[[links]]
+title = "High places phenomenon"
+url = "https://www.headspace.com/articles/high-places-phenomenon"
+description = "A short explanation of the unsettling urge some people feel near heights."
+tags = ["essays", "science"]
+
+[[links]]
+title = "Your Mother: An Academic Look at History’s Favorite Joke"
+url = "https://record.goshen.edu/funnies/your-mother-an-academic-look-at-historys-favorite-joke"
+description = "A playful historical look at the long tradition of 'your mother' jokes."
+tags = ["humor", "history"]
 
 [[links]]
 title = "Richard Feynman’s Extraordinary Letter to His Departed Wife"
@@ -1671,9 +1719,33 @@ description = "In explaining the factors leading to his decision, Petrov cited h
 tags = ["history", "reference"]
 
 [[links]]
+title = "Eternal September"
+url = "https://en.wikipedia.org/wiki/Eternal_September"
+description = "A reference on the moment when internet culture changed under a flood of new users."
+tags = ["history", "reference", "web"]
+
+[[links]]
+title = "Joybubbles"
+url = "https://en.wikipedia.org/wiki/Joybubbles"
+description = "A reference on the famous phone phreak and countercultural media figure Joybubbles."
+tags = ["history", "reference"]
+
+[[links]]
 title = "Ant-Fungus Mutualism"
 url = "https://en.m.wikipedia.org/wiki/Ant%E2%80%93fungus_mutualism"
 description = "Ant–fungus mutualism is a symbiotic relationship where certain ants 'farm' fungi as their primary food source, much like humans cultivate crops."
+tags = ["reference", "science"]
+
+[[links]]
+title = "Nuclear pasta"
+url = "https://en.wikipedia.org/wiki/Nuclear_pasta"
+description = "A reference on the bizarre ultra-dense matter structures thought to exist inside neutron stars."
+tags = ["physics", "reference", "science"]
+
+[[links]]
+title = "Self-domestication"
+url = "https://en.wikipedia.org/wiki/Self-domestication"
+description = "A reference on the idea that a species can evolve domestication-like traits on its own."
 tags = ["reference", "science"]
 
 [[links]]
