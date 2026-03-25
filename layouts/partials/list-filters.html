@@ -5,13 +5,13 @@
 
 <section class="{{ $prefix }}-filters">
   <p class="{{ $prefix }}-filter-links">
-    <a href="{{ $base }}">all</a>
+    <sub><a href="{{ $base }}">all</a></sub>
     {{ if $showTypes }}
-      <a href="{{ $base }}?type=album">albums</a>
-      <a href="{{ $base }}?type=song">songs</a>
+      <sub><a href="{{ $base }}?type=album">albums</a></sub>
+      <sub><a href="{{ $base }}?type=song">songs</a></sub>
     {{ end }}
     {{ range $genres }}
-      <a href="{{ $base }}?genre={{ . | urlquery }}">#{{ . | lower }}</a>
+      <sub><a href="{{ $base }}?genre={{ . | urlquery }}">#{{ . | lower }}</a></sub>
     {{ end }}
   </p>
 </section>

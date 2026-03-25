@@ -19,9 +19,9 @@
 
   <section>
     <p>
-      <a href="/links/">all</a>
+      <sub><a href="/links/">all</a></sub>
       {{ range $allTags }}
-        <a href="/links/?tag={{ . | urlquery }}">#{{ . | lower }}</a>
+        <sub><a href="/links/?tag={{ . | urlquery }}">#{{ . | lower }}</a></sub>
       {{ end }}
     </p>
 
@@ -51,7 +51,7 @@
         {{ with .tags }}
           <p class="link-tags">
             {{ range . }}
-              <a href="/links/?tag={{ . | urlquery }}">#{{ . | lower }}</a>
+              <sub><a href="/links/?tag={{ . | urlquery }}">#{{ . | lower }}</a></sub>
             {{ end }}
           </p>
         {{ end }}
@@ -67,13 +67,6 @@
     padding: 0.4rem 0.6rem;
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
-}
-
-.links-page .link-tags a,
-.links-page section p a {
-    font-size: 0.85em;
-    padding: 2px 6px;
-    text-decoration: none;
 }
 
 .links-page .active-tag {

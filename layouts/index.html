@@ -14,13 +14,11 @@
   <br/>
 
   {{ if not .Data.Singular }}
-  <small>
-    <div>
+    <div class="home-tags">
       {{ range .Site.Taxonomies.tags }}
-      <a href="{{ .Page.Permalink }}">#{{ .Page.Title | lower }}</a>&nbsp;
+      <sub><a href="{{ .Page.Permalink }}">#{{ .Page.Title | lower }}</a></sub>
       {{ end }}
     </div>
-  </small>
   </div>
   {{ end }}
 
