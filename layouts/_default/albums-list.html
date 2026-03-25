@@ -2,7 +2,6 @@
 
 <main class="alb-page">
   <header>
-    <h1>{{ .Title }}</h1>
     {{ with .Content }}
       <div>{{ . }}</div>
     {{ end }}
@@ -28,7 +27,7 @@
     "showTypes" false
     "prefix" "alb"
   ) }}
-  
+
   <br/>
 
   {{ partial "list-items.html" (dict

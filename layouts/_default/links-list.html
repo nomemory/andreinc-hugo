@@ -2,13 +2,12 @@
 
 <main class="links-page">
   <header>
-    <h1>{{ .Title }}</h1>
     {{ with .Content }}
       <div>{{ . }}</div>
     {{ end }}
   </header>
 
-    {{ $links := sort .Params.links "title" }}
+  {{ $links := sort site.Data.links.links "title" }}
 
   {{ $allTags := slice }}
   {{ range $links }}
