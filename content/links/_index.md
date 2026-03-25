@@ -101,11 +101,13 @@ tags = ["algorithms", "books", "c"]
 [[links]]
 title = "Notes on randomized algorithms"
 url = "https://www.cs.yale.edu/homes/aspnes/classes/469/notes.pdf"
+description = "Lecture notes introducing randomized algorithms and probabilistic analysis."
 tags = ["algorithms"]
 
 [[links]]
 title = "Numbers are leaves"
 url = "https://www.christo.sh/numbers-are-leaves/"
+description = "An elegant exploration of number systems through the lens of trees and structure."
 tags = ["algorithms", "math"]
 
 [[links]]
@@ -117,6 +119,7 @@ tags = ["algorithms"]
 [[links]]
 title = "The Art and Mathematics of Genji-Kō"
 url = "https://www.oranlooney.com/post/genji-ko/"
+description = "A piece on the combinatorics, symbolism, and visual design of Genji-Ko patterns."
 tags = ["algorithms", "art", "math"]
 
 [[links]]
@@ -128,6 +131,7 @@ tags = ["algorithms", "art"]
 [[links]]
 title = "The movie IRIS"
 url = "https://github.com/LoSinCos/movie-iris"
+description = "A code project recreating the short film IRIS with algorithmic graphics."
 tags = ["algorithms", "art"]
 
 [[links]]
@@ -193,11 +197,13 @@ tags = ["art", "games"]
 [[links]]
 title = "Fluid Simulation"
 url = "https://paveldogreat.github.io/WebGL-Fluid-Simulation/"
+description = "A mesmerizing browser-based fluid simulation you can interact with directly."
 tags = ["art", "tools"]
 
 [[links]]
 title = "Fractal Jigsaw Puzzle"
 url = "https://thatmichaelpark.github.io/fractal-jigsaw-puzzle/fractaljigsaw.html"
+description = "A browser puzzle built around recursive fractal pieces."
 tags = ["art", "games"]
 
 [[links]]
@@ -215,6 +221,7 @@ tags = ["art", "tools"]
 [[links]]
 title = "Field Lines"
 url = "https://acko.net/files/dump/tiles/fieldlines2.html"
+description = "An interactive visualization of flowing vector fields and emergent patterns."
 tags = ["art", "physics"]
 
 [[links]]
@@ -232,6 +239,7 @@ tags = ["art"]
 [[links]]
 title = "Oxygene 4 recreated with 19KB of JavaScript"
 url = "https://www.synthtopia.com/content/2022/12/27/jean-michel-jarres-classic-oxygene-4-recreated-with-19kb-of-javascript/"
+description = "A tiny JavaScript recreation of Jean-Michel Jarre's classic synth piece."
 tags = ["art"]
 
 [[links]]
@@ -303,11 +311,13 @@ tags = ["art", "math"]
 [[links]]
 title = "Virtual Insanity on an oscilloscope"
 url = "https://www.youtube.com/watch?v=zGlZqDHqhR0"
+description = "A music performance rendered as oscilloscope art."
 tags = ["art"]
 
 [[links]]
 title = "Sandspiel"
 url = "https://sandspiel.club/"
+description = "A playful falling-sand toy for drawing little worlds and watching them evolve."
 tags = ["art", "games"]
 
 [[links]]
@@ -325,11 +335,13 @@ tags = ["art"]
 [[links]]
 title = "Travelling Salesman Art"
 url = "https://www2.oberlin.edu/math/faculty/bosch/tspart-page.html"
+description = "A gallery and overview of images drawn with traveling-salesman tours."
 tags = ["art", "math"]
 
 [[links]]
 title = "Travelling Salesman Art tutorial"
 url = "https://www2.oberlin.edu/math/faculty/bosch/making-tspart-page.html"
+description = "A tutorial on turning pictures into traveling-salesman artwork."
 tags = ["art", "math"]
 
 [[links]]
@@ -353,16 +365,19 @@ tags = ["blogs", "essays"]
 [[links]]
 title = "Full-text RSS feed is an offline-friendly act"
 url = "https://hamatti.org/posts/full-text-rss-feed-is-offline-friendly-act/"
+description = "A short argument for publishing full-text feeds as a user-friendly web practice."
 tags = ["blogs", "essays"]
 
 [[links]]
 title = "How Google helped destroy adoption of RSS feeds"
 url = "https://openrss.org/blog/how-google-helped-destroy-adoption-of-rss-feeds"
+description = "A critique of how Google's decisions contributed to RSS fading from the mainstream."
 tags = ["blogs", "essays"]
 
 [[links]]
 title = "Indeed, it seems that Google is forgetting the old Web"
 url = "https://stop.zona-m.net/2018/01/indeed-it-seems-that-google-is-forgetting-the-old-web/"
+description = "A complaint about search trends that disadvantage smaller, older websites."
 tags = ["blogs", "essays", "web"]
 
 [[links]]
@@ -380,6 +395,7 @@ tags = ["blogs", "essays", "web"]
 [[links]]
 title = "Where have all the websites gone?"
 url = "https://www.fromjason.xyz/p/notebook/where-have-all-the-websites-gone/"
+description = "A reflection on the shrinking visibility of personal websites on today's web."
 tags = ["blogs", "essays", "web"]
 
 [[links]]
@@ -397,6 +413,7 @@ tags = ["books"]
 [[links]]
 title = "Donald Knuth Non-Tech Reading List"
 url = "https://www-cs-faculty.stanford.edu/~knuth/retd.html"
+description = "Knuth's personal list of recommended non-technical reading."
 tags = ["books"]
 
 [[links]]
@@ -444,16 +461,19 @@ tags = ["books", "programming-languages"]
 [[links]]
 title = "The Journal of Open Source Software"
 url = "https://joss.theoj.org/"
+description = "A peer-reviewed journal for short papers about open source research software."
 tags = ["books", "tools"]
 
 [[links]]
 title = "The Diary of Thomas Alva Edison"
 url = "https://ariwatch.com/VS/TheDiaryOfThomasEdison.htm"
+description = "A digitized diary offering a personal glimpse into Edison's life and thoughts."
 tags = ["books"]
 
 [[links]]
 title = "The manuscripts of Edsger W. Dijkstra"
 url = "https://www.cs.utexas.edu/~EWD/"
+description = "An archive of Dijkstra's notes, essays, letters, and technical manuscripts."
 tags = ["books", "essays"]
 
 [[links]]
@@ -477,16 +497,19 @@ tags = ["c"]
 [[links]]
 title = "Beej's Guide to Network Programming"
 url = "https://beej.us/guide/bgnet/"
+description = "A friendly classic on sockets, networking, and systems programming in C."
 tags = ["c"]
 
 [[links]]
 title = "Beej's Guide to C Programming"
 url = "https://beej.us/guide/bgc/"
+description = "A practical introduction to the C language from the Beej series."
 tags = ["c"]
 
 [[links]]
 title = "Beej's Quick Guide to GDB"
 url = "https://beej.us/guide/bggdb/"
+description = "A compact guide to debugging C programs with GDB."
 tags = ["c"]
 
 [[links]]
@@ -528,16 +551,19 @@ tags = ["c", "programming-languages", "compilers"]
 [[links]]
 title = "So you think you know C? (Test)"
 url = "https://wordsandbuttons.online/so_you_think_you_know_c.html"
+description = "A quiz-like article for testing how well you really understand C."
 tags = ["c"]
 
 [[links]]
 title = "So you think you know C? (Ebook)"
 url = "https://wordsandbuttons.online/SYTYKC.pdf"
+description = "An ebook version of the C quiz and explanation series."
 tags = ["books", "c"]
 
 [[links]]
 title = "strcmp4humans"
 url = "http://stereopsis.com/strcmp4humans.html"
+description = "A practical explanation of string comparison tailored to how humans sort text."
 tags = ["c"]
 
 [[links]]
@@ -549,26 +575,31 @@ tags = ["c"]
 [[links]]
 title = "The biggest shell programs in the world"
 url = "https://github.com/oils-for-unix/oils/wiki/The-Biggest-Shell-Programs-in-the-World"
+description = "A list of surprisingly large real-world programs written mostly in shell."
 tags = ["c", "cli"]
 
 [[links]]
 title = "Have a donut (2006)"
 url = "https://www.a1k0n.net/2006/09/15/obfuscated-c-donut.html"
+description = "The original spinning ASCII donut rendered in famously compact C."
 tags = ["c", "humor"]
 
 [[links]]
 title = "Donut math: how donut.c works (2011)"
 url = "https://www.a1k0n.net/2011/07/20/donut-math.html"
+description = "A breakdown of the math behind the spinning ASCII donut."
 tags = ["c", "math"]
 
 [[links]]
 title = "donut.c without a math library (2021)"
 url = "https://www.a1k0n.net/2021/01/13/optimizing-donut.html"
+description = "An optimization write-up that removes the math library from donut.c."
 tags = ["c", "math"]
 
 [[links]]
 title = "The fastest Mutex"
 url = "https://justine.lol/mutex/"
+description = "A low-level performance exploration of mutex design and implementation."
 tags = ["c"]
 
 [[links]]
@@ -586,6 +617,7 @@ tags = ["c", "games", "humor"]
 [[links]]
 title = "The lost art of structure packing"
 url = "http://www.catb.org/esr/structure-packing/"
+description = "A classic note on memory layout, padding, and struct packing in C."
 tags = ["c", "essays"]
 
 [[links]]
@@ -597,21 +629,25 @@ tags = ["c", "humor", "security"]
 [[links]]
 title = "Write a shell in C"
 url = "https://brennan.io/2015/01/16/write-a-shell-in-c/"
+description = "A hands-on tutorial for building a small Unix shell in C."
 tags = ["c", "cli"]
 
 [[links]]
 title = "Writing a very simple JIT Compiler in about 1000 lines of C"
 url = "https://kuterdinel.com/writing-a-very-simple-jit-compiler-in-about-1000-lines-of-c.html"
+description = "A tutorial on building a small just-in-time compiler in C."
 tags = ["c", "systems", "compilers"]
 
 [[links]]
 title = "Why should I have written ZeroMQ in C, not C++"
 url = "https://250bpm.com/blog:4/"
+description = "A reflection on language choice, complexity, and API design in systems software."
 tags = ["c", "essays"]
 
 [[links]]
 title = "Why people were enthused about gcc early on in its life?"
 url = "https://utcc.utoronto.ca/~cks/space/blog/unix/GccEarlyEnthusiasm"
+description = "A historical note on why early GCC generated so much excitement."
 tags = ["c", "essays"]
 
 [[links]]
@@ -629,6 +665,7 @@ tags = ["cli", "tools"]
 [[links]]
 title = "Sculpting text with regex, grep, sed, awk, emacs and vim"
 url = "https://matt.might.net/articles/sculpting-text/"
+description = "A tour of text-processing techniques across classic command-line and editor tools."
 tags = ["cli"]
 
 [[links]]
@@ -640,6 +677,7 @@ tags = ["cli", "tools"]
 [[links]]
 title = "Droste's Lair Post"
 url = "https://vezwork.github.io/drostes-lair-post/"
+description = "A playful piece about recursive imagery and Droste-style visual effects."
 tags = ["esoteric"]
 
 [[links]]
@@ -657,6 +695,7 @@ tags = ["esoteric"]
 [[links]]
 title = "Quine Relay"
 url = "https://github.com/mame/quine-relay"
+description = "A legendary chain of self-reproducing programs across many languages."
 tags = ["esoteric", "programming-languages"]
 
 [[links]]
@@ -668,21 +707,25 @@ tags = ["cli", "esoteric"]
 [[links]]
 title = "KlongPy"
 url = "https://github.com/briangu/klongpy"
+description = "A Python implementation inspired by the compact array language Klong."
 tags = ["esoteric", "programming-languages"]
 
 [[links]]
 title = "Learn Prolog Now!"
 url = "https://www.let.rug.nl/bos/lpn//lpnpage.php?pageid=online"
+description = "A free online textbook for learning Prolog from the basics upward."
 tags = ["programming-languages"]
 
 [[links]]
 title = "Self-printing Game of Life in C#"
 url = "https://igoro.com/archive/self-printing-game-of-life-in-c/"
+description = "A clever self-printing program that also implements Conway's Game of Life."
 tags = ["esoteric"]
 
 [[links]]
 title = "The Courage to Be Imperfect"
 url = "https://asiip.org/wp-content/uploads/2021/01/Rudolph-dreikurs-The-Courage-to-Imperfect-Speech.pdf"
+description = "A talk about accepting imperfection, mistakes, and the work of self-improvement."
 tags = ["esoteric"]
 
 [[links]]
@@ -694,6 +737,7 @@ tags = ["esoteric", "tools"]
 [[links]]
 title = "tryapl"
 url = "https://tryapl.org/"
+description = "A browser-based playground for learning and experimenting with APL."
 tags = ["esoteric", "programming-languages"]
 
 [[links]]
@@ -717,66 +761,79 @@ tags = ["algorithms", "essays"]
 [[links]]
 title = "Either your estimates suck or your job does"
 url = "https://wordsandbuttons.online/either_your_estimates_suck_or_your_job_does.html"
+description = "An argument that bad estimates often reflect bad process more than bad engineers."
 tags = ["essays"]
 
 [[links]]
 title = "Employee Ownership"
 url = "https://www.elysian.press/p/employee-ownership"
+description = "A piece on ownership structures and how they shape work and incentives."
 tags = ["essays"]
 
 [[links]]
 title = "Glory is only 11MB/s away"
 url = "https://thmsmlr.com/cheap-infra"
+description = "A story about building cheap infrastructure with modest hardware and clear tradeoffs."
 tags = ["essays"]
 
 [[links]]
 title = "Greppability Code Metric"
 url = "https://morizbuesing.com/blog/greppability-code-metric/"
+description = "A proposal to judge code partly by how easy it is to search and navigate."
 tags = ["essays"]
 
 [[links]]
 title = "Hacker's Manifesto"
 url = "http://phrack.org/issues/7/1.html#article"
+description = "The classic manifesto on curiosity, access, and hacker identity."
 tags = ["essays"]
 
 [[links]]
 title = "Learning to program is getting harder"
 url = "https://allendowney.blogspot.com/2018/02/learning-to-program-is-getting-harder.html?m=1"
+description = "A reflection on why the path into programming feels harder than it used to."
 tags = ["essays"]
 
 [[links]]
 title = "Rules for writing Software Tutorials"
 url = "https://refactoringenglish.com/chapters/rules-for-software-tutorials/"
+description = "Practical advice for writing software tutorials that readers can actually follow."
 tags = ["essays"]
 
 [[links]]
 title = "Not a supplier"
 url = "https://www.softwaremaxims.com/blog/not-a-supplier"
+description = "A short essay on healthier relationships between engineers and the rest of the business."
 tags = ["essays"]
 
 [[links]]
 title = "Software Development 450 Words Per Minute"
 url = "https://www.vincit.com/blog/software-development-450-words-per-minute"
+description = "A piece on how communication speed and clarity affect software work."
 tags = ["essays"]
 
 [[links]]
 title = "Things I wish I learned in Engineering School"
 url = "http://www.cattell.net/talk/TiwiliesTalk.htm"
+description = "A collection of practical lessons that formal engineering education often misses."
 tags = ["essays"]
 
 [[links]]
 title = "The Collector’s Fallacy"
 url = "https://zettelkasten.de/posts/collectors-fallacy/"
+description = "A warning against collecting information without turning it into understanding."
 tags = ["essays"]
 
 [[links]]
 title = "The computer built to last 50 years"
 url = "https://ploum.net/the-computer-built-to-last-50-years/"
+description = "An essay imagining computers designed for longevity rather than constant replacement."
 tags = ["essays"]
 
 [[links]]
 title = "The bullshit web"
 url = "https://pxlnv.com/blog/bullshit-web/"
+description = "A critique of web bloat, dark patterns, and all the friction around simple pages."
 tags = ["essays", "web"]
 
 [[links]]
@@ -788,16 +845,19 @@ tags = ["essays"]
 [[links]]
 title = "The night watch"
 url = "https://scholar.harvard.edu/files/mickens/files/thenightwatch.pdf"
+description = "A sharp and funny essay by James Mickens on systems work, outages, and failure."
 tags = ["essays"]
 
 [[links]]
 title = "The slow death of the poweruser"
 url = "https://fireborn.mataroa.blog/blog/the-slow-death-of-the-power-user/"
+description = "A lament for software that increasingly sidelines advanced users and local control."
 tags = ["essays"]
 
 [[links]]
 title = "There are 665 open licences, most are pretty rubbish"
 url = "https://csvbase.com/blog/14"
+description = "A blunt take on license proliferation and why simplicity matters."
 tags = ["essays"]
 
 [[links]]
@@ -809,21 +869,25 @@ tags = ["humor", "language"]
 [[links]]
 title = "token anxiety"
 url = "https://jkap.io/token-anxiety-or-a-slot-machine-by-any-other-name/"
+description = "A short essay on the psychology of token-based AI interfaces."
 tags = ["essays"]
 
 [[links]]
 title = "VPN - a Very Precarious Narrative"
 url = "https://overengineer.dev/blog/2019/04/08/very-precarious-narrative/"
+description = "A skeptical look at how VPNs are marketed and misunderstood."
 tags = ["essays"]
 
 [[links]]
 title = "Why Bloat Is Still Software’s Biggest Vulnerability"
 url = "https://spectrum.ieee.org/lean-software-development"
+description = "An argument that complexity and bloat remain major sources of software risk."
 tags = ["essays"]
 
 [[links]]
 title = "Why Everything is Becoming a Game"
 url = "https://www.gurwinder.blog/p/why-everything-is-becoming-a-game"
+description = "A reflection on gamification and why it is spreading far beyond games."
 tags = ["essays", "games"]
 
 [[links]]
@@ -847,11 +911,13 @@ tags = ["humor"]
 [[links]]
 title = "EPIGRAMS IN PROGRAMMING"
 url = "https://www.cs.yale.edu/homes/perlis-alan/quotes.html"
+description = "Alan Perlis's famous list of witty one-liners about programming."
 tags = ["humor"]
 
 [[links]]
 title = "Fizz Buzz with cosines"
 url = "https://susam.net/fizz-buzz-with-cosines.html"
+description = "A delightfully unnecessary mathematical construction of Fizz Buzz."
 tags = ["humor", "math"]
 
 [[links]]
@@ -863,31 +929,37 @@ tags = ["humor", "essays"]
 [[links]]
 title = "Make Front-End Shit Again"
 url = "https://makefrontendshitagain.party/"
+description = "A deliberately unserious rallying cry against polished, over-sanitized front-end culture."
 tags = ["humor", "web"]
 
 [[links]]
 title = "Medieval Cat Meme Generator"
 url = "https://michael-klein.github.io/medieval-cat-meme-generator/"
+description = "A meme generator using medieval-looking cat imagery and captions."
 tags = ["humor", "history"]
 
 [[links]]
 title = "MIT graduates cannot power a light bulb with a battery"
 url = "https://www.youtube.com/watch?v=aIhk9eKOLzQ"
+description = "A classic clip used to poke fun at gaps between formal training and practical intuition."
 tags = ["humor"]
 
 [[links]]
 title = "Movie-a-Minute"
 url = "http://www.rinkworks.com/movieaminute/"
+description = "Absurdly compressed retellings of movies in just a handful of lines."
 tags = ["humor"]
 
 [[links]]
 title = "Our security auditor is an idiot. How do I give him the information he wants?"
 url = "https://serverfault.com/questions/293217/our-security-auditor-is-an-idiot-how-do-i-give-him-the-information-he-wants"
+description = "A memorable sysadmin thread about compliance theater and difficult audits."
 tags = ["humor", "security"]
 
 [[links]]
 title = "Rediscovery of Calculus"
 url = "https://academia.stackexchange.com/questions/9602/rediscovery-of-calculus-in-1994-what-should-have-happened-to-that-paper"
+description = "A funny academic cautionary tale about independently rediscovering old mathematics."
 tags = ["humor", "math"]
 
 [[links]]
@@ -899,21 +971,25 @@ tags = ["humor", "tools"]
 [[links]]
 title = "The brick bible"
 url = "https://thebrickbible.com/"
+description = "Bible stories retold entirely with Lego scenes."
 tags = ["humor"]
 
 [[links]]
 title = "The closer to the train station, the worse the kebab"
 url = "https://www.jmspae.se/write-ups/kebabs-train-stations/"
+description = "A delightfully overcommitted investigation into kebab quality and station proximity."
 tags = ["humor"]
 
 [[links]]
 title = "The parable of the Physics Professor"
 url = "https://www.parand.com/the-parable-of-the-physics-professor.html"
+description = "A short story poking fun at academic abstraction and misplaced certainty."
 tags = ["humor", "physics"]
 
 [[links]]
 title = "The surreal experience of my first developer job"
 url = "https://bennuttall.com/the-surreal-experience-of-my-first-developer-job/"
+description = "A funny and slightly painful story about early-career software work."
 tags = ["essays", "humor"]
 
 [[links]]
@@ -973,11 +1049,13 @@ tags = ["games"]
 [[links]]
 title = "Dune 2 (Web Version)"
 url = "https://dos.zone/dune-ii-the-building-of-a-dynasty-dec-1992/"
+description = "A browser-playable version of the classic real-time strategy game Dune II."
 tags = ["games"]
 
 [[links]]
 title = "Fantasy Map Generator"
 url = "https://azgaar.github.io/Fantasy-Map-Generator/"
+description = "A rich browser tool for generating detailed fantasy maps."
 tags = ["games", "tools"]
 
 [[links]]
@@ -989,6 +1067,7 @@ tags = ["games", "design", "web"]
 [[links]]
 title = "Open Source Games"
 url = "https://github.com/bobeff/open-source-games"
+description = "A curated list of open source games and game-related projects."
 tags = ["games"]
 
 [[links]]
@@ -1012,16 +1091,19 @@ tags = ["games", "tools"]
 [[links]]
 title = "Quantum Soccer"
 url = "https://gregegan.net/BORDER/Soccer/Soccer.html"
+description = "A toy game for building intuition about quantum weirdness through soccer."
 tags = ["games", "physics"]
 
 [[links]]
 title = "Fantasy Map of GitHub"
 url = "https://anvaka.github.io/map-of-github/#0.79/0/5.6"
+description = "A whimsical map-style visualization of GitHub's social graph."
 tags = ["games", "tools"]
 
 [[links]]
 title = "Museum Of Screens"
 url = "https://museumofscreens.wordpress.com/"
+description = "A small archive celebrating screens, interfaces, and game visuals."
 tags = ["games"]
 
 [[links]]
@@ -1057,6 +1139,7 @@ tags = ["games"]
 [[links]]
 title = "Simon Tatham's Portable Puzzle Collection"
 url = "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/"
+description = "A beloved collection of elegant single-player logic puzzles."
 tags = ["games"]
 
 [[links]]
@@ -1080,16 +1163,19 @@ tags = ["games"]
 [[links]]
 title = "The sinusoidal tetris"
 url = "https://www.andreinc.net/2024/02/06/the-sinusoidal-tetris"
+description = "A Tetris variant where the playfield bends in a sinusoidal wave."
 tags = ["games", "math"]
 
 [[links]]
 title = "The SQL Murder Mystery"
 url = "https://mystery.knightlab.com/"
+description = "A small detective game solved by querying a SQL database."
 tags = ["games"]
 
 [[links]]
 title = "The Universe is Dark"
 url = "https://heartosis.itch.io/the-universe-is-dark"
+description = "A moody little game about light, darkness, and exploration."
 tags = ["games"]
 
 [[links]]
@@ -1149,6 +1235,7 @@ tags = ["systems", "emulation", "tools"]
 [[links]]
 title = "Ray Tracing in Notepad.exe at 30 FPS"
 url = "https://kylehalladay.com/blog/2020/05/20/Rendering-With-Notepad.html"
+description = "A wonderfully ridiculous hack that turns Notepad into a fast renderer."
 tags = ["art", "systems", "humor"]
 
 [[links]]
@@ -1160,6 +1247,7 @@ tags = ["systems", "operating-systems"]
 [[links]]
 title = "There's more to mathematics than rigour and proofs"
 url = "https://terrytao.wordpress.com/career-advice/theres-more-to-mathematics-than-rigour-and-proofs/"
+description = "Terry Tao on intuition, experimentation, and the broader practice of mathematics."
 tags = ["essays", "math"]
 
 [[links]]
@@ -1171,6 +1259,7 @@ tags = ["humor", "systems", "emulation"]
 [[links]]
 title = "Why computers represent signed integers using two's complement"
 url = "https://igoro.com/archive/why-computers-represent-signed-integers-using-twos-complement/"
+description = "A clear explanation of why two's complement won for signed integer representation."
 tags = ["systems", "math"]
 
 [[links]]
@@ -1230,6 +1319,7 @@ tags = ["math"]
 [[links]]
 title = "Euler Archive"
 url = "http://eulerarchive.maa.org/"
+description = "An archive of Euler's works, translations, and historical material."
 tags = ["books", "math"]
 
 [[links]]
@@ -1241,6 +1331,7 @@ tags = ["math"]
 [[links]]
 title = "Functional Geometry"
 url = "https://shashi.biz/ijulia-notebooks/funcgeo/"
+description = "A notebook-style exploration of geometric drawing from a functional perspective."
 tags = ["art", "math"]
 
 [[links]]
@@ -1252,16 +1343,19 @@ tags = ["math"]
 [[links]]
 title = "How do calculators compute sine"
 url = "https://androidcalculator.com/how-do-calculators-compute-sine/"
+description = "A straightforward explanation of how calculators approximate sine."
 tags = ["math"]
 
 [[links]]
 title = "How efficient is Morse Code"
 url = "https://www.johndcook.com/blog/2017/02/08/how-efficient-is-morse-code/"
+description = "A short analysis of Morse code through information efficiency."
 tags = ["math"]
 
 [[links]]
 title = "How to fold a Julia Fractal"
 url = "https://acko.net/blog/how-to-fold-a-julia-fractal/"
+description = "A visual and intuitive guide to a Julia-set folding trick."
 tags = ["art", "math"]
 
 [[links]]
@@ -1273,11 +1367,13 @@ tags = ["math"]
 [[links]]
 title = "Intuitive Understanding of Euler’s Formula"
 url = "https://betterexplained.com/articles/intuitive-understanding-of-eulers-formula/"
+description = "A friendly explanation of Euler's formula using intuition over formalism."
 tags = ["math"]
 
 [[links]]
 title = "Is two to the power of infinity more than infinity?"
 url = "https://igoro.com/archive/is-two-to-the-power-of-infinity-more-than-infinity/"
+description = "A short introduction to comparing infinite quantities."
 tags = ["math"]
 
 [[links]]
@@ -1289,21 +1385,25 @@ tags = ["math"]
 [[links]]
 title = "M.C. Escher: More Mathematics Than Meets the Eye"
 url = "https://im-possible.info/english/articles/escher_printgallery/"
+description = "A look at the mathematical ideas embedded in Escher's work."
 tags = ["art", "math"]
 
 [[links]]
 title = "Napoleon's Theorem"
 url = "https://www.mathpages.com/home/kmath270/kmath270.htm"
+description = "An accessible exposition of the beautiful geometry behind Napoleon's theorem."
 tags = ["math"]
 
 [[links]]
 title = "Neural network training makes beautiful fractals"
 url = "https://sohl-dickstein.github.io/2024/02/12/fractal.html"
+description = "A striking connection between neural-network training dynamics and fractal structure."
 tags = ["art", "math"]
 
 [[links]]
 title = "Painting with Math"
 url = "https://blog.maximeheckel.com/posts/painting-with-math-a-gentle-study-of-raymarching/"
+description = "A gentle introduction to raymarching through visual examples and code."
 tags = ["art", "math"]
 
 [[links]]
@@ -1321,46 +1421,55 @@ tags = ["math"]
 [[links]]
 title = "Sine and cosine"
 url = "https://wordsandbuttons.online/sine_and_cosine.html"
+description = "A visual explanation of sine and cosine for programmers and curious readers."
 tags = ["math"]
 
 [[links]]
 title = "What is the inverse of a circle?"
 url = "https://mattferraro.dev/posts/geometric-algebra"
+description = "A geometric-algebra flavored path into thinking about inverses and shape."
 tags = ["math"]
 
 [[links]]
 title = "What is the inverse of a vector?"
 url = "https://mattferraro.dev/posts/geometric-algebra"
+description = "A geometric-algebra flavored explanation of what it means to invert a vector."
 tags = ["math"]
 
 [[links]]
 title = "Stacking triangles for fun and for profit"
 url = "https://www.oranlooney.com/post/angle-addition/"
+description = "A playful derivation of trigonometric identities from stacked triangles."
 tags = ["math"]
 
 [[links]]
 title = "The arithmetic derivative"
 url = "https://apieceofthepi.substack.com/p/the-arithmetic-derivative"
+description = "An introduction to the arithmetic derivative, a strange calculus-like operation on integers."
 tags = ["math"]
 
 [[links]]
 title = "The fourth operation"
 url = "https://ariwatch.com/VS/Algorithms/TheFourthOperation.htm"
+description = "A note on a lesser-known arithmetic operation beyond the usual three."
 tags = ["math"]
 
 [[links]]
 title = "The Lazy Way to Solve Differential Equations"
 url = "https://iagoleal.com/posts/calculus-symbolic-ode/"
+description = "A programmer-friendly look at symbolic tricks for solving differential equations."
 tags = ["math"]
 
 [[links]]
 title = "The lost art of logarithms"
 url = "https://www.lostartoflogarithms.com/"
+description = "A charming site about how logarithms once served as everyday computational tools."
 tags = ["math"]
 
 [[links]]
 title = "The magic 6174"
 url = "https://www.oranlooney.com/post/kaprekar/"
+description = "An exploration of Kaprekar's constant and its surprising behavior."
 tags = ["math"]
 
 [[links]]
@@ -1402,31 +1511,37 @@ tags = ["art", "photography", "history"]
 [[links]]
 title = "Grandpa's Photos"
 url = "https://grandpas-photos.com"
+description = "A small project built around old photographs and family memory."
 tags = ["photography", "history"]
 
 [[links]]
 title = "How games are used to control you"
 url = "https://unherd.com/2024/04/how-games-are-used-to-control-you/"
+description = "A critique of how game design ideas are used to shape behavior beyond games."
 tags = ["essays", "games"]
 
 [[links]]
 title = "Richard Feynman’s Extraordinary Letter to His Departed Wife"
 url = "https://www.themarginalian.org/2026/02/18/richard-feynman-arline-letter/"
+description = "A moving letter from Feynman reflecting love, grief, and memory."
 tags = ["physics", "history"]
 
 [[links]]
 title = "Victorian Research"
 url = "https://victorianresearch.org/"
+description = "An archive-like site collecting Victorian texts, images, and research resources."
 tags = ["history", "archives"]
 
 [[links]]
 title = "Reflections On Relativity"
 url = "https://www.mathpages.com/rr/rrtoc.htm"
+description = "A long-form set of essays and notes on relativity."
 tags = ["math", "physics"]
 
 [[links]]
 title = "So You Want to Learn Physics…"
 url = "https://www.susanrigetti.com/physics"
+description = "A self-study guide for learning physics outside a formal program."
 tags = ["physics"]
 
 [[links]]
@@ -1444,11 +1559,13 @@ tags = ["programming-languages", "systems", "compilers"]
 [[links]]
 title = "Programming languages & resources"
 url = "https://bernsteinbear.com/pl-resources/"
+description = "A curated collection of programming-language theory and implementation resources."
 tags = ["programming-languages", "reference"]
 
 [[links]]
 title = "Very early C compilers and language"
 url = "https://www.bell-labs.com/usr/dmr/www/primevalC.html"
+description = "Historical material on the earliest versions of C and its compilers."
 tags = ["c", "programming-languages", "history", "compilers"]
 
 [[links]]
@@ -1472,6 +1589,7 @@ tags = ["systems", "tools"]
 [[links]]
 title = "Markdown TOC generator"
 url = "https://derlin.github.io/bitdowntoc/"
+description = "A small tool for generating markdown tables of contents."
 tags = ["tools"]
 
 [[links]]
@@ -1537,6 +1655,7 @@ tags = ["humor", "directories"]
 [[links]]
 title = "tilde.club"
 url = "https://tilde.club/"
+description = "A shared Unix shell community centered on personal pages and small web culture."
 tags = ["indieweb"]
 
 [[links]]
@@ -1578,36 +1697,43 @@ tags = ["games", "programming-languages", "reference"]
 [[links]]
 title = "Effective Altruism"
 url = "https://en.m.wikipedia.org/wiki/Effective_altruism"
+description = "A reference page on the philosophy and movement of effective altruism."
 tags = ["reference"]
 
 [[links]]
 title = "Intransitive Dice"
 url = "https://en.m.wikipedia.org/wiki/Intransitive_dice"
+description = "A reference on dice sets where no single die is best against all others."
 tags = ["math", "reference"]
 
 [[links]]
 title = "List of People claimed to be Jesus"
 url = "https://en.m.wikipedia.org/wiki/List_of_people_claimed_to_be_Jesus"
+description = "A strange reference list of historical and modern messianic claimants."
 tags = ["history", "reference"]
 
 [[links]]
 title = "Marchetti's Constant"
 url = "https://en.m.wikipedia.org/wiki/Marchetti%27s_constant"
+description = "A reference on the idea that daily travel time tends to stay roughly constant."
 tags = ["history", "reference"]
 
 [[links]]
 title = "McNamara Fallacy"
 url = "https://en.m.wikipedia.org/wiki/McNamara_fallacy"
+description = "A reference on the error of valuing only what can be easily measured."
 tags = ["history", "reference"]
 
 [[links]]
 title = "Non-integer base of numeration"
 url = "https://en.m.wikipedia.org/wiki/Non-integer_base_of_numeration"
+description = "A reference on number systems built from non-integer bases."
 tags = ["math", "reference"]
 
 [[links]]
 title = "Probability theory paradoxes"
 url = "https://en.m.wikipedia.org/wiki/Category:Probability_theory_paradoxes"
+description = "A collection of paradoxes and counterintuitive results from probability theory."
 tags = ["math", "reference"]
 
 [[links]]
@@ -1619,36 +1745,43 @@ tags = ["physics", "reference"]
 [[links]]
 title = "Rule 110"
 url = "https://en.m.wikipedia.org/wiki/Rule_110"
+description = "A reference on the famous cellular automaton with surprisingly rich behavior."
 tags = ["math", "reference"]
 
 [[links]]
 title = "Sprouts"
 url = "https://en.m.wikipedia.org/wiki/Sprouts_(game)"
+description = "A reference on the simple pencil-and-paper game invented by Conway and Paterson."
 tags = ["games", "math", "reference"]
 
 [[links]]
 title = "The Boltzmann Brain"
 url = "https://en.m.wikipedia.org/wiki/Boltzmann_brain"
+description = "A reference on the unsettling cosmological thought experiment of Boltzmann brains."
 tags = ["physics", "reference"]
 
 [[links]]
 title = "The Inventor of the Black Box Was Told to Drop the Idea"
 url = "https://spectrum.ieee.org/the-inventor-of-the-black-box-was-told-to-drop-the-idea-and-get-on-with-blowing-up-fuel-tanks"
+description = "A historical piece on resistance to the now-standard flight data recorder."
 tags = ["physics", "history"]
 
 [[links]]
 title = "What is the history of the use of foo and bar in source code examples?"
 url = "https://softwareengineering.stackexchange.com/questions/69788/what-is-the-history-of-the-use-of-foo-and-bar-in-source-code-examples"
+description = "A discussion of where placeholder names like foo and bar come from."
 tags = ["programming-languages", "history", "reference"]
 
 [[links]]
 title = "Why is the mouse cursor slightly tilted and not straight?"
 url = "https://ux.stackexchange.com/questions/52336/why-is-the-mouse-cursor-slightly-tilted-and-not-straight"
+description = "A design explanation for the familiar slanted mouse cursor shape."
 tags = ["design", "reference"]
 
 [[links]]
 title = "Wow! Signal"
 url = "https://en.wikipedia.org/wiki/Wow!_signal"
+description = "A reference on the famous unexplained narrowband radio signal."
 tags = ["physics", "reference"]
 
 [[links]]
@@ -1678,11 +1811,13 @@ tags = ["blogs", "indieweb", "essays"]
 [[links]]
 title = "The Interim Computer Museum"
 url = "https://icm.museum/"
+description = "A computer history museum focused on preserving and presenting old machines."
 tags = ["history", "archives"]
 
 [[links]]
 title = "The slow death of the power user"
 url = "https://fireborn.mataroa.blog/blog/the-slow-death-of-the-power-user/"
+description = "A lament for software that increasingly sidelines advanced users and local control."
 tags = ["essays"]
 
 [[links]]
@@ -1700,11 +1835,13 @@ description = "Bamagotchi is a mobile-friendly toy where you can make your own v
 [[links]]
 title = "Wholphin"
 url = "https://en.wikipedia.org/wiki/Wholphin"
+description = "A reference on the rare hybrid of a false killer whale and a dolphin."
 tags = ["reference", "science"]
 
 [[links]]
 title = "Games and stuff by Neal"
 url = "https://neal.fun/"
+description = "A collection of playful web experiments, games, and interactive explanations."
 tags = ["games"]
 
 [[links]]
@@ -1722,6 +1859,7 @@ tags = ["humor", "essays", "design"]
 [[links]]
 title = "The huge cloud of..."
 url = "https://universemagazine.com/en/astronomers-felt-the-taste-and-smell-of-a-giant-cloud-of-alcohol/"
+description = "A fun astronomy story about a giant interstellar cloud containing alcohol molecules."
 tags = ["physics", "humor"]
 
 [[links]]
@@ -1733,16 +1871,19 @@ description = "The Epigraphic Database Clauss-Slaby (EDCS) is the largest and mo
 [[links]]
 title = "The Truth Is Paywalled But The Lies Are Free"
 url = "https://www.currentaffairs.org/news/2020/08/the-truth-is-paywalled-but-the-lies-are-free"
+description = "An argument about how paywalls distort the public information ecosystem."
 tags = ["essays"]
 
 [[links]]
 title = "When David Bowie Launched His Own Internet Service Provider: The Rise and Fall of BowieNet (1998)"
 url = "https://www.openculture.com/2020/04/when-david-bowie-launched-his-own-internet-service-provider.html"
+description = "A short history of Bowie's strange and memorable internet service venture."
 tags = ["history", "web"]
 
 [[links]]
 title = "Free Ebooks in the Le Monde’s 100 Books of the Century Set"
 url = "https://standardebooks.org/collections/le-mondes-100-books-of-the-century"
+description = "A Standard Ebooks collection drawn from Le Monde's books-of-the-century list."
 tags = ["books"]
 
 [[links]]
@@ -1754,16 +1895,19 @@ tags = ["humor", "tools"]
 [[links]]
 title = "Light Poetry Magazine"
 url = "https://lightpoetrymagazine.com/"
+description = "An online magazine focused on light verse and humorous poetry."
 tags = ["books"]
 
 [[links]]
 title = "The Indie Web Manifesto"
 url = "https://www.uzine.net/article63.html"
+description = "A manifesto calling for more personal, independent publishing on the web."
 tags = ["essays", "blogs", "indieweb"]
 
 [[links]]
 title = "Neglected Books"
 url = "https://neglectedbooks.com/"
+description = "A site devoted to out-of-print, overlooked, and forgotten books."
 tags = ["books"]
 
 [[links]]
@@ -1777,7 +1921,6 @@ title = "RANDOM.ORG"
 url = "https://www.random.org/"
 description = "Generates true random numbers using atmospheric noise."
 tags = ["tools", "math"]
-
 
 +++
 
