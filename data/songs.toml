@@ -1450,3 +1450,123 @@ youtube_video = "https://youtu.be/OCKCBnAZUXM?si=1dSRO6hRDs2rvlgL"
 youtube_video_id = "OCKCBnAZUXM"
 jukebox = ["to_stare_at_nothing"]
 thought = "Overcast."
+
+[[entries]]
+title = "In My Room"
+artist = "Yazoo"
+type = "song"
+genres = ["synth-pop", "new wave"]
+youtube_video = "https://www.youtube.com/watch?v=8Czvfi4Q7TM&list=RD8Czvfi4Q7TM&start_radio=1"
+youtube_video_id = "8Czvfi4Q7TM"
+jukebox = ["commercial_80s"]
+thought = "Private."
+
+[[entries]]
+title = "Major Tom (Coming Home)"
+artist = "Peter Schilling"
+type = "song"
+genres = ["synth-pop", "new wave"]
+youtube_video = "https://www.youtube.com/watch?v=wO0A0XcWy88&list=RDwO0A0XcWy88&start_radio=1"
+youtube_video_id = "wO0A0XcWy88"
+jukebox = ["commercial_80s"]
+thought = "Orbiting."
+
+[[entries]]
+title = "Is Vic There?"
+artist = "Department S"
+type = "song"
+genres = ["post-punk", "new wave"]
+youtube_video = "https://www.youtube.com/watch?v=8_n33KNJD5Y&list=RD8_n33KNJD5Y&start_radio=1"
+youtube_video_id = "8_n33KNJD5Y"
+jukebox = ["commercial_80s"]
+thought = "Dry."
+
+[[entries]]
+title = "Samurai"
+artist = "Michael Cretu"
+type = "song"
+genres = ["synth-pop", "euro disco"]
+youtube_video = "https://www.youtube.com/watch?v=uZ-TlXjljPg&list=RDuZ-TlXjljPg&start_radio=1"
+youtube_video_id = "uZ-TlXjljPg"
+jukebox = ["commercial_80s"]
+thought = "Glossy."
+
+[[entries]]
+title = "I Coldly Stare Out"
+artist = "Pink Turns Blue"
+type = "song"
+genres = ["post-punk", "darkwave"]
+youtube_video = "https://www.youtube.com/watch?v=yVtgFM2w2Gs&list=RDyVtgFM2w2Gs&start_radio=1"
+youtube_video_id = "yVtgFM2w2Gs"
+jukebox = ["commercial_80s"]
+thought = "Distant."
+
+[[entries]]
+title = "A Victory of Love"
+artist = "Alphaville"
+type = "song"
+genres = ["synth-pop", "new wave"]
+youtube_video = "https://www.youtube.com/watch?v=kMxi7Iwe78k&list=RDkMxi7Iwe78k&start_radio=1"
+youtube_video_id = "kMxi7Iwe78k"
+jukebox = ["commercial_80s"]
+thought = "Romantic."
+
+[[entries]]
+title = "Ganz Wien"
+artist = "Falco"
+type = "song"
+genres = ["new wave", "art pop"]
+youtube_video = "https://www.youtube.com/watch?v=IW4UaJDABqA&list=RDIW4UaJDABqA&start_radio=1"
+youtube_video_id = "IW4UaJDABqA"
+jukebox = ["commercial_80s"]
+thought = "Urban."
+
+[[entries]]
+title = "Johnny Come Home"
+artist = "Fine Young Cannibals"
+type = "song"
+genres = ["new wave", "pop rock"]
+youtube_video = "https://www.youtube.com/watch?v=2yvWl8EcLmo&list=RD2yvWl8EcLmo&start_radio=1"
+youtube_video_id = "2yvWl8EcLmo"
+jukebox = ["commercial_80s"]
+thought = "Restless."
+
+[[entries]]
+title = "Cars"
+artist = "Gary Numan"
+type = "song"
+genres = ["synth-pop", "new wave"]
+youtube_video = "https://www.youtube.com/watch?v=LrjM8Fi7J58&list=RDLrjM8Fi7J58&start_radio=1"
+youtube_video_id = "LrjM8Fi7J58"
+jukebox = ["commercial_80s"]
+thought = "Mechanical."
+
+[[entries]]
+title = "The Metro"
+artist = "Berlin"
+type = "song"
+genres = ["new wave", "synth-pop"]
+youtube_video = "https://www.youtube.com/watch?v=FJZ8NH0HT_o&list=RDFJZ8NH0HT_o&start_radio=1"
+youtube_video_id = "FJZ8NH0HT_o"
+jukebox = ["commercial_80s"]
+thought = "Transit."
+
+[[entries]]
+title = "Cruise Missiles"
+artist = "Fischer-Z"
+type = "song"
+genres = ["new wave", "post-punk"]
+youtube_video = "https://www.youtube.com/watch?v=Q4rTdbghI6Q&list=RDQ4rTdbghI6Q&start_radio=1"
+youtube_video_id = "Q4rTdbghI6Q"
+jukebox = ["commercial_80s"]
+thought = "Tense."
+
+[[entries]]
+title = "Love Is a Plane"
+artist = "Double"
+type = "song"
+genres = ["sophisti-pop", "new wave"]
+youtube_video = "https://www.youtube.com/watch?v=249QWcSkJCM&list=RD249QWcSkJCM&start_radio=1"
+youtube_video_id = "249QWcSkJCM"
+jukebox = ["commercial_80s"]
+thought = "Smooth."

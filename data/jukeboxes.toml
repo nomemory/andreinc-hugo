@@ -15,3 +15,9 @@ id = "to_stare_at_nothing"
 emoticon = "🫥"
 title = "To stare at nothing"
 description = "Still songs for dim rooms, slow thoughts, and the kind of silence that stares back."
+
+[[entries]]
+id = "commercial_80s"
+emoticon = "📼"
+title = "Commercial in the 80s"
+description = "This was 'commercial' music in the 80s. I am impressed."
