@@ -1971,3 +1971,33 @@ title = "RANDOM.ORG"
 url = "https://www.random.org/"
 description = "Generates true random numbers using atmospheric noise."
 tags = ["tools", "math"]
+
+[[links]]
+title = "T3X: Reload"
+url = "https://t3x.org/reload/"
+description = "A compiler book from the T3X world."
+tags = ["books", "compilers", "programming-languages"]
+
+[[links]]
+title = "Thoughts on slowing the fuck down"
+url = "https://mariozechner.at/posts/2026-03-25-thoughts-on-slowing-the-fuck-down/"
+description = "A small wager on whether this essay will turn out to have been visionary."
+tags = ["essays", "blogs"]
+
+[[links]]
+title = "A Hundred Thousand Billion Poems"
+url = "https://en.wikipedia.org/wiki/A_Hundred_Thousand_Billion_Poems"
+description = "A reference on Raymond Queneau's combinatorial poetry machine."
+tags = ["books", "poetry", "reference"]
+
+[[links]]
+title = "N+7"
+url = "http://www.spoonbill.org/n+7/"
+description = "A tiny site dedicated to the Oulipian N+7 substitution game."
+tags = ["poetry", "tools", "literature"]
+
+[[links]]
+title = "The uncomfortable truth that will always haunt the Ramones"
+url = "https://english.elpais.com/culture/2026-03-17/the-uncomfortable-truth-that-will-always-haunt-the-ramones-they-sold-more-t-shirts-than-records.html"
+description = "An article about the Ramones, legacy, and the strange economics of cultural afterlives."
+tags = ["music", "essays"]

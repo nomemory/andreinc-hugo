@@ -204,6 +204,18 @@ function jbxHasJukebox(jukeboxId) {
   return jbxJukeboxes.some((entry) => entry.id === jukeboxId);
 }
 
+function jbxRandomDifferentJukeboxId() {
+  if (!jbxJukeboxes.length) return "";
+  if (jbxJukeboxes.length === 1) return jbxJukeboxes[0].id;
+
+  let randomId = jbxJukeboxes[Math.floor(Math.random() * jbxJukeboxes.length)].id;
+  while (randomId === jbxCurrentJukeboxId) {
+    randomId = jbxJukeboxes[Math.floor(Math.random() * jbxJukeboxes.length)].id;
+  }
+
+  return randomId;
+}
+
 function jbxSyncHashForCurrentJukebox() {
   if (!jbxCurrentJukeboxId) return;
 
@@ -361,7 +373,7 @@ function jbxSongBelongsToCurrentJukebox(song) {
   return Array.isArray(song.jukebox) && song.jukebox.includes(jbxCurrentJukeboxId);
 }
 
-function jbxApplyJukebox(jukeboxId) {
+function jbxApplyJukebox(jukeboxId, { syncHash = true } = {}) {
   if (!jbxHasJukebox(jukeboxId)) return;
 
   jbxClearSkipCountdown();
@@ -375,7 +387,9 @@ function jbxApplyJukebox(jukeboxId) {
   jbxRenderGenreCloud();
   jbxSetGenreCloudVisible(false);
   jbxRenderPlaylistButtons();
-  jbxSyncHashForCurrentJukebox();
+  if (syncHash) {
+    jbxSyncHashForCurrentJukebox();
+  }
 
   const firstPlayableIndex = jbxFindNextPlayableIndex(0);
   if (firstPlayableIndex !== -1) {
@@ -485,6 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const selectorToggle = document.getElementById("jbx-selector-toggle");
   const selectorList = document.getElementById("jbx-selector-list");
+  const randomJukeboxBtn = document.getElementById("jbx-random-jukebox");
   const genreCloudToggle = document.getElementById("jbx-genre-cloud-toggle");
   const prevBtn = document.getElementById("jbx-prev-song");
   const playBtn = document.getElementById("jbx-play-song");
@@ -523,6 +538,15 @@ document.addEventListener("DOMContentLoaded", () => {
   if (genreCloudToggle) {
     genreCloudToggle.addEventListener("click", () => {
       jbxSetGenreCloudVisible(!jbxGenreCloudVisible);
+    });
+  }
+
+  if (randomJukeboxBtn) {
+    randomJukeboxBtn.addEventListener("click", () => {
+      const randomJukeboxId = jbxRandomDifferentJukeboxId();
+      if (randomJukeboxId) {
+        jbxApplyJukebox(randomJukeboxId);
+      }
     });
   }
 
@@ -567,10 +591,12 @@ document.addEventListener("DOMContentLoaded", () => {
   jbxUpdateAutoplayButton();
   jbxSetSelectorOpen(false);
   jbxSetGenreCloudVisible(false);
-  jbxApplyJukebox(
-    jbxHasJukebox(jbxCurrentHashJukeboxId())
-      ? jbxCurrentHashJukeboxId()
-      : jbxJukeboxes[0].id
-  );
+  const hashJukeboxId = jbxCurrentHashJukeboxId();
+  if (jbxHasJukebox(hashJukeboxId)) {
+    jbxApplyJukebox(hashJukeboxId);
+    return;
+  }
+
+  jbxApplyJukebox(jbxJukeboxes[0].id);
 });
 </script>
