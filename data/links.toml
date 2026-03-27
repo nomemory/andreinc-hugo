@@ -1,61 +1,61 @@
 [[links]]
 title = "Marginalia Search"
 url = "https://marginalia-search.com/"
-description = "To find your lucky site."
+description = "To find your lucky site. Marginilia is a classic search engine, and more. It focuses on the smallweb, indieweb, or whatever you want to call it."
 tags = ["search", "indieweb"]
 
 [[links]]
 title = "Search My Site"
 url = "https://searchmysite.net/"
-description = "To find your lucky site."
+description = "To find your lucky site. Classic search engine focused on the 'small' and 'indie'."
 tags = ["search", "indieweb"]
 
 [[links]]
 title = "Wiby"
 url = "https://wiby.me/"
-description = "Search engine targeting the old web."
+description = "Search engine targeting the old web. Which is nice."
 tags = ["search", "indieweb"]
 
 [[links]]
 title = "Cloudhiker"
 url = "https://cloudhiker.net/"
-description = "Let it surprise you."
+description = "Let it surprise you. A modern stumbleupon."
 tags = ["indieweb", "discovery"]
 
 [[links]]
 title = "Blogs on HN"
 url = "https://blogs.hn/"
-description = "Browse blogs linked on Hacker News."
+description = "Browse blogs linked on Hacker News. Usually those blogs are what you would call 'high-quality'."
 tags = ["blogs", "directories"]
 
 [[links]]
 title = "Bukmark Directory"
 url = "https://bukmark.club/directory/"
-description = "Directory of sites that have pages with interesting links."
+description = "Directory of sites that have pages with interesting links. To be part of this directory you need to share links. I guess my site checks the conditions."
 tags = ["directories", "indieweb"]
 
 [[links]]
 title = "Algorithms for Modern Hardware"
 url = "https://en.algorithmica.org/hpc/"
-description = "Upcoming high performance computing book by Sergey Slotin."
+description = "Upcoming high performance computing book by Sergey Slotin. Worth checking if this still 'Upcoming'."
 tags = ["algorithms"]
 
 [[links]]
 title = "Baltic Olympiad of Informatics"
 url = "https://cses.fi/boi/list/"
-description = "List of problems."
+description = "List of problems for those who enjoy competitive programming."
 tags = ["algorithms"]
 
 [[links]]
 title = "Competitive Programmer's Handbook"
 url = "https://cses.fi/book/book.pdf"
-description = "Classical book to learn algorithms and data structures for competitive programming contests."
+description = "Classical book to learn algorithms and data structures for competitive programming contests. There are people who solve those problems for fun."
 tags = ["algorithms", "books"]
 
 [[links]]
 title = "Competitive Programmer's Handbook on GitHub"
 url = "https://github.com/pllk/cphb/"
-description = "Classical book to learn algorithms and data structures for competitive programming contests."
+description = "Classical book to learn algorithms and data structures for competitive programming contests. Now on github."
 tags = ["algorithms", "books"]
 
 [[links]]
@@ -65,9 +65,9 @@ description = "Collection of practice problems for competitive programming conte
 tags = ["algorithms"]
 
 [[links]]
-title = "Bucket Sort"
+title = "Algorithm Visualizer"
 url = "https://algorithm-visualizer.org/"
-description = "An interactive site for exploring algorithms through visualizations and runnable examples."
+description = "An interactive site for exploring algorithms through visualizations and runnable examples. It's good to understand how most of the classic algorithms function."
 tags = ["algorithms", "tools"]
 
 [[links]]
@@ -79,37 +79,37 @@ tags = ["algorithms", "math"]
 [[links]]
 title = "DADS"
 url = "https://xlinux.nist.gov/dads/"
-description = "A comprehensive, reference that provides concise definitions of algorithms, data structures, and related concepts used in computer science."
+description = "A comprehensive, reference that provides concise definitions of algorithms, data structures, and related concepts used in computer science. It's nice because you can alway find concepts you haven't heard before."
 tags = ["algorithms"]
 
 [[links]]
 title = "Great Ideas in Theoretical Computer Science"
 url = "https://www.cs251.com/"
-description = "Rigorous study of computation as a fundamental component of our universe, societies, technologies, and minds."
+description = "Rigorous study of computation as a fundamental component of our universe, societies, technologies, and minds. Marvelous."
 tags = ["algorithms"]
 
 [[links]]
 title = "NeetCode"
 url = "https://neetcode.io/"
-description = "Interview LeetCode questions plus video solutions nicely explained."
+description = "Interview LeetCode questions plus video solutions nicely explained. I've used this site to prepare for interviews."
 tags = ["algorithms"]
 
 [[links]]
 title = "Notes on Data Structures and Programming Techniques"
 url = "http://www.cs.yale.edu/homes/aspnes/classes/223/notes.html"
-description = "Free book on data structures and algorithms using C."
+description = "Free book on data structures and algorithms using C. This is a good resource, it's quite 'dense' but should be more popular in my opinion."
 tags = ["algorithms", "books", "c"]
 
 [[links]]
 title = "Notes on randomized algorithms"
 url = "https://www.cs.yale.edu/homes/aspnes/classes/469/notes.pdf"
-description = "Lecture notes introducing randomized algorithms and probabilistic analysis."
+description = "Lecture notes introducing randomized algorithms and probabilistic analysis. What are the odds?"
 tags = ["algorithms"]
 
 [[links]]
 title = "Numbers are leaves"
 url = "https://www.christo.sh/numbers-are-leaves/"
-description = "An elegant exploration of number systems through the lens of trees and structure."
+description = "An elegant exploration of number systems through the lens of trees and structure. Artsy."
 tags = ["algorithms", "math"]
 
 [[links]]
@@ -145,19 +145,19 @@ tags = ["algorithms"]
 [[links]]
 title = "SHA256 Explained"
 url = "https://sha256algorithm.com/"
-description = "Visual explanation for SHA256."
+description = "Visual explanation for SHA256. For the ones that enjoy hashing."
 tags = ["algorithms", "tools"]
 
 [[links]]
 title = "A stacked clock"
 url = "https://www.danieldjohnson.com/2014/06/30/stacked-clock/"
-description = "A “stacked clock” reimagines a traditional clock by linking its hands tip-to-tail, creating a chained visualization of time."
+description = "A “stacked clock” reimagines a traditional clock by linking its hands tip-to-tail, creating a chained visualization of time. Artsy."
 tags = ["art"]
 
 [[links]]
 title = "Ben Kovach"
 url = "https://bendotk.com/"
-description = "Procedural generation and computer art."
+description = "Procedural generation and computer art. Where CS, math and art collide."
 tags = ["art"]
 
 [[links]]
@@ -181,7 +181,7 @@ tags = ["art", "tools"]
 [[links]]
 title = "Chris Shier"
 url = "https://csh.bz/"
-description = "Browser experiments."
+description = "Browser experiments. Mostly computer art."
 tags = ["art"]
 
 [[links]]
@@ -211,7 +211,7 @@ tags = ["art", "games"]
 [[links]]
 title = "Fractals on Google Earth"
 url = "https://paulbourke.net/fractals/googleearth/"
-description = "Gallery of fractal patterns found while exploring the planet with Google Earth."
+description = "Gallery of fractal patterns found while exploring the planet with Google Earth. It's mostly water carving earth."
 tags = ["art", "math"]
 
 [[links]]
@@ -2001,3 +2001,45 @@ title = "The uncomfortable truth that will always haunt the Ramones"
 url = "https://english.elpais.com/culture/2026-03-17/the-uncomfortable-truth-that-will-always-haunt-the-ramones-they-sold-more-t-shirts-than-records.html"
 description = "An article about the Ramones, legacy, and the strange economics of cultural afterlives."
 tags = ["music", "essays"]
+
+[[links]]
+title = "Shell tricks that actually make life easier and save your sanity"
+url = "https://blog.hofstede.it/shell-tricks-that-actually-make-life-easier-and-save-your-sanity/"
+description = "A practical collection of shell tricks meant to reduce friction and preserve sanity."
+tags = ["programming", "tools", "linux"]
+
+[[links]]
+title = "Obsolete Sounds"
+url = "https://citiesandmemory.com/obsolete-sounds/"
+description = "A project preserving and reimagining sounds from obsolete technologies and fading machinery."
+tags = ["sound", "archives", "art"]
+
+[[links]]
+title = "Colorpeek"
+url = "https://colorpeek.com/"
+description = "A small web tool for browsing and exploring colors."
+tags = ["design", "tools", "art"]
+
+[[links]]
+title = "CITY"
+url = "https://kohlhofer.com/city/"
+description = "A browser city toy that feels like a tiny urban sketchbook."
+tags = ["art", "games"]
+
+[[links]]
+title = "Purrli"
+url = "https://purrli.com/"
+description = "A site that plays the sound of a purring cat."
+tags = ["sound", "tools", "humor"]
+
+[[links]]
+title = "In Praise of Links"
+url = "https://osteophage.neocities.org/writing/in-praise-of-links"
+description = "A small essay defending links as one of the web's best habits."
+tags = ["essays", "indieweb", "web"]
+
+[[links]]
+title = "Minifeed"
+url = "https://minifeed.net/welcome"
+description = "A small publishing and feed-reading space built around the quieter web."
+tags = ["indieweb", "tools", "web"]
