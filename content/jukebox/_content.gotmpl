@@ -1,0 +1,13 @@
+{{ $adapter := . }}
+{{ $content := "The [Jukeboxes](https://en.wikipedia.org/wiki/Jukebox) feature songs and artists that aren’t widely known. This is intentional, while I do love the *classics*, I also enjoy exploring (more) experimental and *alternative* scenes. <sup>No coins needed.</p>\n\n<sup>AutoPlay is on by default, the music will play as long as you keep the tab open. Due to YouTube limitations, you may need to be logged in to view or listen to all content.</sup>" }}
+{{ range site.Data.jukeboxes.entries }}
+  {{ $page := dict
+    "content" (dict "mediaType" "text/markdown" "value" $content)
+    "kind" "page"
+    "layout" "jukebox-home"
+    "params" (dict "jukeboxId" .id)
+    "path" .id
+    "title" .title
+  }}
+  {{ $adapter.AddPage $page }}
+{{ end }}

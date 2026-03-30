@@ -7,10 +7,6 @@
     {{ end }}
   </header>
 
-  <p class="alb-back-link">
-    <a href="{{ "jukebox/" | relURL }}">← Listen to (some of) the songs at the /jukebox</a>
-  </p>
-
   {{ $allEntries := sort site.Data.albums.entries "title" }}
   {{ $currentGenre := .Params.entryGenre | default "" }}
 

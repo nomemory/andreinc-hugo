@@ -37,7 +37,7 @@
   {{ $genrePages := div (add $genreTotal (sub $pageSize 1)) $pageSize }}
   {{ $content := dict
     "mediaType" "text/markdown"
-    "value" (printf "Albums tagged with `%s`.\n\nA filterable list of favorite albums." $genre)
+    "value" (printf "A filterable list of favorite albums.\n\nAlbums tagged with `%s`." $genre)
   }}
   {{ $page := dict
     "content" $content

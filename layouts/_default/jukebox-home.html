@@ -1,5 +1,11 @@
 {{ define "main" }}
 
+{{ $jukeboxes := site.Data.jukeboxes.entries }}
+{{ $currentJukeboxId := .Params.jukeboxId }}
+{{ if and (not $currentJukeboxId) (gt (len $jukeboxes) 0) }}
+  {{ $currentJukeboxId = (index $jukeboxes 0).id }}
+{{ end }}
+
 <main class="jbx-page">
   <header> 
     {{ with .Content }}
@@ -16,11 +22,12 @@
 
   {{ partial "jukebox.html" (dict
     "songs" $jukeboxSongs
-    "jukeboxes" site.Data.jukeboxes.entries
+    "jukeboxes" $jukeboxes
+    "currentJukeboxId" $currentJukeboxId
   ) }}
 
 </main>
 
-{{ partial "scripts-jukebox.html" . }}
+{{ partial "scripts-jukebox.html" (dict "currentJukeboxId" $currentJukeboxId) }}
 
 {{ end }}

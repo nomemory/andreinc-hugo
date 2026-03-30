@@ -1,39 +1,32 @@
 {{ $songs := .songs }}
 {{ $jukeboxes := .jukeboxes }}
+{{ $currentJukeboxId := .currentJukeboxId }}
 {{ if gt (len $jukeboxes) 0 }}
-  {{ $first := index $jukeboxes 0 }}
-  {{ $firstCount := len (where $songs "jukebox" "intersect" (slice $first.id)) }}
+  {{ $current := index $jukeboxes 0 }}
+  {{ range $jukeboxes }}
+    {{ if eq .id $currentJukeboxId }}
+      {{ $current = . }}
+    {{ end }}
+  {{ end }}
 <section class="jbx-section">
   <div class="jbx-box">
-    <div class="jbx-selector-box">
-      <div class="jbx-picker">
-        <label for="jbx-selector">Jukebox:</label>
-        <div class="jbx-selector-menu">
-          <button type="button" id="jbx-selector-toggle" class="jbx-selector-toggle" aria-haspopup="listbox" aria-expanded="false">
-            {{ with $first.emoticon }}{{ . }} {{ end }}{{ $first.title }} [{{ $firstCount }} songs]
-          </button>
-          <div id="jbx-selector-list" class="jbx-selector-list" role="listbox" hidden>
-            {{ range $jukeboxes }}
-              {{ $songCount := len (where $songs "jukebox" "intersect" (slice .id)) }}
-              <button
-                type="button"
-                class="jbx-selector-option"
-                data-jukebox-id="{{ .id }}"
-                data-song-count="{{ $songCount }}"
-                role="option"
-                aria-selected="{{ if eq .id $first.id }}true{{ else }}false{{ end }}">
-                {{ with .emoticon }}{{ . }} {{ end }}{{ .title }} [{{ $songCount }} songs]
-              </button>
-            {{ end }}
-          </div>
-        </div>
+    <div class="jbx-nav-box">
+      <p class="jbx-nav-label">Jukeboxes:</p>
+      <div class="jbx-nav-links">
+        {{ range $jukeboxes }}
+          {{ $songCount := len (where $songs "jukebox" "intersect" (slice .id)) }}
+          <a
+            href="{{ printf "jukebox/%s/" .id | relURL }}"
+            class="jbx-nav-link{{ if eq .id $currentJukeboxId }} active{{ end }}">
+            {{ with .emoticon }}{{ . }} {{ end }}{{ .title }} [{{ $songCount }} songs]
+          </a>
+        {{ end }}
       </div>
-
+    </div>
+    
+    <div class="jbx-selector-box">
       <div class="jbx-jukebox-meta">
-        <p><span id="jbx-jukebox-description">{{ $first.description }}</span></p>
-        <button type="button" id="jbx-random-jukebox" class="jbx-meta-action">
-          Random jukebox
-        </button>
+        <p><span id="jbx-jukebox-description">{{ $current.description }}</span></p>
         <button type="button" id="jbx-genre-cloud-toggle" class="jbx-meta-action" aria-expanded="false">
           Show genres
         </button>

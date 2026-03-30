@@ -7,10 +7,6 @@
     {{ end }}
   </header>
 
-  <p class="sng-back-link">
-    <a href="{{ "jukebox/" | relURL }}">← Listen to the songs at the /jukebox</a>
-  </p>
-
   {{ $allEntries := sort site.Data.songs.entries "title" }}
   {{ $currentGenre := .Params.entryGenre | default "" }}
 

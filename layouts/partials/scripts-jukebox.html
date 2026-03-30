@@ -1,14 +1,13 @@
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-const jbxJukeboxesData = {{ site.Data.jukeboxes.entries | jsonify | safeJS }};
 const jbxSongsData = {{ site.Data.songs.entries | jsonify | safeJS }};
+const jbxInitialJukeboxId = {{ .currentJukeboxId | jsonify | safeJS }};
 
 let jbxPlayer = null;
-let jbxJukeboxes = [];
 let jbxAllSongs = [];
 let jbxPlaylist = [];
 let jbxCurrentSongIndex = 0;
-let jbxCurrentJukeboxId = "";
+let jbxCurrentJukeboxId = jbxInitialJukeboxId || "";
 let jbxPlayerReady = false;
 let jbxInitStarted = false;
 let jbxSkipCountdownTimer = null;
@@ -73,64 +72,10 @@ function jbxUpdateAutoplayButton() {
   }
 }
 
-function jbxUpdateJukeboxMeta() {
-  const title = document.getElementById("jbx-jukebox-title");
-  const description = document.getElementById("jbx-jukebox-description");
-  const current = jbxJukeboxes.find((entry) => entry.id === jbxCurrentJukeboxId);
-
-  if (title) {
-    title.textContent = current
-      ? `${current.emoticon ? `${current.emoticon} ` : ""}${current.title}`
-      : "";
-  }
-  if (description) description.textContent = current ? (current.description || "") : "";
-}
-
-function jbxSongCountForJukebox(jukeboxId) {
-  return jbxAllSongs.filter((song) => Array.isArray(song.jukebox) && song.jukebox.includes(jukeboxId)).length;
-}
-
 function jbxGenresForCurrentJukebox() {
   return [...new Set(
     jbxPlaylist.flatMap((song) => Array.isArray(song.genres) ? song.genres : [])
   )].sort((a, b) => a.localeCompare(b));
-}
-
-function jbxLabelForJukebox(entry) {
-  if (!entry) return "Select jukebox";
-
-  const count = jbxSongCountForJukebox(entry.id);
-  return `${entry.emoticon ? `${entry.emoticon} ` : ""}${entry.title} [${count} songs]`;
-}
-
-function jbxUpdateSelectorUi() {
-  const toggle = document.getElementById("jbx-selector-toggle");
-  const current = jbxJukeboxes.find((entry) => entry.id === jbxCurrentJukeboxId);
-
-  if (toggle) {
-    toggle.textContent = jbxLabelForJukebox(current);
-  }
-
-  document.querySelectorAll(".jbx-selector-option").forEach((option) => {
-    const optionJukebox = jbxJukeboxes.find((entry) => entry.id === option.dataset.jukeboxId);
-    option.textContent = jbxLabelForJukebox(optionJukebox);
-    option.setAttribute(
-      "aria-selected",
-      option.dataset.jukeboxId === jbxCurrentJukeboxId ? "true" : "false"
-    );
-  });
-}
-
-function jbxSetSelectorOpen(isOpen) {
-  const menu = document.querySelector(".jbx-selector-menu");
-  const toggle = document.getElementById("jbx-selector-toggle");
-  const list = document.getElementById("jbx-selector-list");
-
-  if (!menu || !toggle || !list) return;
-
-  menu.classList.toggle("open", isOpen);
-  toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-  list.hidden = !isOpen;
 }
 
 function jbxToggleGenre(genre) {
@@ -194,35 +139,6 @@ function jbxSetGenreCloudVisible(isVisible) {
   if (wrap) {
     wrap.hidden = !isVisible;
   }
-}
-
-function jbxCurrentHashJukeboxId() {
-  return window.location.hash.replace(/^#/, "");
-}
-
-function jbxHasJukebox(jukeboxId) {
-  return jbxJukeboxes.some((entry) => entry.id === jukeboxId);
-}
-
-function jbxRandomDifferentJukeboxId() {
-  if (!jbxJukeboxes.length) return "";
-  if (jbxJukeboxes.length === 1) return jbxJukeboxes[0].id;
-
-  let randomId = jbxJukeboxes[Math.floor(Math.random() * jbxJukeboxes.length)].id;
-  while (randomId === jbxCurrentJukeboxId) {
-    randomId = jbxJukeboxes[Math.floor(Math.random() * jbxJukeboxes.length)].id;
-  }
-
-  return randomId;
-}
-
-function jbxSyncHashForCurrentJukebox() {
-  if (!jbxCurrentJukeboxId) return;
-
-  const nextHash = `#${jbxCurrentJukeboxId}`;
-  if (window.location.hash === nextHash) return;
-
-  window.history.replaceState(null, "", nextHash);
 }
 
 function jbxIsValidVideoId(videoId) {
@@ -373,23 +289,16 @@ function jbxSongBelongsToCurrentJukebox(song) {
   return Array.isArray(song.jukebox) && song.jukebox.includes(jbxCurrentJukeboxId);
 }
 
-function jbxApplyJukebox(jukeboxId, { syncHash = true } = {}) {
-  if (!jbxHasJukebox(jukeboxId)) return;
-
+function jbxApplyJukebox(jukeboxId) {
   jbxClearSkipCountdown();
   jbxCurrentJukeboxId = jukeboxId;
   jbxPlaylist = jbxAllSongs.filter(jbxSongBelongsToCurrentJukebox);
   jbxSelectedGenres = new Set();
   jbxCurrentSongIndex = 0;
 
-  jbxUpdateSelectorUi();
-  jbxUpdateJukeboxMeta();
   jbxRenderGenreCloud();
   jbxSetGenreCloudVisible(false);
   jbxRenderPlaylistButtons();
-  if (syncHash) {
-    jbxSyncHashForCurrentJukebox();
-  }
 
   const firstPlayableIndex = jbxFindNextPlayableIndex(0);
   if (firstPlayableIndex !== -1) {
@@ -486,7 +395,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const root = document.querySelector(".jbx-page");
   if (!root) return;
 
-  jbxJukeboxes = Array.isArray(jbxJukeboxesData) ? jbxJukeboxesData : [];
   jbxAllSongs = (Array.isArray(jbxSongsData) ? jbxSongsData : []).map((song) => ({
     title: song.title || "",
     artist: song.artist || "",
@@ -495,11 +403,6 @@ document.addEventListener("DOMContentLoaded", () => {
     genres: Array.isArray(song.genres) ? song.genres : []
   }));
 
-  if (!jbxJukeboxes.length) return;
-
-  const selectorToggle = document.getElementById("jbx-selector-toggle");
-  const selectorList = document.getElementById("jbx-selector-list");
-  const randomJukeboxBtn = document.getElementById("jbx-random-jukebox");
   const genreCloudToggle = document.getElementById("jbx-genre-cloud-toggle");
   const prevBtn = document.getElementById("jbx-prev-song");
   const playBtn = document.getElementById("jbx-play-song");
@@ -508,45 +411,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const randomSongBtn = document.getElementById("jbx-random-song");
   const autoplayModeBtn = document.getElementById("jbx-autoplay-mode");
 
-  if (selectorToggle && selectorList) {
-    selectorToggle.addEventListener("click", () => {
-      const isOpen = selectorToggle.getAttribute("aria-expanded") === "true";
-      jbxSetSelectorOpen(!isOpen);
-    });
-
-    selectorList.querySelectorAll(".jbx-selector-option").forEach((option) => {
-      option.addEventListener("click", () => {
-        jbxApplyJukebox(option.dataset.jukeboxId || "");
-        jbxSetSelectorOpen(false);
-      });
-    });
-
-    document.addEventListener("click", (event) => {
-      if (!event.target.closest(".jbx-selector-menu")) {
-        jbxSetSelectorOpen(false);
-      }
-    });
-  }
-
-  window.addEventListener("hashchange", () => {
-    const hashJukeboxId = jbxCurrentHashJukeboxId();
-    if (hashJukeboxId && hashJukeboxId !== jbxCurrentJukeboxId && jbxHasJukebox(hashJukeboxId)) {
-      jbxApplyJukebox(hashJukeboxId);
-    }
-  });
-
   if (genreCloudToggle) {
     genreCloudToggle.addEventListener("click", () => {
       jbxSetGenreCloudVisible(!jbxGenreCloudVisible);
-    });
-  }
-
-  if (randomJukeboxBtn) {
-    randomJukeboxBtn.addEventListener("click", () => {
-      const randomJukeboxId = jbxRandomDifferentJukeboxId();
-      if (randomJukeboxId) {
-        jbxApplyJukebox(randomJukeboxId);
-      }
     });
   }
 
@@ -589,14 +456,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   jbxUpdateAutoplayButton();
-  jbxSetSelectorOpen(false);
   jbxSetGenreCloudVisible(false);
-  const hashJukeboxId = jbxCurrentHashJukeboxId();
-  if (jbxHasJukebox(hashJukeboxId)) {
-    jbxApplyJukebox(hashJukeboxId);
-    return;
-  }
-
-  jbxApplyJukebox(jbxJukeboxes[0].id);
+  if (!jbxCurrentJukeboxId) return;
+  jbxApplyJukebox(jbxCurrentJukeboxId);
 });
 </script>
