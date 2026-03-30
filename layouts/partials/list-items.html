@@ -1,14 +1,13 @@
 {{ $entries := .entries }}
 {{ $genreBase := .genreBase }}
 {{ $prefix := .prefix }}
+{{ $currentGenre := .currentGenre | default "" }}
 
 <section id="{{ $prefix }}-listing">
   {{ range $entries }}
     {{ $entryType := lower .type }}
     <article
       class="{{ $prefix }}-item {{ $prefix }}-item-{{ $entryType }}"
-      data-type="{{ $entryType }}"
-      data-genres="{{ with .genres }}{{ delimit . "," | lower }}{{ end }}"
     >
       <div class="{{ $prefix }}-item-inner">
         <div class="{{ $prefix }}-content">
@@ -37,7 +36,7 @@
             <p class="{{ $prefix }}-tags">
               Tags:
               {{ range . }}
-                <a href="{{ $genreBase }}?genre={{ . | urlquery }}">#{{ . | lower }}</a>
+                <a href="{{ printf "%s%s/" $genreBase (. | urlize) | relURL }}" class="{{ if eq $currentGenre . }}{{ $prefix }}-active-filter{{ end }}">#{{ . | lower }}</a>
               {{ end }}
             </p>
           {{ end }}

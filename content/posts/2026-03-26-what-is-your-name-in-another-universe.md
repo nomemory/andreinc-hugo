@@ -58,11 +58,11 @@ So this `name generator` is exactly that:
         <label for="got-email">
           5. What is your email address?
         </label>
-        <input id="got-email" name="email" type="email" autocomplete="off" required />
+        <input id="got-email" name="email" type="text" autocomplete="off" required />
         <label for="got-phone">
           6. What is your phone number?
         </label>
-        <input id="got-phone" name="phone" type="tel" autocomplete="off" required />
+        <input id="got-phone" name="phone" type="text" autocomplete="off" required />
         <button type="submit" id="got-reveal">Reveal result</button>
       </form>
     </div>

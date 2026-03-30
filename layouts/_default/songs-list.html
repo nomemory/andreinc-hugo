@@ -8,35 +8,83 @@
   </header>
 
   <p class="sng-back-link">
-    <a href="/jukebox/">← Listen to the songs at the /jukebox</a>
+    <a href="{{ "jukebox/" | relURL }}">← Listen to the songs at the /jukebox</a>
   </p>
 
-  {{ $entries := sort site.Data.songs.entries "title" }}
+  {{ $allEntries := sort site.Data.songs.entries "title" }}
+  {{ $currentGenre := .Params.entryGenre | default "" }}
 
   {{ $allGenres := slice }}
-  {{ range $entries }}
+  {{ range $allEntries }}
     {{ range .genres }}
       {{ $allGenres = $allGenres | append . }}
     {{ end }}
   {{ end }}
   {{ $allGenres = $allGenres | uniq | sort }}
 
+  {{ $entries := $allEntries }}
+  {{ if $currentGenre }}
+    {{ $filtered := slice }}
+    {{ range $allEntries }}
+      {{ if in .genres $currentGenre }}
+        {{ $filtered = $filtered | append . }}
+      {{ end }}
+    {{ end }}
+    {{ $entries = $filtered }}
+  {{ end }}
+
+  {{ $pageSize := 50 }}
+  {{ $pageNum := .Params.entryPage | default 1 }}
+  {{ $totalPages := .Params.entryTotalPages | default (div (add (len $entries) 49) 50) }}
+  {{ $start := mul (sub $pageNum 1) $pageSize }}
+  {{ $pageEntries := first $pageSize (after $start $entries) }}
+
+  {{ $basePath := "lists/songs/" }}
+  {{ if $currentGenre }}
+    {{ $basePath = printf "lists/songs/%s/" ($currentGenre | urlize) }}
+  {{ end }}
+
+  {{ $prevURL := "" }}
+  {{ if gt $pageNum 1 }}
+    {{ if eq $pageNum 2 }}
+      {{ $prevURL = $basePath }}
+    {{ else }}
+      {{ $prevURL = printf "%spage/%d/" $basePath (sub $pageNum 1) }}
+    {{ end }}
+  {{ end }}
+
+  {{ $nextURL := "" }}
+  {{ if lt $pageNum $totalPages }}
+    {{ $nextURL = printf "%spage/%d/" $basePath (add $pageNum 1) }}
+  {{ end }}
+
   {{ partial "list-filters.html" (dict
-    "base" "/songs/"
+    "base" "lists/songs/"
     "genres" $allGenres
-    "showTypes" false
     "prefix" "sng"
+    "currentGenre" $currentGenre
   ) }}
 
   <br/>
 
   {{ partial "list-items.html" (dict
-    "entries" $entries
-    "genreBase" "/songs/"
+    "entries" $pageEntries
+    "genreBase" "lists/songs/"
     "prefix" "sng"
+    "currentGenre" $currentGenre
   ) }}
-</main>
 
-{{ partial "scripts-filters.html" . }}
+  {{ if gt $totalPages 1 }}
+    <nav class="sng-pagination">
+      {{ if $prevURL }}
+        <a href="{{ $prevURL | relURL }}">newer</a>
+      {{ end }}
+      <span>page {{ $pageNum }} / {{ $totalPages }}</span>
+      {{ if $nextURL }}
+        <a href="{{ $nextURL | relURL }}">older</a>
+      {{ end }}
+    </nav>
+  {{ end }}
+</main>
 
 {{ end }}

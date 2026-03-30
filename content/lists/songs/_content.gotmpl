@@ -1,0 +1,64 @@
+{{ $adapter := . }}
+{{ $allEntries := sort site.Data.songs.entries "title" }}
+{{ $allGenres := slice }}
+{{ range $allEntries }}
+  {{ range .genres }}
+    {{ $allGenres = $allGenres | append . }}
+  {{ end }}
+{{ end }}
+{{ $allGenres = $allGenres | uniq | sort }}
+
+{{ $pageSize := 50 }}
+{{ $totalEntries := len $allEntries }}
+{{ $totalPages := div (add $totalEntries (sub $pageSize 1)) $pageSize }}
+
+{{ range seq 2 $totalPages }}
+  {{ $pageNum := . }}
+  {{ $page := dict
+    "content" (dict "mediaType" "text/markdown" "value" "A filterable list of favorite songs.")
+    "kind" "page"
+    "layout" "songs-list"
+    "params" (dict "entryPage" $pageNum "entryTotalPages" $totalPages)
+    "path" (printf "page/%d" $pageNum)
+    "title" "Favorite Songs"
+  }}
+  {{ $adapter.AddPage $page }}
+{{ end }}
+
+{{ range $allGenres }}
+  {{ $genre := . }}
+  {{ $genreEntries := slice }}
+  {{ range $allEntries }}
+    {{ if in .genres $genre }}
+      {{ $genreEntries = $genreEntries | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $genreTotal := len $genreEntries }}
+  {{ $genrePages := div (add $genreTotal (sub $pageSize 1)) $pageSize }}
+  {{ $content := dict
+    "mediaType" "text/markdown"
+    "value" (printf "Songs tagged with `%s`.\n\nA filterable list of favorite songs." $genre)
+  }}
+  {{ $page := dict
+    "content" $content
+    "kind" "page"
+    "layout" "songs-list"
+    "params" (dict "entryGenre" $genre "entryPage" 1 "entryTotalPages" $genrePages)
+    "path" ($genre | urlize)
+    "title" (printf "#%s" $genre)
+  }}
+  {{ $adapter.AddPage $page }}
+
+  {{ range seq 2 $genrePages }}
+    {{ $pageNum := . }}
+    {{ $extraPage := dict
+      "content" $content
+      "kind" "page"
+      "layout" "songs-list"
+      "params" (dict "entryGenre" $genre "entryPage" $pageNum "entryTotalPages" $genrePages)
+      "path" (printf "%s/page/%d" ($genre | urlize) $pageNum)
+      "title" (printf "#%s" $genre)
+    }}
+    {{ $adapter.AddPage $extraPage }}
+  {{ end }}
+{{ end }}

@@ -1,0 +1,63 @@
+{{ $adapter := . }}
+{{ $allTags := slice }}
+{{ range site.Data.links.links }}
+  {{ range .tags }}
+    {{ $allTags = $allTags | append . }}
+  {{ end }}
+{{ end }}
+
+{{ $allLinks := sort site.Data.links.links "title" }}
+{{ $pageSize := 50 }}
+{{ $totalLinks := len $allLinks }}
+{{ $totalPages := div (add $totalLinks (sub $pageSize 1)) $pageSize }}
+
+{{ range seq 2 $totalPages }}
+  {{ $pageNum := . }}
+  {{ $page := dict
+    "content" (dict "mediaType" "text/markdown" "value" "Browse all links.")
+    "kind" "page"
+    "layout" "links-list"
+    "params" (dict "linkPage" $pageNum "linkTotalPages" $totalPages)
+    "path" (printf "page/%d" $pageNum)
+    "title" "Links"
+  }}
+  {{ $adapter.AddPage $page }}
+{{ end }}
+
+{{ range ($allTags | uniq | sort) }}
+  {{ $tag := . }}
+  {{ $tagLinks := slice }}
+  {{ range $allLinks }}
+    {{ if in .tags $tag }}
+      {{ $tagLinks = $tagLinks | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $tagTotal := len $tagLinks }}
+  {{ $tagPages := div (add $tagTotal (sub $pageSize 1)) $pageSize }}
+  {{ $content := dict
+    "mediaType" "text/markdown"
+    "value" (printf "Links tagged with `%s`.\n\nThis place is my *garden of curiosities*, or *a chocolate factory*, or *artifacts from an alternative Internet that never quite happened*. This section is a work in progress, and if the number of links increases, I will need to find a better solution to manage them." $tag)
+  }}
+  {{ $page := dict
+    "content" $content
+    "kind" "page"
+    "layout" "links-list"
+    "params" (dict "linkTag" $tag "linkPage" 1 "linkTotalPages" $tagPages)
+    "path" ($tag | urlize)
+    "title" (printf "#%s" $tag)
+  }}
+  {{ $adapter.AddPage $page }}
+
+  {{ range seq 2 $tagPages }}
+    {{ $pageNum := . }}
+    {{ $extraPage := dict
+      "content" $content
+      "kind" "page"
+      "layout" "links-list"
+      "params" (dict "linkTag" $tag "linkPage" $pageNum "linkTotalPages" $tagPages)
+      "path" (printf "%s/page/%d" ($tag | urlize) $pageNum)
+      "title" (printf "#%s" $tag)
+    }}
+    {{ $adapter.AddPage $extraPage }}
+  {{ end }}
+{{ end }}

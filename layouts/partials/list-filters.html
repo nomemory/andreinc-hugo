@@ -1,17 +1,14 @@
 {{ $base := .base }}
 {{ $genres := .genres }}
-{{ $showTypes := .showTypes }}
 {{ $prefix := .prefix }}
+{{ $currentGenre := .currentGenre | default "" }}
+{{ $baseURL := $base | relURL }}
 
 <section class="{{ $prefix }}-filters">
   <p class="{{ $prefix }}-filter-links">
-    <sub><a href="{{ $base }}">all</a></sub>
-    {{ if $showTypes }}
-      <sub><a href="{{ $base }}?type=album">albums</a></sub>
-      <sub><a href="{{ $base }}?type=song">songs</a></sub>
-    {{ end }}
+    <sub><a href="{{ $baseURL }}" class="{{ if not $currentGenre }}{{ $prefix }}-active-filter{{ end }}">all</a></sub>
     {{ range $genres }}
-      <sub><a href="{{ $base }}?genre={{ . | urlquery }}">#{{ . | lower }}</a></sub>
+      <sub><a href="{{ printf "%s%s/" $base (. | urlize) | relURL }}" class="{{ if eq $currentGenre . }}{{ $prefix }}-active-filter{{ end }}">#{{ . | lower }}</a></sub>
     {{ end }}
   </p>
 </section>

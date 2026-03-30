@@ -8,35 +8,85 @@
   </header>
 
   <p class="alb-back-link">
-    <a href="/jukebox/">← Listen to (some of) the songs at the /jukebox</a>
+    <a href="{{ "jukebox/" | relURL }}">← Listen to (some of) the songs at the /jukebox</a>
   </p>
 
-  {{ $entries := sort site.Data.albums.entries "title" }}
+  {{ $allEntries := sort site.Data.albums.entries "title" }}
+  {{ $currentGenre := .Params.entryGenre | default "" }}
 
   {{ $allGenres := slice }}
-  {{ range $entries }}
+  {{ range $allEntries }}
     {{ range .genres }}
       {{ $allGenres = $allGenres | append . }}
     {{ end }}
   {{ end }}
   {{ $allGenres = $allGenres | uniq | sort }}
 
+  {{ $entries := $allEntries }}
+  {{ if $currentGenre }}
+    {{ $filtered := slice }}
+    {{ range $allEntries }}
+      {{ if in .genres $currentGenre }}
+        {{ $filtered = $filtered | append . }}
+      {{ end }}
+    {{ end }}
+    {{ $entries = $filtered }}
+  {{ end }}
+
+  {{ $pageSize := 50 }}
+  {{ $pageNum := .Params.entryPage | default 1 }}
+  {{ $totalPages := .Params.entryTotalPages | default (div (add (len $entries) 49) 50) }}
+  {{ $start := mul (sub $pageNum 1) $pageSize }}
+  {{ $pageEntries := first $pageSize (after $start $entries) }}
+
+  {{ $basePath := "lists/albums/" }}
+  {{ if $currentGenre }}
+    {{ $basePath = printf "lists/albums/%s/" ($currentGenre | urlize) }}
+  {{ end }}
+
+  {{ $prevURL := "" }}
+  {{ if gt $pageNum 1 }}
+    {{ if eq $pageNum 2 }}
+      {{ $prevURL = $basePath }}
+    {{ else }}
+      {{ $prevURL = printf "%spage/%d/" $basePath (sub $pageNum 1) }}
+    {{ end }}
+  {{ end }}
+
+  {{ $nextURL := "" }}
+  {{ if lt $pageNum $totalPages }}
+    {{ $nextURL = printf "%spage/%d/" $basePath (add $pageNum 1) }}
+  {{ end }}
+
   {{ partial "list-filters.html" (dict
-    "base" "/albums/"
+    "base" "lists/albums/"
     "genres" $allGenres
-    "showTypes" false
     "prefix" "alb"
+    "currentGenre" $currentGenre
   ) }}
 
   <br/>
 
   {{ partial "list-items.html" (dict
-    "entries" $entries
-    "genreBase" "/albums/"
+    "entries" $pageEntries
+    "genreBase" "lists/albums/"
     "prefix" "alb"
+    "currentGenre" $currentGenre
   ) }}
+
+  {{ if gt $totalPages 1 }}
+    <nav class="alb-pagination">
+      {{ if $prevURL }}
+        <a href="{{ $prevURL | relURL }}">newer</a>
+      {{ end }}
+      <span>page {{ $pageNum }} / {{ $totalPages }}</span>
+      {{ if $nextURL }}
+        <a href="{{ $nextURL | relURL }}">older</a>
+      {{ end }}
+    </nav>
+  {{ end }}
 </main>
 
-{{ partial "scripts-filters.html" . }}
+{{ partial "scripts-preview.html" . }}
 
 {{ end }}

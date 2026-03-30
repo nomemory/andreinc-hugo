@@ -7,37 +7,68 @@
     {{ end }}
   </header>
 
-  {{ $links := sort site.Data.links.links "title" }}
+  {{ $allLinks := sort site.Data.links.links "title" }}
+  {{ $currentTag := .Params.linkTag | default "" }}
 
   {{ $allTags := slice }}
-  {{ range $links }}
+  {{ range $allLinks }}
     {{ range .tags }}
       {{ $allTags = $allTags | append . }}
     {{ end }}
   {{ end }}
   {{ $allTags = $allTags | uniq | sort }}
 
+  {{ $links := $allLinks }}
+  {{ if $currentTag }}
+    {{ $filtered := slice }}
+    {{ range $allLinks }}
+      {{ if in .tags $currentTag }}
+        {{ $filtered = $filtered | append . }}
+      {{ end }}
+    {{ end }}
+    {{ $links = $filtered }}
+  {{ end }}
+
+  {{ $pageSize := 50 }}
+  {{ $pageNum := .Params.linkPage | default 1 }}
+  {{ $totalPages := .Params.linkTotalPages | default (div (add (len $links) 49) 50) }}
+  {{ $start := mul (sub $pageNum 1) $pageSize }}
+  {{ $pageLinks := first $pageSize (after $start $links) }}
+
+  {{ $basePath := "links/" }}
+  {{ if $currentTag }}
+    {{ $basePath = printf "links/%s/" ($currentTag | urlize) }}
+  {{ end }}
+
+  {{ $prevURL := "" }}
+  {{ if gt $pageNum 1 }}
+    {{ if eq $pageNum 2 }}
+      {{ $prevURL = $basePath }}
+    {{ else }}
+      {{ $prevURL = printf "%spage/%d/" $basePath (sub $pageNum 1) }}
+    {{ end }}
+  {{ end }}
+
+  {{ $nextURL := "" }}
+  {{ if lt $pageNum $totalPages }}
+    {{ $nextURL = printf "%spage/%d/" $basePath (add $pageNum 1) }}
+  {{ end }}
+
   <section>
     <p>
-      <sub><a href="/links/">all</a></sub>
+      <sub><a href="{{ "links/" | relURL }}" class="{{ if not $currentTag }}active-tag{{ end }}">all</a></sub>
       {{ range $allTags }}
-        <sub><a href="/links/?tag={{ . | urlquery }}">#{{ . | lower }}</a></sub>
+        {{ $tag := . }}
+        <sub><a href="{{ printf "links/%s/" ($tag | urlize) | relURL }}" class="{{ if eq $currentTag $tag }}active-tag{{ end }}">#{{ $tag | lower }}</a></sub>
       {{ end }}
-    </p>
-
-    <p>
-      <button id="feeling-lucky">Feeling lucky</button>
     </p>
   </section>
 
   <br/>
 
   <section id="links-list">
-    {{ range $links }}
-      <article
-        class="link-item"
-        data-tags="{{ delimit .tags "," }}"
-      >
+    {{ range $pageLinks }}
+      <article class="link-item">
         <h2>
           <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">
             {{ .title }}
@@ -51,13 +82,27 @@
         {{ with .tags }}
           <p class="link-tags">
             {{ range . }}
-              <sub><a href="/links/?tag={{ . | urlquery }}">#{{ . | lower }}</a></sub>
+              <sub><a href="{{ printf "links/%s/" (. | urlize) | relURL }}" class="{{ if eq $currentTag . }}active-tag{{ end }}">#{{ . | lower }}</a></sub>
             {{ end }}
           </p>
         {{ end }}
       </article>
+    {{ else }}
+      <p>No links for this tag yet.</p>
     {{ end }}
   </section>
+
+  {{ if gt $totalPages 1 }}
+    <nav class="links-pagination">
+      {{ if $prevURL }}
+        <a href="{{ $prevURL | relURL }}">newer</a>
+      {{ end }}
+      <span>page {{ $pageNum }} / {{ $totalPages }}</span>
+      {{ if $nextURL }}
+        <a href="{{ $nextURL | relURL }}">older</a>
+      {{ end }}
+    </nav>
+  {{ end }}
 </main>
 
 <style>
@@ -74,86 +119,14 @@
     color: #fff;
 }
 
-.links-page button {
-    font-size: 0.9em;
-    padding: 4px 8px;
-    border: 1px solid #000;
-    background: transparent;
-}
-
-.links-page button:hover {
-    background: #000;
-    color: #fff;
+.links-page .links-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    font-size: 0.9rem;
 }
 </style>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const root = document.querySelector(".links-page");
-  if (!root) return;
-
-  const items = root.querySelectorAll(".link-item");
-
-  function normalize(tag) {
-    return (tag || "").trim().toLowerCase();
-  }
-
-  function applyFilter(tag) {
-    const wanted = normalize(tag);
-
-    items.forEach((item) => {
-      const tags = (item.dataset.tags || "")
-        .split(",")
-        .map(normalize)
-        .filter(Boolean);
-
-      const visible = !wanted || wanted === "all" || tags.includes(wanted);
-      item.style.display = visible ? "" : "none";
-    });
-  }
-
-  const params = new URLSearchParams(window.location.search);
-  const tag = params.get("tag");
-  applyFilter(tag);
-
-  const currentTag = normalize(tag);
-
-  root.querySelectorAll('a[href*="/links/?tag="]').forEach((link) => {
-    const url = new URL(link.href);
-    const linkTag = normalize(url.searchParams.get("tag"));
-
-    if (currentTag && linkTag === currentTag) {
-      link.classList.add("active-tag");
-    }
-  });
-
-  if (!currentTag) {
-    const allLink = root.querySelector('a[href="/links/"]');
-    if (allLink) {
-      allLink.classList.add("active-tag");
-    }
-  }
-
-  const luckyBtn = root.querySelector("#feeling-lucky");
-
-  if (luckyBtn) {
-    luckyBtn.addEventListener("click", () => {
-      const visibleItems = Array.from(items).filter(
-        (item) => item.style.display !== "none"
-      );
-
-      if (visibleItems.length === 0) return;
-
-      const randomItem =
-        visibleItems[Math.floor(Math.random() * visibleItems.length)];
-
-      const link = randomItem.querySelector("h2 a");
-      if (link) {
-        window.open(link.href, "_blank");
-      }
-    });
-  }
-});
-</script>
 
 {{ end }}
