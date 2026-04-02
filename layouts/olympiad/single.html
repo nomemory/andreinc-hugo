@@ -33,6 +33,43 @@
   {{ partial "olympiad-linkify.html" .Content }}
 </content>
 
+{{ $problems := slice }}
+{{ range sort (where site.RegularPages "Section" "olympiad") "Params.code" "desc" }}
+  {{ if .Params.code }}
+    {{ $problems = $problems | append . }}
+  {{ end }}
+{{ end }}
+{{ $currentIndex := -1 }}
+{{ range $idx, $problem := $problems }}
+  {{ if eq $problem.RelPermalink $.RelPermalink }}
+    {{ $currentIndex = $idx }}
+  {{ end }}
+{{ end }}
+{{ $prevProblem := "" }}
+{{ $nextProblem := "" }}
+{{ if ge $currentIndex 0 }}
+  {{ if gt $currentIndex 0 }}
+    {{ $nextProblem = index $problems (sub $currentIndex 1) }}
+  {{ end }}
+  {{ if lt $currentIndex (sub (len $problems) 1) }}
+    {{ $prevProblem = index $problems (add $currentIndex 1) }}
+  {{ end }}
+{{ end }}
+
+<nav class="olympiad-problem-nav list-pagination" aria-label="Problem navigation">
+  {{ if $prevProblem }}
+    <a href="{{ $prevProblem.RelPermalink }}" class="list-page-nav">prev</a>
+  {{ else }}
+    <span class="list-page-nav olympiad-problem-nav-disabled" aria-disabled="true">prev</span>
+  {{ end }}
+  <span class="list-page-numbers"></span>
+  {{ if $nextProblem }}
+    <a href="{{ $nextProblem.RelPermalink }}" class="list-page-nav">next</a>
+  {{ else }}
+    <span class="list-page-nav olympiad-problem-nav-disabled" aria-disabled="true">next</span>
+  {{ end }}
+</nav>
+
 <br/><hr/><br/>
 
 {{ partial "git-olympiad.html" . }}
@@ -55,6 +92,26 @@
     line-height: 1.2;
     padding: 0.2rem 0.45rem;
     border: 1px solid #000;
+}
+
+.olympiad-problem-nav {
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+    justify-content: flex-start;
+}
+
+.olympiad-problem-nav .list-page-numbers {
+    display: none;
+}
+
+.olympiad-problem-nav .list-page-nav:last-child {
+    margin-left: 0;
+}
+
+.olympiad-problem-nav-disabled {
+    opacity: 0.45;
+    pointer-events: none;
+    cursor: default;
 }
 </style>
 

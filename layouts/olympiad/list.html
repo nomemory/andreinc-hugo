@@ -151,10 +151,10 @@
     </div>
     <br/>
 
-    <div class="olympiad-grade-links">
-      <a href="{{ if and $currentTag $currentDifficulty }}{{ printf "olympiad/tags/%s/difficulty/%s/" ($currentTag | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentTag }}{{ printf "olympiad/tags/%s/" ($currentTag | urlize) | relURL }}{{ else if $currentDifficulty }}{{ printf "olympiad/difficulty/%s/" ($currentDifficulty | urlize) | relURL }}{{ else }}{{ $allURL }}{{ end }}" class="{{ if not $currentGrade }}active-tag{{ end }}">/all</a>&nbsp;
+    <div class="home-tags olympiad-grade-links">
+      <sub><a href="{{ if and $currentTag $currentDifficulty }}{{ printf "olympiad/tags/%s/difficulty/%s/" ($currentTag | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentTag }}{{ printf "olympiad/tags/%s/" ($currentTag | urlize) | relURL }}{{ else if $currentDifficulty }}{{ printf "olympiad/difficulty/%s/" ($currentDifficulty | urlize) | relURL }}{{ else }}{{ $allURL }}{{ end }}" class="{{ if not $currentGrade }}active-tag{{ end }}">#all</a></sub>
       {{ range $allGrades }}
-        <a href="{{ if and $currentTag $currentDifficulty }}{{ printf "olympiad/tags/%s/grade/%s/difficulty/%s/" ($currentTag | urlize) (. | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentTag }}{{ printf "olympiad/tags/%s/grade/%s/" ($currentTag | urlize) (. | urlize) | relURL }}{{ else if $currentDifficulty }}{{ printf "olympiad/grade/%s/difficulty/%s/" (. | urlize) ($currentDifficulty | urlize) | relURL }}{{ else }}{{ printf "olympiad/grade/%s/" (. | urlize) | relURL }}{{ end }}" class="{{ if eq $currentGrade . }}active-tag{{ end }}">/{{ . | lower }}</a>&nbsp;
+        <sub><a href="{{ if and $currentTag $currentDifficulty }}{{ printf "olympiad/tags/%s/grade/%s/difficulty/%s/" ($currentTag | urlize) (. | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentTag }}{{ printf "olympiad/tags/%s/grade/%s/" ($currentTag | urlize) (. | urlize) | relURL }}{{ else if $currentDifficulty }}{{ printf "olympiad/grade/%s/difficulty/%s/" (. | urlize) ($currentDifficulty | urlize) | relURL }}{{ else }}{{ printf "olympiad/grade/%s/" (. | urlize) | relURL }}{{ end }}" class="{{ if eq $currentGrade . }}active-tag{{ end }}">#{{ . | lower }}</a></sub>
       {{ end }}
     </div>
   </section>
@@ -245,12 +245,7 @@
 }
 
 .olympiad-page .olympiad-grade-links {
-    margin-bottom: 0;
-}
-
-.olympiad-page .olympiad-grade-links a {
-    font-size: 1em;
-    margin-right: 0.2rem;
+    margin: 0;
 }
 
 .olympiad-page .olympiad-tag-links {
