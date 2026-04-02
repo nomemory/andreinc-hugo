@@ -34,7 +34,11 @@
 
 <br/>
 
+{{ if or (eq .Type "olympiad") (eq .Section "olympiad") }}
+{{ partial "git-olympiad.html" . }}
+{{ else }}
 {{ partial "git.html" . }}
+{{ end }}
 
 <br/>
 

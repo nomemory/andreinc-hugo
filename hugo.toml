@@ -30,9 +30,10 @@ enable = true
 [params]
   description = "A minimalist developer blog."
   author = "nomemory"
+  favicon = "/favicon.svg"
+  faviconPNG = "/favicon.png"
   hide_footer = true
   showQuote = true
-  customCSS = ["css/custom.css"]
   mainSections = ["/posts"]
   enablePostNavigator = true
 
@@ -54,6 +55,11 @@ enable = true
     name = "jukebox"
     url = "/jukebox/"
     weight = 22
+[[menu.main]]
+    identifier = "olympiad"
+    name = "olympiad"
+    url = "/olympiad/"
+    weight = 15
 [[menu.main]]
     identifier = "lists"
     name = "lists"

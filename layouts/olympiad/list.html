@@ -1,0 +1,383 @@
+{{ define "main" }}
+
+{{ $problems := slice }}
+{{ range sort (where site.RegularPages "Section" "olympiad") "Params.code" "desc" }}
+  {{ if .Params.code }}
+    {{ $problems = $problems | append . }}
+  {{ end }}
+{{ end }}
+{{ $totalProblemCount := len $problems }}
+{{ $currentTag := .Params.olympiadTag | default "" }}
+{{ $currentDifficulty := .Params.olympiadDifficulty | default "" }}
+{{ $currentGrade := .Params.olympiadGrade | default "" }}
+{{ $tagSet := slice }}
+{{ $difficultySet := slice }}
+{{ $gradeSet := slice }}
+{{ range $problems }}
+  {{ range (.Params.problemTags | default slice) }}
+    {{ $tagSet = $tagSet | append . }}
+  {{ end }}
+  {{ with .Params.difficulty }}
+    {{ $difficultySet = $difficultySet | append . }}
+  {{ end }}
+  {{ range (.Params.gradeLevel | default slice) }}
+    {{ $gradeSet = $gradeSet | append . }}
+  {{ end }}
+{{ end }}
+{{ $allTags := $tagSet | uniq | sort }}
+{{ $difficultyPool := $difficultySet | uniq }}
+{{ $gradePool := $gradeSet | uniq }}
+{{ $allDifficulties := slice }}
+{{ $allGrades := slice }}
+{{ range slice "easy" "medium" "hard" "very hard" }}
+  {{ if in $difficultyPool . }}
+    {{ $allDifficulties = $allDifficulties | append . }}
+  {{ end }}
+{{ end }}
+{{ range $difficultyPool }}
+  {{ if not (in $allDifficulties .) }}
+    {{ $allDifficulties = $allDifficulties | append . }}
+  {{ end }}
+{{ end }}
+{{ range slice "8th" "9th" "10th" "11th" "12th" "unknown" }}
+  {{ if in $gradePool . }}
+    {{ $allGrades = $allGrades | append . }}
+  {{ end }}
+{{ end }}
+{{ range $gradePool }}
+  {{ if not (in $allGrades .) }}
+    {{ $allGrades = $allGrades | append . }}
+  {{ end }}
+{{ end }}
+
+{{ if $currentTag }}
+  {{ $filtered := slice }}
+  {{ range $problems }}
+    {{ if in (.Params.problemTags | default slice) $currentTag }}
+      {{ $filtered = $filtered | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $problems = $filtered }}
+{{ end }}
+{{ if $currentDifficulty }}
+  {{ $filtered := slice }}
+  {{ range $problems }}
+    {{ if eq (.Params.difficulty | default "") $currentDifficulty }}
+      {{ $filtered = $filtered | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $problems = $filtered }}
+{{ end }}
+{{ if $currentGrade }}
+  {{ $filtered := slice }}
+  {{ range $problems }}
+    {{ if in (.Params.gradeLevel | default slice) $currentGrade }}
+      {{ $filtered = $filtered | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $problems = $filtered }}
+{{ end }}
+{{ $problemCount := len $problems }}
+
+{{ $pageSize := 50 }}
+{{ $pageNum := .Params.olympiadPage | default 1 }}
+{{ $totalPages := .Params.olympiadTotalPages | default (cond (gt (len $problems) 0) (div (add (len $problems) 49) 50) 1) }}
+{{ $start := mul (sub $pageNum 1) $pageSize }}
+{{ $pageProblems := first $pageSize (after $start $problems) }}
+
+{{ $basePath := "olympiad/" }}
+{{ if and $currentTag $currentDifficulty $currentGrade }}
+  {{ $basePath = printf "olympiad/tags/%s/grade/%s/difficulty/%s/" ($currentTag | urlize) ($currentGrade | urlize) ($currentDifficulty | urlize) }}
+{{ else if and $currentTag $currentGrade }}
+  {{ $basePath = printf "olympiad/tags/%s/grade/%s/" ($currentTag | urlize) ($currentGrade | urlize) }}
+{{ else if and $currentDifficulty $currentGrade }}
+  {{ $basePath = printf "olympiad/grade/%s/difficulty/%s/" ($currentGrade | urlize) ($currentDifficulty | urlize) }}
+{{ else if and $currentTag $currentDifficulty }}
+  {{ $basePath = printf "olympiad/tags/%s/difficulty/%s/" ($currentTag | urlize) ($currentDifficulty | urlize) }}
+{{ else if $currentTag }}
+  {{ $basePath = printf "olympiad/tags/%s/" ($currentTag | urlize) }}
+{{ else if $currentDifficulty }}
+  {{ $basePath = printf "olympiad/difficulty/%s/" ($currentDifficulty | urlize) }}
+{{ else if $currentGrade }}
+  {{ $basePath = printf "olympiad/grade/%s/" ($currentGrade | urlize) }}
+{{ end }}
+
+{{ $prevURL := "" }}
+{{ if gt $pageNum 1 }}
+  {{ if eq $pageNum 2 }}
+    {{ $prevURL = $basePath }}
+  {{ else }}
+    {{ $prevURL = printf "%spage/%d/" $basePath (sub $pageNum 1) }}
+  {{ end }}
+{{ end }}
+
+{{ $nextURL := "" }}
+{{ if lt $pageNum $totalPages }}
+  {{ $nextURL = printf "%spage/%d/" $basePath (add $pageNum 1) }}
+{{ end }}
+
+{{ $allURL := "olympiad/" | relURL }}
+{{ $tagURLFor := dict }}
+{{ $difficultyURLFor := dict }}
+
+<main class="olympiad-page">
+  <header>
+    {{ with .Content }}
+      <div>{{ . }}</div>
+    {{ end }}
+    {{ if or $currentTag $currentDifficulty $currentGrade }}
+      <small class="olympiad-remove-filter">
+        <a href="{{ $allURL }}">Remove Filter</a>
+      </small>
+    {{ end }}
+  </header>
+
+  <br/>
+
+  <section class="olympiad-filters">
+    <div class="olympiad-difficulty-links">
+      <a href="{{ if and $currentTag $currentGrade }}{{ printf "olympiad/tags/%s/grade/%s/" ($currentTag | urlize) ($currentGrade | urlize) | relURL }}{{ else if $currentTag }}{{ printf "olympiad/tags/%s/" ($currentTag | urlize) | relURL }}{{ else if $currentGrade }}{{ printf "olympiad/grade/%s/" ($currentGrade | urlize) | relURL }}{{ else }}{{ $allURL }}{{ end }}" class="{{ if not $currentDifficulty }}active-tag{{ end }}">/all</a>&nbsp;
+      {{ range $allDifficulties }}
+        <a href="{{ if and $currentTag $currentGrade }}{{ printf "olympiad/tags/%s/grade/%s/difficulty/%s/" ($currentTag | urlize) ($currentGrade | urlize) (. | urlize) | relURL }}{{ else if $currentTag }}{{ printf "olympiad/tags/%s/difficulty/%s/" ($currentTag | urlize) (. | urlize) | relURL }}{{ else if $currentGrade }}{{ printf "olympiad/grade/%s/difficulty/%s/" ($currentGrade | urlize) (. | urlize) | relURL }}{{ else }}{{ printf "olympiad/difficulty/%s/" (. | urlize) | relURL }}{{ end }}" class="{{ if eq $currentDifficulty . }}active-tag{{ end }}">/{{ . | lower }}</a>&nbsp;
+      {{ end }}
+    </div>
+    <br/>
+
+    <div class="home-tags olympiad-tag-links">
+      <sub><a href="{{ if and $currentDifficulty $currentGrade }}{{ printf "olympiad/grade/%s/difficulty/%s/" ($currentGrade | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentDifficulty }}{{ printf "olympiad/difficulty/%s/" ($currentDifficulty | urlize) | relURL }}{{ else if $currentGrade }}{{ printf "olympiad/grade/%s/" ($currentGrade | urlize) | relURL }}{{ else }}{{ $allURL }}{{ end }}" class="{{ if not $currentTag }}active-tag{{ end }}">#all</a></sub>
+      {{ range $allTags }}
+        <sub><a href="{{ if and $currentDifficulty $currentGrade }}{{ printf "olympiad/tags/%s/grade/%s/difficulty/%s/" (. | urlize) ($currentGrade | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentDifficulty }}{{ printf "olympiad/tags/%s/difficulty/%s/" (. | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentGrade }}{{ printf "olympiad/tags/%s/grade/%s/" (. | urlize) ($currentGrade | urlize) | relURL }}{{ else }}{{ printf "olympiad/tags/%s/" (. | urlize) | relURL }}{{ end }}" class="{{ if eq $currentTag . }}active-tag{{ end }}">#{{ . | lower }}</a></sub>
+      {{ end }}
+    </div>
+    <br/>
+
+    <div class="olympiad-grade-links">
+      <a href="{{ if and $currentTag $currentDifficulty }}{{ printf "olympiad/tags/%s/difficulty/%s/" ($currentTag | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentTag }}{{ printf "olympiad/tags/%s/" ($currentTag | urlize) | relURL }}{{ else if $currentDifficulty }}{{ printf "olympiad/difficulty/%s/" ($currentDifficulty | urlize) | relURL }}{{ else }}{{ $allURL }}{{ end }}" class="{{ if not $currentGrade }}active-tag{{ end }}">/all</a>&nbsp;
+      {{ range $allGrades }}
+        <a href="{{ if and $currentTag $currentDifficulty }}{{ printf "olympiad/tags/%s/grade/%s/difficulty/%s/" ($currentTag | urlize) (. | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentTag }}{{ printf "olympiad/tags/%s/grade/%s/" ($currentTag | urlize) (. | urlize) | relURL }}{{ else if $currentDifficulty }}{{ printf "olympiad/grade/%s/difficulty/%s/" (. | urlize) ($currentDifficulty | urlize) | relURL }}{{ else }}{{ printf "olympiad/grade/%s/" (. | urlize) | relURL }}{{ end }}" class="{{ if eq $currentGrade . }}active-tag{{ end }}">/{{ . | lower }}</a>&nbsp;
+      {{ end }}
+    </div>
+  </section>
+
+  <br/>
+
+  {{ if and (gt $totalProblemCount 0) (not $currentTag) (not $currentDifficulty) (not $currentGrade) }}
+    <p class="olympiad-random">
+      <a href="{{ "olympiad/p00001/" | relURL }}" class="olympiad-random-link" id="olympiad-random-link">Try a random problem</a>
+    </p>
+    <br/>
+  {{ end }}
+  {{ if gt $problemCount 0 }}
+    <p class="olympiad-count">{{ $problemCount }} problems</p>
+  {{ else }}
+    <p class="olympiad-count">0 problems</p>
+  {{ end }}
+
+  <br/>
+
+  <section id="olympiad-problem-list">
+    {{ range $pageProblems }}
+      {{ $tags := .Params.problemTags | default slice }}
+      {{ $difficulty := .Params.difficulty | default "" }}
+      {{ $grades := .Params.gradeLevel | default slice }}
+      {{ $preview := .RawContent }}
+      {{ $preview = replaceRE `(?s)<details\b.*?</details>` "" $preview }}
+      {{ $preview = replaceRE `(?s)<p>\s*<a class="mpl" href="[^"]+">.*?</a>\s*</p>` "" $preview }}
+      {{ $preview = partial "olympiad-linkify.html" $preview }}
+      <article class="olympiad-item mp">
+        <p class="olympiad-title-row">
+          <a href="{{ .RelPermalink }}" class="mpl">{{ .Title }}</a>
+          <span class="mpn">{{ .Date.Format "02 Jan, 2006" }}</span>
+        </p>
+        <div class="olympiad-preview">{{ $preview }}</div>
+        <hr class="olympiad-entry-separator"/>
+        {{ if or (gt (len $tags) 0) $difficulty (gt (len $grades) 0) }}
+          <p class="olympiad-tags">
+            {{ range $grades }}
+              <sub><a href="{{ if and $currentTag $currentDifficulty }}{{ printf "olympiad/tags/%s/grade/%s/difficulty/%s/" ($currentTag | urlize) (. | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentTag }}{{ printf "olympiad/tags/%s/grade/%s/" ($currentTag | urlize) (. | urlize) | relURL }}{{ else if $currentDifficulty }}{{ printf "olympiad/grade/%s/difficulty/%s/" (. | urlize) ($currentDifficulty | urlize) | relURL }}{{ else }}{{ printf "olympiad/grade/%s/" (. | urlize) | relURL }}{{ end }}">{{ . | lower }}</a></sub>
+            {{ end }}
+            {{ if and (gt (len $grades) 0) (or $difficulty (gt (len $tags) 0)) }}
+              <sub class="olympiad-meta-separator">&#9675;</sub>
+            {{ end }}
+            {{ with $difficulty }}
+              <sub><a href="{{ if and $currentTag $currentGrade }}{{ printf "olympiad/tags/%s/grade/%s/difficulty/%s/" ($currentTag | urlize) ($currentGrade | urlize) (. | urlize) | relURL }}{{ else if $currentTag }}{{ printf "olympiad/tags/%s/difficulty/%s/" ($currentTag | urlize) (. | urlize) | relURL }}{{ else if $currentGrade }}{{ printf "olympiad/grade/%s/difficulty/%s/" ($currentGrade | urlize) (. | urlize) | relURL }}{{ else }}{{ printf "olympiad/difficulty/%s/" (. | urlize) | relURL }}{{ end }}">{{ . | lower }}</a></sub>
+            {{ end }}
+            {{ if and $difficulty (gt (len $tags) 0) }}
+              <sub class="olympiad-meta-separator">&#9675;</sub>
+            {{ end }}
+            {{ range $tags }}
+              <sub><a href="{{ if and $currentDifficulty $currentGrade }}{{ printf "olympiad/tags/%s/grade/%s/difficulty/%s/" (. | urlize) ($currentGrade | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentDifficulty }}{{ printf "olympiad/tags/%s/difficulty/%s/" (. | urlize) ($currentDifficulty | urlize) | relURL }}{{ else if $currentGrade }}{{ printf "olympiad/tags/%s/grade/%s/" (. | urlize) ($currentGrade | urlize) | relURL }}{{ else }}{{ printf "olympiad/tags/%s/" (. | urlize) | relURL }}{{ end }}">#{{ . | lower }}</a></sub>
+            {{ end }}
+          </p>
+        {{ end }}
+        <p class="olympiad-actions">
+          <a href="{{ .RelPermalink }}" class="olympiad-solution-link">Details</a>
+        </p>
+      </article>
+    {{ else }}
+      <p>No olympiad problems yet.</p>
+    {{ end }}
+  </section>
+
+</main>
+
+<style>
+.olympiad-page .olympiad-filters {
+    margin-bottom: 1rem;
+}
+
+.olympiad-page .olympiad-count {
+    margin: 0.75rem 0 0 0;
+    font-size: 0.9rem;
+}
+
+.olympiad-page .olympiad-remove-filter {
+    margin: 0.35rem 0 0 0;
+}
+
+.olympiad-page .olympiad-difficulty-links {
+    margin-bottom: 0;
+}
+
+.olympiad-page .olympiad-difficulty-links a {
+    font-size: 1em;
+    margin-right: 0.2rem;
+}
+
+.olympiad-page .olympiad-grade-links {
+    margin-bottom: 0;
+}
+
+.olympiad-page .olympiad-grade-links a {
+    font-size: 1em;
+    margin-right: 0.2rem;
+}
+
+.olympiad-page .olympiad-tag-links {
+    margin: 0;
+}
+
+.olympiad-page .olympiad-entry-separator {
+    margin: 0.55rem 0;
+}
+
+.olympiad-page .olympiad-tags {
+    margin: 0.35rem 0 0.45rem 0;
+    font-size: 0.9rem;
+}
+
+.olympiad-page .olympiad-meta-separator {
+    margin: 0 0.1rem;
+}
+
+.olympiad-page .olympiad-item {
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.olympiad-page .olympiad-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.45rem 0;
+}
+
+.olympiad-page .olympiad-title-row .mpn {
+    font: 0.7rem/1.1 sans-serif;
+    font-style: italic;
+}
+
+.olympiad-page .olympiad-preview {
+    margin: 0.3rem 0 0.45rem 0;
+}
+
+.olympiad-page .olympiad-preview .mp {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.olympiad-page .active-tag {
+    font-weight: 700;
+}
+
+.olympiad-page .olympiad-actions {
+    margin: 0 0 0.45rem 0;
+    font-size: 0.9rem;
+}
+
+.olympiad-page .olympiad-random {
+    margin: 0.8rem 0 0 0;
+    font-size: 0.9rem;
+}
+
+.olympiad-page .olympiad-random-link {
+    display: inline-block;
+    border: 1px solid #000;
+    padding: 0.15rem 0.45rem;
+    text-decoration: none;
+}
+
+.olympiad-page .olympiad-random-link:hover {
+    text-decoration: underline;
+}
+
+.olympiad-page .olympiad-solution-link {
+    display: inline-block;
+    border: 1px solid #000;
+    padding: 0.15rem 0.45rem;
+    text-decoration: none;
+}
+
+.olympiad-page .olympiad-solution-link:hover {
+    text-decoration: underline;
+}
+
+</style>
+
+{{ if gt $totalProblemCount 0 }}
+<script>
+(() => {
+  const problemCount = {{ $totalProblemCount }};
+  const randomLink = document.getElementById("olympiad-random-link");
+
+  if (!randomLink || problemCount < 1) return;
+
+  randomLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    const problemNumber = Math.floor(Math.random() * problemCount) + 1;
+    const slug = `p${String(problemNumber).padStart(5, "0")}`;
+    window.location.href = `{{ "olympiad/" | relURL }}${slug}/`;
+  });
+})();
+</script>
+{{ end }}
+
+{{ if gt $totalPages 1 }}
+  <nav class="olympiad-pagination list-pagination">
+    {{ if $prevURL }}
+      <a href="{{ $prevURL | relURL }}" class="list-page-nav">prev</a>
+    {{ end }}
+    <span class="list-page-numbers">
+      {{ range seq 1 $totalPages }}
+        {{ $pageURL := $basePath }}
+        {{ if gt . 1 }}
+          {{ $pageURL = printf "%spage/%d/" $basePath . }}
+        {{ end }}
+        {{ if eq . $pageNum }}
+          <a href="{{ $pageURL | relURL }}" class="list-page-link" aria-current="page">{{ . }}</a>
+        {{ else }}
+          <a href="{{ $pageURL | relURL }}" class="list-page-link">{{ . }}</a>
+        {{ end }}
+      {{ end }}
+    </span>
+    {{ if $nextURL }}
+      <a href="{{ $nextURL | relURL }}" class="list-page-nav">next</a>
+    {{ end }}
+  </nav>
+{{ end }}
+
+{{ end }}

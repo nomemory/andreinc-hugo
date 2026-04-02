@@ -71,13 +71,25 @@
   ) }}
 
   {{ if gt $totalPages 1 }}
-    <nav class="sng-pagination">
+    <nav class="sng-pagination list-pagination">
       {{ if $prevURL }}
-        <a href="{{ $prevURL | relURL }}">newer</a>
+        <a href="{{ $prevURL | relURL }}" class="list-page-nav">prev</a>
       {{ end }}
-      <span>page {{ $pageNum }} / {{ $totalPages }}</span>
+      <span class="list-page-numbers">
+        {{ range seq 1 $totalPages }}
+          {{ $pageURL := $basePath }}
+          {{ if gt . 1 }}
+            {{ $pageURL = printf "%spage/%d/" $basePath . }}
+          {{ end }}
+          {{ if eq . $pageNum }}
+            <a href="{{ $pageURL | relURL }}" class="list-page-link" aria-current="page">{{ . }}</a>
+          {{ else }}
+            <a href="{{ $pageURL | relURL }}" class="list-page-link">{{ . }}</a>
+          {{ end }}
+        {{ end }}
+      </span>
       {{ if $nextURL }}
-        <a href="{{ $nextURL | relURL }}">older</a>
+        <a href="{{ $nextURL | relURL }}" class="list-page-nav">next</a>
       {{ end }}
     </nav>
   {{ end }}

@@ -1,51 +1,71 @@
-<ul>
+<div class="blogroll-page">
   {{ range .Site.Data.blogroll.body.outline }}
     {{ if .outline }}
-      <li><strong>{{ index . "-text" | default (index . "text") }}</strong>
-        <ul>
-          {{ range .outline }}
-            {{/* 1. Restore your original fallback logic for the main link */}}
-            {{ $rawUrl := index . "-htmlUrl" | default (index . "htmlUrl") | default (index . "-xmlUrl") | default (index . "xmlUrl") }}
-            {{ $urlObj := urls.Parse $rawUrl }}
-            {{ $domainOnly := printf "%s://%s/" $urlObj.Scheme $urlObj.Host }}
-            
-            {{/* 2. Specifically grab the RSS feed URL */}}
-            {{ $xmlUrl := index . "-xmlUrl" | default (index . "xmlUrl") }}
-            
-            <li>
+      <section class="blogroll-group">
+        <p class="blogroll-group-title"><strong>{{ index . "-text" | default (index . "text") }}</strong></p>
+        {{ range .outline }}
+          {{ $rawUrl := index . "-htmlUrl" | default (index . "htmlUrl") | default (index . "-xmlUrl") | default (index . "xmlUrl") }}
+          {{ $urlObj := urls.Parse $rawUrl }}
+          {{ $domainOnly := printf "%s://%s/" $urlObj.Scheme $urlObj.Host }}
+          {{ $xmlUrl := index . "-xmlUrl" | default (index . "xmlUrl") }}
+          <article class="blogroll-item">
+            <h2>
               <a href="{{ $domainOnly }}" target="_blank" rel="noopener">{{ index . "-text" | default (index . "text") }}</a>
+            </h2>
+            <p class="blogroll-meta">
+              <a href="{{ $domainOnly }}" target="_blank" rel="noopener">{{ $urlObj.Host }}</a>
               {{ if $xmlUrl }}
-                <a href="{{ $xmlUrl }}" title="RSS Feed" target="_blank" style="text-decoration: none; margin-left: 8px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ee802f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
-                    <path d="M4 11a9 9 0 0 1 9 9"></path>
-                    <path d="M4 4a16 16 0 0 1 16 16"></path>
-                    <circle cx="5" cy="19" r="1"></circle>
-                  </svg>
-                </a>
+                <span>·</span>
+                <a href="{{ $xmlUrl }}" target="_blank" rel="noopener noreferrer">feed</a>
               {{ end }}
-            </li>
-          {{ end }}
-        </ul>
-      </li>
+            </p>
+          </article>
+        {{ end }}
+      </section>
     {{ else }}
-      {{/* Logic for loose links (repeated for consistency) */}}
       {{ $rawUrl := index . "-htmlUrl" | default (index . "htmlUrl") | default (index . "-xmlUrl") | default (index . "xmlUrl") }}
       {{ $urlObj := urls.Parse $rawUrl }}
       {{ $domainOnly := printf "%s://%s/" $urlObj.Scheme $urlObj.Host }}
       {{ $xmlUrl := index . "-xmlUrl" | default (index . "xmlUrl") }}
-      
-      <li>
-        <a href="{{ $domainOnly }}" target="_blank" rel="noopener">{{ index . "-text" | default (index . "text") }}</a>
-        {{ if $xmlUrl }}
-          <a href="{{ $xmlUrl }}" title="RSS Feed" target="_blank" style="text-decoration: none; margin-left: 8px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ee802f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
-              <path d="M4 11a9 9 0 0 1 9 9"></path>
-              <path d="M4 4a16 16 0 0 1 16 16"></path>
-              <circle cx="5" cy="19" r="1"></circle>
-            </svg>
-          </a>
-        {{ end }}
-      </li>
+      <article class="blogroll-item">
+        <h2>
+          <a href="{{ $domainOnly }}" target="_blank" rel="noopener">{{ index . "-text" | default (index . "text") }}</a>
+        </h2>
+        <p class="blogroll-meta">
+          <a href="{{ $domainOnly }}" target="_blank" rel="noopener">{{ $urlObj.Host }}</a>
+          {{ if $xmlUrl }}
+            <span>·</span>
+            <a href="{{ $xmlUrl }}" target="_blank" rel="noopener noreferrer">feed</a>
+          {{ end }}
+        </p>
+      </article>
     {{ end }}
   {{ end }}
-</ul>
+</div>
+
+<style>
+.blogroll-page .blogroll-group {
+    margin-bottom: 1rem;
+}
+
+.blogroll-page .blogroll-group-title {
+    margin: 0 0 0.5rem 0;
+}
+
+.blogroll-page .blogroll-item {
+    border: 1px solid #000;
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.blogroll-page .blogroll-item h2 {
+    margin: 0 0 0.15rem 0;
+    font-size: 1rem;
+}
+
+.blogroll-page .blogroll-meta {
+    margin: 0;
+    font-size: 0.85rem;
+}
+</style>

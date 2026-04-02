@@ -263,6 +263,60 @@ description = "Legend, lore, and human imagination."
 tags = ["art", "games"]
 
 [[links]]
+title = "asctris.nvim"
+url = "https://github.com/jayanthd04/asctris.nvim"
+description = "A Neovim plugin that brings ASCII Tetris into the editor. Naturally."
+tags = ["games", "cli", "tools"]
+
+[[links]]
+title = "A candle-powered Game Boy for post-apocalyptic Tetris"
+url = "https://hackaday.com/2026/03/20/a-candle-powered-game-boy-for-post-apocalyptic-tetris/"
+description = "Hackaday on a Game Boy powered by candle heat. Civilizational resilience through Tetris."
+tags = ["games", "hardware", "blogs"]
+
+[[links]]
+title = "url.town"
+url = "https://url.town/"
+description = "A small directory for interesting personal sites and web curiosities."
+tags = ["indieweb", "directories", "discovery"]
+
+[[links]]
+title = "Raw Web"
+url = "https://rawweb.org/"
+description = "A small-web directory with a taste for rough edges and personal publishing."
+tags = ["indieweb", "directories"]
+
+[[links]]
+title = "verilog2factorio"
+url = "https://github.com/ben-j-c/verilog2factorio"
+description = "Compile Verilog into Factorio circuits. Completely reasonable."
+tags = ["programming", "hardware", "games"]
+
+[[links]]
+title = "The Great Depression"
+url = "https://www.goodreads.com/book/show/6601224-the-great-depression"
+description = "A Goodreads entry for a book on the Great Depression and its political-economic consequences."
+tags = ["books", "history"]
+
+[[links]]
+title = "CSS is Doomed: Rendering Doom in 3D with CSS"
+url = "https://nielsleenheer.com/articles/2026/css-is-doomed-rendering-doom-in-3d-with-css/"
+description = "A browser experiment that uses CSS to render a Doom-like 3D scene."
+tags = ["web", "art", "programming"]
+
+[[links]]
+title = "When prime numbers emerge from motion"
+url = "https://nkode.gr/EN/articles/278/when-prime-numbers-emerge-from-motion"
+description = "A mathematical essay on primes appearing through motion and pattern."
+tags = ["math", "blogs"]
+
+[[links]]
+title = "Poline"
+url = "https://meodai.github.io/poline/"
+description = "A generator for smooth color palettes built from interpolated anchors."
+tags = ["design", "tools", "art"]
+
+[[links]]
 title = "Le Jeune Renard"
 url = "https://lejeunerenard.com"
 description = "Creative technologist opening a window into another dimension."

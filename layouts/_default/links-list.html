@@ -93,13 +93,25 @@
   </section>
 
   {{ if gt $totalPages 1 }}
-    <nav class="links-pagination">
+    <nav class="links-pagination list-pagination">
       {{ if $prevURL }}
-        <a href="{{ $prevURL | relURL }}">newer</a>
+        <a href="{{ $prevURL | relURL }}" class="list-page-nav">prev</a>
       {{ end }}
-      <span>page {{ $pageNum }} / {{ $totalPages }}</span>
+      <span class="list-page-numbers">
+        {{ range seq 1 $totalPages }}
+          {{ $pageURL := $basePath }}
+          {{ if gt . 1 }}
+            {{ $pageURL = printf "%spage/%d/" $basePath . }}
+          {{ end }}
+          {{ if eq . $pageNum }}
+            <a href="{{ $pageURL | relURL }}" class="list-page-link" aria-current="page">{{ . }}</a>
+          {{ else }}
+            <a href="{{ $pageURL | relURL }}" class="list-page-link">{{ . }}</a>
+          {{ end }}
+        {{ end }}
+      </span>
       {{ if $nextURL }}
-        <a href="{{ $nextURL | relURL }}">older</a>
+        <a href="{{ $nextURL | relURL }}" class="list-page-nav">next</a>
       {{ end }}
     </nav>
   {{ end }}
@@ -115,18 +127,9 @@
 }
 
 .links-page .active-tag {
-    background: #000;
-    color: #fff;
+    font-weight: 700;
 }
 
-.links-page .links-pagination {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.75rem;
-    margin-top: 1rem;
-    font-size: 0.9rem;
-}
 </style>
 
 {{ end }}

@@ -1,0 +1,54 @@
+{{- $html := printf "%s" . -}}
+{{- $mathBlocks := findRE `(?s)\\\(.+?\\\)|\\\[.+?\\\]` $html -}}
+{{- range $index, $block := $mathBlocks -}}
+  {{- $token := printf "__OLYMPIAD_MATH_%d__" $index -}}
+  {{- $html = replace $html $block $token -}}
+{{- end -}}
+{{- $anchors := findRE `(?is)<a\b[^>]*>.*?</a>` $html -}}
+{{- range $index, $anchor := $anchors -}}
+  {{- $token := printf "__OLYMPIAD_ANCHOR_%d__" $index -}}
+  {{- $html = replace $html $anchor $token -}}
+{{- end -}}
+{{- $links := slice
+  (dict "text" "Faulhaber's formula" "url" "https://en.wikipedia.org/wiki/Faulhaber%27s_formula")
+  (dict "text" "Arithmetic Mean-Geometric Mean" "url" "https://en.wikipedia.org/wiki/AM%E2%80%93GM_inequality")
+  (dict "text" "AM-GM" "url" "https://en.wikipedia.org/wiki/AM%E2%80%93GM_inequality")
+  (dict "text" "Cauchy-Bunyakovsky-Schwarz" "url" "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality")
+  (dict "text" "Cauchy-Schwarz" "url" "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality")
+  (dict "text" "CBS" "url" "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality")
+  (dict "text" "Nesbitt" "url" "https://en.wikipedia.org/wiki/Nesbitt%27s_inequality")
+  (dict "text" "Hermite" "url" "https://en.wikipedia.org/wiki/Hermite%27s_identity")
+  (dict "text" "Titu" "url" "https://en.wikipedia.org/wiki/Titu%27s_lemma")
+  (dict "text" "Muirhead" "url" "https://en.wikipedia.org/wiki/Muirhead%27s_inequality")
+  (dict "text" "Root Mean Square inequality" "url" "https://en.wikipedia.org/wiki/Root_mean_square")
+  (dict "text" "QM-AM" "url" "https://en.wikipedia.org/wiki/Root_mean_square")
+  (dict "text" "HM-GM" "url" "https://en.wikipedia.org/wiki/Harmonic_mean")
+  (dict "text" "Jensen" "url" "https://en.wikipedia.org/wiki/Jensen%27s_inequality")
+  (dict "text" "Chebyshev" "url" "https://en.wikipedia.org/wiki/Chebyshev%27s_sum_inequality")
+  (dict "text" "Bernoulli" "url" "https://en.wikipedia.org/wiki/Bernoulli%27s_inequality")
+  (dict "text" "Schur" "url" "https://en.wikipedia.org/wiki/Schur%27s_inequality")
+  (dict "text" "Young's inequality" "url" "https://en.wikipedia.org/wiki/Young%27s_inequality_for_products")
+  (dict "text" "Rearrangement" "url" "https://en.wikipedia.org/wiki/Rearrangement_inequality")
+  (dict "text" "Vieta" "url" "https://en.wikipedia.org/wiki/Vieta%27s_formulas")
+  (dict "text" "Newton" "url" "https://en.wikipedia.org/wiki/Newton%27s_identities")
+  (dict "text" "Triangle Inequality" "url" "https://en.wikipedia.org/wiki/Triangle_inequality")
+  (dict "text" "triangle inequality" "url" "https://en.wikipedia.org/wiki/Triangle_inequality")
+  (dict "text" "difference of squares identity" "url" "https://en.wikipedia.org/wiki/Difference_of_two_squares")
+  (dict "text" "Difference of squares" "url" "https://en.wikipedia.org/wiki/Difference_of_two_squares")
+  (dict "text" "discriminant" "url" "https://en.wikipedia.org/wiki/Discriminant")
+  (dict "text" "completing the square" "url" "https://en.wikipedia.org/wiki/Completing_the_square")
+  (dict "text" "telescoping sum" "url" "https://en.wikipedia.org/wiki/Telescoping_series")
+-}}
+{{- range $links }}
+  {{- $anchor := printf `<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>` .url .text -}}
+  {{- $html = replace $html .text $anchor -}}
+{{- end -}}
+{{- range $index, $anchor := $anchors -}}
+  {{- $token := printf "__OLYMPIAD_ANCHOR_%d__" $index -}}
+  {{- $html = replace $html $token $anchor -}}
+{{- end -}}
+{{- range $index, $block := $mathBlocks -}}
+  {{- $token := printf "__OLYMPIAD_MATH_%d__" $index -}}
+  {{- $html = replace $html $token $block -}}
+{{- end -}}
+{{- return ($html | safeHTML) -}}

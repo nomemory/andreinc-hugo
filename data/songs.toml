@@ -1570,3 +1570,33 @@ youtube_video = "https://www.youtube.com/watch?v=249QWcSkJCM&list=RD249QWcSkJCM&
 youtube_video_id = "249QWcSkJCM"
 jukebox = ["commercial_80s"]
 thought = "Smooth."
+
+[[entries]]
+title = "Take a Chance with Me"
+artist = "Roxy Music"
+type = "song"
+genres = ["art pop", "new wave"]
+youtube_video = "https://youtu.be/-frMKuom3r8?is=_nhldhWXeiwGR8Pw"
+youtube_video_id = "-frMKuom3r8"
+jukebox = ["commercial_80s"]
+thought = "Silken."
+
+[[entries]]
+title = "All Night Long"
+artist = "Peter Murphy"
+type = "song"
+genres = ["gothic rock", "new wave"]
+youtube_video = "https://youtu.be/qWj527OqzqY?is=kmes01MYvVOeLg8n"
+youtube_video_id = "qWj527OqzqY"
+jukebox = ["commercial_80s"]
+thought = "Nocturnal."
+
+[[entries]]
+title = "Hey Matthew"
+artist = "Karel Fialka"
+type = "song"
+genres = ["new wave", "synth-pop"]
+youtube_video = "https://www.youtube.com/watch?v=32MhCNj6oU8&list=RD32MhCNj6oU8&start_radio=1"
+youtube_video_id = "32MhCNj6oU8"
+jukebox = ["commercial_80s"]
+thought = "Oddly catchy."

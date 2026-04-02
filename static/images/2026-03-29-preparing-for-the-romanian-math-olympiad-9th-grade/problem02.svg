@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 11 7">
+  <style>
+    .graph-content { transform: scaleY(-1) translateY(-5px); }
+    .axis { stroke: #ccc; stroke-width: 0.05; }
+    .median { stroke: #2563eb; stroke-width: 0.04; stroke-dasharray: 0.1 0.1; }
+    .altitude { stroke: #dc2626; stroke-width: 0.06; }
+    .triangle { fill: rgba(59, 130, 246, 0.1); stroke: #000; stroke-width: 0.08; }
+    .point { fill: #000; }
+    .label { font-family: "Segoe UI", sans-serif; font-size: 0.5px; font-weight: bold; transform: scaleY(-1); }
+    .line-label { font-family: serif; font-size: 0.45px; font-style: italic; transform: scaleY(-1); }
+  </style>
+
+  <g class="graph-content">
+    <line x1="-1" y1="0" x2="11" y2="0" class="axis"/>
+    <line x1="0" y1="-1" x2="0" y2="6" class="axis"/>
+
+    <polygon points="1,0 0,4 5,2" class="triangle"/>
+
+    <line x1="0.5" y1="-1" x2="3.5" y2="5" class="median"/>
+    <line x1="-0.5" y1="4.5" x2="4.5" y2="-0.5" class="median"/>
+    <line x1="-1" y1="2" x2="10" y2="2" class="median"/>
+    <line x1="-1" y1="0.5" x2="9" y2="3" class="altitude"/>
+
+    <circle cx="1" cy="0" r="0.12" class="point"/>
+    <text x="1.2" y="-0.2" class="label">A(1,0)</text>
+
+    <circle cx="0" cy="4" r="0.12" class="point"/>
+    <text x="0.2" y="-4.2" class="label">B(0,4)</text>
+
+    <circle cx="5" cy="2" r="0.12" class="point"/>
+    <text x="5.2" y="-2.2" class="label">C(5,2)</text>
+
+    <circle cx="2" cy="2" r="0.1" fill="#2563eb"/>
+    <text x="2.2" y="-2.3" class="label" fill="#2563eb">G(2,2)</text>
+
+    <text x="3.2" y="-5.2" class="line-label" fill="#2563eb">d₁</text>
+    <text x="4.2" y="-0.2" class="line-label" fill="#2563eb">d₂</text>
+    <text x="9.5" y="-2.2" class="line-label" fill="#2563eb">d₃</text>
+    <text x="8.2" y="-3.3" class="line-label" fill="#dc2626">d₄ (Alt)</text>
+  </g>
+</svg>

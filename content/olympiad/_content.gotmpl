@@ -1,0 +1,329 @@
+{{ $adapter := . }}
+{{ $problemMeta := slice }}
+{{ range readDir "content/olympiad" }}
+  {{ if and (not .IsDir) (hasSuffix .Name ".md") (ne .Name "_index.md") }}
+    {{ $filename := .Name }}
+    {{ $slug := strings.TrimSuffix ".md" $filename }}
+    {{ $raw := readFile (printf "content/olympiad/%s" $filename) }}
+    {{ $parts := split $raw "+++" }}
+    {{ $frontMatter := "" }}
+    {{ if ge (len $parts) 3 }}
+      {{ $frontMatter = index $parts 1 }}
+    {{ end }}
+    {{ $meta := transform.Unmarshal $frontMatter }}
+    {{ $problemMeta = $problemMeta | append (dict
+      "slug" $slug
+      "code" ($meta.code | default $slug)
+      "date" ($meta.date | default "")
+      "problemTags" ($meta.problemTags | default slice)
+      "difficulty" ($meta.difficulty | default "")
+      "gradeLevel" ($meta.gradeLevel | default slice)
+    ) }}
+  {{ end }}
+{{ end }}
+{{ $allProblems := sort $problemMeta "code" "desc" }}
+{{ $pageSize := 50 }}
+
+{{ $allTags := slice }}
+{{ $allDifficulties := slice }}
+{{ $allGrades := slice }}
+{{ range $allProblems }}
+  {{ range (.problemTags | default slice) }}
+    {{ $allTags = $allTags | append . }}
+  {{ end }}
+  {{ with .difficulty }}
+    {{ $allDifficulties = $allDifficulties | append . }}
+  {{ end }}
+  {{ range (.gradeLevel | default slice) }}
+    {{ $allGrades = $allGrades | append . }}
+  {{ end }}
+{{ end }}
+{{ $allTags = $allTags | uniq | sort }}
+{{ $difficultyPool := $allDifficulties | uniq }}
+{{ $gradePool := $allGrades | uniq }}
+{{ $allDifficulties = slice }}
+{{ $allGrades = slice }}
+{{ range slice "easy" "medium" "hard" "very hard" }}
+  {{ if in $difficultyPool . }}
+    {{ $allDifficulties = $allDifficulties | append . }}
+  {{ end }}
+{{ end }}
+{{ range $difficultyPool }}
+  {{ if not (in $allDifficulties .) }}
+    {{ $allDifficulties = $allDifficulties | append . }}
+  {{ end }}
+{{ end }}
+{{ range slice "8th" "9th" "10th" "11th" "12th" "unknown" }}
+  {{ if in $gradePool . }}
+    {{ $allGrades = $allGrades | append . }}
+  {{ end }}
+{{ end }}
+{{ range $gradePool }}
+  {{ if not (in $allGrades .) }}
+    {{ $allGrades = $allGrades | append . }}
+  {{ end }}
+{{ end }}
+
+{{ $totalProblems := len $allProblems }}
+{{ $mainContent := dict "mediaType" "text/markdown" "value" "This section contains a selection of math problems from olympiads, books, and other contests that I have found interesting. I keep them here in the hope that they will be useful to others who enjoy solving competitive math problems, as well as to students looking for training material.\n\nIt is a living collection: as I discover, solve, or compose new problems, I will continue to add them here. You can follow updates through this [RSS feed](/olympiad/feed.xml)." }}
+{{ $totalPages := cond (gt $totalProblems 0) (div (add $totalProblems (sub $pageSize 1)) $pageSize) 1 }}
+{{ range seq 2 $totalPages }}
+  {{ $pageNum := . }}
+  {{ $adapter.AddPage (dict
+    "content" $mainContent
+    "kind" "page"
+    "layout" "list"
+    "type" "olympiad"
+    "params" (dict "usekatex" true "olympiadPage" $pageNum "olympiadTotalPages" $totalPages)
+    "path" (printf "page/%d" $pageNum)
+    "title" "Olympiad"
+  ) }}
+{{ end }}
+
+{{ range $allTags }}
+  {{ $tag := . }}
+  {{ $filtered := slice }}
+  {{ range $allProblems }}
+    {{ if in (.problemTags | default slice) $tag }}
+      {{ $filtered = $filtered | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $count := len $filtered }}
+  {{ $pages := cond (gt $count 0) (div (add $count (sub $pageSize 1)) $pageSize) 1 }}
+  {{ $content := dict "mediaType" "text/markdown" "value" (printf "Problems filtered by tag `%s`." $tag) }}
+  {{ $adapter.AddPage (dict
+    "content" $content
+    "kind" "page"
+    "layout" "list"
+    "type" "olympiad"
+    "params" (dict "usekatex" true "olympiadTag" $tag "olympiadPage" 1 "olympiadTotalPages" $pages)
+    "path" (printf "tags/%s" ($tag | urlize))
+    "title" "Olympiad"
+  ) }}
+  {{ range seq 2 $pages }}
+    {{ $pageNum := . }}
+    {{ $adapter.AddPage (dict
+      "content" $content
+      "kind" "page"
+      "layout" "list"
+      "type" "olympiad"
+      "params" (dict "usekatex" true "olympiadTag" $tag "olympiadPage" $pageNum "olympiadTotalPages" $pages)
+      "path" (printf "tags/%s/page/%d" ($tag | urlize) $pageNum)
+      "title" "Olympiad"
+    ) }}
+  {{ end }}
+{{ end }}
+
+{{ range $allDifficulties }}
+  {{ $difficulty := . }}
+  {{ $filtered := where $allProblems "difficulty" $difficulty }}
+  {{ $count := len $filtered }}
+  {{ $pages := cond (gt $count 0) (div (add $count (sub $pageSize 1)) $pageSize) 1 }}
+  {{ $content := dict "mediaType" "text/markdown" "value" (printf "Problems filtered by difficulty `%s`." $difficulty) }}
+  {{ $adapter.AddPage (dict
+    "content" $content
+    "kind" "page"
+    "layout" "list"
+    "type" "olympiad"
+    "params" (dict "usekatex" true "olympiadDifficulty" $difficulty "olympiadPage" 1 "olympiadTotalPages" $pages)
+    "path" (printf "difficulty/%s" ($difficulty | urlize))
+    "title" "Olympiad"
+  ) }}
+  {{ range seq 2 $pages }}
+    {{ $pageNum := . }}
+    {{ $adapter.AddPage (dict
+      "content" $content
+      "kind" "page"
+      "layout" "list"
+      "type" "olympiad"
+      "params" (dict "usekatex" true "olympiadDifficulty" $difficulty "olympiadPage" $pageNum "olympiadTotalPages" $pages)
+      "path" (printf "difficulty/%s/page/%d" ($difficulty | urlize) $pageNum)
+      "title" "Olympiad"
+    ) }}
+  {{ end }}
+{{ end }}
+
+{{ range $allGrades }}
+  {{ $grade := . }}
+  {{ $filtered := slice }}
+  {{ range $allProblems }}
+    {{ if in (.gradeLevel | default slice) $grade }}
+      {{ $filtered = $filtered | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $count := len $filtered }}
+  {{ $pages := cond (gt $count 0) (div (add $count (sub $pageSize 1)) $pageSize) 1 }}
+  {{ $content := dict "mediaType" "text/markdown" "value" (printf "Problems filtered by level `%s`." $grade) }}
+  {{ $adapter.AddPage (dict
+    "content" $content
+    "kind" "page"
+    "layout" "list"
+    "type" "olympiad"
+    "params" (dict "usekatex" true "olympiadGrade" $grade "olympiadPage" 1 "olympiadTotalPages" $pages)
+    "path" (printf "grade/%s" ($grade | urlize))
+    "title" "Olympiad"
+  ) }}
+  {{ range seq 2 $pages }}
+    {{ $pageNum := . }}
+    {{ $adapter.AddPage (dict
+      "content" $content
+      "kind" "page"
+      "layout" "list"
+      "type" "olympiad"
+      "params" (dict "usekatex" true "olympiadGrade" $grade "olympiadPage" $pageNum "olympiadTotalPages" $pages)
+      "path" (printf "grade/%s/page/%d" ($grade | urlize) $pageNum)
+      "title" "Olympiad"
+    ) }}
+  {{ end }}
+{{ end }}
+
+{{ range $allGrades }}
+  {{ $grade := . }}
+  {{ range $allDifficulties }}
+    {{ $difficulty := . }}
+    {{ $filtered := slice }}
+    {{ range $allProblems }}
+      {{ if and (in (.gradeLevel | default slice) $grade) (eq (.difficulty | default "") $difficulty) }}
+        {{ $filtered = $filtered | append . }}
+      {{ end }}
+    {{ end }}
+    {{ $count := len $filtered }}
+    {{ $pages := cond (gt $count 0) (div (add $count (sub $pageSize 1)) $pageSize) 1 }}
+    {{ $content := dict "mediaType" "text/markdown" "value" (printf "Problems filtered by level `%s` and difficulty `%s`." $grade $difficulty) }}
+    {{ $adapter.AddPage (dict
+      "content" $content
+      "kind" "page"
+      "layout" "list"
+      "type" "olympiad"
+      "params" (dict "usekatex" true "olympiadGrade" $grade "olympiadDifficulty" $difficulty "olympiadPage" 1 "olympiadTotalPages" $pages)
+      "path" (printf "grade/%s/difficulty/%s" ($grade | urlize) ($difficulty | urlize))
+      "title" "Olympiad"
+    ) }}
+    {{ range seq 2 $pages }}
+      {{ $pageNum := . }}
+      {{ $adapter.AddPage (dict
+        "content" $content
+        "kind" "page"
+        "layout" "list"
+        "type" "olympiad"
+        "params" (dict "usekatex" true "olympiadGrade" $grade "olympiadDifficulty" $difficulty "olympiadPage" $pageNum "olympiadTotalPages" $pages)
+        "path" (printf "grade/%s/difficulty/%s/page/%d" ($grade | urlize) ($difficulty | urlize) $pageNum)
+        "title" "Olympiad"
+      ) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ range $allTags }}
+  {{ $tag := . }}
+  {{ range $allGrades }}
+    {{ $grade := . }}
+    {{ $filtered := slice }}
+    {{ range $allProblems }}
+      {{ if and (in (.problemTags | default slice) $tag) (in (.gradeLevel | default slice) $grade) }}
+        {{ $filtered = $filtered | append . }}
+      {{ end }}
+    {{ end }}
+    {{ $count := len $filtered }}
+    {{ $pages := cond (gt $count 0) (div (add $count (sub $pageSize 1)) $pageSize) 1 }}
+    {{ $content := dict "mediaType" "text/markdown" "value" (printf "Problems filtered by tag `%s` and level `%s`." $tag $grade) }}
+    {{ $adapter.AddPage (dict
+      "content" $content
+      "kind" "page"
+      "layout" "list"
+      "type" "olympiad"
+      "params" (dict "usekatex" true "olympiadTag" $tag "olympiadGrade" $grade "olympiadPage" 1 "olympiadTotalPages" $pages)
+      "path" (printf "tags/%s/grade/%s" ($tag | urlize) ($grade | urlize))
+      "title" "Olympiad"
+    ) }}
+    {{ range seq 2 $pages }}
+      {{ $pageNum := . }}
+      {{ $adapter.AddPage (dict
+        "content" $content
+        "kind" "page"
+        "layout" "list"
+        "type" "olympiad"
+        "params" (dict "usekatex" true "olympiadTag" $tag "olympiadGrade" $grade "olympiadPage" $pageNum "olympiadTotalPages" $pages)
+        "path" (printf "tags/%s/grade/%s/page/%d" ($tag | urlize) ($grade | urlize) $pageNum)
+        "title" "Olympiad"
+      ) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ range $allTags }}
+  {{ $tag := . }}
+  {{ range $allDifficulties }}
+    {{ $difficulty := . }}
+    {{ $filtered := slice }}
+    {{ range $allProblems }}
+      {{ if and (in (.problemTags | default slice) $tag) (eq (.difficulty | default "") $difficulty) }}
+        {{ $filtered = $filtered | append . }}
+      {{ end }}
+    {{ end }}
+    {{ $count := len $filtered }}
+    {{ $pages := cond (gt $count 0) (div (add $count (sub $pageSize 1)) $pageSize) 1 }}
+    {{ $content := dict "mediaType" "text/markdown" "value" (printf "Problems filtered by tag `%s` and difficulty `%s`." $tag $difficulty) }}
+    {{ $adapter.AddPage (dict
+      "content" $content
+      "kind" "page"
+      "layout" "list"
+      "type" "olympiad"
+      "params" (dict "usekatex" true "olympiadTag" $tag "olympiadDifficulty" $difficulty "olympiadPage" 1 "olympiadTotalPages" $pages)
+      "path" (printf "tags/%s/difficulty/%s" ($tag | urlize) ($difficulty | urlize))
+      "title" "Olympiad"
+    ) }}
+    {{ range seq 2 $pages }}
+      {{ $pageNum := . }}
+      {{ $adapter.AddPage (dict
+        "content" $content
+        "kind" "page"
+        "layout" "list"
+        "type" "olympiad"
+        "params" (dict "usekatex" true "olympiadTag" $tag "olympiadDifficulty" $difficulty "olympiadPage" $pageNum "olympiadTotalPages" $pages)
+        "path" (printf "tags/%s/difficulty/%s/page/%d" ($tag | urlize) ($difficulty | urlize) $pageNum)
+        "title" "Olympiad"
+      ) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ range $allTags }}
+  {{ $tag := . }}
+  {{ range $allGrades }}
+    {{ $grade := . }}
+    {{ range $allDifficulties }}
+      {{ $difficulty := . }}
+      {{ $filtered := slice }}
+      {{ range $allProblems }}
+        {{ if and (in (.problemTags | default slice) $tag) (in (.gradeLevel | default slice) $grade) (eq (.difficulty | default "") $difficulty) }}
+          {{ $filtered = $filtered | append . }}
+        {{ end }}
+      {{ end }}
+      {{ $count := len $filtered }}
+      {{ $pages := cond (gt $count 0) (div (add $count (sub $pageSize 1)) $pageSize) 1 }}
+      {{ $content := dict "mediaType" "text/markdown" "value" (printf "Problems filtered by tag `%s`, level `%s`, and difficulty `%s`." $tag $grade $difficulty) }}
+      {{ $adapter.AddPage (dict
+        "content" $content
+        "kind" "page"
+        "layout" "list"
+        "type" "olympiad"
+        "params" (dict "usekatex" true "olympiadTag" $tag "olympiadGrade" $grade "olympiadDifficulty" $difficulty "olympiadPage" 1 "olympiadTotalPages" $pages)
+        "path" (printf "tags/%s/grade/%s/difficulty/%s" ($tag | urlize) ($grade | urlize) ($difficulty | urlize))
+        "title" "Olympiad"
+      ) }}
+      {{ range seq 2 $pages }}
+        {{ $pageNum := . }}
+        {{ $adapter.AddPage (dict
+          "content" $content
+          "kind" "page"
+          "layout" "list"
+          "type" "olympiad"
+          "params" (dict "usekatex" true "olympiadTag" $tag "olympiadGrade" $grade "olympiadDifficulty" $difficulty "olympiadPage" $pageNum "olympiadTotalPages" $pages)
+          "path" (printf "tags/%s/grade/%s/difficulty/%s/page/%d" ($tag | urlize) ($grade | urlize) ($difficulty | urlize) $pageNum)
+          "title" "Olympiad"
+        ) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}

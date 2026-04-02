@@ -39,11 +39,13 @@ Besides programming and math, I used to be ~~deeply~~ passionate about chess. At
 
 Beyond chess, I’m fascinated by religion (without being religious), particularly Judaism and Orthodox Christianity, as well as the lives and works of a few (though certainly not all!) philosophers.
 
-*If you want to learn some more random facts about me, check out this **[FAQ](/faq)**.*
+---
 
-*If you want to learn more about my hobby as a 'music enjoyer' check the **[/jukebox](/jukebox)**, **[/lists/songs](/lists/songs/)** and **[/lists/albums](/lists/albums/)** sections.*
+- If you want to learn some more random facts about me, check out this **[FAQ](/faq)**.
 
-*If you’re interested in seeing the code I've written over the years, here is **[my GitHub profile](https://github.com/nomemory/)**.*
+- If you want to learn more about my hobby as a 'music enjoyer' check the **[/jukebox](/jukebox)**, **[/lists/songs](/lists/songs/)** and **[/lists/albums](/lists/albums/)** sections.
 
-*If you’d like to reach out for professional reasons, feel free to connect on LinkedIn. Here is **[my profile](https://www.linkedin.com/in/andrei-n-ciobanu-50708611/)**.*
+- If you’re interested in seeing the code I've written over the years, here is **[my GitHub profile](https://github.com/nomemory/)**.
+
+- If you’d like to reach out for professional reasons, feel free to connect on LinkedIn. Here is **[my profile](https://www.linkedin.com/in/andrei-n-ciobanu-50708611/)**.
 
