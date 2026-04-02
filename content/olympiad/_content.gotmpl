@@ -65,7 +65,15 @@
 {{ end }}
 
 {{ $totalProblems := len $allProblems }}
-{{ $mainContent := dict "mediaType" "text/markdown" "value" "This section contains a selection of math problems from olympiads, books, and other contests that I have found interesting. I keep them here in the hope that they will be useful to others who enjoy solving competitive math problems, as well as to students looking for training material.\n\nIt is a living collection: as I discover, solve, or compose new problems, I will continue to add them here. You can follow updates through this [RSS feed](/olympiad/feed.xml)." }}
+{{ $indexRaw := readFile "content/olympiad/_index.md" }}
+{{ $indexParts := split $indexRaw "+++" }}
+{{ $indexBody := "" }}
+{{ if ge (len $indexParts) 3 }}
+  {{ $indexBody = strings.TrimSpace (index $indexParts 2) }}
+{{ else }}
+  {{ $indexBody = strings.TrimSpace $indexRaw }}
+{{ end }}
+{{ $mainContent := dict "mediaType" "text/markdown" "value" $indexBody }}
 {{ $totalPages := cond (gt $totalProblems 0) (div (add $totalProblems (sub $pageSize 1)) $pageSize) 1 }}
 {{ range seq 2 $totalPages }}
   {{ $pageNum := . }}

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 40" role="img" aria-labelledby="contact-title">
+  <title id="contact-title">Contact address rendered as drawn letterforms</title>
+  <g fill="none" stroke="#000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(8 6)">
+      <path d="M4 16 Q4 8 11 8 Q18 8 18 16 L18 24 M18 18 Q16 24 10 24 Q4 24 4 18 Q4 13 9 13 L18 13"/>
+    </g>
+    <g transform="translate(38 6)">
+      <path d="M2 24 L2 8 M2 13 Q6 8 12 8 Q18 8 18 14 L18 24"/>
+    </g>
+    <g transform="translate(68 6)">
+      <path d="M18 24 L18 2 M18 13 Q16 8 10 8 Q2 8 2 16 Q2 24 10 24 Q16 24 18 19 Z"/>
+    </g>
+    <g transform="translate(98 6)">
+      <path d="M2 24 L2 8 M2 13 Q6 8 12 8 Q16 8 18 10"/>
+    </g>
+    <g transform="translate(128 6)">
+      <path d="M18 17 Q18 8 10 8 Q2 8 2 16 Q2 24 10 24 Q15 24 18 20 M2 16 L18 16"/>
+    </g>
+    <g transform="translate(158 6)">
+      <path d="M10 4 L10 4.2 M10 8 L10 24"/>
+    </g>
+    <g transform="translate(178 6)">
+      <path d="M2 24 L2 8 M2 13 Q6 8 12 8 Q18 8 18 14 L18 24"/>
+    </g>
+    <g transform="translate(208 6)">
+      <path d="M18 20 Q14 24 8 24 Q2 24 2 16 Q2 8 8 8 Q14 8 18 12"/>
+    </g>
+    <g transform="translate(242 2)">
+      <path d="M24 18 Q24 5 14 5 Q2 5 2 18 Q2 31 14 31 Q18 31 21 29"/>
+      <path d="M10 18 Q10 12 16 12 Q21 12 21 17 L21 21 Q21 24 24 24"/>
+      <path d="M21 18 Q20 24 15 24 Q10 24 10 18 Z"/>
+    </g>
+    <g transform="translate(286 6)">
+      <path d="M2 32 L2 8 M2 13 Q4 8 10 8 Q18 8 18 16 Q18 24 10 24 Q4 24 2 19"/>
+    </g>
+    <g transform="translate(318 6)">
+      <path d="M2 24 L2 8 M2 13 Q5 8 10 8 Q15 8 16 13 Q18 8 24 8 Q30 8 30 14 L30 24 M16 24 L16 14"/>
+    </g>
+    <g transform="translate(362 6)">
+      <circle cx="4" cy="24" r="1.6" fill="#000" stroke="none"/>
+    </g>
+    <g transform="translate(378 6)">
+      <path d="M2 24 L2 8 M2 13 Q5 8 10 8 Q15 8 16 13 Q18 8 24 8 Q30 8 30 14 L30 24 M16 24 L16 14"/>
+    </g>
+    <g transform="translate(422 6)">
+      <path d="M18 17 Q18 8 10 8 Q2 8 2 16 Q2 24 10 24 Q15 24 18 20 M2 16 L18 16"/>
+    </g>
+  </g>
+</svg>
