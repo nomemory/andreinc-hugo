@@ -1,0 +1,10 @@
+{{- $pages := where site.RegularPages "Section" "posts" -}}
+{{- $filtered := where $pages ".Params.categories" "intersect" (slice "programming") -}}
+{{- partial "rss-feed.xml" (dict
+  "title" (printf "%s - Programming" .Site.Title)
+  "link" (printf "%scategories/programming/" .Site.BaseURL)
+  "description" "Programming articles"
+  "self" (printf "%srss/programming.xml" .Site.BaseURL)
+  "pages" $filtered
+  "site" .Site
+) -}}

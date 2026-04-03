@@ -7,6 +7,34 @@ title = 'Personal Site of Andrei N. Ciobanu'
 [outputFormats]
   [outputFormats.RSS]
     baseName = "feed"
+  [outputFormats.programmingrss]
+    mediaType = "application/rss+xml"
+    baseName = "programming"
+    rel = "alternate"
+    isHTML = false
+    isPlainText = false
+    ugly = true
+  [outputFormats.mathrss]
+    mediaType = "application/rss+xml"
+    baseName = "math"
+    rel = "alternate"
+    isHTML = false
+    isPlainText = false
+    ugly = true
+  [outputFormats.thoughtsrss]
+    mediaType = "application/rss+xml"
+    baseName = "thoughts"
+    rel = "alternate"
+    isHTML = false
+    isPlainText = false
+    ugly = true
+  [outputFormats.olympiadrss]
+    mediaType = "application/rss+xml"
+    baseName = "olympiad"
+    rel = "alternate"
+    isHTML = false
+    isPlainText = false
+    ugly = true
 
 [markup]
   [markup.goldmark]
@@ -41,10 +69,30 @@ enable = true
   posts = '/:year/:month/:day/:slug/'
   
 [[menu.main]]
-    identifier = "blog"
-    name = "blog"
+    identifier = "home"
+    name = "home"
     url = "/"
     weight = 10
+[[menu.main]]
+    identifier = "thoughts"
+    name = "thoughts"
+    url = "/categories/thoughts/"
+    weight = 11
+[[menu.main]]
+    identifier = "math"
+    name = "math"
+    url = "/categories/math/"
+    weight = 12
+[[menu.main]]
+    identifier = "programming"
+    name = "programming"
+    url = "/categories/programming/"
+    weight = 13
+[[menu.main]]
+    identifier = "visuals"
+    name = "visuals"
+    url = "/visuals/"
+    weight = 14
 [[menu.main]]
     identifier = "about"
     name = "about"
@@ -55,11 +103,6 @@ enable = true
     name = "jukebox"
     url = "/jukebox/"
     weight = 22
-[[menu.main]]
-    identifier = "olympiad"
-    name = "olympiad"
-    url = "/olympiad/"
-    weight = 15
 [[menu.main]]
     identifier = "lists"
     name = "lists"
@@ -76,9 +119,9 @@ enable = true
     url = "/blogroll/"
     weight = 40
 [[menu.main]]
-    identifier = "rss"
-    name = "rss"
-    url = "/feed.xml"
+    identifier = "feeds"
+    name = "feeds"
+    url = "/feeds"
     weight = 100
 
 [taxonomies]

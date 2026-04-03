@@ -2,7 +2,7 @@
 title = "On the question of why?"
 date = "2023-06-27"
 usekatex = true
-categories = ["persona"]
+categories = ["thoughts"]
 tags = ["observed"]
 +++
 

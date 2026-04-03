@@ -1,0 +1,9 @@
+{{- $pages := where site.RegularPages "Section" "olympiad" -}}
+{{- partial "rss-feed.xml" (dict
+  "title" (printf "%s - Olympiad" .Site.Title)
+  "link" (printf "%solympiad/" .Site.BaseURL)
+  "description" "Olympiad problems"
+  "self" (printf "%srss/olympiad.xml" .Site.BaseURL)
+  "pages" $pages
+  "site" .Site
+) -}}

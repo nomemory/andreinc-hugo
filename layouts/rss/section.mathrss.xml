@@ -1,0 +1,12 @@
+{{- $posts := where site.RegularPages "Section" "posts" -}}
+{{- $mathPosts := where $posts ".Params.categories" "intersect" (slice "math") -}}
+{{- $olympiad := where site.RegularPages "Section" "olympiad" -}}
+{{- $pages := $mathPosts | append $olympiad -}}
+{{- partial "rss-feed.xml" (dict
+  "title" (printf "%s - Math" .Site.Title)
+  "link" (printf "%scategories/math/" .Site.BaseURL)
+  "description" "Math articles and olympiad problems"
+  "self" (printf "%srss/math.xml" .Site.BaseURL)
+  "pages" $pages
+  "site" .Site
+) -}}

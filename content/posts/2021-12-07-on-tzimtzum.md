@@ -2,7 +2,7 @@
 title = "On Tzimtzum"
 date = "2021-12-07"
 usekatex = true
-categories = ["persona"]
+categories = ["thoughts"]
 tags = ["religion", "philosophy", "books"]
 +++
 

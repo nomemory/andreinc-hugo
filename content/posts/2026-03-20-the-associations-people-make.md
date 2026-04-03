@@ -2,7 +2,7 @@
 date = '2026-03-19'
 draft = false
 title = 'The associations people make'
-categories = ['math', 'persona']
+categories = ['math', 'thoughts']
 tags = ['psychology']
 usekatex = true
 usethreejs = true

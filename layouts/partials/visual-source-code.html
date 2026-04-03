@@ -1,0 +1,8 @@
+{{ $files := .Params.visualSourceFiles | default slice }}
+{{ if gt (len $files) 0 }}
+  <ul class="visual-source-list">
+    {{ range $files }}
+      <li><a href="{{ . }}">{{ . }}</a></li>
+    {{ end }}
+  </ul>
+{{ end }}

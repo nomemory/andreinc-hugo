@@ -2,7 +2,7 @@
 date = '2026-03-06'
 draft = false
 title = 'The blog looks different now'
-categories = ['persona']
+categories = ['thoughts']
 tags = ['blog']
 usekatex = false
 +++
@@ -148,7 +148,7 @@ I frequently do mistakes, and even if I review my articles, sometimes a new pair
 
 Finally, I've cleaned up the taxonomies. 
 
-It's now much easier for users to filter out my "personal" rambling ([/persona](/categories/persona/)) from the more "serious" content related to [math](/categories/math) and [programming](/categories/programming).
+It's now much easier for users to filter out my "personal" rambling ([/thoughts](/categories/thoughts/)) from the more "serious" content related to [math](/categories/math) and [programming](/categories/programming).
 
 The separation isn't perfect, but it's a start. 
 

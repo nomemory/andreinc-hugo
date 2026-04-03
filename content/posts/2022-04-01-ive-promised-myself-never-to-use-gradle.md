@@ -2,7 +2,7 @@
 title = "I've promised myself never to use gradle"
 date = "2022-04-01"
 usekatex = false
-categories = ['persona', 'programming']
+categories = ['thoughts', 'programming']
 tags = ["java"]
 +++
 

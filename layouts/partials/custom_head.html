@@ -13,7 +13,7 @@ var sc_remove_link=1;
 <noscript><div class="statcounter"><img class="statcounter" src="https://c.statcounter.com/7153286/0/b3053c1d/1/" alt="Web Analytics" referrerPolicy="no-referrer-when-downgrade"></div></noscript>
 <!-- End of Statcounter Code -->    
 
-{{ if .Params.usekatex }}
+{{ if or .Params.usekatex (eq .Type "visuals") }}
     {{ partial "katex.html" . }}
 {{ end }}
 
@@ -38,6 +38,10 @@ var sc_remove_link=1;
 
 {{ range .Params.customAsyncJS }}
     <script src="{{ . }}" async></script>
+{{ end }}
+
+{{ range .Params.customModuleJS }}
+    <script type="module" src="{{ . }}"></script>
 {{ end }}
 
 {{ range .Params.customDeferJS }}

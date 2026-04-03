@@ -2,7 +2,7 @@
 date = '2026-03-09'
 draft = false
 title = 'Shortcuts'
-categories = ['persona']
+categories = ['thoughts']
 tags = ['ai']
 usekatex = false
 +++

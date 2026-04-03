@@ -1,0 +1,9 @@
+{{ $tags := .tags | default slice }}
+
+{{ if gt (len $tags) 0 }}
+  <div class="home-tags">
+    {{ range $tags }}
+      <sub><a href="{{ printf "/tags/%s/" (. | urlize) | relURL }}">#{{ . | lower }}</a></sub>
+    {{ end }}
+  </div>
+{{ end }}

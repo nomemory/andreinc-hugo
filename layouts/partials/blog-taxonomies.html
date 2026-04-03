@@ -1,0 +1,7 @@
+{{ if not .Data.Singular }}
+  <div class="home-tags">
+    {{ range .Site.Taxonomies.tags }}
+      <sub><a href="{{ .Page.Permalink }}">#{{ .Page.Title | lower }}</a></sub>
+    {{ end }}
+  </div>
+{{ end }}

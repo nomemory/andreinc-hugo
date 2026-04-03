@@ -2,7 +2,7 @@
 date = '2026-03-27'
 draft = false
 title = 'What Is Your Name in Another Universe?'
-categories = ['persona']
+categories = ['thoughts']
 tags = ['fun', 'security']
 usekatex = false
 usethreejs = false

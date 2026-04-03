@@ -1,0 +1,8 @@
+{{ $pages := where .Page.Site.RegularPages "Type" "posts" }}
+{{ if eq .Page.Data.Plural "categories" }}
+  {{ $pages = .Page.Pages }}
+{{ end }}
+
+{{ partial "blog-post-list.html" (dict
+  "pages" (sort $pages "Date" "desc")
+) }}

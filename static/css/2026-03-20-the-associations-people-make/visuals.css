@@ -1,0 +1,22 @@
+.octo-canvas-wrap {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    margin: 2rem 0;
+}
+
+.octopus-graph {
+    width: 600px;
+    height: 460px;
+    position: relative;
+    margin: 0 auto;
+    border: 2px solid #000;
+    background: #fff;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.octopus-graph canvas {
+    display: block;
+}

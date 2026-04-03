@@ -1,46 +1,5 @@
 {{ define "main" }}
   {{ .Content }}
-    {{ if not .Data.Singular }}
 
-   <br/> 
-  <div>
-    <div>
-      {{ range .Site.Taxonomies.categories }}
-      <a href="{{ .Page.Permalink }}">/{{ .Page.Title | lower }}</a>&nbsp;
-      {{ end }}
-    </div>
-  {{ end }}
-
-  <br/>
-
-  {{ if not .Data.Singular }}
-    <div class="home-tags">
-      {{ range .Site.Taxonomies.tags }}
-      <sub><a href="{{ .Page.Permalink }}">#{{ .Page.Title | lower }}</a></sub>
-      {{ end }}
-    </div>
-  </div>
-  {{ end }}
-
-  <br/>
-
-  {{ partial "gameoflife.html" . }}
-
-  <br/>
-
-  <ul class="blog-posts">
-    {{ range where .Site.RegularPages "Type" "posts" }}
-      <li>
-        <span>
-          <i>
-            <time datetime='{{ .Date.Format "2006-01-02" }}' pubdate>
-              {{ .Date.Format (default "02 Jan, 2006" .Site.Params.dateFormat) }}
-            </time>
-          </i>
-        </span>
-        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-      </li>
-    {{ end }}
-  </ul>
 
 {{ end }}

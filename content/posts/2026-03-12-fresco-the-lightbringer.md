@@ -2,7 +2,7 @@
 date = '2026-03-12'
 draft = false
 title = 'Fresco: The lightbringer'
-categories = ["persona", "programming"]
+categories = ["thoughts", "programming"]
 tags = ['art']
 usekatex = false
 customCSS = ["/css/2026-03-12-fresco-the-lightbringer/fresco.css"]
@@ -56,7 +56,6 @@ By synthesizing these two distinct scriptural passages, early church scholars co
 Consequently, the narrative of the babylonian king was put aside. "Lucifer" transitioned from a Latin noun describing Venus into the definitive proper name for the Devil before his rebellion, characterizing him as heaven's brightest and most beautiful angel prior to his fall from grace. 
 
 Therefore, by placing the light switch directly into the hands of the painted demon, the electrician at the Cernica Monastery inadvertently created a... visual pun.
-
 
 
 

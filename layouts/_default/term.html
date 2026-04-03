@@ -1,0 +1,40 @@
+{{ define "main" }}
+  {{ if eq .Data.Plural "categories" }}
+    <content>
+      {{ with .Content }}
+        {{ . }}
+      {{ end }}
+    </content>
+  {{ else }}
+    <content>
+      {{ if .Data.Singular }}
+      <h3 style="margin-bottom:0">Filtering for "{{ .Title }}"</h3>
+      <small>
+        <a href="{{ printf "/%s/" .Data.Plural | relURL }}" onclick="if (window.history.length > 1) { event.preventDefault(); window.history.back(); }">Remove filter</a>
+      </small>
+      {{ end }}
+      
+      <hr/>
+      
+      <ul class="blog-posts">
+        {{ range .Pages }}
+        <li>
+          <span>
+            <i>
+              <time datetime='{{ .Date.Format "2006-01-02" }}'>
+                {{ .Date.Format (default "02 Jan, 2006" .Site.Params.dateFormat) }}
+              </time>
+            </i>
+            <span>-</span>
+          </span>
+          <a href="{{ .Permalink }}">{{ .Title }}</a>
+        </li>
+        {{ else }}
+        <li>
+          No posts yet
+        </li>
+        {{ end }}
+      </ul>
+    </content>
+  {{ end }}
+{{ end }}

@@ -1,0 +1,14 @@
+{{ $pages := where .Page.Site.RegularPages "Type" "posts" }}
+{{ if eq .Page.Data.Plural "categories" }}
+  {{ $pages = .Page.Pages }}
+{{ end }}
+
+{{ $allTags := slice }}
+{{ range $pages }}
+  {{ range (.Params.tags | default slice) }}
+    {{ $allTags = $allTags | append . }}
+  {{ end }}
+{{ end }}
+{{ $allTags = $allTags | uniq | sort }}
+
+{{ partial "blog-tag-list.html" (dict "tags" $allTags) }}

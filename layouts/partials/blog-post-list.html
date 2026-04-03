@@ -1,0 +1,23 @@
+{{ $pages := .pages }}
+{{ $label := .label | default "" }}
+
+{{ if $label }}
+  <p>{{ $label }}</p>
+{{ end }}
+
+<ul class="blog-posts">
+  {{ range $pages }}
+    <li>
+      <span>
+        <i>
+          <time datetime='{{ .Date.Format "2006-01-02" }}' pubdate>
+            {{ .Date.Format (default "02 Jan, 2006" .Site.Params.dateFormat) }}
+          </time>
+        </i>
+      </span>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    </li>
+  {{ else }}
+    <li>No posts yet.</li>
+  {{ end }}
+</ul>
