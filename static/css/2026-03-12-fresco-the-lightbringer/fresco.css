@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     margin: 2rem auto; /* The 'auto' here centers the smaller container on your page */
+    position: relative;
     width: 100%;
     max-width: 350px; /* Change this number (e.g., 400px or 600px) to fit your theme perfectly */
 }
@@ -13,6 +14,19 @@
     box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     cursor: crosshair;
     background-color: #FFFFFF;
+    touch-action: manipulation;
+}
+
+.fresco-hotspot {
+    position: absolute;
+    z-index: 2;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .fresco-hint {

@@ -37,8 +37,6 @@ This is the picture I took, and I couldn't help myself to make it interactive, s
     <div id="fresco-hint" class="fresco-hint">Click the light switch...</div>
 </div>
 
-<script src="/js/2026-03-12-fresco-the-lightbringer/fresco.js"></script>
-
 --- 
 
 Why is this funny ? It's not that funny if I have to explain it...
@@ -56,7 +54,6 @@ By synthesizing these two distinct scriptural passages, early church scholars co
 Consequently, the narrative of the babylonian king was put aside. "Lucifer" transitioned from a Latin noun describing Venus into the definitive proper name for the Devil before his rebellion, characterizing him as heaven's brightest and most beautiful angel prior to his fall from grace. 
 
 Therefore, by placing the light switch directly into the hands of the painted demon, the electrician at the Cernica Monastery inadvertently created a... visual pun.
-
 
 
 

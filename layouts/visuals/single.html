@@ -9,18 +9,40 @@
     margin: 2rem 0;
   }
 
-  .visual-page > div {
-    max-width: 100%;
+  .visual-page > div,
+  .visual-page > p,
+  .visual-page > blockquote,
+  .visual-page > ul,
+  .visual-page > ol {
     margin: 1.25rem auto 0;
   }
 
   .visual-page canvas {
     display: block;
-    max-width: 100%;
-    height: auto;
   }
 
-  .visual-page > div:first-child {
+  .visual-page > .math-canvas-wrap,
+  .visual-page > .octo-canvas-wrap,
+  .visual-page > .fresco-wrapper,
+  .visual-page > .tetris-shell,
+  .visual-canvas-wrap {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .visual-canvas-wrap > div[id$="-sketch"] {
+    width: max-content;
+    max-width: none;
+    margin: 0 auto;
+  }
+
+  .visual-page > div:first-child,
+  .visual-page > p:first-child,
+  .visual-page > blockquote:first-child,
+  .visual-page > ul:first-child,
+  .visual-page > ol:first-child {
     margin-top: 0;
   }
 
@@ -68,8 +90,6 @@
   }
 
   @media (max-width: 640px) {
-    .visual-hero,
-    .visual-page,
     .visual-panel {
       padding-left: 0.95rem;
       padding-right: 0.95rem;
@@ -100,4 +120,33 @@
     {{ end }}
   </section>
 </content>
+
+<script>
+  (() => {
+    const selectors = [
+      '.visual-page > div[id$="-sketch"]'
+    ];
+
+    const wrapSketch = (target) => {
+      if (target.parentElement?.classList.contains('visual-canvas-wrap')) {
+        return;
+      }
+      const frame = document.createElement('div');
+      frame.className = 'visual-canvas-wrap';
+      target.parentNode.insertBefore(frame, target);
+      frame.appendChild(target);
+    };
+
+    const run = () => {
+      document.querySelectorAll(selectors.join(', ')).forEach(wrapSketch);
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run, { once: true });
+      return;
+    }
+
+    run();
+  })();
+</script>
 {{ end }}

@@ -1,9 +1,9 @@
 +++
 title = "Math"
 usekatex = true
-usep5js = true
-customJS = ["/js/2024-04-24-from-the-circle-to-epicycles/commons.js"]
-customDeferJS = ["/js/2024-04-24-from-the-circle-to-epicycles/fmachinery.js"]
+usethreejs = true
+customModuleJS = ["/js/2026-03-16-the-shape-of-inequalities/visuals.js"]
+customCSS = ["/css/2026-03-16-the-shape-of-inequalities/visuals.css"]
 +++
 
 Here is where I write about math. 
@@ -16,17 +16,14 @@ Below is the latest problem published in that section, but you can always look f
 
 ---
 
-I also build standalone math visuals on this site, especially when an idea is easier to understand by watching it move. You can browse them in **[/visuals](/visuals/)**, but here is one example from the Fourier material:
+I also build standalone math visuals on this site, especially when an idea is easier to understand by watching it move. You can browse them in **[/visuals](/visuals/)**, but here is one example tied to Nesbitt's inequality and [Viviani's theorem](https://en.wikipedia.org/wiki/Viviani%27s_theorem):
 
-`You can pick the shape of the desired signal from here:`
-<select id="fm-wave" onchange="updateFmWave()">
-    <option value="sawtooth" selected>sawtooth wave</option>
-    <option value="triangle">triangle wave</option>
-    <option value="square">square wave</option>
-</select>
-`and the sketch will change accordingly.`
-
-<div id="fmachinery-sketch"></div>
+<div class="math-canvas-wrap">
+    <div id="nesbitt-equilateral" class="math-canvas tall"></div>
+    <div style="text-align:center">
+        <button class="anim-toggle">Pause [ ⏸ ]</button>
+    </div>
+</div>
 
 ---
 

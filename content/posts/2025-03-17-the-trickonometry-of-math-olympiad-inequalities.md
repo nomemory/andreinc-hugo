@@ -5278,7 +5278,7 @@ In a generalized form:
 <div class="mp">
 <p>If \(x_1, x_2, \dots, x_n\) are positive real numbers, and \(S=\sum_{i=1}^n x_i\), then:</p> 
 <p class="mpc">
-    \[\sum_{i=1}^n \frac{a_i}{S-a_i}\ge\frac{n}{n-1}
+    \[\sum_{i=1}^n \frac{x_i}{S-x_i}\ge\frac{n}{n-1}
 \]</p>
 <p>Equality holds if \(x_1=x_2=\dots=x_n\).</p>
 </div>
@@ -5305,7 +5305,7 @@ Can you prove Nesbitt's inequality using known inequalities (*AM-HM*, I am looki
         <p>Let \(x_1, x_2, \dots, x_n\) be positive real numbers, and \(S=\sum_{i=1}^n x_i\), prove:</p> 
         <p class="mpc">
         \[
-            \sum_{i=1}^n \frac{a_i}{S-a_i}\ge\frac{n}{n-1}
+            \sum_{i=1}^n \frac{x_i}{S-x_i}\ge\frac{n}{n-1}
         \]
         </p>
         <details>
@@ -5326,31 +5326,31 @@ Can you prove Nesbitt's inequality using known inequalities (*AM-HM*, I am looki
             <p>We start by rewriting the given sum:</p>
             <p class="mpc">
                 \[
-                    \sum_{i=1}^n \left(\frac{a_i}{s-a_i}\right) = \sum_{i=1}^n \left( \frac{S}{S-a_i} - 1 \right) =
+                    \sum_{i=1}^n \left(\frac{x_i}{S-x_i}\right) = \sum_{i=1}^n \left( \frac{S}{S-x_i} - 1 \right) =
                 \]
             </p>
             <p>Factoring \(S\):</p>
             <p class="mpc">
                 \[
-                    = S \sum_{i=1}^n \left( \frac{1}{S-a_i} \right) - n
+                    = S \sum_{i=1}^n \left( \frac{1}{S-x_i} \right) - n
                 \]
             </p>
             <p>Now, we apply AM-HM to the denominator:</p>
             <p class="mpc">
                 \[
-                    \frac{n}{\sum_{i=1}^n \left( \frac{1}{S-a_i} \right)} \leq \frac{\sum_{i=1}^n\left(S-a_i\right)}{n} = S - \frac{S}{n} = S \left(\frac{n-1}{n}\right)
+                    \frac{n}{\sum_{i=1}^n \left( \frac{1}{S-x_i} \right)} \leq \frac{\sum_{i=1}^n\left(S-x_i\right)}{n} = S - \frac{S}{n} = S \left(\frac{n-1}{n}\right)
                 \]
             </p>
             <p>Rearranging this inequality:</p>
             <p class="mpc">
                 \[
-                    \sum_{i=1}^n \left(\frac{1}{S-a_i}\right) \ge \frac{n^2}{S(n-1)}
+                    \sum_{i=1}^n \left(\frac{1}{S-x_i}\right) \ge \frac{n^2}{S(n-1)}
                 \]
             </p>
-            <p>Substituting this into our earlier expression \(\sum_{i=1}^n \left(\frac{a_i}{s-a_i}\right)=S \sum_{i=1}^n \left( \frac{1}{S-a_i} \right) - n\) gives us:</p>
+            <p>Substituting this into our earlier expression \(\sum_{i=1}^n \left(\frac{x_i}{S-x_i}\right)=S \sum_{i=1}^n \left( \frac{1}{S-x_i} \right) - n\) gives us:</p>
             <p class="mpc">
                 \[
-                    \sum_{i=1}^n \frac{a_i}{S-a_i} \ge \frac{Sn^2}{S(n-1)} - n = \frac{n}{n-1}
+                    \sum_{i=1}^n \frac{x_i}{S-x_i} \ge \frac{Sn^2}{S(n-1)} - n = \frac{n}{n-1}
                 \]
             </p>
             <p>Thus, the inequality is proven.</p>

@@ -1,9 +1,11 @@
 (function() {
     const container = document.getElementById('fresco-container');
     const canvas = document.getElementById('frescoCanvas');
+    if (!container || !canvas) return;
     const ctx = canvas.getContext('2d');
     const imgSrc = document.getElementById('frescoSource');
     const hint = document.getElementById('fresco-hint');
+    let hotspot = null;
 
     // Hit area coordinates mapped to the light switch
     const hitArea = { xMin: 0.69, xMax: 0.76, yMin: 0.26, yMax: 0.32 };
@@ -26,34 +28,7 @@
         canvas.height = maxWidth / aspectRatio;
 
         drawScene();
-
-        canvas.addEventListener('mousedown', checkClick);
-        
-        // Mobile support
-        canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            checkClick(e.touches[0]);
-        }, { passive: false });
-
-        // Change cursor on hover to hint at interactivity
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            const clickX = (e.clientX - rect.left) * scaleX;
-            const clickY = (e.clientY - rect.top) * scaleY;
-
-            if (
-                clickX >= hitArea.xMin * canvas.width &&
-                clickX <= hitArea.xMax * canvas.width &&
-                clickY >= hitArea.yMin * canvas.height &&
-                clickY <= hitArea.yMax * canvas.height
-            ) {
-                canvas.style.cursor = 'pointer';
-            } else {
-                canvas.style.cursor = 'default';
-            }
-        });
+        setupHotspot();
     }
 
     function drawScene() {
@@ -71,10 +46,11 @@
     }
 
     function drawHitAreaHint() {
-        const x = hitArea.xMin * canvas.width;
-        const y = hitArea.yMin * canvas.height;
-        const w = (hitArea.xMax - hitArea.xMin) * canvas.width;
-        const h = (hitArea.yMax - hitArea.yMin) * canvas.height;
+        const area = getHitBounds();
+        const x = area.xMin;
+        const y = area.yMin;
+        const w = area.xMax - area.xMin;
+        const h = area.yMax - area.yMin;
 
         ctx.save();
         // Dashed white border
@@ -89,24 +65,54 @@
         ctx.restore();
     }
 
-    function checkClick(event) {
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        
-        const clickX = (event.clientX - rect.left) * scaleX;
-        const clickY = (event.clientY - rect.top) * scaleY;
+    function toggleSun() {
+        hasInteracted = true;
+        sunIsVisible = !sunIsVisible;
+        drawScene();
+    }
 
-        if (
-            clickX >= hitArea.xMin * canvas.width &&
-            clickX <= hitArea.xMax * canvas.width &&
-            clickY >= hitArea.yMin * canvas.height &&
-            clickY <= hitArea.yMax * canvas.height
-        ) {
-            sunIsVisible = !sunIsVisible; 
-            hasInteracted = true;
-            drawScene();
+    function setupHotspot() {
+        if (!hotspot) {
+            hotspot = document.createElement('button');
+            hotspot.type = 'button';
+            hotspot.className = 'fresco-hotspot';
+            hotspot.setAttribute('aria-label', 'Toggle the light');
+            hotspot.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleSun();
+            });
+            container.appendChild(hotspot);
         }
+
+        const area = getHitBounds();
+        hotspot.style.left = `${area.left}px`;
+        hotspot.style.top = `${area.top}px`;
+        hotspot.style.width = `${area.width}px`;
+        hotspot.style.height = `${area.height}px`;
+    }
+
+    function getHitBounds() {
+        const rect = canvas.getBoundingClientRect();
+        const minHit = 44;
+
+        const rawLeft = canvas.offsetLeft + canvas.clientWidth * hitArea.xMin;
+        const rawTop = canvas.offsetTop + canvas.clientHeight * hitArea.yMin;
+        const rawWidth = canvas.clientWidth * (hitArea.xMax - hitArea.xMin);
+        const rawHeight = canvas.clientHeight * (hitArea.yMax - hitArea.yMin);
+
+        const width = Math.max(minHit, rawWidth);
+        const height = Math.max(minHit, rawHeight);
+
+        return {
+            left: rawLeft - Math.max(0, (width - rawWidth) / 2),
+            top: rawTop - Math.max(0, (height - rawHeight) / 2),
+            width,
+            height,
+            xMin: (rawLeft - canvas.offsetLeft) * (canvas.width / Math.max(rect.width, 1)) - Math.max(0, (width - rawWidth) / 2) * (canvas.width / Math.max(rect.width, 1)),
+            yMin: (rawTop - canvas.offsetTop) * (canvas.height / Math.max(rect.height, 1)) - Math.max(0, (height - rawHeight) / 2) * (canvas.height / Math.max(rect.height, 1)),
+            xMax: (rawLeft - canvas.offsetLeft + rawWidth) * (canvas.width / Math.max(rect.width, 1)) + Math.max(0, (width - rawWidth) / 2) * (canvas.width / Math.max(rect.width, 1)),
+            yMax: (rawTop - canvas.offsetTop + rawHeight) * (canvas.height / Math.max(rect.height, 1)) + Math.max(0, (height - rawHeight) / 2) * (canvas.height / Math.max(rect.height, 1))
+        };
     }
 
     function drawSun() {

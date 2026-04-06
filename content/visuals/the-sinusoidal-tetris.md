@@ -13,7 +13,7 @@ visualSourceFiles = ['/js/2024-02-06-the-sinusoidal-tetris/tetris.js', '/css/202
 
 > "Let's play Tetris, but with a twist. No geometrical figures will fall from the sky. Instead, you control a sinusoid."
 
-<div style="font-family: 'Courier New', Courier, monospace; background-color: #F6F8FA; border: 2px solid #111; padding: 20px; color: #111; line-height: 1.6; max-width: 100%; box-sizing: border-box;">
+<div class="tetris-shell" style="font-family: 'Courier New', Courier, monospace; background-color: #F6F8FA; border: 2px solid #111; padding: 20px; color: #111; line-height: 1.6; max-width: 100%; box-sizing: border-box;">
 <div style="background: #FFF; border: 1px solid #111; padding: 15px; margin-bottom: 20px;">
 <label style="display: block; margin-bottom: 10px; cursor: pointer;">
 <input type="checkbox" id="suggestions" name="suggestions" checked> [ENABLE_SUGGESTIONS]
