@@ -4427,10 +4427,6 @@ In a similar fashion with the previous problem let's try to solve the next inequ
             \]
         </p>
         <details>
-            <summary>Hint 1</summary>
-            <p></p>
-        </details>
-        <details>
             <summary>Solution</summary>
             <p>First, observe that:</p>
             <p class="mpc">
@@ -6569,15 +6565,6 @@ The following problem uses an interesting pattern/trick, can you solve it ?
                 P = \frac{x}{\lambda - x}+\frac{y}{\lambda - y} + \frac{z}{\lambda - z}
             \]
         </p>
-        <details>
-            <summary>Hint 1</summary>
-             <p>If \(a_1\), \(a_2\), and \(a_3\), as well as \(b_1\), \(b_2\), and \(b_3\), are positive real numbers, can you prove the following useful inequality?</p>
-             <p class="mpc">
-                \[
-                    a_1+a_2+a_3 \ge \frac{\sqrt{a_1b_1}+\sqrt{a_2b_2}+\sqrt{a_3b_3}}{b_1+b_2+b_3}
-                \]
-             </p>
-        </details>
         <details>
             <summary>Solution</summary>
             <p>We can apply the CBS inequality in the following way:</p>
