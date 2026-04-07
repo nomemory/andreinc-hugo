@@ -1600,3 +1600,33 @@ youtube_video = "https://www.youtube.com/watch?v=32MhCNj6oU8&list=RD32MhCNj6oU8&
 youtube_video_id = "32MhCNj6oU8"
 jukebox = ["commercial_80s"]
 thought = "Oddly catchy."
+
+[[entries]]
+title = "The Names"
+artist = "Calcutta"
+type = "song"
+genres = ["post-punk", "new wave"]
+youtube_video = "https://www.youtube.com/watch?v=5qPPIQStpMM&list=RD5qPPIQStpMM&start_radio=1"
+youtube_video_id = "5qPPIQStpMM"
+jukebox = ["commercial_80s"]
+thought = "Crisp."
+
+[[entries]]
+title = "Enola Gay"
+artist = "Orchestral Manoeuvres in the Dark"
+type = "song"
+genres = ["synth-pop", "new wave"]
+youtube_video = "https://youtu.be/d5XJ2GiR6Bo?si=W9hHm8p1rYPaWvGt"
+youtube_video_id = "d5XJ2GiR6Bo"
+jukebox = ["commercial_80s"]
+thought = "Immediate."
+
+[[entries]]
+title = "Why Don't You Answer"
+artist = "Eberhard Schoener"
+type = "song"
+genres = ["synth-pop", "new wave"]
+youtube_video = "https://www.youtube.com/watch?v=XaZUrQFUFq0&list=RDXaZUrQFUFq0&start_radio=1"
+youtube_video_id = "XaZUrQFUFq0"
+jukebox = ["commercial_80s"]
+thought = "Sleek."

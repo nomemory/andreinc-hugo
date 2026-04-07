@@ -2097,3 +2097,39 @@ title = "Minifeed"
 url = "https://minifeed.net/welcome"
 description = "A small publishing and feed-reading space built around the quieter web."
 tags = ["indieweb", "tools", "web"]
+
+[[links]]
+title = "The Cognitive Dark Forest"
+url = "https://ryelang.org/blog/posts/cognitive-dark-forest/"
+description = "An essay about retreat, attention, and the social conditions of thinking online."
+tags = ["essays", "web", "indieweb"]
+
+[[links]]
+title = "Type Theory"
+url = "https://abuseofnotation.github.io/category-theory-illustrated/06_type/"
+description = "An illustrated introduction to type theory from the Category Theory Illustrated series."
+tags = ["math", "programming", "essays"]
+
+[[links]]
+title = "Email Obfuscation"
+url = "https://spencermortensen.com/articles/email-obfuscation/"
+description = "A short practical note on hiding email addresses from scrapers without making them unusable. You would be surprised by some of the 'strategies'"
+tags = ["web", "programming", "tools"]
+
+[[links]]
+title = "Monstrous Moonshine"
+url = "https://en.wikipedia.org/wiki/Monstrous_moonshine"
+description = "A reference page on the uncanny connection between the Monster group and modular functions. Coincidence!?"
+tags = ["math", "reference"]
+
+[[links]]
+title = "SLAP"
+url = "https://taylor.town/slap-000"
+description = "An esoteric programming language with a deliberately strange little ecosystem. Nice and esoteric."
+tags = ["programming-languages", "programming", "humor"]
+
+[[links]]
+title = "52-hertz Whale"
+url = "https://en.wikipedia.org/wiki/52-hertz_whale"
+description = "A reference on the famously solitary whale call recorded at an unusual frequency. This whale is lonely."
+tags = ["reference", "science"]
