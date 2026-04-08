@@ -345,6 +345,7 @@ const shareMessages = [
     "This post is traveling now, leaving behind a faint smell of compulsion."
 ];
 const imageCache = new Map();
+const AD_SCROLL_INTERVAL = 10;
 
 const state = {
     currentIndex: reels.length - 1,
@@ -676,11 +677,18 @@ function pulseMove(direction) {
 }
 
 function go(direction) {
-    if (state.adLocked) return;
+    if (state.adLocked || state.moving) return;
+
+    if (state.currentIsAd) {
+        const nextIndex = wrapReelIndex(state.lastReelIndex + direction);
+        pulseMove(direction);
+        showReel(nextIndex);
+        return;
+    }
 
     state.scrollsSinceAd += 1;
 
-    if (state.scrollsSinceAd >= 25) {
+    if (state.scrollsSinceAd >= AD_SCROLL_INTERVAL) {
         state.adIndex = (state.adIndex + 1) % ads.length;
         state.adEndsAt = performance.now() + adDurationMs();
         state.adLocked = true;
@@ -731,7 +739,7 @@ function tick() {
 
 function onWheel(event) {
     event.preventDefault();
-    if (state.adLocked) return;
+    if (state.adLocked || state.moving) return;
     addDopamine(Math.min(0.3, Math.abs(event.deltaY) / 700));
     const now = performance.now();
     if (now - state.lastWheelAt > 220) {
@@ -765,7 +773,7 @@ function onTouchMove(event) {
 }
 
 function onTouchEnd() {
-    if (state.adLocked) return;
+    if (state.adLocked || state.moving) return;
     const delta = state.touchCurrentY - state.touchStartY;
     if (Math.abs(delta) < 45) return;
     addDopamine(Math.min(0.32, Math.abs(delta) / 220));

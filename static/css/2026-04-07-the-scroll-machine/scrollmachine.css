@@ -113,6 +113,10 @@
     background: #000;
 }
 
+.sm-img[hidden] {
+    display: none;
+}
+
 .sm-ad {
     position: absolute;
     inset: 0;
