@@ -647,10 +647,10 @@ imgEl.addEventListener("load", () => {
     imgEl.hidden = false;
 });
 
-root.addEventListener("wheel", onWheel, { passive: false });
-root.addEventListener("touchstart", onTouchStart, { passive: true });
-root.addEventListener("touchmove", onTouchMove, { passive: false });
-root.addEventListener("touchend", onTouchEnd, { passive: true });
+view.addEventListener("wheel", onWheel, { passive: false });
+view.addEventListener("touchstart", onTouchStart, { passive: true });
+view.addEventListener("touchmove", onTouchMove, { passive: false });
+view.addEventListener("touchend", onTouchEnd, { passive: true });
 
 if (likeEl) {
     likeEl.addEventListener("click", triggerLikeSequence);
