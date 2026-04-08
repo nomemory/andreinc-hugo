@@ -2133,3 +2133,63 @@ title = "52-hertz Whale"
 url = "https://en.wikipedia.org/wiki/52-hertz_whale"
 description = "A reference on the famously solitary whale call recorded at an unusual frequency. This whale is lonely."
 tags = ["reference", "science"]
+
+[[links]]
+title = "Best Paper Awards"
+url = "https://jeffhuang.com/best_paper_awards/"
+description = "A list collecting best paper awards across computer science venues. Useful if you want a guided tour of what people thought was excellent."
+tags = ["research", "programming", "reference"]
+
+[[links]]
+title = "The pinnacle of enshittification, or: Large language models"
+url = "https://blogs.gentoo.org/mgorny/2026/04/05/the-pinnacle-of-enshittification-or-large-language-models/"
+description = "A sharp essay from the Gentoo blog about large language models and the current shape of software decay."
+tags = ["essays", "programming", "ai"]
+
+[[links]]
+title = "Tube Sound Quiz"
+url = "https://tubesoundquiz.com/"
+description = "A quiz where you identify London Underground lines by their sounds. Very specific."
+tags = ["games", "sound", "quizzes"]
+
+[[links]]
+title = "How 12,000 tonnes of dumped orange peel produced something nobody imagined"
+url = "https://www.sciencealert.com/how-12-000-tonnes-of-dumped-orange-peel-produced-something-nobody-imagined"
+description = "A story about orange peels, ecological recovery, and an unexpected landscape transformation."
+tags = ["science", "nature", "essays"]
+
+[[links]]
+title = "Rare Historical Photos"
+url = "https://rarehistoricalphotos.com/"
+description = "A large archive of historical photographs."
+tags = ["history", "archives", "photography"]
+
+[[links]]
+title = "Kaprekar's Constant"
+url = "https://www.labrujulaverde.com/en/2026/04/there-are-constant-numbers-in-the-universe-how-an-indian-mathematician-discovered-the-mystery-of-6174/"
+description = "An article on the curious arithmetic process behind 6174, the famous Kaprekar constant."
+tags = ["math", "history", "essays"]
+
+[[links]]
+title = "Terrain Ink"
+url = "https://terraink.app/"
+description = "A tool for generating map-like terrain drawings with an inked aesthetic."
+tags = ["art", "tools", "maps"]
+
+[[links]]
+title = "Minifeed Blogs"
+url = "https://minifeed.net/blogs"
+description = "A browsable directory of blogs from the Minifeed ecosystem."
+tags = ["blogs", "directories", "indieweb"]
+
+[[links]]
+title = "Simplest Hash Functions"
+url = "https://purplesyringa.moe/blog/simplest-hash-functions/"
+description = "Simple, and the kinds of tradeoffs that hide inside \"simple\"."
+tags = ["programming", "algorithms", "essays"]
+
+[[links]]
+title = "Printed"
+url = "https://printed.analogcamera.space/"
+description = "Print your own analog cameras. It's possible."
+tags = ["photography", "art", "blogs"]

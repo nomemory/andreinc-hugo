@@ -13,6 +13,8 @@ if (!root || !stage || !view || !imgEl || !adEl || !timerEl) {
     throw new Error("Scroll machine root not found.");
 }
 
+imgEl.decoding = "async";
+
 const reels = [
     {
         image: "/images/2026-04-07-the-scroll-machine/morpheus.jpg",
@@ -342,6 +344,7 @@ const shareMessages = [
     "Community expanded. Dignity slightly reduced. Thank you.",
     "This post is traveling now, leaving behind a faint smell of compulsion."
 ];
+const imageCache = new Map();
 
 const state = {
     currentIndex: reels.length - 1,
@@ -358,7 +361,9 @@ const state = {
     moving: false,
     wheelBuffer: 0,
     lastWheelAt: 0,
-    lastShareMessageIndex: -1
+    lastShareMessageIndex: -1,
+    imageToken: 0,
+    backgroundPreloadStarted: false
 };
 
 function wrapReelIndex(index) {
@@ -372,6 +377,109 @@ function adDurationMs() {
 
 function currentAd() {
     return ads[state.adIndex % ads.length];
+}
+
+function optimizedImagePath(path) {
+    return path
+        .replace("/images/2026-04-07-the-scroll-machine/", "/images/2026-04-07-the-scroll-machine/web/")
+        .replace(/\.[^.]+$/, ".webp");
+}
+
+function cacheImage(url, priority = "auto", fallbackUrl = "") {
+    const key = `${url}::${fallbackUrl}`;
+    const cached = imageCache.get(key);
+    if (cached) {
+        return cached;
+    }
+
+    const promise = new Promise((resolve) => {
+        const probe = new Image();
+        probe.decoding = "async";
+        if ("fetchPriority" in probe) {
+            probe.fetchPriority = priority;
+        }
+        probe.onload = () => resolve({ url, loaded: true });
+        probe.onerror = () => {
+            if (!fallbackUrl) {
+                resolve({ url, loaded: false });
+                return;
+            }
+
+            const fallback = new Image();
+            fallback.decoding = "async";
+            if ("fetchPriority" in fallback) {
+                fallback.fetchPriority = priority;
+            }
+            fallback.onload = () => resolve({ url: fallbackUrl, loaded: true });
+            fallback.onerror = () => resolve({ url: fallbackUrl, loaded: false });
+            fallback.src = fallbackUrl;
+        };
+        probe.src = url;
+    });
+
+    imageCache.set(key, promise);
+    return promise;
+}
+
+function preloadReelImage(src, priority = "low") {
+    return cacheImage(optimizedImagePath(src), priority, src);
+}
+
+function warmNearbyImages(index) {
+    const seen = new Set();
+    const order = [index];
+
+    for (let offset = 1; offset <= 4; offset += 1) {
+        order.push(wrapReelIndex(index + offset));
+    }
+    for (let offset = 1; offset <= 2; offset += 1) {
+        order.push(wrapReelIndex(index - offset));
+    }
+
+    order.forEach((reelIndex, offset) => {
+        if (seen.has(reelIndex)) return;
+        seen.add(reelIndex);
+        preloadReelImage(reels[reelIndex].image, offset === 0 ? "high" : "low");
+    });
+}
+
+function warmAllImages(index) {
+    if (state.backgroundPreloadStarted) return;
+    state.backgroundPreloadStarted = true;
+
+    const queue = [];
+    for (let offset = 0; offset < reels.length; offset += 1) {
+        queue.push(wrapReelIndex(index + offset));
+    }
+
+    let cursor = 0;
+    const pump = () => {
+        if (cursor >= queue.length) return;
+        preloadReelImage(reels[queue[cursor]].image, "low");
+        cursor += 1;
+        window.setTimeout(pump, 120);
+    };
+
+    pump();
+}
+
+function swapDisplayedImage(src) {
+    const token = state.imageToken + 1;
+    state.imageToken = token;
+    stage.classList.add("is-loading");
+
+    return preloadReelImage(src, "high").then((result) => {
+        if (token !== state.imageToken) {
+            return;
+        }
+        if (result.loaded && imgEl.src !== result.url) {
+            imgEl.src = result.url;
+        } else if (!imgEl.getAttribute("src")) {
+            imgEl.src = src;
+        }
+        imgEl.hidden = false;
+        stage.classList.remove("is-loading");
+    });
 }
 
 function addDopamine(amount) {
@@ -429,18 +537,35 @@ function avatarForUser(user) {
     return avatars[score % avatars.length];
 }
 
+function el(tag, className, text = "") {
+    const node = document.createElement(tag);
+    if (className) {
+        node.className = className;
+    }
+    if (text) {
+        node.textContent = text;
+    }
+    return node;
+}
+
+function createCommentNode(comment) {
+    const item = el("div", "sm-comment-item");
+    const avatar = el("div", "sm-comment-avatar", avatarForUser(comment.user));
+    const body = el("div", "sm-comment-body");
+    const text = el("p", "sm-comment-text");
+    const user = el("span", "sm-comment-user", comment.user);
+
+    text.append(user, document.createTextNode(` ${comment.text}`));
+    body.appendChild(text);
+    item.append(avatar, body);
+
+    return item;
+}
+
 function renderComments(index) {
     if (!commentsListEl) return;
     const comments = reels[index].comments || [];
-
-    commentsListEl.innerHTML = comments.map((comment) =>
-        `<div class="sm-comment-item">
-            <div class="sm-comment-avatar">${avatarForUser(comment.user)}</div>
-            <div class="sm-comment-body">
-                <p class="sm-comment-text"><span class="sm-comment-user">${comment.user}</span> ${comment.text}</p>
-            </div>
-        </div>`
-    ).join("");
+    commentsListEl.replaceChildren(...comments.map(createCommentNode));
 }
 
 function toggleComments() {
@@ -493,7 +618,6 @@ function showReel(index) {
     state.lastReelIndex = index;
 
     imgEl.hidden = false;
-    imgEl.src = reel.image;
     adEl.hidden = true;
 
     userEl.textContent = reel.user;
@@ -503,11 +627,17 @@ function showReel(index) {
     resetLikeUi();
     hideComments();
     hideSharePopup();
+
+    warmNearbyImages(index);
+    warmAllImages(index);
+    swapDisplayedImage(reel.image);
 }
 
 function showAd() {
     const ad = currentAd();
     state.currentIsAd = true;
+    state.imageToken += 1;
+    stage.classList.remove("is-loading");
 
     imgEl.hidden = true;
     adEl.hidden = false;
@@ -642,10 +772,6 @@ function onTouchEnd() {
     if (delta < 0) nextItem();
     if (delta > 0) prevItem();
 }
-
-imgEl.addEventListener("load", () => {
-    imgEl.hidden = false;
-});
 
 view.addEventListener("wheel", onWheel, { passive: false });
 view.addEventListener("touchstart", onTouchStart, { passive: true });

@@ -2,7 +2,7 @@
 date = '2026-03-12'
 draft = false
 title = 'Fresco: The lightbringer'
-categories = ["thoughts", "programming"]
+categories = ["thoughts"]
 tags = ['art']
 usekatex = false
 customCSS = ["/css/2026-03-12-fresco-the-lightbringer/fresco.css"]

@@ -40,7 +40,7 @@ customModuleJS = ["/js/2026-04-07-the-scroll-machine/scrollmachine-three.js"]
             <p class="sm-cap" id="sm-cap"></p>
             <div class="sm-actions">
                 <button type="button" class="sm-like" id="sm-like">like</button>
-                <button type="button" class="sm-comment" id="sm-comment">comment</button>
+                <button type="button" class="sm-comment" id="sm-comment">comments</button>
                 <button type="button" class="sm-share" id="sm-share">share</button>
             </div>
             <div class="sm-pop" id="sm-comments" hidden>
