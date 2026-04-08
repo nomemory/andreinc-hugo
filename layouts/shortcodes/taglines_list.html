@@ -1,0 +1,12 @@
+{{ $taglines := site.Data.taglines.taglines }}
+
+<p><small>{{ len $taglines }} taglines</small></p>
+
+<section class="taglines-list">
+  {{ range $taglines }}
+    <article class="tagline-item">
+      <p class="tagline-ro">{{ .ro }}</p>
+      <p class="tagline-en">{{ .en }}</p>
+    </article>
+  {{ end }}
+</section>

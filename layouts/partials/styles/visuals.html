@@ -1,0 +1,96 @@
+<style>
+  .visual-shell h1 {
+    margin-bottom: 1rem;
+  }
+
+  .visual-page {
+    margin: 2rem 0;
+  }
+
+  .visual-page > div,
+  .visual-page > p,
+  .visual-page > blockquote,
+  .visual-page > ul,
+  .visual-page > ol {
+    margin: 1.25rem auto 0;
+  }
+
+  .visual-page canvas {
+    display: block;
+  }
+
+  .visual-page > .math-canvas-wrap,
+  .visual-page > .octo-canvas-wrap,
+  .visual-page > .fresco-wrapper,
+  .visual-page > .tetris-shell,
+  .visual-canvas-wrap {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .visual-canvas-wrap > div[id$="-sketch"] {
+    width: max-content;
+    max-width: none;
+    margin: 0 auto;
+  }
+
+  .visual-page > div:first-child,
+  .visual-page > p:first-child,
+  .visual-page > blockquote:first-child,
+  .visual-page > ul:first-child,
+  .visual-page > ol:first-child {
+    margin-top: 0;
+  }
+
+  .visual-page select,
+  .visual-page button {
+    margin: 0 0.2rem;
+  }
+
+  .visual-footer {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    align-items: start;
+  }
+
+  .visual-panel {
+    padding: 1rem 1rem 1.1rem;
+    border: 1px solid var(--border-color);
+    background: #fff;
+  }
+
+  .visual-panel h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+  }
+
+  .visual-panel p {
+    margin: 0;
+  }
+
+  .visual-source-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .visual-source-list li + li {
+    margin-top: 0.5rem;
+  }
+
+  .visual-source-list a {
+    font-family: monospace;
+    font-size: 0.92rem;
+    word-break: break-all;
+  }
+
+  @media (max-width: 640px) {
+    .visual-panel {
+      padding-left: 0.95rem;
+      padding-right: 0.95rem;
+    }
+  }
+</style>

@@ -21,3 +21,9 @@ id = "commercial_80s"
 emoticon = "📼"
 title = "Commercial in the 80s"
 description = "This was 'commercial' music in the 80s. I am impressed."
+
+[[entries]]
+id = "non_english_world"
+emoticon = "🌍"
+title = "Non-English World"
+description = "Songs carried by languages other than English, each with its own weather and cadence."

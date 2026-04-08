@@ -1,0 +1,495 @@
+.sm-wrap {
+    max-width: 460px;
+    margin: 2rem auto;
+}
+
+.sm {
+    border: 1px solid #111;
+    background: #d7dde6;
+    padding: 12px;
+}
+
+.sm-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 0.92;
+    border: 1px solid #111;
+    background: #000;
+    overflow: hidden;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    touch-action: pan-y;
+}
+
+.sm-stage.is-glowing {
+    animation: sm-glow 1.8s ease-in-out infinite;
+}
+
+@keyframes sm-glow {
+    0% {
+        border-color: #111;
+        box-shadow: inset 0 0 0 0 rgba(45, 91, 255, 0), inset 0 0 0 0 rgba(212, 49, 91, 0);
+    }
+    50% {
+        border-color: #d4315b;
+        box-shadow: inset 0 0 0 2px rgba(45, 91, 255, 0.95), inset 0 0 0 6px rgba(212, 49, 91, 0.6);
+    }
+    100% {
+        border-color: #111;
+        box-shadow: inset 0 0 0 0 rgba(45, 91, 255, 0), inset 0 0 0 0 rgba(212, 49, 91, 0);
+    }
+}
+
+.sm-view {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    background: #000;
+}
+
+.sm-view.is-moving-up .sm-img,
+.sm-view.is-moving-up .sm-ad,
+.sm-view.is-moving-down .sm-img,
+.sm-view.is-moving-down .sm-ad {
+    animation-duration: 240ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: both;
+}
+
+.sm-view.is-moving-up .sm-img,
+.sm-view.is-moving-up .sm-ad {
+    animation-name: sm-up;
+}
+
+.sm-view.is-moving-down .sm-img,
+.sm-view.is-moving-down .sm-ad {
+    animation-name: sm-down;
+}
+
+@keyframes sm-up {
+    from {
+        opacity: 0.45;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sm-down {
+    from {
+        opacity: 0.45;
+        transform: translateY(-24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sm-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+}
+
+.sm-ad {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background:
+        repeating-linear-gradient(-28deg, rgba(255,255,255,0.18) 0 22px, rgba(255,255,255,0) 22px 64px),
+        linear-gradient(135deg, #ff00a8 0%, #ffea00 34%, #00e5ff 68%, #7c4dff 100%);
+}
+
+.sm-ad[hidden] {
+    display: none;
+}
+
+.sm-ad-box {
+    width: min(100%, 82%);
+    border: 4px solid #111;
+    background: rgba(255, 245, 0, 0.92);
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.65);
+    padding: 1.2rem 1rem;
+    text-align: center;
+    color: #111;
+}
+
+.sm-ad-kicker,
+.sm-ad-sub,
+.sm-ad-cap {
+    margin: 0;
+}
+
+.sm-ad-kicker {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.sm-ad-title {
+    margin: 0.45rem 0;
+    font-size: 1.9rem;
+    line-height: 0.95;
+}
+
+.sm-ad-sub {
+    font-size: 1rem;
+    line-height: 1.3;
+}
+
+.sm-ad-cap {
+    margin-top: 0.75rem;
+    font-size: 0.88rem;
+    line-height: 1.35;
+}
+
+.sm-timer {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2;
+    padding: 0.35rem 0.55rem;
+    background: rgba(17, 17, 17, 0.72);
+    color: #fff;
+    font-size: 0.78rem;
+    line-height: 1.2;
+    text-align: center;
+    pointer-events: none;
+}
+
+.sm-timer[hidden] {
+    display: none;
+}
+
+.sm-meta {
+    padding-top: 0.8rem;
+    background: #d7dde6;
+}
+
+.sm-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.35rem;
+}
+
+.sm-author {
+    display: flex;
+    align-items: baseline;
+    gap: 0.38rem;
+    min-width: 0;
+}
+
+.sm-by {
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #6a717a;
+    white-space: nowrap;
+}
+
+.sm-user {
+    font-weight: 700;
+    color: #111;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.sm-age {
+    color: #5c6570;
+    white-space: nowrap;
+}
+
+.sm-cap {
+    margin: 0 0 0.5rem 0;
+    min-height: 3.2em;
+}
+
+.sm-actions {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    margin: 0 0 0.55rem 0;
+    align-items: center;
+}
+
+.sm-like,
+.sm-comment,
+.sm-share,
+.sm-close {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.sm-like {
+    color: #d4315b;
+    font-weight: 700;
+}
+
+.sm-comment {
+    color: #2d5bff;
+    font-weight: 700;
+}
+
+.sm-share,
+.sm-close {
+    color: #5c6570;
+}
+
+.sm-like:hover,
+.sm-comment:hover,
+.sm-share:hover,
+.sm-close:hover {
+    text-decoration: underline;
+}
+
+.sm-like.is-heart,
+.sm-like.is-poo {
+    text-decoration: none;
+}
+
+.sm-like.is-poo {
+    font-size: 1.2rem;
+}
+
+.sm-pop {
+    margin: 0 0 0.65rem 0;
+    border: 1px solid #111;
+    background: rgba(255, 255, 255, 0.55);
+    padding: 0.55rem 0.65rem;
+}
+
+.sm-pop[hidden] {
+    display: none;
+}
+
+.sm-pop-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.45rem;
+    font-size: 0.85rem;
+}
+
+.sm-comments-list {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.sm-comment-item {
+    display: flex;
+    gap: 0.45rem;
+    align-items: flex-start;
+    font-size: 0.84rem;
+    line-height: 1.35;
+}
+
+.sm-comment-avatar {
+    flex: 0 0 auto;
+    font-size: 0.95rem;
+    line-height: 1.1;
+}
+
+.sm-comment-body {
+    min-width: 0;
+    word-break: break-word;
+}
+
+.sm-comment-user {
+    font-weight: 700;
+    color: #111;
+}
+
+.sm-comment-text {
+    margin: 0;
+    color: #222;
+}
+
+.sm-share-msg {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    color: #444;
+}
+
+.sm-hint {
+    margin: 0 0 0.55rem 0;
+    font-size: 0.82rem;
+    color: #5c6570;
+}
+
+.sm-dopamine-label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.78rem;
+    color: #444;
+}
+
+.sm-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(17, 17, 17, 0.12);
+    overflow: hidden;
+}
+
+.dfill {
+    width: 100%;
+    height: 100%;
+    transform-origin: left center;
+    transform: scaleX(0.18);
+    background: linear-gradient(90deg, #7aa2ff 0%, #2d5bff 55%, #d4315b 100%);
+}
+
+.sm-moloch {
+    display: grid;
+    justify-items: center;
+    gap: 0.35rem;
+    margin-top: 0.9rem;
+    padding-top: 0.15rem;
+}
+
+.sm-brain {
+    position: relative;
+    width: 84px;
+    height: 58px;
+}
+
+.sm-lobe {
+    position: absolute;
+    background: #f0a4b9;
+    border: 1px solid #111;
+    border-radius: 999px;
+    transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.sm-lobe--1 {
+    width: 34px;
+    height: 28px;
+    left: 8px;
+    top: 18px;
+}
+
+.sm-lobe--2 {
+    width: 34px;
+    height: 30px;
+    left: 28px;
+    top: 10px;
+}
+
+.sm-lobe--3 {
+    width: 32px;
+    height: 30px;
+    left: 42px;
+    top: 19px;
+}
+
+.sm-lobe--4 {
+    width: 26px;
+    height: 24px;
+    left: 20px;
+    top: 2px;
+}
+
+.sm-face {
+    position: relative;
+    width: 56px;
+    height: 24px;
+    margin-top: -8px;
+}
+
+.sm-eye {
+    position: absolute;
+    top: 3px;
+    width: 6px;
+    height: 6px;
+    background: #111;
+    border-radius: 999px;
+}
+
+.sm-eye--left {
+    left: 14px;
+}
+
+.sm-eye--right {
+    right: 14px;
+}
+
+.sm-mouth {
+    position: absolute;
+    left: 50%;
+    bottom: 1px;
+    width: 18px;
+    height: 9px;
+    margin-left: -9px;
+    border-bottom: 2px solid #111;
+    border-radius: 0 0 18px 18px;
+    transition: transform 0.2s ease, border-radius 0.2s ease, border-top 0.2s ease, border-bottom 0.2s ease;
+}
+
+.sm-moloch-label {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #555;
+    text-decoration: none;
+}
+
+.sm-moloch-label:hover {
+    text-decoration: underline;
+}
+
+.sm-moloch--hungry .sm-lobe {
+    background: #d9a3b0;
+}
+
+.sm-moloch--hungry .sm-mouth {
+    border-top: 2px solid #111;
+    border-bottom: 0;
+    border-radius: 18px 18px 0 0;
+}
+
+.sm-moloch--bored .sm-lobe {
+    background: #e8a8b8;
+    opacity: 0.92;
+}
+
+.sm-moloch--bored .sm-mouth {
+    border-top: 0;
+    border-bottom: 2px solid #111;
+    border-radius: 0;
+    height: 0;
+}
+
+.sm-moloch--happy .sm-lobe {
+    background: #f39fb6;
+    transform: translateY(-1px);
+}
+
+.sm-moloch--happy .sm-mouth {
+    border-top: 0;
+    border-bottom: 2px solid #111;
+    border-radius: 0 0 18px 18px;
+}
+
+.sm-note {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #555;
+}

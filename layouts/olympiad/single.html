@@ -78,41 +78,4 @@
 
 {{ partial "giscus.html" . }}
 
-<style>
-.olympiad-problem-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin: 0 0 1rem 0;
-}
-
-.olympiad-problem-tag {
-    display: inline-block;
-    font-size: 0.85rem;
-    line-height: 1.2;
-    padding: 0.2rem 0.45rem;
-    border: 1px solid #000;
-}
-
-.olympiad-problem-nav {
-    margin-top: 1.5rem;
-    gap: 0.5rem;
-    justify-content: flex-start;
-}
-
-.olympiad-problem-nav .list-page-numbers {
-    display: none;
-}
-
-.olympiad-problem-nav .list-page-nav:last-child {
-    margin-left: 0;
-}
-
-.olympiad-problem-nav-disabled {
-    opacity: 0.45;
-    pointer-events: none;
-    cursor: default;
-}
-</style>
-
 {{ end }}

@@ -1,48 +1,7 @@
 {{ define "main" }}
-
 <main class="taglines-page">
-  <header>
-    <h1>{{ .Title }}</h1>
-    {{ with .Content }}
-      <div>{{ . }}</div>
-    {{ end }}
-  </header>
-
-  {{ $taglines := site.Data.taglines.taglines }}
-
-  <p><small>{{ len $taglines }} taglines</small></p>
-
-  <section class="taglines-list">
-    {{ range $taglines }}
-      <article class="tagline-item">
-        <p class="tagline-ro">{{ .ro }}</p>
-        <p class="tagline-en">{{ .en }}</p>
-      </article>
-    {{ end }}
-  </section>
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
 </main>
-
-<style>
-.taglines-page .taglines-list {
-  margin-top: 1.5rem;
-}
-
-.taglines-page .tagline-item {
-  border: 1px solid #000;
-  padding: 0.8rem 1rem;
-  margin-bottom: 0.75rem;
-}
-
-.taglines-page .tagline-ro {
-  margin: 0;
-  font-weight: 600;
-}
-
-.taglines-page .tagline-en {
-  margin: 0.45rem 0 0;
-  font-size: 0.95rem;
-  font-style: italic;
-}
-</style>
 
 {{ end }}

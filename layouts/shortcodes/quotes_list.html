@@ -1,0 +1,12 @@
+{{ $quotes := sort site.Data.quotes.quotes "author" "asc" }}
+
+<p><small>{{ len $quotes }} quotes</small></p>
+
+<section class="quotes-list">
+  {{ range $quotes }}
+    <article class="quote-item">
+      <blockquote>{{ .text }}</blockquote>
+      <p class="quote-author">- {{ .author }}</p>
+    </article>
+  {{ end }}
+</section>

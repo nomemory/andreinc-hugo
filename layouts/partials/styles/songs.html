@@ -1,0 +1,116 @@
+<style>
+  .sng-page {
+    --sng-border: #000;
+    --sng-muted: #666;
+  }
+
+  .sng-page header {
+    margin-bottom: 1rem;
+  }
+
+  .sng-page .sng-back-link {
+    margin: 0 0 0.75rem 0;
+  }
+
+  .sng-page .sng-filters {
+    margin-bottom: 1rem;
+  }
+
+  .sng-page .sng-filter-links,
+  .sng-page .sng-actions {
+    margin: 0.35rem 0;
+  }
+
+  .sng-page .sng-links a,
+  .sng-page .sng-back-link a {
+    font-size: 0.85em;
+    padding: 2px 6px;
+    text-decoration: none;
+  }
+
+  .sng-page .sng-active-filter {
+    background: #000;
+    color: #fff;
+  }
+
+  .sng-page button {
+    font-size: 0.9em;
+    padding: 4px 8px;
+    border: 1px solid #000;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .sng-page button:hover {
+    background: #000;
+    color: #fff;
+  }
+
+  .sng-page .sng-item {
+    border: 1px solid var(--sng-border);
+    border-left: 1px solid #000;
+    padding: 0.5rem 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .sng-page .sng-item-inner,
+  .sng-page .sng-content {
+    display: block;
+  }
+
+  .sng-page .sng-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .sng-page .sng-heading h2 {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  .sng-page .sng-artist {
+    font-weight: normal;
+  }
+
+  .sng-page .sng-badge {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    border: 1px solid var(--sng-border);
+    padding: 2px 5px;
+  }
+
+  .sng-page .sng-meta {
+    margin: 0 0 0.3rem 0;
+    color: var(--sng-muted);
+    font-size: 0.85em;
+  }
+
+  .sng-page .sng-thought {
+    margin: 0.25rem 0 0.4rem 0;
+    line-height: 1.3;
+  }
+
+  .sng-page .sng-tags,
+  .sng-page .sng-links {
+    margin: 0.2rem 0;
+  }
+
+  .sng-page .sng-links a {
+    margin-left: 0.3rem;
+  }
+
+  @media (max-width: 700px) {
+    .sng-page .sng-heading {
+      display: block;
+    }
+
+    .sng-page .sng-badge {
+      display: inline-block;
+      margin-top: 0.3rem;
+    }
+  }
+</style>

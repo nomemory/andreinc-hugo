@@ -1630,3 +1630,123 @@ youtube_video = "https://www.youtube.com/watch?v=XaZUrQFUFq0&list=RDXaZUrQFUFq0&
 youtube_video_id = "XaZUrQFUFq0"
 jukebox = ["commercial_80s"]
 thought = "Sleek."
+
+[[entries]]
+title = "Čula jesam da se dragi ženi"
+artist = "Amira Medunjanin"
+type = "song"
+genres = ["sevdalinka", "folk", "world"]
+youtube_video = "https://www.youtube.com/watch?v=aeFEAe3ik98"
+youtube_video_id = "aeFEAe3ik98"
+jukebox = ["non_english_world"]
+thought = "Lament."
+
+[[entries]]
+title = "Omide Zendegani"
+artist = "Pink Martini"
+type = "song"
+genres = ["world", "jazz", "traditional pop"]
+youtube_video = "https://www.youtube.com/watch?v=Ax3slsfYpgk&list=RDAx3slsfYpgk&start_radio=1"
+youtube_video_id = "Ax3slsfYpgk"
+jukebox = ["non_english_world"]
+thought = "Velvet."
+
+[[entries]]
+title = "Rad Halaila"
+artist = "The Burning Bush"
+type = "song"
+genres = ["world", "folk", "psychedelic"]
+youtube_video = "https://www.youtube.com/watch?v=g8UnpLJAJyk&list=RDg8UnpLJAJyk&start_radio=1"
+youtube_video_id = "g8UnpLJAJyk"
+jukebox = ["non_english_world"]
+thought = "Spellbound."
+
+[[entries]]
+title = "Tchiki Tchiki"
+artist = "Tony Gatlif, Beata Palya"
+type = "song"
+genres = ["world", "folk", "soundtrack"]
+youtube_video = "https://www.youtube.com/watch?v=mwqgucC5Btc&list=RDmwqgucC5Btc&start_radio=1"
+youtube_video_id = "mwqgucC5Btc"
+jukebox = ["non_english_world"]
+thought = "Nomadic."
+
+[[entries]]
+title = "Lie, Lie Ciocarlie"
+artist = "Dora Gaitanovici"
+type = "song"
+genres = ["folk", "world", "romanian"]
+youtube_video = "https://www.youtube.com/watch?v=5S1S1H00sTc&list=RD5S1S1H00sTc&start_radio=1"
+youtube_video_id = "5S1S1H00sTc"
+jukebox = ["non_english_world"]
+thought = "Incantatory."
+
+[[entries]]
+title = "Va sta musica va"
+artist = "Pietra Montecorvino"
+type = "song"
+genres = ["world", "folk", "italian"]
+youtube_video = "https://www.youtube.com/watch?v=C4qEmSofKV8&list=RDC4qEmSofKV8&start_radio=1"
+youtube_video_id = "C4qEmSofKV8"
+jukebox = ["non_english_world"]
+thought = "Smoldering."
+
+[[entries]]
+title = "Στην Τρούμπα στην Καστέλα"
+artist = "Πέννυ Μπαλτατζή"
+type = "song"
+genres = ["world", "greek", "folk"]
+youtube_video = "https://www.youtube.com/watch?v=G7-HrGgfr3g&list=RDG7-HrGgfr3g&start_radio=1"
+youtube_video_id = "G7-HrGgfr3g"
+jukebox = ["non_english_world"]
+thought = "Harbor-lit."
+
+[[entries]]
+title = "Ergen Deda"
+artist = "Le Mystere des Voix Bulgares"
+type = "song"
+genres = ["world", "bulgarian", "choral"]
+youtube_video = "https://www.youtube.com/watch?v=S4iFF79zBJQ&list=RDS4iFF79zBJQ&start_radio=1"
+youtube_video_id = "S4iFF79zBJQ"
+jukebox = ["non_english_world"]
+thought = "Prismatic."
+
+[[entries]]
+title = "Belz"
+artist = "Talila, Ensemble de Kol Aviv"
+type = "song"
+genres = ["world", "klezmer", "yiddish"]
+youtube_video = "https://www.youtube.com/watch?v=agGml4c6Lq8&list=RDagGml4c6Lq8&start_radio=1"
+youtube_video_id = "agGml4c6Lq8"
+jukebox = ["non_english_world"]
+thought = "Wistful."
+
+[[entries]]
+title = "Inima nu fi de piatra"
+artist = "Corina Chiriac"
+type = "song"
+genres = ["romanian", "pop", "world"]
+youtube_video = "https://www.youtube.com/watch?v=NT6Mah82rnY&list=RDNT6Mah82rnY&start_radio=1"
+youtube_video_id = "NT6Mah82rnY"
+jukebox = ["non_english_world"]
+thought = "Tender."
+
+[[entries]]
+title = "Eshveh"
+artist = "Bijan Mortazavi"
+type = "song"
+genres = ["persian", "world", "instrumental"]
+youtube_video = "https://www.youtube.com/watch?v=qbW-XIsYs40&list=RDqbW-XIsYs40&start_radio=1"
+youtube_video_id = "qbW-XIsYs40"
+jukebox = ["non_english_world"]
+thought = "Ornate."
+
+[[entries]]
+title = "Erti Nakhvit"
+artist = "Trio Mandili"
+type = "song"
+genres = ["georgian", "folk", "world"]
+youtube_video = "https://www.youtube.com/watch?v=oPflCvPWXcQ&list=RDoPflCvPWXcQ&start_radio=1"
+youtube_video_id = "oPflCvPWXcQ"
+jukebox = ["non_english_world"]
+thought = "Bright."
