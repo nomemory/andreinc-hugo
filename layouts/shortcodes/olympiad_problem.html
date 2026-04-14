@@ -1,0 +1,147 @@
+{{ $rawID := "" }}
+{{ with .Get "id" }}
+  {{ $rawID = printf "%v" . }}
+{{ else }}
+  {{ with .Get 0 }}
+    {{ $rawID = printf "%v" . }}
+  {{ end }}
+{{ end }}
+
+{{ $anchor := "" }}
+{{ with .Get "anchor" }}
+  {{ $anchor = printf "%v" . }}
+{{ end }}
+
+{{ $rawID = strings.TrimSpace $rawID }}
+{{ $digits := replaceRE `\D` "" $rawID }}
+{{ $code := "" }}
+{{ if gt (len $digits) 0 }}
+  {{ if ge (len $digits) 5 }}
+    {{ $code = printf "p%s" $digits }}
+  {{ else if eq (len $digits) 4 }}
+    {{ $code = printf "p0%s" $digits }}
+  {{ else if eq (len $digits) 3 }}
+    {{ $code = printf "p00%s" $digits }}
+  {{ else if eq (len $digits) 2 }}
+    {{ $code = printf "p000%s" $digits }}
+  {{ else }}
+    {{ $code = printf "p0000%s" $digits }}
+  {{ end }}
+{{ end }}
+
+{{ $problem := "" }}
+{{ if $code }}
+  {{ $matches := where (where .Page.Site.RegularPages "Section" "olympiad") "Params.code" $code }}
+  {{ with first 1 $matches }}
+    {{ $problem = index . 0 }}
+  {{ end }}
+{{ end }}
+
+<section class="olympiad-embed-list"{{ with $anchor }} id="{{ . }}"{{ end }}>
+  {{ with $problem }}
+    {{ $tags := .Params.problemTags | default slice }}
+    {{ $difficulty := .Params.difficulty | default "" }}
+    {{ $grades := .Params.gradeLevel | default slice }}
+    {{ $preview := .RawContent }}
+    {{ $preview = replaceRE `(?s)<details\b.*?</details>` "" $preview }}
+    {{ $preview = replaceRE `(?s)<p>\s*<a class="mpl" href="[^"]+">.*?</a>\s*</p>` "" $preview }}
+    {{ $preview = partial "olympiad-linkify.html" $preview }}
+    <article class="olympiad-item mp">
+      <p class="olympiad-title-row">
+        <a href="{{ .RelPermalink }}" class="mpl">{{ .Title }}</a>
+        <span class="mpn">{{ .Date.Format "02 Jan, 2006" }}</span>
+      </p>
+      <div class="olympiad-preview">{{ $preview }}</div>
+      <hr class="olympiad-entry-separator"/>
+      {{ if or (gt (len $tags) 0) $difficulty (gt (len $grades) 0) }}
+        <p class="olympiad-tags">
+          {{ range $grades }}
+            <sub><a href="{{ printf "olympiad/grade/%s/" (. | urlize) | relURL }}">{{ . | lower }}</a></sub>
+          {{ end }}
+          {{ if and (gt (len $grades) 0) (or $difficulty (gt (len $tags) 0)) }}
+            <sub class="olympiad-meta-separator">&#9675;</sub>
+          {{ end }}
+          {{ with $difficulty }}
+            <sub><a href="{{ printf "olympiad/difficulty/%s/" (. | urlize) | relURL }}">{{ . | lower }}</a></sub>
+          {{ end }}
+          {{ if and $difficulty (gt (len $tags) 0) }}
+            <sub class="olympiad-meta-separator">&#9675;</sub>
+          {{ end }}
+          {{ range $tags }}
+            <sub><a href="{{ printf "olympiad/tags/%s/" (. | urlize) | relURL }}">#{{ . | lower }}</a></sub>
+          {{ end }}
+        </p>
+      {{ end }}
+      <p class="olympiad-actions">
+        <a href="{{ .RelPermalink }}" class="olympiad-solution-link">Hints & Solution</a>
+      </p>
+    </article>
+  {{ else }}
+    {{ if eq $rawID "" }}
+      <p>Olympiad shortcode error: missing problem id.</p>
+    {{ else }}
+      <p>Olympiad shortcode error: no problem found for id <code>{{ $rawID }}</code>.</p>
+    {{ end }}
+  {{ end }}
+</section>
+
+<style>
+.olympiad-embed-list .olympiad-entry-separator {
+    margin: 0.55rem 0;
+}
+
+.olympiad-embed-list .olympiad-tags {
+    margin: 0.35rem 0 0.45rem 0;
+    font-size: 0.9rem;
+}
+
+.olympiad-embed-list .olympiad-meta-separator {
+    margin: 0 0.1rem;
+}
+
+.olympiad-embed-list .olympiad-item {
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.olympiad-embed-list .olympiad-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.45rem 0;
+}
+
+.olympiad-embed-list .olympiad-title-row .mpn {
+    font: 0.7rem/1.1 sans-serif;
+    font-style: italic;
+}
+
+.olympiad-embed-list .olympiad-preview {
+    margin: 0.3rem 0 0.45rem 0;
+}
+
+.olympiad-embed-list .olympiad-preview .mp {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.olympiad-embed-list .olympiad-actions {
+    margin: 0 0 0.45rem 0;
+    font-size: 0.9rem;
+}
+
+.olympiad-embed-list .olympiad-solution-link {
+    display: inline-block;
+    border: 1px solid #000;
+    padding: 0.15rem 0.45rem;
+    text-decoration: none;
+}
+
+.olympiad-embed-list .olympiad-solution-link:hover {
+    text-decoration: underline;
+}
+</style>
