@@ -7,7 +7,7 @@
     {{ end }}
   </header>
 
-  {{ $allLinks := sort site.Data.links.links "title" }}
+  {{ $allLinks := sort site.Data.links.links "date_added" "desc" }}
   {{ $currentTag := .Params.linkTag | default "" }}
 
   {{ $allTags := slice }}
@@ -61,6 +61,7 @@
         {{ $tag := . }}
         <sub><a href="{{ printf "links/%s/" ($tag | urlize) | relURL }}" class="{{ if eq $currentTag $tag }}active-tag{{ end }}">#{{ $tag | lower }}</a></sub>
       {{ end }}
+      <sub><a href="{{ "rss/links.xml" | relURL }}">rss</a></sub>
     </p>
   </section>
 
@@ -68,12 +69,18 @@
 
   <section id="links-list">
     {{ range $pageLinks }}
-      <article class="link-item">
+      {{ $anchor := printf "link-%s-%s" (.title | anchorize) (substr (md5 .url) 0 8) }}
+      <article class="link-item" id="{{ $anchor }}">
+        {{ $dateAdded := .date_added | default (now.Format "2006-01-02") }}
         <h2>
           <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">
             {{ .title }}
           </a>
         </h2>
+
+        <p class="link-meta">
+          Added {{ time.AsTime $dateAdded | time.Format "2 Jan 2006" }}
+        </p>
 
         {{ with .description }}
           <p>{{ . }}</p>

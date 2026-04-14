@@ -6,7 +6,7 @@
   {{ end }}
 {{ end }}
 
-{{ $allLinks := sort site.Data.links.links "title" }}
+{{ $allLinks := sort site.Data.links.links "date_added" "desc" }}
 {{ $pageSize := 50 }}
 {{ $totalLinks := len $allLinks }}
 {{ $totalPages := div (add $totalLinks (sub $pageSize 1)) $pageSize }}

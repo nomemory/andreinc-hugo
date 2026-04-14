@@ -20,3 +20,6 @@ This page lists the RSS feeds available on the site.
 
 - [`/rss/olympiad.xml`](/rss/olympiad.xml)  
   The olympiad-only feed, containing just math problems from the olympiad section.
+
+- [`/rss/links.xml`](/rss/links.xml)  
+  The links feed, containing entries for the links collection and pointing directly to each link card on the site.

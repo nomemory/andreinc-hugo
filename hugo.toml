@@ -35,6 +35,13 @@ title = 'Personal Site of Andrei N. Ciobanu'
     isHTML = false
     isPlainText = false
     ugly = true
+  [outputFormats.linksrss]
+    mediaType = "application/rss+xml"
+    baseName = "links"
+    rel = "alternate"
+    isHTML = false
+    isPlainText = false
+    ugly = true
 
 [markup]
   [markup.goldmark]
@@ -74,30 +81,30 @@ enable = true
     url = "/"
     weight = 10
 [[menu.main]]
+    identifier = "about"
+    name = "about"
+    url = "/about/"
+    weight = 11
+[[menu.main]]
     identifier = "thoughts"
     name = "thoughts"
     url = "/categories/thoughts/"
-    weight = 11
+    weight = 12
 [[menu.main]]
     identifier = "math"
     name = "math"
     url = "/categories/math/"
-    weight = 12
+    weight = 13
 [[menu.main]]
     identifier = "programming"
     name = "programming"
     url = "/categories/programming/"
-    weight = 13
+    weight = 14
 [[menu.main]]
     identifier = "visuals"
     name = "visuals"
     url = "/visuals/"
-    weight = 14
-[[menu.main]]
-    identifier = "about"
-    name = "about"
-    url = "/about/"
-    weight = 20
+    weight = 15
 [[menu.main]]
     identifier = "jukebox"
     name = "jukebox"

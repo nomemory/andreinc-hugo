@@ -1,4 +1,4 @@
 +++
 title = "Feeds"
-outputs = ["programmingrss", "mathrss", "thoughtsrss", "olympiadrss"]
+outputs = ["programmingrss", "mathrss", "thoughtsrss", "olympiadrss", "linksrss"]
 +++

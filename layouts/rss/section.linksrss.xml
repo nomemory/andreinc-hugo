@@ -1,0 +1,33 @@
+{{- $links := sort site.Data.links.links "date_added" "desc" -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ printf "%s - Links" .Site.Title }}</title>
+    <link>{{ printf "%slinks/" .Site.BaseURL }}</link>
+    <description>Recently added links</description>
+    <generator>Hugo</generator>
+    <language>{{ .Site.LanguageCode }}</language>
+    <lastBuildDate>{{ now.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</lastBuildDate>
+    <atom:link href="{{ printf "%srss/links.xml" .Site.BaseURL }}" rel="self" type="application/rss+xml" />
+    {{- range $index, $link := $links }}
+    {{- $anchor := printf "link-%s-%s" ($link.title | anchorize) (substr (md5 $link.url) 0 8) }}
+    {{- $pageNum := add (div $index 50) 1 }}
+    {{- $pagePath := "links/" }}
+    {{- if gt $pageNum 1 }}
+      {{- $pagePath = printf "links/page/%d/" $pageNum }}
+    {{- end }}
+    {{- $itemLink := printf "%s#%s" ($pagePath | absURL) $anchor }}
+    {{- $dateAdded := $link.date_added | default (now.Format "2006-01-02") }}
+    {{- $pubDate := time.AsTime $dateAdded }}
+    {{- $description := $link.description | default "" }}
+    {{- $tags := $link.tags | default (slice) }}
+    <item>
+      <title>{{ $link.title }}</title>
+      <link>{{ $itemLink }}</link>
+      <pubDate>{{ $pubDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+      <guid isPermaLink="true">{{ $itemLink }}</guid>
+      <description>{{ printf "%s%s" $description (cond (gt (len $tags) 0) (printf " Tags: %s." (delimit $tags ", ")) "") | html }}</description>
+    </item>
+    {{- end }}
+  </channel>
+</rss>
