@@ -1750,3 +1750,53 @@ youtube_video = "https://www.youtube.com/watch?v=oPflCvPWXcQ&list=RDoPflCvPWXcQ&
 youtube_video_id = "oPflCvPWXcQ"
 jukebox = ["non_english_world"]
 thought = "Bright."
+
+[[entries]]
+title = "Aizamm' na mana"
+artist = "Enzo Avitabile"
+type = "song"
+genres = ["italian", "world", "folk"]
+youtube_video = "https://www.youtube.com/watch?v=zxiZXq9uYmc"
+youtube_video_id = "zxiZXq9uYmc"
+jukebox = ["non_english_world"]
+thought = "Ritual."
+
+[[entries]]
+title = "Sarba Ciobaneasca"
+artist = "Traditional"
+type = "song"
+genres = ["romanian", "folk", "world"]
+youtube_video = "https://www.youtube.com/watch?v=broZdakO4Dw&list=RDbroZdakO4Dw&start_radio=1"
+youtube_video_id = "broZdakO4Dw"
+jukebox = ["non_english_world"]
+thought = "Whirling."
+
+[[entries]]
+title = "Mesecina"
+artist = "Trag"
+type = "song"
+genres = ["serbian", "folk rock", "world"]
+youtube_video = "https://www.youtube.com/watch?v=XoMGYa_vRhs&list=PLKWt0P5om1UYgrs2j6TLBwDo54oBUDN8E&index=37"
+youtube_video_id = "XoMGYa_vRhs"
+jukebox = ["non_english_world"]
+thought = "Moonlit."
+
+[[entries]]
+title = "Hej, sokoły!"
+artist = "Traditional"
+type = "song"
+genres = ["polish", "folk", "world"]
+youtube_video = "https://www.youtube.com/watch?v=ZzZ1qmXZBuY&list=RDZzZ1qmXZBuY&start_radio=1"
+youtube_video_id = "ZzZ1qmXZBuY"
+jukebox = ["non_english_world"]
+thought = "Galloping."
+
+[[entries]]
+title = "Το κόκκινο φουστάνι"
+artist = "Ελευθερία Αρβανιτάκη"
+type = "song"
+genres = ["greek", "folk", "world"]
+youtube_video = "https://www.youtube.com/watch?v=ndBVeYKGKYA&list=RDndBVeYKGKYA&start_radio=1"
+youtube_video_id = "ndBVeYKGKYA"
+jukebox = ["non_english_world"]
+thought = "Crimson."

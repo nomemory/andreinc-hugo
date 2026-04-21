@@ -1,0 +1,73 @@
+{{ $collection := .Get "collection" }}
+{{ $pattern := printf "photos/%s/*" $collection }}
+{{ $photos := slice }}
+
+{{ if not $collection }}
+  {{ errorf "photo_gallery shortcode requires a collection parameter: %s" .Position }}
+{{ end }}
+
+{{ with resources.Match $pattern }}
+  {{ range sort . "Name" }}
+    {{ if eq .ResourceType "image" }}
+      {{ $thumb := .Fit "360x270" }}
+      {{ $title := humanize (strings.TrimSuffix (path.Ext .Name) .Name) }}
+      {{ $photos = $photos | append (dict
+        "src" .RelPermalink
+        "thumb" $thumb.RelPermalink
+        "title" $title
+      ) }}
+    {{ end }}
+  {{ end }}
+{{ else }}
+  {{ errorf "photo_gallery shortcode could not find collection %q in assets/photos: %s" $collection .Position }}
+{{ end }}
+
+{{ if gt (len $photos) 0 }}
+  <div class="photo-gallery-shortcode">
+    {{ range $photos }}
+      <a class="photo-gallery-shortcode__item" href="{{ .src }}" title="{{ .title }}">
+        <img src="{{ .thumb }}" alt="{{ .title }}" loading="lazy" decoding="async">
+      </a>
+    {{ end }}
+  </div>
+
+  <style>
+    .photo-gallery-shortcode {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(3, 220px);
+      justify-content: start;
+      margin: 2rem 0;
+    }
+
+    .photo-gallery-shortcode__item {
+      display: block;
+      width: 220px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .photo-gallery-shortcode__item img {
+      display: block;
+      width: 220px;
+      height: 165px;
+      object-fit: cover;
+      background: #eef2f4;
+    }
+
+    @media (max-width: 760px) {
+      .photo-gallery-shortcode {
+        grid-template-columns: repeat(2, 220px);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .photo-gallery-shortcode {
+        grid-template-columns: 220px;
+      }
+    }
+  </style>
+{{ else }}
+  <p>No photos found in collection <code>{{ $collection }}</code>.</p>
+{{ end }}

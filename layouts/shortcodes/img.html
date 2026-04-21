@@ -1,6 +1,16 @@
-<figure class="custom-figure" style="max-width: {{ .Get "width" }}px; margin: 2rem auto;">
+{{ $src := .Get "src" }}
+{{ with .Get "collection" }}
+  {{ $path := printf "photos/%s/%s" . ($.Get "file") }}
+  {{ $resource := resources.Get $path }}
+  {{ if not $resource }}
+    {{ errorf "img shortcode could not find photo %q: %s" $path $.Position }}
+  {{ end }}
+  {{ $src = $resource.RelPermalink }}
+{{ end }}
+{{ $width := .Get "width" | default "900" }}
+<figure class="custom-figure" style="max-width: {{ $width }}px; margin: 2rem auto;">
   <img 
-    src="{{ .Get "src" }}" 
+    src="{{ $src }}" 
     alt="{{ .Get "caption" }}" 
     class="{{ if eq (.Get "grayscale") "true" }}grayscale-hover{{ end }}"
     style="width:100%; height:auto; border:1px solid #ddd; transition: filter 0.3s ease; {{ if eq (.Get "grayscale") "true" }}filter: grayscale(100%);{{ end }}"
