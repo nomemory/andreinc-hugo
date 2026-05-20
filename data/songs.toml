@@ -362,6 +362,16 @@ jukebox = ["plural_nocturne"]
 thought = "Melancholic."
 
 [[entries]]
+title = "Brake"
+artist = "David Cross"
+type = "song"
+genres = ["progressive rock", "jazz fusion", "instrumental"]
+youtube_video = "https://www.youtube.com/watch?v=oZc0E69xSX8&list=RDoZc0E69xSX8&start_radio=1"
+youtube_video_id = "oZc0E69xSX8"
+jukebox = ["plural_nocturne"]
+thought = "Taut violin."
+
+[[entries]]
 title = "Esty Point"
 artist = "David Borden"
 type = "song"
@@ -460,6 +470,16 @@ youtube_video = "https://www.youtube.com/watch?v=L7GOksR3PsA&list=RDL7GOksR3PsA&
 youtube_video_id = "L7GOksR3PsA"
 jukebox = ["music_for_androids"]
 thought = "Ceremonial."
+
+[[entries]]
+title = "Biking Up The Strand"
+artist = "Peter Baumann"
+type = "song"
+genres = ["electronic", "new age"]
+youtube_video = "https://www.youtube.com/watch?v=8XKVt_vMLwI&list=RD8XKVt_vMLwI&start_radio=1"
+youtube_video_id = "8XKVt_vMLwI"
+jukebox = ["music_for_androids"]
+thought = "Gliding."
 
 [[entries]]
 title = "Dance of the Mince Pie Martians"
@@ -1630,6 +1650,16 @@ youtube_video = "https://www.youtube.com/watch?v=XaZUrQFUFq0&list=RDXaZUrQFUFq0&
 youtube_video_id = "XaZUrQFUFq0"
 jukebox = ["commercial_80s"]
 thought = "Sleek."
+
+[[entries]]
+title = "From Dawn to Destruction"
+artist = "The Colourfield"
+type = "song"
+genres = ["new wave", "sophisti-pop"]
+youtube_video = "https://www.youtube.com/watch?v=EjStXB6daDI&list=RDEjStXB6daDI&start_radio=1"
+youtube_video_id = "EjStXB6daDI"
+jukebox = ["commercial_80s"]
+thought = "Brightly doomed."
 
 [[entries]]
 title = "Čula jesam da se dragi ženi"

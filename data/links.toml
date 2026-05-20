@@ -2587,3 +2587,136 @@ url = "https://catonmat.net/why-vim-uses-hjkl-as-arrow-keys"
 description = "A short explanation of the historical reasons behind Vim's classic movement keys."
 date_added = "2026-04-14"
 tags = ["programming", "tools", "history"]
+
+[[links]]
+title = "Always Judge a Book by Its Cover"
+url = "https://alwaysjudgeabookbyitscover.com/"
+description = "A gallery of strange, funny, and unusually memorable book covers."
+date_added = "2026-05-13"
+tags = ["books", "design", "humor"]
+
+[[links]]
+title = "Binary Piano"
+url = "https://binarypiano.com/"
+description = "A playful browser piano for turning binary patterns into sound."
+date_added = "2026-05-13"
+tags = ["sound", "tools", "music"]
+
+[[links]]
+title = "Human Clock"
+url = "https://humanclock.com/"
+description = "A clock told through photos of people holding or showing the current time."
+date_added = "2026-05-13"
+tags = ["art", "photography", "web"]
+
+[[links]]
+title = "Bongo Cat"
+url = "https://bongo.cat/"
+description = "A tiny playable web toy for making Bongo Cat tap along."
+date_added = "2026-05-13"
+tags = ["sound", "tools", "humor"]
+
+[[links]]
+title = "Eieio Games"
+url = "https://eieio.games/"
+description = "A collection of small playful browser games and interactive experiments."
+date_added = "2026-05-13"
+tags = ["games", "web"]
+
+[[links]]
+title = "Pointer Pointer"
+url = "https://pointerpointer.com/"
+description = "A strange little web toy that finds a photo pointing exactly where your cursor is."
+date_added = "2026-05-13"
+tags = ["art", "humor", "web"]
+
+[[links]]
+title = "Shadertoy"
+url = "https://www.shadertoy.com/"
+description = "A gallery and playground for real-time shader art and graphics experiments."
+date_added = "2026-05-13"
+tags = ["art", "programming", "tools"]
+
+[[links]]
+title = "HTTP Cat"
+url = "https://http.cat/"
+description = "HTTP status codes illustrated with cats."
+date_added = "2026-05-13"
+tags = ["programming", "web", "humor"]
+
+[[links]]
+title = "Gisnep"
+url = "https://gisnep.com/"
+description = "A daily quotefall puzzle where letters drop into columns to reveal a quote."
+date_added = "2026-05-13"
+tags = ["games", "puzzles", "web"]
+
+[[links]]
+title = "Digit Party"
+url = "https://digit.party/"
+description = "A daily digit-placement puzzle where adjacent matches score points."
+date_added = "2026-05-13"
+tags = ["games", "puzzles", "web"]
+
+[[links]]
+title = "Nerdle"
+url = "https://nerdlegame.com/"
+description = "A daily numbers puzzle about finding the hidden calculation in six guesses."
+date_added = "2026-05-13"
+tags = ["games", "puzzles", "math"]
+
+[[links]]
+title = "Cell Tower"
+url = "https://www.andrewt.net/puzzles/cell-tower/"
+description = "A daily word puzzle about dividing a grid into regions that form English words."
+date_added = "2026-05-13"
+tags = ["games", "puzzles", "words"]
+
+[[links]]
+title = "Windows 93"
+url = "https://windows93.net/"
+description = "A surreal browser-based operating system parody packed with tiny apps and web weirdness."
+date_added = "2026-05-13"
+tags = ["systems", "emulation", "humor"]
+
+[[links]]
+title = "Windows 96"
+url = "https://windows96.net/"
+description = "A browser-based retro operating system toy with apps, games, and nostalgic chaos."
+date_added = "2026-05-13"
+tags = ["systems", "emulation", "humor"]
+
+[[links]]
+title = "j.MACHine slice--"
+url = "https://www.superbad.com/1/slice/slice.html"
+description = "A tiny fragment of Superbad's old experimental web-art maze."
+date_added = "2026-05-13"
+tags = ["art", "web", "humor"]
+
+[[links]]
+title = "Jet Set Radio Live"
+url = "https://jetsetradio.live/"
+description = "A stylish browser radio tribute to Jet Set Radio's music and street-art energy."
+date_added = "2026-05-13"
+tags = ["music", "games", "web"]
+
+[[links]]
+title = "Monastery of St. Blamensir"
+url = "https://blamensir.neocities.org/"
+description = "A strange little Neocities monastery to approach and explore."
+date_added = "2026-05-13"
+tags = ["indieweb", "art", "web"]
+
+[[links]]
+title = "WindowSwap"
+url = "https://www.window-swap.com/"
+description = "A calm collection of videos looking out through other people's windows."
+date_added = "2026-05-13"
+tags = ["video", "web", "travel"]
+
+[[links]]
+title = "Same Energy"
+url = "https://same.energy/"
+description = "A visual search engine for finding images with a similar mood, style, or subject."
+date_added = "2026-05-13"
+tags = ["search", "art", "tools"]

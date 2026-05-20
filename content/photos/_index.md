@@ -2,6 +2,19 @@
 layout = "single"
 +++
 
+**2026-05 The swamp, [Delta Neajlovului](https://ro.wikipedia.org/wiki/Delta_Neajlovului)**
+
+Bucharest is surrounded by wetlands and lakes, and not far from the city you’ll find a place called Delta Neajlovului. The scenery is stunning, the mosquitoes are fewer than you might expect, and there’s even a small adventure park where kids can climb through the trees. 
+
+You can have a picnic, take a boat ride, or simply spend a quiet day outdoors. It’s a lovely weekend destination if you want a quick escape into nature.
+
+{{< photo_gallery collection="2026-05-comana" >}}
+
+**2026-05 [The National Village Museum](https://en.wikipedia.org/wiki/Dimitrie_Gusti_National_Village_Museum), Bucharest**
+
+It’s always a pleasure to visit an open-air ethnographic museum that feels like a 300-year-old Romanian village, tucked right into the middle of a 21st-century urban jungle.
+
+{{< photo_gallery collection="2026-05-satului" >}}
 
 **2026-04 Spring in [Gradina Botanica](https://en.wikipedia.org/wiki/Bucharest_Botanical_Garden), Bucharest.**
 
