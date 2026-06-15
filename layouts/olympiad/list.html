@@ -180,6 +180,7 @@
       {{ $tags := .Params.problemTags | default slice }}
       {{ $difficulty := .Params.difficulty | default "" }}
       {{ $grades := .Params.gradeLevel | default slice }}
+      {{ $hasSolution := gt (len (findRE `(?is)<summary\b[^>]*>\s*Solution\b` .RawContent)) 0 }}
       {{ $preview := .RawContent }}
       {{ $preview = replaceRE `(?s)<details\b.*?</details>` "" $preview }}
       {{ $preview = replaceRE `(?s)<p>\s*<a class="mpl" href="[^"]+">.*?</a>\s*</p>` "" $preview }}
@@ -210,9 +211,11 @@
             {{ end }}
           </p>
         {{ end }}
-        <p class="olympiad-actions">
-          <a href="{{ .RelPermalink }}" class="olympiad-solution-link">Hints & Solution</a>
-        </p>
+        {{ if $hasSolution }}
+          <p class="olympiad-actions">
+            <a href="{{ .RelPermalink }}" class="olympiad-solution-link">Hints & Solution</a>
+          </p>
+        {{ end }}
       </article>
     {{ else }}
       <p>No olympiad problems yet.</p>

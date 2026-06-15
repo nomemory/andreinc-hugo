@@ -1,0 +1,60 @@
+.epicycle-viz-wrap {
+    width: 100%;
+    margin: 2rem 0;
+}
+
+.epicycle-viz-wrap::after {
+    content: "Drag to rotate. Scroll to zoom.";
+    display: block;
+    margin: 0.55rem auto 0;
+    width: 100%;
+    color: #666;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.epicycle-viz {
+    width: min(100%, 760px);
+    aspect-ratio: 760 / 620;
+    position: relative;
+    margin: 0 auto;
+    border: 2px solid #222;
+    background: #f6f8fa;
+    box-sizing: border-box;
+}
+
+.epicycle-viz canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+.epicycle-controls {
+    width: 100%;
+    margin: 0.75rem auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.epicycle-controls button {
+    font: inherit;
+    border: 0;
+    padding: 0;
+    background: none;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.epicycle-controls button:hover {
+    text-decoration: none;
+}
+
+.epicycle-equation {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
