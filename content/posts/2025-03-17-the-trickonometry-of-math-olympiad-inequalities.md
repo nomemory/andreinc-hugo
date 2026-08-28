@@ -1108,6 +1108,8 @@ For the next problems, Titu's Lemma plays a special role in simplifying them:
 
 {{< olympiad_problem id="p00148" anchor="ptt18" >}}
 
+{{< olympiad_problem id="p00210" anchor="ptt19" >}}
+
 # More challenges
 
 The problems from this chapter a little more challenging, so don't get discouraged if won't be able to solve them after the first try.
