@@ -2,6 +2,12 @@
 layout = "single"
 +++
 
+**2026-08 The road to [Bailesti](https://en.wikipedia.org/wiki/B%C4%83ile%C8%99ti)**
+
+An endless yellow field of cereals stretching toward the horizon.
+
+{{< photo_gallery collection="2026-08-bailesti" >}}
+
 **2026-05 The swamp, [Delta Neajlovului](https://ro.wikipedia.org/wiki/Delta_Neajlovului)**
 
 Bucharest is surrounded by wetlands and lakes, and not far from the city you’ll find a place called Delta Neajlovului. The scenery is stunning, the mosquitoes are fewer than you might expect, and there’s even a small adventure park where kids can climb through the trees. 
@@ -117,8 +123,6 @@ I used to live in Paris for a few months while working on a project. I used to v
 {{< photo_gallery collection="2019-03-paris" >}}
 
 ...((to be continued))
-
-
 
 
 
