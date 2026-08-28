@@ -2720,3 +2720,59 @@ url = "https://same.energy/"
 description = "A visual search engine for finding images with a similar mood, style, or subject."
 date_added = "2026-05-13"
 tags = ["search", "art", "tools"]
+
+[[links]]
+title = "507 Mechanical Movements"
+url = "https://507movements.com/"
+description = "Animated versions of the mechanisms in Henry T. Brown's classic illustrated reference on mechanical movements."
+date_added = "2026-08-28"
+tags = ["engineering", "animation", "reference"]
+
+[[links]]
+title = "Infinite Penrose Periodic Table"
+url = "https://aperiodictable.com/"
+description = "An interactive periodic table arranged across an infinite aperiodic Penrose tiling."
+date_added = "2026-08-28"
+tags = ["math", "science", "art"]
+
+[[links]]
+title = "Mechanical Pencil"
+url = "https://mechanical-pencil.com/"
+description = "Beautifully illustrated and animated teardowns explaining how everyday products and mechanisms work."
+date_added = "2026-08-28"
+tags = ["engineering", "art", "animation"]
+
+[[links]]
+title = "Delphi Tools"
+url = "https://tools.rmv.fyi/"
+description = "A privacy-first collection of small browser tools for images, color, typography, text, print, and calculations."
+date_added = "2026-08-28"
+tags = ["tools", "web", "indieweb"]
+
+[[links]]
+title = "The Classical Station"
+url = "https://theclassicalstation.org/"
+description = "Listener-supported classical music radio streaming around the clock."
+date_added = "2026-08-28"
+tags = ["music", "radio"]
+
+[[links]]
+title = "The Bathsheba Syndrome: The Ethical Failure of Successful Leaders"
+url = "https://link.springer.com/article/10.1007/BF01666530"
+description = "A paper arguing that success itself can create the conditions for ethical failure among senior leaders."
+date_added = "2026-08-28"
+tags = ["research", "ethics", "management"]
+
+[[links]]
+title = "It's OK to Compare Floating-Points for Equality"
+url = "https://lisyarus.github.io/blog/posts/its-ok-to-compare-floating-points-for-equality.html"
+description = "A practical argument for reasoning about floating-point comparisons instead of reaching automatically for arbitrary epsilons."
+date_added = "2026-08-28"
+tags = ["programming", "math", "essays"]
+
+[[links]]
+title = "Mathematicians Found Out Why Waiting for the Elevator Takes Forever"
+url = "https://www.scientificamerican.com/article/mathematicians-found-out-why-waiting-for-the-elevator-takes-forever/"
+description = "The probability behind why an arriving elevator so often seems to be traveling in the wrong direction."
+date_added = "2026-08-28"
+tags = ["math", "probability", "essays"]
