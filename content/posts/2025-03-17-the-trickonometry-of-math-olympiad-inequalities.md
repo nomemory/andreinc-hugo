@@ -316,6 +316,10 @@ Sometimes you can solve "inequations" using "inequalities":
 
 {{< olympiad_problem id="p00011" anchor="pag11" >}}
 
+And some additional challenges:
+
+{{< olympiad_problem id="p00211" anchor="pag12" >}}
+
 ---
 
 # Cyclic and Symmetrical Inequalities
