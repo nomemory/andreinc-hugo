@@ -2,6 +2,10 @@
 layout = "single"
 +++
 
+**2026-08 [Dragasi Vineyard](https://domeniul-dragasi.ro/)**
+
+{{< photo_gallery collection="2026-08-dragasi" >}}
+
 **2026-08 The road to [Bailesti](https://en.wikipedia.org/wiki/B%C4%83ile%C8%99ti)**
 
 An endless yellow field of cereals stretching toward the horizon.
@@ -123,7 +127,6 @@ I used to live in Paris for a few months while working on a project. I used to v
 {{< photo_gallery collection="2019-03-paris" >}}
 
 ...((to be continued))
-
 
 
 
