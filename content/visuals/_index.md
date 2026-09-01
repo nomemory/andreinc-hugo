@@ -185,3 +185,9 @@ I like to create visuals in my articles, painting things on a canvas. Here's a l
 - [The associations people make](/visuals/the-associations-people-make/)
 
   > "This article is about \"a vision\" that I have."
+
+**The cube, the epicycles and the human face**
+
+- [The cube, the epicycles and the human face](/visuals/the-cube-the-epicycles-and-human-face/)
+
+  > "Here is a cube where three of its faces contain epicycle constructions that work together to describe a human face."

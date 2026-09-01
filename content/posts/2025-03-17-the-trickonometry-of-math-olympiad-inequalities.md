@@ -985,6 +985,8 @@ Can you think of an identity and some algebraic manipulations to solve the next 
 
  {{< olympiad_problem id="p00031" anchor="pcbs17" >}}
 
+{{< olympiad_problem id="p00212" anchor="pcbs18" >}}
+
 # An interesting refinement for Nesbitt's inequality
 
 > Refinement of an inequality refers to the process of strengthening or improving an existing inequality by making it sharper or more precise. This typically involves replacing a given inequality with a stronger one that still holds under the same conditions but provides a tighter bound.
