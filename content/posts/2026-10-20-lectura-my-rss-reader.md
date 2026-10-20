@@ -1,7 +1,7 @@
 +++
 date = '2026-10-20'
 draft = false
-title = 'Lectura.info: My personal RSS reader'
+title = 'Lectura.info: A new RSS reader'
 categories = ["programming"]
 tags = ['programming']
 usekatex = false
