@@ -6,6 +6,8 @@ outputs = ["HTML"]
 
 This page lists the RSS feeds available on the site.
 
+Need a reader for these feeds? I built [Lectura](https://lectura.info/), an RSS reader, and I'd be happy if you gave it a try. If you already have a reader, perhaps there's room for one more. Apparently, there was room for me to build one.
+
 - [`/feed.xml`](/feed.xml)  
   The main feed for the site. It contains only regular blog posts from the main blog.
 

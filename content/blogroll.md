@@ -21,7 +21,8 @@ I recommend reading the following articles to understand the "alternative" ways 
 
 These are the blogs I actually read. Some of them might be defunct, but I keep them here for historical reasons.
 
+If you find something you like here, you'll need somewhere to read it. I built [Lectura](https://lectura.info/), my own RSS reader, and you're welcome to give it a try. Bring a few favorite blogs. There's room for yours too.
+
 This page was auto-generated from the \[**[`opml export`](/blogroll.xml)**\] of my Feed Reader:
 
 {{< blogroll >}}
-
