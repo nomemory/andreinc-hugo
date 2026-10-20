@@ -1399,6 +1399,13 @@ date_added = "2024-01-27"
 tags = ["games"]
 
 [[links]]
+title = "Sandboxels.cc Independent Guide"
+url = "https://sandboxels.cc/"
+description = "An independent browser falling-sand simulator and guide library with 85 materials, reproducible experiments, and explanations of local reactions."
+date_added = "2026-07-28"
+tags = ["games", "indieweb"]
+
+[[links]]
 title = "Sandtris"
 url = "https://sandtris.com/"
 description = "Tetris game that plays with sand."
