@@ -487,11 +487,11 @@ Pick <select id="sumEpiSins" onchange="updateSumEpi()">
 
 There is a beautiful, visual intuition behind why this works: because each epicycle corresponds to a specific sinusoid, combining them simply boils down to (subsequent) vector additions.
 
-Let's look at a concrete example. We'll introduce three arbitrarily chosen sinusoids, each with an associated position vector (an arrow pointing from the origin to its current value):
+Let's look at a concrete example. We'll introduce three arbitrarily chosen sinusoids, each represented by the vertical component of a rotating radius vector:
 
-* $y_{1}(x)=1.4sin(x + 1)$, with the associated position vector $\vec{u_{1}}$;
-* $y_{2}(x)=0.8sin(2*x)$, with the associated position vector $\vec{u_{2}}$;
-* $y_{3}(x)=0.5sin(3*x)$, with the associated position vector $\vec{u_{3}}$.
+* $y_{1}(x)=1.4sin(x + 1)$, with the associated rotating vector $\vec{u_{1}}$;
+* $y_{2}(x)=0.8sin(2*x)$, with the associated rotating vector $\vec{u_{2}}$;
+* $y_{3}(x)=0.5sin(3*x)$, with the associated rotating vector $\vec{u_{3}}$.
 
 Their sum is:
 
@@ -499,13 +499,21 @@ Their sum is:
 \[ y(x) = y_{1}(x) + y_{2}(x) + y_{3}(x) = 1.4sin(x + 1) + 0.8sin(2x) + 0.5sin(3x) \]
 </div>
 
-A position vector represents the displacement from the origin $(0, 0)$ to a specific point in space. In our case, the vector $(x, y_{k}(x))$ represents the position or location of a point on the graph of the function(s) $y_{k}(x)$ at a particular $x$ value.
+For $y_k(x)=A_k\sin(\omega_kx+\varphi_k)$, the corresponding radius vector is
+
+<div class="mp mpc">
+\[
+\vec u_k(x)=A_k\bigl(\cos(\omega_kx+\varphi_k),\sin(\omega_kx+\varphi_k)\bigr).
+\]
+</div>
+
+We translate these vectors head-to-tail to form the epicycles. Their vertical components add to $y(x)$. The horizontal coordinate $x$ in the graph $(x,y(x))$ is the time parameter; it is not the horizontal component of each rotating vector.
 
 If we plot $y(x)$ on the cartesian grid we obtain something like: 
 
 <div id="simple-yx-plot-sketch"></div>
 
-At any given point in time, we can say for certain that $\vec{u} = \vec{u_{1}} + \vec{u_{2}} + \vec{u_{3}}$.
+At any given time, the epicycle endpoint is described by $\vec{u}=\vec{u_1}+\vec{u_2}+\vec{u_3}$ relative to the first circle’s center. Its vertical component is the sum plotted on the graph.
 
 # Epicycles - A flower 
 
@@ -527,7 +535,7 @@ To visualize this, do you remember the [Pink Floyd's](https://en.wikipedia.org/w
 
 Imagine our periodic $f(x)$ is the beam of light (entering from left to right), [the prism](https://en.wikipedia.org/wiki/Prism_(optics)) is the *Fourier Mathematics*, and the individual spectral colors emanating from the other side are the simple trigonometric functions (sinusoids).
 
-Following the analogy, the formula looks like this:
+For a periodic, piecewise continuously differentiable function, the Fourier series converges to $f(x)$ at continuity points and to $\frac{f(x^-)+f(x^+)}{2}$ at jumps. The equality below is understood at continuity points, or everywhere if each jump is assigned that midpoint value:
 
 <div class="mp mpc">
 \[
@@ -557,11 +565,11 @@ By utilizing Euler's Formula, we will convert those trigonometric functions into
 
 <div class="mpc mp">
 \[
-    f(x) = \sum_{n=-N}^{N} C_{n} e ^ {i2\pi \frac{n}{P}x}
+    f_N(x) = \sum_{n=-N}^{N} C_{n} e ^ {i2\pi \frac{n}{P}x}
 \]
 </div>
 
-Notice how our index $n$ stretches into *negative territory*, this introduces the *mathematical concept* of *negative frequencies*, which is a way of dictating the direction of rotation for our complex vectors.
+Here $f_N$ is the finite partial sum, which approximates $f$; it need not equal $f$ exactly. Its limit has the same continuity and jump conditions described above. Notice how our index $n$ stretches into *negative territory*, this introduces the *mathematical concept* of *negative frequencies*, which is a way of dictating the direction of rotation for our complex vectors.
 
 In this more powerful form, a simple coefficient $C_n$ replaces our previous $A_0, A_n$, and $B_n$ terms. Still, it's defined piecewise depending on the value of $n$.
 
@@ -570,7 +578,7 @@ In this more powerful form, a simple coefficient $C_n$ replaces our previous $A_
 C_{n} = \begin{cases}
             A_{0} & \text{if } n = 0 \\
             \frac{1}{2} (A_{n} - i * B_{n}) &  \text{if } n > 0 \\
-            \frac{1}{2} (A_{n} + i * B_{n}) & \text{if } n < 0 \\
+            \frac{1}{2} (A_{-n} + i * B_{-n}) & \text{if } n < 0 \\
         \end{cases}
 \]
 </div>
@@ -607,7 +615,7 @@ In *isolation*, or *Square Wave Function*, $f(x)$ looks like this:
 
 <div id="square-wave-f-sketch"></div>
 
-Throughout the interval  $[0, 2L]$, $f(x)$ can be written as:
+For $L>0$, define $f$ on the half-open interval $[0,2L)$ by the expression below, then extend it periodically with period $2L$:
 
 <div class="mp mpc">
 \[ f(x) = 2 [H(\frac{x}{L})-H(\frac{x}{L}-1)] - 1 \]
@@ -623,6 +631,8 @@ H(x) =  \begin{cases}
         \end{cases}
 \]
 </div>
+
+With this convention, $f(0)=1$ and $f(L)=-1$. At every jump $x=kL$, the Fourier series converges to $0$, the midpoint of the one-sided limits, rather than to the assigned value of $f$. Changing these isolated values does not affect any Fourier coefficient.
 
 ## Step 1 - Calculating $A_0$
 
@@ -652,7 +662,7 @@ Next, let's compute the $A_n$ coefficients, the ones that govern the $\cos$ term
     \]
 </div>
 
-We *observe* that $f(x)$ is an *odd* function, while $\cos$ is an even function. As you might remember, the product of an *odd* function and an *even* function is an *odd* function. Because we are integrating a *odd* periodical function over a full period, the net area representing the integral will always cancel itself out. We can safely say that the $A_n$ coefficients will vanish before our eyes.
+Apart from its assigned values at the jumps, the periodic square wave is odd, while cosine is even. We may set the jump values to zero to obtain an exactly odd representative without changing any integral. As you might remember, the product of an *odd* function and an *even* function is an *odd* function. Because we are integrating a *odd* periodical function over a full period, the net area representing the integral will always cancel itself out. We can safely say that the $A_n$ coefficients will vanish before our eyes.
 
 Visually speaking, regardless of how you pick $n$ or $L$, the positive and negative areas of the resulting wave will always *mirror* and destroy each other. Let's plot the integrals for $A_1, A_2, \dots A_4$:
 
@@ -676,7 +686,7 @@ Finally, we need to compute the $B_n$ coefficients, the ones governing the $\sin
 
 If you have a keen eye for geometrical representations, you will notice that for every even $n$, the red and green areas nullify each other, making the integral 0. 
 
-However, for *odd* terms, the areas add up. Because $f(x)$ and $sin(x)$ are both odd functions, their product is an even function. We can simplify our integral by taking twice the value of half the interval:
+However, for *odd* terms, the areas add up. Away from the isolated jumps, $f(x)$ and $\sin(\pi nx/L)$ are both odd, so their product is even. The jump values do not affect the integral. We can simplify our integral by taking twice the value of half the interval:
 
 <div class="mp mpc">
 \[
@@ -684,7 +694,7 @@ However, for *odd* terms, the areas add up. Because $f(x)$ and $sin(x)$ are both
 \]
 </div>
 
-Since $f(x)=1$ on $[0, L]$, this is standard integration. We can perform [u-substition](https://en.wikipedia.org/wiki/Integration_by_substitution) to solve it:
+Since $f(x)=1$ on $(0,L)$, this is standard integration. We can perform [u-substition](https://en.wikipedia.org/wiki/Integration_by_substitution) to solve it:
 
 <div class="mp mpc">
     \[
@@ -702,7 +712,7 @@ After we take the constant out, we compute the integral, use the intervals, and 
 
 ## Step 4 - Putting all together
 
-Putting the calculated coefficients back into the *master* formula for the *Fourier Series*:
+Putting the calculated coefficients back into the *master* formula gives the following equalities for $x\notin L\mathbb{Z}$. At each jump $x=kL$, the series on the right is $0$:
 
 <div class="mp mpc">
 \[
@@ -742,11 +752,11 @@ In real life, we can't actually sum to infinity. We have to stop at some finite 
 \]
 </div>
 
-In the next animation, you will see that by increasing $n$, the accuracy of our approximation gets better and better, and the *gaps* are slowly closed:
+In the next animation, adding terms improves the approximation away from jumps. Near each jump, the oscillations occupy a narrower region, but their maximum overshoot does not vanish: this is the Gibbs phenomenon. At the jump itself, every partial sum is zero.
 
 <div id="tight-fourier-sketch"></div>
 
-To truly understand how adding more coefficients improves the approximation of the shape, let's look at the first 5 individual terms $s_{1}(x)$, $s_{2}(x)$, $s_{3}(x)$, $s_{4}(x)$ and $s_{5}(x)$ (we will pick $\omega=\frac{\pi}{2}$, so that $2L=1$):
+To truly understand how adding more coefficients improves the approximation of the shape, let's look at the first 5 individual terms $s_{1}(x)$, $s_{2}(x)$, $s_{3}(x)$, $s_{4}(x)$ and $s_{5}(x)$ (we will pick $\omega=\frac{\pi}{2}$, so that $L=2$ and the period is $2L=4$):
 
 <div class="mp mpc">
 \[

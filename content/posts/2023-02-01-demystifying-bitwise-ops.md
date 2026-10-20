@@ -631,7 +631,7 @@ There's one bit less available to represent the actual numerical value for signe
 
 {{< img src="/images/2023-02-01-demystifying-bitwise-ops/maxint8_t.png" width="400">}}
 
-The minimum value a signed integer of type `int8_t` can hold is $-2^7 = -128$. At this point, you may wonder why we have `-128` for negatives versus `127` for positives. This happens because `0` is considered to be positive by convention. `-128` has the following representation:
+The minimum value a signed integer of type `int8_t` can hold is $-2^7 = -128$. At this point, you may wonder why we have `-128` for negatives versus `127` for positives. In two’s complement, 128 bit patterns represent negative values and 128 represent nonnegative values. The latter group includes zero, leaving 127 strictly positive values. Zero is nonnegative, not positive. `-128` has the following representation:
 
 {{< img src="/images/2023-02-01-demystifying-bitwise-ops/minint8_t.png" width="400">}}
 
@@ -1490,11 +1490,11 @@ If we go back to the formula $A_{2} = \sum_{i=0}^{n} a_i * 2^i$ (where $a_{i} \i
 But at some point, the exponent in the denominator of the fraction $\frac{1}{2^{m-j}}$ will hit zero and cross into negatives, so things will turn upside down. This happens when $j \ge m$. So, for example, if `m = 3`, we can write things like:
 
 <div class="mp mpc">
-\[ \frac{A}{2^3} = \underbrace{a_{0} * \frac{1}{2^3} + a_{1} * \frac{1}{2^2} + a_{2} * \frac{1}{2^1}}_\text{the bits composing the remainder} + \underbrace{a_{3} * 2^0 + a_4 * 2^1 + ... + a_{n} * 2^{n-3}}_{\text{The new bits composing } \lfloor \frac{A}{2^3} \rfloor}
+\[ \frac{A}{2^3} = \underbrace{a_{0} * \frac{1}{2^3} + a_{1} * \frac{1}{2^2} + a_{2} * \frac{1}{2^1}}_{\text{fractional part }r/8} + \underbrace{a_{3} * 2^0 + a_4 * 2^1 + ... + a_{n} * 2^{n-3}}_{\text{The new bits composing } \lfloor \frac{A}{2^3} \rfloor}
 \]
 </div>
 
-So to get the remainder, we simply need to select the last `3` bits of the number using the mask `((1 << 3) - 1)`:
+Here $r=a_0+2a_1+4a_2$ is the integer remainder; the first bracket is $r/8$. For example, $13/8=1+5/8$ has remainder $5$. To get that remainder for a nonnegative integer, select its last `3` bits using the mask `((1 << 3) - 1)`:
 
 ```cpp
 uint16_t pow2 = 1u << 3;

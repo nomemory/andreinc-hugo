@@ -15,7 +15,7 @@ tags = ["python", "linear algebra"]
 
 It might not be immediately obvious, but the QR Decomposition ($A = Q R$) of a matrix $A$ is a powerful tool for computing its eigenvalues and eigenvectors.
 
-Quick recap: A square matrix $A$ can be decomposed into $A = Q R$, where $R$ is an **upper triangular** matrix and $Q$ is an **orthonormal** matrix.
+Quick recap: A real square matrix $A$ can be decomposed into $A = Q R$, where $R$ is an **upper triangular** matrix and $Q$ is an **orthonormal** matrix.
 
 Because $Q$ is orthonormal, it possesses unique properties that make computation a breeze:
 
@@ -32,11 +32,11 @@ Since the inverse of an orthonormal matrix is simply its transpose, we save ours
 
 Now, let's talk about **Similarity**. Two matrices $A$ and $B$ are **similar** if there exists a non-singular matrix $X$ such that: $B = X^{-1} A X$. Crucially, similar matrices share the same eigenvalues.
 
-This leads us to the **Schur Factorization**. It states that every square matrix $A$ can be written as: $A = Q U Q^{-1}$ (or $Q U Q^{*}$ in the complex domain), where $Q$ is unitary and $U$ is **upper triangular**. 
+This leads us to the **Schur Factorization**. Over the complex numbers, every square matrix has a factorization $A=QUQ^{*}$, where $Q$ is unitary and $U$ is upper triangular. For a real matrix, a real orthogonal $Q$ gives a **quasi-upper-triangular** Schur form: its diagonal contains $1\times1$ blocks for real eigenvalues and $2\times2$ blocks for complex conjugate pairs.
 
 
 
-Because $A$ and $U$ are similar, they have the same eigenvalues. And as we know, the eigenvalues of an upper triangular matrix are simply the elements on its **main diagonal**.
+Because $A$ and $U$ are similar, they have the same eigenvalues. For a triangular $U$, these are its diagonal entries. For a real quasi-triangular $U$, we must also compute the eigenvalues of its $2\times2$ blocks; reading only the diagonal would miss the complex pairs.
 
 # Using QR Decomposition to Determine Eigenvalues
 
@@ -65,42 +65,64 @@ A_{k} = R_{k} Q_{k}
 \]
 </div>
 
-Mathematically, $A_k$ is related to $A_{k-1}$ through a similarity transformation: $A_k = Q_k^{-1} A_{k-1} Q_k$. If you follow the chain back to the start, $A_k$ is similar to our original matrix $A$. As $k$ approaches infinity, the sub-diagonal elements of $A_k$ tend toward zero, leaving the eigenvalues sitting on the diagonal.
+Mathematically, $A_k$ is related to $A_{k-1}$ through a similarity transformation: $A_k = Q_k^{-1} A_{k-1} Q_k$. If you follow the chain back to the start, $A_k$ is similar to our original matrix $A$. When this iteration converges to a triangular matrix, the sub-diagonal entries approach zero and its diagonal approximates the eigenvalues. Convergence is not automatic: a real rotation matrix has complex eigenvalues, and even some symmetric matrices make this simple iteration cycle. We must check the result before interpreting its diagonal.
 
 
 
 ## Implementing the Naive Algorithm
 
-Using [NumPy](https://numpy.org/), we can see this in action:
+Using [NumPy](https://numpy.org/), we can see this in action on a reproducible symmetric positive-definite example. The teaching routines below accept real square matrices and return only after reaching an approximately triangular form; they raise an error if they fail to converge. They do not handle real Schur blocks. For general matrices, use the library example later in the article.
 
 ```python
 import numpy as np
 from tabulate import tabulate
 
-# A is a square random matrix of size n
-n = 5
-A = np.random.rand(n, n)
+# A reproducible symmetric positive-definite matrix
+A = np.array([[5.0, 1.0, 0.0],
+              [1.0, 3.0, 1.0],
+              [0.0, 1.0, 1.0]])
 print("Initial Matrix A:")
 print(tabulate(A))
 
-def eigen_qr_simple(A, iterations=500000):
-    Ak = np.copy(A)
-    n = A.shape[0]
-    QQ = np.eye(n) # To accumulate eigenvectors
-    for k in range(iterations):
+def qr_input(A):
+    if np.iscomplexobj(A):
+        raise ValueError("This teaching example accepts real matrices only")
+    Ak = np.array(A, dtype=float, copy=True)
+    if Ak.ndim != 2 or Ak.shape[0] != Ak.shape[1] or Ak.shape[0] == 0:
+        raise ValueError("A must be a nonempty square matrix")
+    if not np.isfinite(Ak).all():
+        raise ValueError("A must contain only finite values")
+    return Ak
+
+
+def is_upper_triangular(A, tol):
+    # Scale first so the convergence test is relative to the matrix size.
+    scale = np.max(np.abs(A))
+    if scale == 0:
+        return True
+    scaled = A / scale
+    return np.linalg.norm(np.tril(scaled, -1)) <= tol * np.linalg.norm(scaled)
+
+
+def eigen_qr_simple(A, iterations=10000, tol=1e-10):
+    if not 0 < tol < 1:
+        raise ValueError("tol must be between 0 and 1")
+    Ak = qr_input(A)
+    Z = np.eye(Ak.shape[0])  # Accumulated similarity transformation
+    for _ in range(iterations):
+        if is_upper_triangular(Ak, tol):
+            return Ak, Z
         Q, R = np.linalg.qr(Ak)
         Ak = R @ Q
-        QQ = QQ @ Q
-        
-        if k % 100000 == 0:
-            print(f"Iteration {k}...")
-            
-    return Ak, QQ
+        Z = Z @ Q
+    if is_upper_triangular(Ak, tol):
+        return Ak, Z
+    raise RuntimeError("QR iteration did not converge to triangular form")
 
 # Run the simple QR algorithm
-Ak, eigenvectors = eigen_qr_simple(A)
+Ak, schur_vectors = eigen_qr_simple(A)
 
-print("\nFinal Ak (Should be upper triangular):")
+print("\nFinal Ak (upper triangular within tolerance):")
 print(tabulate(Ak))
 
 print("\nComputed Eigenvalues:")
@@ -110,7 +132,7 @@ print("\nOfficial NumPy Eigenvalues:")
 print(np.linalg.eigvals(A))
 ```
 
-In a "happy case," $Ak$ becomes upper-triangularish, and the diagonal elements match the official results perfectly. However, for larger matrices (like an $8 \times 8$), this naive approach is incredibly slow, and the CPU temperature will start climbing long before you see convergence.
+For this example, the diagonal agrees with NumPy up to numerical error, possibly in a different order. The accumulated matrix satisfies $A Z \approx Z A_k$. Its columns are Schur vectors at convergence. They are eigenvectors when $A_k$ is diagonal, as in the symmetric example; an upper-triangular matrix with nonzero off-diagonal entries does not give that conclusion. The unshifted iteration can be very slow when eigenvalue magnitudes are close.
 
 ---
 
@@ -127,13 +149,18 @@ A_{k+1} = R_{k}Q_{k} + s_{k}I
 \]
 </div>
 
-A common choice for $s_k$ is the last element of the diagonal ($A_{nn}$). This is called the **Rayleigh quotient shift**, and it forces the bottom-right element to converge to an eigenvalue much faster.
+A simple choice for $s_k$ is the last diagonal entry of the current iterate. This is the **Rayleigh quotient shift** associated with the last coordinate vector, and it can accelerate convergence. It is not a guarantee: for $A=\begin{bmatrix}0&1\\1&0\end{bmatrix}$ the shift stays zero and this iteration cycles, although the eigenvalues are $1$ and $-1$.
 
 ```python
-def eigen_qr_practical(A, iterations=1000):
-    Ak = np.copy(A)
+def eigen_qr_practical(A, iterations=1000, tol=1e-10):
+    # Uses qr_input and is_upper_triangular from the previous example.
+    if not 0 < tol < 1:
+        raise ValueError("tol must be between 0 and 1")
+    Ak = qr_input(A)
     n = Ak.shape[0]
     for k in range(iterations):
+        if is_upper_triangular(Ak, tol):
+            return Ak
         # s is the shift (the last element on the diagonal)
         s = Ak[n-1, n-1]
         shift = s * np.eye(n)
@@ -143,8 +170,10 @@ def eigen_qr_practical(A, iterations=1000):
         
         # Recompose (RQ + sI)
         Ak = R @ Q + shift
-        
-    return Ak
+
+    if is_upper_triangular(Ak, tol):
+        return Ak
+    raise RuntimeError("Shifted QR did not converge to triangular form")
 
 # Test the practical version
 Ak_shifted = eigen_qr_practical(A)
@@ -152,7 +181,20 @@ print("\nEigenvalues with Shifts:")
 print(np.diag(Ak_shifted))
 ```
 
-The difference is night and day. With shifts, the matrix converges in a fraction of the time.
+This remains a teaching example: it does not deflate converged blocks or choose shifts that handle every case. A production QR eigensolver combines these techniques with convergence checks. A fixed iteration count alone does not establish that the reported diagonal is correct.
+
+For a general real matrix, SciPy can compute a complex Schur form whose diagonal includes complex eigenvalues:
+
+```python
+from scipy.linalg import schur
+
+B = np.array([[0.0, -1.0], [1.0, 0.0]])
+T, Z = schur(B, output="complex")
+print(np.diag(T))  # Approximately +1j and -1j, in either order
+assert np.allclose(B, Z @ T @ Z.conj().T)
+```
+
+The [SciPy Schur documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.schur.html) explains the real and complex forms.
 
 ---
 
@@ -175,19 +217,19 @@ H = \begin{bmatrix}
 
 
 
-Every square matrix is similar to a Hessenberg matrix. If we start our QR iterations from this form, each step becomes $O(n^2)$, making the whole process significantly more efficient.
+Every square matrix is similar to a Hessenberg matrix. After an initial $O(n^3)$ reduction, a QR implementation that exploits this structure can perform each eigenvalue iteration in $O(n^2)$, for example using Givens rotations and implicit updates. Passing a Hessenberg matrix to the dense `np.linalg.qr` and `R @ Q` code above does not implement that optimization.
 
 ```python
 from scipy.linalg import hessenberg
 H, Q_hess = hessenberg(A, calc_q=True)
-# Now run QR iterations on H instead of A!
+# A structured Hessenberg QR implementation can now exploit the zeros.
 ```
 
 ---
 
 # But what about the Eigenvectors?
 
-Once you have the eigenvalues ($\lambda$), finding the eigenvectors is a matter of solving the linear system $(A - \lambda I)x = 0$.
+Once you have the eigenvalues ($\lambda$), finding an eigenvector means finding a **nonzero** vector in the nullspace of $A-\lambda I$.
 
 Take our favorite example: 
 <div class="mp mpc">
@@ -204,9 +246,16 @@ For $\lambda = 1$:
 \begin{bmatrix} 3-1 & 1 \\ 0 & 1-1 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \implies 2x_1 + x_2 = 0
 \]
 </div>
-This gives us the eigenvector $\begin{bmatrix} 1 \\ -2 \end{bmatrix}$ (or any scalar multiple).
+This gives us the eigenvector $\begin{bmatrix} 1 \\ -2 \end{bmatrix}$ (or any nonzero scalar multiple).
 
-In code, you can solve these using a linear system solver like the ones I described in my [NML library post](/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c#solving-linear-systems-of-equations), or simply use NumPy's `np.linalg.eig(A)`, which returns both the values and the vectors in one go.
+An ordinary solver for a unique solution, such as the LUP solver in my [NML library post](/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c#solving-linear-systems-of-equations), cannot do this directly: $A-\lambda I$ is singular at an exact eigenvalue. With an approximate eigenvalue it may be nonsingular, in which case the homogeneous system has only the zero solution. Use a nullspace method or an eigensolver such as `np.linalg.eig`:
+
+```python
+A = np.array([[3.0, 1.0], [0.0, 1.0]])
+eigenvalues, eigenvectors = np.linalg.eig(A)
+# Each column corresponds to the eigenvalue in the same position.
+assert np.allclose(A @ eigenvectors, eigenvectors * eigenvalues)
+```
 
 # References
 

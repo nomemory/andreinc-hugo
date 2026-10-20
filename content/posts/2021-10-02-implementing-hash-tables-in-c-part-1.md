@@ -96,9 +96,9 @@ Regardless of the syntax, the result is the same: `"#FF0000"`.
 
 ## Performance: Why Size Doesn't Matter
 
-The most impressive feature of hash tables is their efficiency. For most operations, they offer **constant time complexity** ($O(1)$). This means that searching for an element takes the same amount of time whether you have 10 entries or 10 million entries.
+The most impressive feature of hash tables is their efficiency. With suitable hashing and a controlled load factor, lookup has **expected constant time complexity** ($O(1)$), while insertion is expected amortized $O(1)$ when resizing is included. This is an asymptotic statement, not a promise of identical elapsed time at every size.
 
-In a Binary Search Tree, searching is $O(\log n)$; as the tree grows, $n$ increases, and searching for an element takes more time. But with a properly tuned hash table, you have near-instant access to your data regardless of how much it scales.
+In a balanced Binary Search Tree, lookup is $O(\log n)$ in the worst case. An unbalanced tree can become a chain and require $O(n)$ lookup. A hash table with well-distributed hashes and a controlled load factor offers expected $O(1)$ lookup; collisions can still produce the worst cases listed below.
 
 | Operation           | Average Time Complexity | Worst-case Complexity |
 | :------------------ | :---------------------- | :------------------- |
@@ -282,11 +282,11 @@ uint32_t hashf_multip(uint32_t x, uint32_t w, uint32_t m, uint32_t A)  {
 }
 ```
 
-A mathematically "sweet" choice for $A$ is $A \approx \phi \cdot 2^w$, where $\phi$ is the **golden ratio** ($\approx 0.618$). This specific implementation is known as **Fibonacci hashing**.
+A mathematically "sweet" choice for $A$ is $A \approx 2^w/\phi$, where $\phi=(1+\sqrt5)/2\approx1.618$ is the **golden ratio**. Its reciprocal $1/\phi=\phi-1\approx0.618$ is the constant used here. This specific implementation is known as **Fibonacci hashing**.
 
 Depending on your word size, $A$ should be:
 
-| $w$ | $A = 2^w \cdot \phi \approx$ |
+| $w$ | $A \approx 2^w/\phi$ |
 | :--- | :--- |
 | 16 | 40,503 |
 | 32 | 2,654,435,769 |

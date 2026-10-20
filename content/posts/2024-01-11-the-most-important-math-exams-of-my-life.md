@@ -72,7 +72,7 @@ The subjects for the *Capacitate* were the following. We had two hours to solve 
 
 ### First Part (Partea 1)
 
-1. The result of $5*6-7*4$ is: `...`
+1. The result of $5\cdot 6-7\cdot 4$ is: `...`
     * The obvious answer is $30-28=2$.
 2. Between $6548$ and $2145$, the number divisible by 3 is `...`
     * The rule is simple: for a number to be divisible by 3 the sum of its digits is divisible by 3, so the answer is: $2145$. ($2+1+4+5=12$, $12$ is divisible by $3$).
@@ -80,21 +80,21 @@ The subjects for the *Capacitate* were the following. We had two hours to solve 
 3. The arithmetic mean of the numbers $18$ and $12$ is `...`
     * This exercise simply asses if the kid understands the concept of an arithmetic mean, the answer is $15$.
 4. Given the *proportion* $\frac{x}{6}=\frac{3}{2}$, $x$ is `...`
-    * $x$ is $\frac{6*3}{2}=9$.
+    * $x$ is $\frac{6\cdot 3}{2}=9$.
 5. Between $a=5\sqrt{2}$ and $b=2\sqrt{13}$ which one is bigger ?
     * The answer is $2\sqrt{13}$. Back in school, I had to remember a few radicals to use them as needed. $\sqrt{13}$ was one of them. I have forgotten them by now. We also had to learn the algorithm to compute any $\sqrt{}$ as needed.
-6. An isosceles triangle $\text{ABC}$ with $[AC]\equiv[AC]$ has the angle $\measuredangle \text{ABC}=35^{\circ}$, what is $\measuredangle \text{BAC}=$ `...` ?
-    * The sum of the angles in a triangle is $180^{\circ}$, and we know that in an isosceles triangle the two angles $\measuredangle \text{ABC}$ and $\measuredangle \text{ACB}$ are equal. So the answer is $\measuredangle \text{BAC}=180^{\circ}-2*35^{\circ}=110^{\circ}$.
+6. An isosceles triangle $\text{ABC}$ with $[AB]\equiv[AC]$ has the angle $\measuredangle \text{ABC}=35^{\circ}$, what is $\measuredangle \text{BAC}=$ `...` ?
+    * The sum of the angles in a triangle is $180^{\circ}$, and we know that in an isosceles triangle the two angles $\measuredangle \text{ABC}$ and $\measuredangle \text{ACB}$ are equal. So the answer is $\measuredangle \text{BAC}=180^{\circ}-2\cdot 35^{\circ}=110^{\circ}$.
 7. A rhombus has the diagonals $10$ and $24$?
     * What is the length of one of its sides? 
         * The side is $\sqrt{(\frac{10}{2})^{2}+(\frac{24}{2})^{2}}=13$ 
     * What is the perimeter of the rhombus?
-        * Now that we know one side, we multiply its value by $4*13=52$.
-8. A square prism has it's volume $80cm^3$, and the height $5cm^2$
+        * Now that we know one side, we multiply its value by $4\cdot 13=52$.
+8. A square prism has it's volume $80cm^3$, and the height $5cm$
     * The base surface of the prism is `...`
         * Applying the formula, we get the answer $16cm^2$
     * The side of the prim's base is `...`
-        * Applying the formula, we get  $4cm^2$
+        * Applying the formula, we get $4cm$
 9. A cube has one of its sides $2cm$. The total area of the cube is `...`
     * The answer is $24cm^2$
 
@@ -105,18 +105,18 @@ The subjects for the *Capacitate* were the following. We had two hours to solve 
         - $x$ is the initial price of the product;
         - $a=x+\frac{10x}{100}$ is the price of the product after then first 10 percent increase;
         - After the second price increase $a+\frac{10a}{100}=133100$;
-        - We compute $a=133100*\frac{100}{110}=121000$;
-        - We compute $x=121000*\frac{100}{110}=110000$.
+        - We compute $a=133100\cdot \frac{100}{110}=121000$;
+        - We compute $x=121000\cdot \frac{100}{110}=110000$.
     * What is the total price increase in percentages?
         - We need to solve this equation $110000+110000\frac{x}{100}=133100$;
         - We determine the total price increase to be $\frac{21}{100}=21$%;
 
 2. Considering the following functions $f : \mathbb{R} \rightarrow \mathbb{R}$, $f(x)=ax+b-9$ and $g : \mathbb{R} \rightarrow \mathbb{R}$, $g(x)=2bx-a$ and $a,b \in \mathbb{R}$:
     * Determine $a,b$ knowing that $A(2,3)$ belongs to $f(x)$ and $g(x)$;
-        * If $A(2,3)$ belongs to the $f(x)$ and $g(x)$, then the following is true: $f(2)=a*2+b-9=3$ and $g(2)=4b-a=3$.
+        * If $A(2,3)$ belongs to the $f(x)$ and $g(x)$, then the following is true: $f(2)=a\cdot 2+b-9=3$ and $g(2)=4b-a=3$.
         * After solving the system of equations $a=5$ and $b=2$.
     * For $a=5$ and $b=2$ plot $f(x)$ and $g(x)$.
-        * Substituting the values, we get the functions: $f(x)=5*x+2-9=5*x-7$ and $g(x)=4*x-5$
+        * Substituting the values, we get the functions: $f(x)=5\cdot x+2-9=5\cdot x-7$ and $g(x)=4\cdot x-5$
         * To plot them, we need to understand where the functions intersects $OX$ and $OY$.
             * $f(0)=-7$ so the $OY$ axis is intersected by $f(x)$ at $(0, -7)$;
             * $5x-7=0$, we get $x=\frac{7}{5}$, so the $OX$ axis is intersected at $(\frac{7}{5}, 0)$;
@@ -128,21 +128,24 @@ The subjects for the *Capacitate* were the following. We had two hours to solve 
         * A student can also compute the line equation from two points $A$ and $B$ with the formula: $\frac{x-x_A}{x_B-x_A}=\frac{y-y_A}{y_B-y_A}$, but it's a little bit overkill.
         * We have to compute the distance from $C(0,-5)$ to $y-5x+7=0$ or $-5x+y+7=0$. 
         * There's a formula for that, $d(ax+by+c, P(x_p, y_p))=\frac{\vert ax_p+by_p+c \vert}{\sqrt{a^2+b^2}}$.
-        * Substituting the values in the formula $d=\frac{\vert (-5)*(0) + 1 * (-5) + 7 \vert}{\sqrt{(-5)^2 + 1^2}}=\frac{2}{25+1}=\frac{\sqrt{26}}{13}$
+        * Substituting the values in the formula $d=\frac{\vert (-5)\cdot (0) + 1 \cdot  (-5) + 7 \vert}{\sqrt{(-5)^2 + 1^2}}=\frac{2}{\sqrt{25+1}}=\frac{\sqrt{26}}{13}$
 
 ### Third Part (Partea 3)        
 
 * Plot the Frustum of a Right Circular Cone. The volume is $312\pi \text{cm}^3$, and it's height is $8\text{cm}$. We section the frustum with a plane parallel to its base; this plane is going straight through the middle of its height. The surface of this section is $36\pi \text{cm}^2$.
-* The radius of the smaller base of the frustum is $r$. Prove that $r^2 - 12*r + 27=0$. 
+* The radius of the smaller base of the frustum is $r$. Prove that $r^2 - 12\cdot r + 27=0$.
     - The vormula for the Volume is $V=\frac{1}{3}h\pi (R^2 + r^2 + Rr)$.
     - If we substitute the values, we obtain $R^2+r^2+Rr=117$. `(1)`
-    - If the surface of the section is $S_{s}=36\pi=\pi*{r_s}^2$, the radius of the section is $r_s=\sqrt{36}=6$.
+    - If the surface of the section is $S_{s}=36\pi=\pi\cdot {r_s}^2$, the radius of the section is $r_s=\sqrt{36}=6$.
     - But, $\frac{R+r}{2}=r_s$, so we can say that $R+r=12$. `(2)`
-    - Using `(1)` in `(2)`, we obtain $R^2+r(R+r)=(12-r)^2 + r*12=117$. After a few more steps we prove that $r^2-12r+27=0$.
+    - Using `(1)` in `(2)`, we obtain $R^2+r(R+r)=(12-r)^2 + r\cdot 12=117$. After a few more steps we prove that $r^2-12r+27=0$.
 * Determine the radiuses of the two bases of the frustum.
     - We already know the relationship: $r^2-12r+27=0$ holds true, so we can compute the radiuses as $3$ and $9$.
-* If the radiuses are $9$ and $3$, compute the sector of the arc, which is the lateral unfolding of the frustum.
-    - There's a formula for this $A_l = \pi G(R+r)$, and $G=\sqrt{h^2+(R-r)^2}=10$. So $A_l=120\pi \text{cm}^2$.
+* If the radii are $9$ and $3$, compute the angle of the circular sector obtained by unfolding the lateral surface of the original cone.
+    - The frustum's slant height is $g=\sqrt{8^2+(9-3)^2}=10$.
+    - By similarity, the original cone's slant height $L$ satisfies $g/L=(9-3)/9$, so $L=15$.
+    - The sector has radius $15$ and arc length equal to the base circumference, $2\pi\cdot9$. Its angle is therefore $360^\circ\cdot\frac{9}{15}=216^\circ$.
+    - The frustum itself unfolds into an annular sector with the same angle; its area is $120\pi\,\text{cm}^2$, but the question asks for the angle.
 
 ---
 
@@ -309,7 +312,7 @@ The *Bacalaureat* exercises I had to solve (in 3 hours) were the following:
 
 ### Subiectul 1
 
-1. If $f:\mathbb{R} \rightarrow \mathbb{R}$ is $f(x)=x-3$, what is the value of the prouct $f(1)*f(2)*...*f(7)$?
+1. If $f:\mathbb{R} \rightarrow \mathbb{R}$ is $f(x)=x-3$, what is the value of the prouct $f(1)\cdot f(2)\cdot ...\cdot f(7)$?
     * f(3)=0, so the product is itself 0. No need for additional computations.
 2. How many non-empty subsets of the set $\mathbb{Z}_{3}$ have a sum of elements equal to 0̂?
     * $\mathbb{Z}_{3}$ refers to the set of integers modulo 3.
@@ -321,14 +324,14 @@ The *Bacalaureat* exercises I had to solve (in 3 hours) were the following:
 4. What is the probability that an element n from the set $\{0, 1, 2, 3, 4\}$ satisfies the relationship $2^n + 5^n = 3^n + 4^n$ ?
     * The relantionship is *satisfied* if $n=0$ or $n=1$, using the formula for probabilities, the answer is $P=\frac{2}{5}$.
 5. How many real solutions does the $x^4=16$ equation have?
-    * $ (x^4)=(x^2)^2=4 $, because $x \in \mathbb{R}$, the real solutions are $2$ and $-2$, so the answer is 2.
+    * $x^4=16$ implies $x^2=4$, because $x \in \mathbb{R}$, the real solutions are $2$ and $-2$, so the answer is 2.
 
 Considering the function: $f:\mathbb{R}$, $f(x)=e^x+x+\frac{1}{2}$.
 
 6. Compute $f'(x)$.
     * We simply compute: $f'(x)=(e^x+x+\frac{1}{2})' = e^x + 1$
 7. Compute $\int_{0}^{1}f(x)dx$.
-    * We simply compute: $\int_{0}^{1}f(x)dx=\int_{0}^{1}(e^x+x+1)dx=(e^x+\frac{x^2}{2}+\frac{x}{2}) \Big\|_0^1=e$.
+    * We simply compute: $\int_{0}^{1}f(x)dx=\int_{0}^{1}(e^x+x+\frac{1}{2})dx=(e^x+\frac{x^2}{2}+\frac{x}{2}) \Big\|_0^1=e$.
 8. How is the function $f$ over the set of real numbers: convex or concave?
     * We differentiate the function twice and check the conditions:
         - If $f''(x) \geq 0$, then the function is convex
@@ -338,39 +341,39 @@ Considering the function: $f:\mathbb{R}$, $f(x)=e^x+x+\frac{1}{2}$.
 9. What is the limit: $\lim_{x \to 1} \frac{f(x)-f(1)}{x-1}$ ?
     * Cheesy one. The definition of the derivative in $a$ is: $\lim_{x \to a} \frac{f(x)-f(a)}{x-a}$;
     * We have to compute $f'(1)=e^1+1=e+1$. The answer is $e+1$.
-10. What is the limit $\lim_{x \to \infty} \frac{\sqrt{n}}{n}$ ?
-    * We can do this simple trick: $\lim_{n \to \infty} \frac{\sqrt{n}}{n}=\lim_{n \to \infty}\frac{\sqrt{n}}{\sqrt{n}*\sqrt{n}}=\frac{1}{\infty}=0$.
+10. What is the limit $\lim_{n \to \infty} \frac{\sqrt{n}}{n}$ ?
+    * We can do this simple trick: $\lim_{n \to \infty} \frac{\sqrt{n}}{n}=\lim_{n \to \infty}\frac{\sqrt{n}}{\sqrt{n}\cdot \sqrt{n}}=\lim_{n\to\infty}\frac{1}{\sqrt{n}}=0$.
 
 ### Subiectul 2
 
 11. What is the distance between the two points: $A(1,3,5)$ and $B(3,5,7)$?
-    * We compute the distance: $d=\sqrt{(3-1)^2+(5-3)^2+(7-5)^2}=\sqrt{3*2^2}=2*\sqrt{3}$
+    * We compute the distance: $d=\sqrt{(3-1)^2+(5-3)^2+(7-5)^2}=\sqrt{3\cdot 2^2}=2\cdot \sqrt{3}$
 12. What is the radius of the circle: $x^2+y^2=4$ ?
     * The answer is $r=2$ (fundamental equation of the circle)
 13. What is $cos^2\pi + sin^2\pi$ ?
     * The answer is 1, as per the fundamental: $sin^2x+cos^2x=1$.
-14. What is the modulus of the complex number $z=\frac{5+8*i}{8-5*i}$?
+14. What is the modulus of the complex number $z=\frac{5+8\cdot i}{8-5\cdot i}$?
     * We need to compute: $\vert z \vert$.
-    * If $z=a+b*i$, then $\vert z \vert=\sqrt{a^2+b^2}$
+    * If $z=a+b\cdot i$, then $\vert z \vert=\sqrt{a^2+b^2}$
     * We need to reduce our $z$ to a form were it's easy to identity $a$ and $b$
-    * In this regard, we can write $z=\frac{(5+8*i)(8+5*i)}{(8-5*i)(8+5*i)}$
+    * In this regard, we can write $z=\frac{(5+8\cdot i)(8+5\cdot i)}{(8-5\cdot i)(8+5\cdot i)}$
     * After doing all the computations: $z=i$, so $\vert z \vert=1$
 15. What is the area of a triangle with its sides: $3$, $3$ and $4$ ?
     * The elegant way of doing it is to apply Heron's theorem: $A=\sqrt{p(p-a)(p-b)(p-c)}$, where $p=\frac{a+b+c}{2}$.
-    * The answer is $A=\sqrt{5*2*2*1}=2*\sqrt{5}$.
+    * The answer is $A=\sqrt{5\cdot 2\cdot 2\cdot 1}=2\cdot \sqrt{5}$.
 16. What is the equation of the tangent line to the parabola $y^2 = 2x$ passing through the point $P(2, 2)$?
-    * Applying the equation, we get to the form: $2*y=x+2$.
+    * Applying the equation, we get to the form: $2\cdot y=x+2$.
 
 ### Subiectul 3
 
-Considering the matrices: $I=\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$, $O_{2}=\begin{pmatrix} 0 & 0 \\ 0 & 0 \end{pmatrix}$, $J=\begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$, $K=\begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}$, a matrix $M \in M_{2}(\mathbb{R})$ is *nilpotent*, if there is $n \in \mathbb{N}^{*}$, so that $M^n=O_2$.
+Considering the matrices: $I=\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$, $O_{2}=\begin{pmatrix} 0 & 0 \\ 0 & 0 \end{pmatrix}$, $J=\begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$, $K=\begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}$, a matrix $M \in M_{2}(\mathbb{R})$ is *nilpotent*, if there is $n \in \mathbb{N}^{\ast}$, so that $M^n=O_2$.
 
 1. Prove that $O_2$ and $J$ are nilpotent
-    * $O_2^n=O_2$, $∀ n \in \mathbb{N}^{*}$, so we can pick an arbitrary $n$, and the nilpotency condition is satisfied.
+    * $O_2^n=O_2$, $∀ n \in \mathbb{N}^{\ast}$, so we can pick an arbitrary $n$, and the nilpotency condition is satisfied.
     * For $J$ we just compute $J^2$, and it becomes evident that the nilpotency condition is satisfied for $n=2$.
 2. Show that the $K$ matrix is neither inversible nor nilpotent.
     * For a matrix to be invertible, $det(A) \neq 0$, but $det(K)=0$, so $K$ is not invertible;
-    * We can prove $K^n=K$, $∀ n \in \mathbb{N}^{*}$, but $K \neq O_2$, so $K$ is not nilpotent;
+    * We can prove $K^n=K$, $∀ n \in \mathbb{N}^{\ast}$, but $K \neq O_2$, so $K$ is not nilpotent;
 3. Prove that $X \in M_2(\mathbb{R})$, $X=\begin{pmatrix} p & q \\ r & s \end{pmatrix}$, satisfies the identity: $X^2 - (p+s)X + (ps-rq)I_2=O_2$.
     * First step is to compute $X^2$.
     * In this regard: $X^2=\begin{pmatrix} p^2 + qr & pq + qs \\ rp + rs & s^2 + qr\end{pmatrix}$;
@@ -381,25 +384,24 @@ Considering the matrices: $I=\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$, $O_{
     * If we look closely: $a+d$ is the *trace* of A $tr(A)$;
     * Again, $ad-bc$ is actually the determinant of $A$;
     * Now, if $A=O_2$, then both the trace and determinant are $0$;
-    * If $A \neq O_2$, the relationship proved at the previous point becomes $A^2 - tr(A)*A + det(A)*I_2=O_2$.
-    * But $A^2=O_2$, so the relationship becomes: $tr(A)*A=det(A)*I_2$.
-    * If we multiply each side of the previous equality with $A$, and remember that $A^2=O_2$, we get to $det(A)*A=0$. But because we've decided that $A \neq O_2$, we know that $det(A)=0$, then $ad-bc=0$.
-    * Given that $det(A)=0$ and $A^2=O_2$, then $\underbrace{A^2}_{0}-tr(A)*A + \underbrace{det(A)*I_2}_{0}=O_2$, then $tr(A)*A=O_2$, then $tr(A)=0$, then $a+d=0$.
+    * If $A \neq O_2$, the relationship proved at the previous point becomes $A^2 - tr(A)\cdot A + det(A)\cdot I_2=O_2$.
+    * But $A^2=O_2$, so the relationship becomes: $tr(A)\cdot A=det(A)\cdot I_2$.
+    * If we multiply each side of the previous equality with $A$, and remember that $A^2=O_2$, we get to $det(A)\cdot A=0$. But because we've decided that $A \neq O_2$, we know that $det(A)=0$, then $ad-bc=0$.
+    * Given that $det(A)=0$ and $A^2=O_2$, then $\underbrace{A^2}_{0}-tr(A)\cdot A + \underbrace{det(A)\cdot I_2}_{0}=O_2$, then $tr(A)\cdot A=O_2$, then $tr(A)=0$, then $a+d=0$.
 5. Prove that if $B \in M_2({\mathbb{R}})$ is *nilpotent*, then $B^2=O_2$.
-    * If $B$ is *nilpotent*, then a number $n \in \mathbb{N}^{*}$ exists, such that $B^{n}=O_2$;
+    * If $B=O_2$, the conclusion is immediate. Otherwise, a number $n \in \mathbb{N}^{\ast}$ exists, such that $B^{n}=O_2$;
     * If $B^n=O_2$, we can say the same about $(B^n)^2=O_2$.
     * Given the previously proved relationship, we also know that $tr(B^n)$ and $det(B^n)$ are $0$.
-    * As a known identity, $det(M * N)=det(M)*det(N)$, $∀ M, N \in M_m(\mathbb{C})$, so inductively we keep in mind the fact that $det(M^k)=det(M)^k$;
-    * Now, let's get back and find our $n$. We introduce $n_0$, $n_0 \in \mathbb{N}^{*}$, the first $n$ that satisfies the condition;
+    * As a known identity, $det(M \cdot  N)=det(M)\cdot det(N)$, $∀ M, N \in M_m(\mathbb{C})$, so inductively we keep in mind the fact that $det(M^k)=det(M)^k$;
+    * Now, let's get back and find our $n$. We introduce $n_0$, $n_0 \in \mathbb{N}^{\ast}$, the smallest such $n$. Since $B\neq O_2$, we have $n_0\ge2$;
     * We know that $det(B^{n_0})=0$, and so $det(B)^{n_0}=0$. The only possible way to satisfy that is if $det(B)=0$. 
-    * So the relationship proved at `3.` becomes $B^2-tr(B)*B=0$. If we multiply each side with $B^{n_0-2}$, we get $B^n_0-tr(B)*B^{n_0-1}=O_2$.
-    * But we already said that $B^{n_0}=O_2$, this means that $tr(B)*B^{n_0-1}=0$ so $tr(B)=0$
+    * So the relationship proved at `3.` becomes $B^2-tr(B)\cdot B=0$. If we multiply each side with $B^{n_0-2}$, we get $B^{n_0}-tr(B)\cdot B^{n_0-1}=O_2$.
+    * But we already said that $B^{n_0}=O_2$, this means that $tr(B)\cdot B^{n_0-1}=0$ and minimality gives $B^{n_0-1}\neq O_2$, so $tr(B)=0$
     * At this point, all the conditions are met, and we can safely say that $B^2=O_2$;
-6. Prove that $I_2$ cannot be written as an infinite sum of nilpotent matrices;
-    * Ad absurdum, we say that $I_2=\sum_{k=1}^{n}*A_k$, where $A_k$ is *nilpotent* and $k \in [1, \infty)$.
-    * Because $A_k$ is *nilpotent*, then $A_k^2=O_2$ and $tr(A)=0$ (see `4.`);
-    * Through induction we can prove that $tr(\sum_{k=1}^{\infty}A_k)=\sum_{k=1}^{\infty} tr(A_k)$;
-    * If our supposition that $I_2=\sum_{k=1}^{n}*A_k$ was correct, then $tr(\sum_{k=1}^{\infty}A_k)=0$. But that would be incorrect because $tr(I_2)=2$, so our supposition was proved to be false.
+6. Prove that $I_2$ cannot be written as a sum of finitely many nilpotent matrices.
+    * Every nilpotent $2\times2$ matrix has trace zero, by the previous results.
+    * If $I_2=\sum_{k=1}^{n}A_k$ with each $A_k$ nilpotent, linearity of the trace gives $2=\operatorname{tr}(I_2)=\sum_{k=1}^{n}\operatorname{tr}(A_k)=0$, a contradiction.
+    * The same conclusion holds for a convergent infinite series of nilpotent matrices: every partial sum has trace zero, and continuity of the trace gives trace zero for its limit.
 
 ### Subiectul 4
 
@@ -411,29 +413,24 @@ Considering the matrices: $I=\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$, $O_{
     * Just by looking at `1.` and `2.` we see a similar pattern.
     * The solution is to substitute $a=-\sqrt{x}$, and the required relationship is proven.
 3. Prove that $0 \leq \frac{(\sqrt{x})^{n+1}}{1+\sqrt{x}} \leq (\sqrt{x})^{n+1}$, $∀ x \in [0,1], ∀ n \in \mathbb{N}$.
-    * We prove the two equalities one by one.
-    * We know that $(\sqrt{x})^{n+1} \geq 0$;
-    * We also know that $\sqrt{x}+1 \geq 0$.
-    * We can then conclude that the ratio is also positive $\frac{(\sqrt{x})^1} \geq 0$.
-    * $\sqrt{x}$ is also an increasing function for $x$ in our domain, so that the second is true;
-4. Prove that $\lim_{n \rightarrow \infty}\int_{0}^{b}\frac{(\sqrt{x})^{n+1}}{\sqrt{x}+1}dx=0$, $∀ \in [0,1]$.
+    * The numerator is nonnegative and $1+\sqrt{x}\ge1>0$. Dividing a nonnegative number by a number at least $1$ leaves it between $0$ and its original value, proving both inequalities.
+4. Prove that $\lim_{n \rightarrow \infty}\int_{0}^{b}\frac{(\sqrt{x})^{n+1}}{\sqrt{x}+1}dx=0$, $∀ b \in [0,1]$.
     * We make use of the previously proven inequality so we can *squeeze* our integral like this: $0 \leq \int_{0}^{b}\frac{(\sqrt{x})^{n+1}}{\sqrt{x}+1}dx \leq \int_{0}^{b}(\sqrt{x})^{n+1}dx$
-    * We determine $\int_{0}^{b} (\sqrt{x})^{n+1}dx=\int_{0}^{b}x^{\frac{n+1}{2}}dx=\frac{x^{\frac{n+1}{2}+1}}{\frac{n+3}{2}}\Big\|_0^b=\frac{2}{n+3}*b^{\frac{n+3}{2}}$ 
-    * We now use this in the limit: $\lim_{n \rightarrow \infty}\int_{0}^{b} (\sqrt{x})^{n+1}dx=\lim_{n \rightarrow \infty} \frac{2}{n+3}*b^{\frac{n+3}{2}}$
-    * We can write the limit $\lim_{n \rightarrow \infty} \frac{2}{n+3}*b^{\frac{n+3}{2}}=(\lim_{n \rightarrow \infty}\frac{2}{n+3})*(lim_{n \rightarrow \infty}b^{\frac{n+3}{2}}) = 0 * k = 0$, where $k \in \{0,1\}$.
+    * We determine $\int_{0}^{b} (\sqrt{x})^{n+1}dx=\int_{0}^{b}x^{\frac{n+1}{2}}dx=\frac{x^{\frac{n+1}{2}+1}}{\frac{n+3}{2}}\Big\|_0^b=\frac{2}{n+3}\cdot b^{\frac{n+3}{2}}$
+    * We now use this in the limit: $\lim_{n \rightarrow \infty}\int_{0}^{b} (\sqrt{x})^{n+1}dx=\lim_{n \rightarrow \infty} \frac{2}{n+3}\cdot b^{\frac{n+3}{2}}$
+    * We can write the limit $\lim_{n \rightarrow \infty} \frac{2}{n+3}\cdot b^{\frac{n+3}{2}}=(\lim_{n \rightarrow \infty}\frac{2}{n+3})\cdot (\lim_{n \rightarrow \infty}b^{\frac{n+3}{2}}) = 0 \cdot  k = 0$, where $k \in \{0,1\}$.
     * At this point, it is squeezed between two $0$s, so we've proven the limit to be 0;
 5. Compute the following integral: $\int_{0}^{b}\frac{1}{1+\sqrt{x}}dx$, $b > 0$.
-    * We the following substitution: $y=1+\sqrt{x}$, so that $(1+\sqrt x)dx=dy$, or $2*\sqrt{x}dy=dx$, or $dx=(2y-1)dy$.
-    * If $x=0$, then $y=1$
-    * If $x=b$, then $y=1+\sqrt{b}$
-    * So $\int_{0}^{b}\frac{1}{1+\sqrt{x}}dx = 2 * \int_{1}^{1+\sqrt{b}} \frac{y-1}{y}dy=2*\int_{0}^{1+\sqrt{b}}dy - \int_{1}^{1+\sqrt{b}}\frac{1}{y}dy$;
-    * After every computation is done, the result is: $\int_{0}^{b}\frac{1}{1+\sqrt{x}}dx=2*(\sqrt{b}-ln(1+\sqrt{b}))$
+    * Set $y=1+\sqrt{x}$. Then $x=(y-1)^2$ and $dx=2(y-1)\,dy$.
+    * The limits become $y=1$ when $x=0$, and $y=1+\sqrt{b}$ when $x=b$.
+    * Thus $\int_{0}^{b}\frac{1}{1+\sqrt{x}}dx=2\int_{1}^{1+\sqrt{b}}\frac{y-1}{y}\,dy=2\int_{1}^{1+\sqrt{b}}dy-2\int_{1}^{1+\sqrt{b}}\frac{1}{y}\,dy$.
+    * After every computation is done, the result is: $\int_{0}^{b}\frac{1}{1+\sqrt{x}}dx=2\cdot (\sqrt{b}-\ln(1+\sqrt{b}))$
 6. Prove that $\lim_{n \rightarrow \infty} (x + \frac{(-1)^1x^{(\frac{1}{2}+1)}}{\frac{1}{2}+1} + \frac{(-1)^2x^{(\frac{2}{2}+1)}}{\frac{2}{2}+1} + ... + \frac{(-1)^nx^{(\frac{n}{2}+1)}}{\frac{n}{2}+1})=\int_{0}^{x}\frac{1}{1+\sqrt{t}}dt$, $∀ x \in [0,1]$.
     * We start with the integral. We've already worked on it at `2.`.
     * We change to $t$, $\int_{0}^{x}\frac{1}{1+\sqrt{t}}dt=\int_{0}^{x}(1-\sqrt{t}+(\sqrt{t})^2+...+(-1)^n(\sqrt{t})^n + (-1)^{n+1}\frac{(\sqrt{t})^{n+1}}{1+\sqrt{t}})dt$.
     * This also can be written as a sum of two integrals: $\int_{0}^{x}\frac{1}{1+\sqrt{t}}dt=\int_{0}^{x}(1-\sqrt{t}+(\sqrt{t})^2+...+(-1)^n(\sqrt{t})^n)dt+\int_{0}^{x}((-1)^{n+1}\frac{(\sqrt{t})^{n+1}}{1+\sqrt{t}})dt$
-    * The relationship then becomes: $\int_{0}^{x}\frac{1}{1+\sqrt{t}}dt=(x+\frac{(-1)*x^{\frac{1}{2}+1}}{\frac{1}{2}+1}+...+\frac{(-1)^{n}*x^{\frac{n}{2}+1}}{\frac{n}{2}+1})+(-1)^{n+1}\int_{0}^{x}\frac{(\sqrt{t})^{n+1}}{1+\sqrt{t}}dt$
-    * We apply the limit on the last relationship:  $lim_{n \rightarrow \infty}\int_{0}^{x}\frac{1}{1+\sqrt{t}}dt=\lim_{n \rightarrow \infty}(x+\frac{(-1)*x^{\frac{1}{2}+1}}{\frac{1}{2}+1}+...+\frac{(-1)^{n}*x^{\frac{n}{2}+1}}{\frac{n}{2}+1})+\underbrace{lim_{n \rightarrow \infty}((-1)^{n+1}\int_{0}^{x}\frac{(\sqrt{t})^{n+1}}{1+\sqrt{t}})dt}_{0}$
+    * The relationship then becomes: $\int_{0}^{x}\frac{1}{1+\sqrt{t}}dt=(x+\frac{(-1)\cdot x^{\frac{1}{2}+1}}{\frac{1}{2}+1}+...+\frac{(-1)^{n}\cdot x^{\frac{n}{2}+1}}{\frac{n}{2}+1})+(-1)^{n+1}\int_{0}^{x}\frac{(\sqrt{t})^{n+1}}{1+\sqrt{t}}dt$
+    * We apply the limit on the last relationship:  $\lim_{n \rightarrow \infty}\int_{0}^{x}\frac{1}{1+\sqrt{t}}dt=\lim_{n \rightarrow \infty}(x+\frac{(-1)\cdot x^{\frac{1}{2}+1}}{\frac{1}{2}+1}+...+\frac{(-1)^{n}\cdot x^{\frac{n}{2}+1}}{\frac{n}{2}+1})+\underbrace{\lim_{n \rightarrow \infty}((-1)^{n+1}\int_{0}^{x}\frac{(\sqrt{t})^{n+1}}{1+\sqrt{t}})dt}_{0}$
     * Our relationship is proved.
 
 # The third exam - *Admiterea la Politehnica* (2005)
@@ -454,12 +451,12 @@ You had two hours to solve the following:
 
 ## The translations + solutions
 
-1. Determine $m \in \mathbb{R}$ so that $f:\mathbb{R} \rightarrow \mathbb{R}$, $f(x)=\begin{cases}x^2-2x+m &, m \leq 1 \\ e^x-e &, x \gt 1\end{cases}$ to be continuos on $\mathbb{R}$:
+1. Determine $m \in \mathbb{R}$ so that $f:\mathbb{R} \rightarrow \mathbb{R}$, $f(x)=\begin{cases}x^2-2x+m &, x \leq 1 \\ e^x-e &, x \gt 1\end{cases}$ to be continuos on $\mathbb{R}$:
     * Both $x^2-2x+m$ and $e^x-e$ are elementary functions, so we can say they are continuous on their intervals;
     * So we need to see what's happening when $x=1$;
     * We need to check the limits (from both sides) for $f(x)$;
-    * The limit from the left: $\lim_{x \rightarrow 1}f(x)=f(1)=m-1$
-    * The limit from the right: $\lim_{1 \leftarrow x}f(x)=f(1)=0$
+    * The limit from the left: $\lim_{x \to 1^-}f(x)=f(1)=m-1$
+    * The limit from the right: $\lim_{x \to 1^+}f(x)=0$
     * The conclusion is simple $m-1=0$, so $m=1$
 2. Solve the following inequation: $\sqrt{x} \lt 1$.
     * This is a simple one: $x \in [0, 1)$
@@ -467,12 +464,12 @@ You had two hours to solve the following:
     * The expression is equivalent to: $E=\frac{\sqrt{3}-\sqrt{2}}{3-2}+\frac{\sqrt{3}+\sqrt{2}}{3-2}=2\sqrt{3}$
 4. Compute the limit $\lim_{n \rightarrow \infty}(\sqrt{n^2+n}-\sqrt{n^2+1})$.
     * The limit is equivalent to: $\lim_{n \rightarrow \infty}(\frac{n^2+n-n^2-1}{\sqrt{n^2+n}+\sqrt{n^2+1}})$;
-    * Then we do the following trick: $\lim_{n \rightarrow \infty}(\frac{n(1-\frac{1}{n})}{n*(\sqrt{1+\frac{1}{n}}+\sqrt{1+\frac{1}{n^2}})})$
+    * Then we do the following trick: $\lim_{n \rightarrow \infty}(\frac{n(1-\frac{1}{n})}{n\cdot (\sqrt{1+\frac{1}{n}}+\sqrt{1+\frac{1}{n^2}})})$
     * But $\frac{1}{n} \rightarrow 0$ and $\frac{1}{n^2} \rightarrow 0$ when $n \rightarrow \infty$, so if we take that into the account the answer is $\frac{1}{2}$.
 5. Given the equation $x^2-ax+4=0$, $a \in \mathbb{R}$. $x_1, x_2$ solutions to the equation verify $x_1 + x_2=5$ if:
     * a) $a=4$; b) $a=0$; c) $x_1=x_2$; d) $a <0 $; e) $a=5$; f) $x1, x2 \not\in \mathbb{R}$
     * Well, $x_1+x_2=a$, then the correct answer is $a=5$
-6. The solutions for the equation $9^x-4*3^x+3=0$ are?
+6. The solutions for the equation $9^x-4\cdot 3^x+3=0$ are?
     * We consider $y=3^x$, so the equation in $y$ becomes: $y^2-4y+3=0$;
     * Then, $y^2-3y-y+3=0$, or $(y-3)(y-1)=0$, the solutions are $y_1=3$ and $y_2=1$;
     * This means $3^x=3^1$, the exponential is injective, we can safely say $x_1=1$ one of the two solutions;
@@ -483,28 +480,28 @@ You had two hours to solve the following:
     * $(-m-9)$ needs to be $0$, $n-3$ needs to be $0$
     * The answer is $m=-9$ and $n=3$
 8. Compute the 10th term of the arithmetic progression starting with $a_1=5$, with the $r=2$.
-    * Using the formula we get: $a_10=a_1+(10-1)*r=23$
+    * Using the formula we get: $a_{10}=a_1+(10-1)\cdot r=23$
 9. Compute $\int_{0}^{1}\frac{x^2}{x^3+1}dx$
-    * We write as: $\int_{0}^{1}\frac{x^2}{x^3+1}dx=\frac{1}{3}\int_{0}^{1}\frac{3*x^2}{x^3+1}dx$
+    * We write as: $\int_{0}^{1}\frac{x^2}{x^3+1}dx=\frac{1}{3}\int_{0}^{1}\frac{3\cdot x^2}{x^3+1}dx$
     * We observe the integral can further be written as: $\frac{1}{3}\int_{0}^{1}\frac{(x^3+1)'}{x^3+1}dx$
     * This is a known form, the answer is: $\frac{1}{3}ln(2)$
 10. If $(a,b)$ are a solution for the following system of equations: $\begin{cases} x+y=2 \\ xy=1\end{cases}$, then:
     * a) $a^2b^2=2$; b) $a^2+b^2=2$; c) $a^2+b^2=1$; d) $a^2+b^2=3$; e) $a^2 + b^2 < 0$; f) $a \neq b$
-    * We simply solve the system, we see that $a=1$, and $b=1$, so the answer is $a^2+b^2=1$
+    * We simply solve the system, we see that $a=1$, and $b=1$, so the answer is $a^2+b^2=2$, option b).
 11. Given $f:\mathbb{R} \rightarrow \mathbb{R}$, $f(x)=\frac{x^2}{x^2+1}$. Compute $f'(1)$:
-    * We know $f'(x)=\frac{2x(x^2+1)-x^2*2x}{(x^2+1)^2}$
+    * We know $f'(x)=\frac{2x(x^2+1)-x^2\cdot 2x}{(x^2+1)^2}$
     * We compute $f'(1)=\frac{1}{2}$
-12. The following composition rule is defined on $\mathbb{R}$: $x * y = xy+2ax+by$. Determine the relationship between $a$ and $b$ so that the rule is commutative.
+12. The following composition rule is defined on $\mathbb{R}$: $x \ast y = xy+2ax+by$. Determine the relationship between $a$ and $b$ so that the rule is commutative.
     * If the rule is commutative, then: $xy+2ax+by=yx+2ay+bx$
     * After a few more steps: $2a(x-y)-b(x-y)=0$, or $(x-y)(2a-b)=0$.
-    * The answer is: $2a=b$ almost 20 years ago
+    * The answer is: $2a=b$.
 13. What's the minimum of the following function: $f:\mathbb{R} \rightarrow \mathbb{R}$, $f(x)=\sqrt{4x^2+28x+85}+\sqrt{4x^2-28x+113}$?
     * This is pure grind, nothing exciting; the eventual answer will be: $14\sqrt{2}$. 
 14. Given $f:\mathbb{C} \rightarrow \mathbb{C}$, $f(z)=z^2+z+1$, compute $f(\frac{-1+i\sqrt{3}}{2})$
-    * We compute: $f(\frac{-1+i\sqrt{3}}{2})=\frac{1-3-2*i\sqrt{3}}{4}+\frac{-2+2i\sqrt{3}}{4} + \frac{4}{4}$
+    * We compute: $f(\frac{-1+i\sqrt{3}}{2})=\frac{1-3-2\cdot i\sqrt{3}}{4}+\frac{-2+2i\sqrt{3}}{4} + \frac{4}{4}$
     * The final answer is 0;
-15. Solve the following equation: $det(\begin{pmatrix} 2 & x & 0 \\ x & -1 & x \\ 2 & -5 & -4\end{pmatrix})=0$
-    * Computing the determinant, $det=x^2-5x+4=0$, $x=1$ or $x=4$.
+15. Solve the following equation: $det(\begin{pmatrix} 2 & x & 0 \\ x & -1 & x \\ 2 & -5 & 4\end{pmatrix})=0$
+    * Computing the determinant, $\det A=-2x^2+10x-8=-2(x-1)(x-4)$. Hence $x=1$ or $x=4$.
 16. Compute the limit of $a_n=\sum_{k=1}^{n}(\frac{k(k+1)}{2x^{k-1}})$, where $\vert x \vert > 1$
     * After all the grind the result is: $\frac{x^3}{(x-1)^3}$
 17. Given the function: $f:[0, \infty)$, $f(x)=\int_{x}^{x+1}\frac{t^2}{\sqrt{t^4+t^2+1}}dt$. Decide if:
@@ -513,9 +510,10 @@ You had two hours to solve the following:
         * $f(0)$ is false, f(x) is strictly $>0$;
         * $f(x)$ cannot be odd, given its domain;
         * so both a) and b) are false;
-    * We differentiate: $f'(x)=\frac{(x+1)^2}{\sqrt{(x+1)^4 + (x+1)^2 + 1}} - \frac{x^2}{\sqrt{x^4+x^2+1}}=0$
-    * After some grind, I am too lazy to write in Latex, we find out that there are no extreme points and and it doesn't admit any horizontal asymptote
-    * The final result: $f''(x)>0$ the the function is convex;
+    * Put $g(t)=\frac{t^2}{\sqrt{t^4+t^2+1}}$. For $t>0$, $g'(t)=\frac{t(t^2+2)}{(t^4+t^2+1)^{3/2}}>0$, and $g(t)\to1$ as $t\to\infty$.
+    * Since $g$ is increasing, $g(x)\le f(x)\le g(x+1)$. Both bounds tend to $1$, so $f(x)\to1$: the graph has the horizontal asymptote $y=1$. The correct answer is **d)**.
+    * By differentiation under the moving limits, $f'(x)=g(x+1)-g(x)>0$, so there are no interior extrema.
+    * The function is not convex on its whole domain: $f''(1)=g'(2)-g'(1)=\frac{12}{21\sqrt{21}}-\frac{1}{\sqrt3}<0$. Thus option c) is false. A finite limit also rules out an oblique asymptote.
 18. Compute: $\lim_{x \rightarrow 0}\frac{(x-1)^2-1}{x}$.
     * After applying L'Hopital the result is: $-2$
 

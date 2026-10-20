@@ -30,7 +30,7 @@ And on the other end:
     3^7=2187<2401=7^4 \Rightarrow 3^{7/4} < 7 \Rightarrow 3^{1.75}<7
 \]</div></p>
 
-Since $\sqrt{3}\approx 1.73 \Rightarrow \lfloor 3^{\sqrt{3}}\rfloor=6$.
+Since $(17/10)^2<3<(7/4)^2$, we have $1.7<\sqrt{3}<1.75$. Together, the bounds above give $6<3^{\sqrt{3}}<7$, so $\lfloor 3^{\sqrt{3}}\rfloor=6$.
 
 **Later edit:**
 
@@ -39,7 +39,7 @@ After sharing the post on [reddit](https://old.reddit.com/r/math/comments/1gu95w
 <p>
 <div class="mp">
 \[
-6^3=2^3*3^3<3^2*3^3=3^5 \Rightarrow 6 < 3^{\frac{5}{3}}=3^{\sqrt{\frac{25}{9}}}<3^{\sqrt{\frac{27}{9}}}<3^{\sqrt{3}}
+6^3=2^3*3^3<3^2*3^3=3^5 \Rightarrow 6 < 3^{\frac{5}{3}}=3^{\sqrt{\frac{25}{9}}}<3^{\sqrt{\frac{27}{9}}}=3^{\sqrt{3}}
 \]
 </div>
 </p>
@@ -51,7 +51,7 @@ Simultaneously:
     48<49 \Rightarrow 3*2^4 < 7^2 
     \]
     \[
-        3^7<256*3^2=2^8*3^2<7^4 \Rightarrow 7^4 > 3^{\frac{7}{4}}=3^{\sqrt{\frac{49}{16}}} > 3^{\sqrt{\frac{48}{16}}} > 3^{\sqrt{3}}
+        3^7<256*3^2=2^8*3^2<7^4 \Rightarrow 7 > 3^{\frac{7}{4}}=3^{\sqrt{\frac{49}{16}}} > 3^{\sqrt{\frac{48}{16}}} = 3^{\sqrt{3}}
 \]</div></p>
 
 Which method is better? That’s [left to the reader](https://academia.stackexchange.com/questions/20084/is-using-the-phrase-is-left-as-an-exercise-for-the-reader-considered-good).
@@ -71,7 +71,7 @@ a^{\sqrt{c}} \approx \frac{-120-60[\frac{5c^{2}+10c+1}{c^{2}+10c+5}*\frac{3(a-1)
 </div>
 </p>
 
-(... as long as $\frac{1}{2} < \ln a * \sqrt{c} < 3$)
+This is a local approximation for $a>0$ and $c>0$, assembled from expansions of $\ln a$ and $\sqrt c$ around $1$ and of $e^t$ around $0$. Its accuracy depends on all three approximations. The condition $\frac12<\ln(a)\sqrt c<3$ alone is not an accuracy guarantee: at $a=2,c=16$ it gives about $10.7488$ instead of $16$, a relative error of about $32.82\%$. The examples below are numerical experiments, not a uniform error bound over a stated interval.
 
 ## The first attempt
 
@@ -81,7 +81,7 @@ The *[Logarithmic](https://en.wikipedia.org/wiki/Logarithm)* and the *[Exponenti
 2. We then use the [Taylor Series](https://en.wikipedia.org/wiki/Taylor_series) expansion of $e^x=1+\frac{x^1}{1!}+\frac{x^2}{2!}+\frac{x^3}{3!}+\frac{x^4}{4!}+\dots$ .
 3. Therefore,  approximating $3^{\sqrt{3}}$ becomes a matter of computing: $1+\frac{(\sqrt{3}\ln 3)^1}{1!}+\frac{(\sqrt{3}\ln 3)^2}{2!}+\frac{(\sqrt{3}\ln 3)^3}{3!}+\frac{(\sqrt{3}\ln 3)^4}{4!}+\dots$.
 
-To get even closer to the actual result, I computed the first 8 terms of the series expansion (and no, it wasn't by hand, as I've used [WolframAlpha](https://www.wolframalpha.com/) do it for me):
+To get even closer to the actual result, I computed the first 9 terms of the series expansion (and no, it wasn't by hand, as I've used [WolframAlpha](https://www.wolframalpha.com/) do it for me):
 
 ```
 1+Sqrt[3]*Ln[3]+(Sqrt[3]*Ln[3])^2/2!+(Sqrt[3]*Ln[3])^3/3!+(Sqrt[3]*Ln[3])^4/4!+(Sqrt[3]*Ln[3])^5/5!+(Sqrt[3]*Ln[3])^6/6!+(Sqrt[3]*Ln[3])^7/7!+(Sqrt[3]*Ln[3])^8/8!
@@ -155,7 +155,7 @@ And it's get better, for the $\ln x$ function the equivalent `[2/2]` Padé appro
 
 {{< img src="/images/2024-12-12-a-function-to-approximate-raising-small-numbers-to-small-irrational-powers/padelog22.png" width="450" >}}
 
-Note: While the exponential function is approximated around $x=0$ (a Maclaurin series), the approximations for $\ln (x)$ and $x$ are centered at $x=1$. This is because $\ln (0)$ is undefined, and we want our rational functions to be most accurate in the range of the small positive integers we are testing.
+Note: While the exponential function is approximated around $x=0$ (a Maclaurin series), the approximations for $\ln (x)$ and $\sqrt{x}$ are centered at $x=1$. This is because $\ln (0)$ is undefined, and we want our rational functions to be most accurate in the range of the small positive integers we are testing.
 
 And for $\sqrt{x}$ the `[2/2]` approximation will be $\frac{5x^{2}+10x+1}{x^{2}+10x+5}$.
 
@@ -163,11 +163,11 @@ And for $\sqrt{x}$ the `[2/2]` approximation will be $\frac{5x^{2}+10x+1}{x^{2}+
 
 ## The "monster" function
 
-Putting all together. 
+Putting all together. These are the ranges used for the illustrations, not intervals with a guaranteed accuracy. In particular, the square-root approximant tends to $1/5$ as $x$ tends to zero, so its relative error there grows without bound.
 
-1. To compute $e^x$ for $x \in (0,4)$, we use: $\frac{-120-60x-12x^{2}-x^{3}}{-120+60x-12x^{2}+x^{3}}$.
-2. To compute $\ln x$ for $x \in (0.5, 4)$ we use: $\frac{3(x-1)(x+1)}{x^{2}+4x+1}$.
-3. To compute $\sqrt{x}$ for $x \in (0, 4)$ we use: $\frac{5x^{2}+10x+1}{x^{2}+10x+5}$.
+1. To approximate $e^x$ for $x \in (0,4)$, we use: $\frac{-120-60x-12x^{2}-x^{3}}{-120+60x-12x^{2}+x^{3}}$.
+2. To approximate $\ln x$ for $x \in (0.5, 4)$ we use: $\frac{3(x-1)(x+1)}{x^{2}+4x+1}$.
+3. To approximate $\sqrt{x}$ for $x \in (0, 4)$ we use: $\frac{5x^{2}+10x+1}{x^{2}+10x+5}$.
 
 So for "small numbers" we can approximate $a^b$ using the following expression:
 
@@ -187,14 +187,14 @@ a^{\sqrt{c}} \approx \frac{-120-60[\frac{5c^{2}+10c+1}{c^{2}+10c+5}*\frac{3(a-1)
 
 Now, to test our marvelous approximation, let's compute $2^{\sqrt{2}}$:
 
-1. We start approximating the logarithm: $\ln 2=\frac{3(2-1)(2+1)}{2^2+8+1}=\frac{3 \cdot 1 \cdot 3}{4+8+1}=\frac{9}{13} \approx 0.69$. 
-2. We continue approximating the radical: $\sqrt{2}=\frac{5 \cdot 2^2+20+1}{4+20+5}=\frac{20+20+1}{29}=\frac{41}{29} \approx 1.41$
-3. We compute the product: $0.69 \cdot 1.41 \approx 0.97$.
-3. We actually compute the power: $2^{\sqrt{2}}=e^{\sqrt{2}\ln 2} \approx e^{0.97}=\frac{-120-60 \cdot (0.97)-12 \cdot (0.97)^{2}-(0.97)^{3}}{-120+60 \cdot (0.97)-12 \cdot (0.97)^{2}+(0.97)^{3}} \approx 2.6612$
+1. We start approximating the logarithm: $\ln 2\approx\frac{3(2-1)(2+1)}{2^2+8+1}=\frac{3 \cdot 1 \cdot 3}{4+8+1}=\frac{9}{13} \approx 0.69$.
+2. We continue approximating the radical: $\sqrt{2}\approx\frac{5 \cdot 2^2+20+1}{4+20+5}=\frac{20+20+1}{29}=\frac{41}{29} \approx 1.41$
+3. We keep the fractions until the end and compute $t=\frac{9}{13}\cdot\frac{41}{29}=\frac{369}{377}\approx0.97877984$.
+4. We approximate the power: $2^{\sqrt{2}}=e^{\sqrt{2}\ln 2}\approx e^t\approx\frac{-120-60t-12t^2-t^3}{-120+60t-12t^2+t^3}\approx2.66123074$. Rounding $t$ to $0.97$ before this step would instead give about $2.63796639$.
 
 The actual result should've been: $2.6651$. Not bad. 
 
-Computing $3^{\sqrt{3}}$ with our function yields: $6.58$ instead of $6.70$. Not terrible.
+Computing $3^{\sqrt{3}}$ with our function yields about $6.5880$ instead of $6.7050$. Not terrible.
 
 ## The deviation for $0.1^{\sqrt{x}}$, $2^{\sqrt{x}}$ and $3^{\sqrt{x}}$
 

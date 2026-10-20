@@ -70,7 +70,7 @@ Some of the animations are standard and are taught in the right kind of schools,
 
 </style>
 
-# The HM-AM-GM-QM Inequality
+# The HM-GM-AM-QM Inequality {#the-hm-am-gm-qm-inequality}
 
 This is the most popular inequality chain we encounter during our school years. To remind you of it, in case you've forgotten, the simple version for three numbers $a, b, c > 0$ is:
 
@@ -93,7 +93,7 @@ To decode the "alphabet soup," here is what those letters actually stand for:
 * `HM = Harmonic Mean`: Even if it sounds counterintuitive to an untrained eye, this mean appears in the very laws encoded in our universe. For example, if you go from point $A$ to point $B$ with a speed of $v_1$ and come back with a speed of $v_2$, what is your average speed? A bad student would say $v_{\text{avg}}=\frac{v_1+v_2}{2}$, but a good student would know it is actually the harmonic mean: $v_{\text{avg}} = \frac{2}{\frac{1}{v_1} + \frac{1}{v_2}}$.
 
 * `GM = Geometric Mean`: The "growth" mean, useful for scaling and compounding. Much like the HM, this one appears in nature and in... simple finance. For example, if you are a stock investor and in the first year your portfolio grows by `100%`, but the next year the market crashes by `50%`, what was your *average growth*? 
-    - An investor bad at math would say: $\frac{100 + (-50)}{2} = 25\%\$.
+    - An investor bad at math would say: $\frac{100 + (-50)}{2} = 25\%$.
     - A good investor would look at the growth factors: in the first year, the factor is $2.0$; in the second, it is $0.5$. Then it would average everything down like this: $ \text{Average Growth Factor} = \sqrt{2.0 \times 0.5} = 1.0$
     - This means your average growth is actually $0\%$. You ended up exactly where you started, which, let's be honest, is already better than most traders.
 * `AM = Arithmetic Mean`: The classic average everyone knows and loves. Okay, maybe *love* is a strong word for an *average* math formula.
@@ -106,7 +106,7 @@ Now that things are clearer, let's look at this inequality chain with a geometri
 
 The first animation is actually the one I found in the picture. 
 
-We are given a large circle with center $O$ and a diameter $a$, meaning the radius is $R = \frac{a}{2}$. Then, there is another smaller circle with center $O'$ touching the first circle's circumference from the outside. This second circle has a diameter $b$, so its radius is $r = \frac{b}{2}$. If we project the center of the smaller circle $O'$ onto the vertical line passing through $O$, we name that projected point $P$. 
+Both circles rest on the same horizontal tangent line. We are given a large circle with center $O$ and a diameter $a$, meaning the radius is $R = \frac{a}{2}$. Then, there is another smaller circle with center $O'$ touching the first circle's circumference from the outside. This second circle has a diameter $b$, so its radius is $r = \frac{b}{2}$. If we project the center of the smaller circle $O'$ onto the vertical line passing through $O$, we name that projected point $P$.
 
 <div class="math-canvas-wrap">
     <div id="am-gm-viz" class="math-canvas"></div>
@@ -117,8 +117,8 @@ We are given a large circle with center $O$ and a diameter $a$, meaning the radi
 
 A right triangle $OPO'$ is formed with the following lengths: 
 - The hypotenuse $OO'$ is the sum of the radii: $\frac{a}{2} + \frac{b}{2} = \frac{a+b}{2}$.
-- The horizontal leg $OP$ is the difference of the radii: $\frac{a}{2} - \frac{b}{2} = \frac{a-b}{2}$.
-- The vertical leg $O'P$.
+- The vertical leg $OP$ is the difference of the radii: $\frac{a}{2} - \frac{b}{2} = \frac{a-b}{2}$.
+- The horizontal leg $O'P$.
 
 To compute $O'P$, we just apply Pythagoras's theorem:
 
@@ -137,7 +137,7 @@ $OO'$ is the `AM` for $a$ and $b$, while $O'P$ is the `GM` for $a$ and $b$. Noti
 
 This is the "classroom" strategy, the visual I was taught in school. 
 
-We start with a semicircle with center $O$ and a total diameter of $a + b$. We pick a point $P$ on the circumference and project it down onto the diameter at point $P'$. This forms a right triangle $POP'$ (the letters were conveniently chosen so the visual "pops").
+We start with a semicircle with center $O$ and a total diameter of $a + b$. We split the diameter at $P'$ into segments of lengths $a$ and $b$, then draw the perpendicular through $P'$ to meet the semicircle at $P$. This forms a right triangle $POP'$ (the letters were conveniently chosen so the visual "pops").
 
 <div class="math-canvas-wrap">
     <div id="am-gm-semicircle" class="math-canvas"></div>
@@ -311,7 +311,7 @@ As we adjust the sliders to increase $b$ and $c$ to match the size of $a$, the g
 
 # Nesbitt's Inequality
 
-Nesbitt's inequality is a classical result in the world of mathematics, and it states:
+Nesbitt's inequality is a classical result in the world of mathematics. For $a,b,c>0$, it states:
 
 <div class="mp mpc">
     \[
@@ -357,7 +357,7 @@ In the animation, as you drag point $Q$ around the triangle, you are essentially
 \]
 </div>
 
-If $Q$ moves, the symmetry breaks and the sum starts to grow. It’s the perfect visual proof that in the world of Nesbitt, the center is the only place to find the minimum. Lovely!
+If $Q$ moves, the symmetry breaks and the sum starts to grow. In this configuration, the center is the only place to find the minimum. This illustrates the case where $a,b,c$ satisfy the strict triangle inequalities: the substitution $a=y+z$, $b=x+z$, $c=x+y$ with $x,y,z>0$ represents exactly those triples. It does not by itself prove Nesbitt for every positive triple; the algebraic proofs linked above cover the full domain.
 
 Even though I said I "failed" to make it perfectly geometry-friendly, this visualization actually reveals something deeper, I cannot put a finger on.
 
@@ -2138,7 +2138,7 @@ createMathEngine(
         });
 
         const labelTotalArea = createLabel('A_{\\text{AHIJFGCD}}=a^2+b^2+c^2', TEXT.black);
-        const labelRects1 = createLabel('A_{\\text{ABGM}}+A_{\\text{BEFG}}+A_{\\text{ABKL}}=', TEXT.black);
+        const labelRects1 = createLabel('A_{\\text{ABGM}}+A_{\\text{BEJK}}+A_{\\text{ABKL}}=', TEXT.black);
         const labelRects2 = createLabel('=ab+bc+ca', TEXT.black);
 
         const labelSegA = createLabel('a', TEXT.black);

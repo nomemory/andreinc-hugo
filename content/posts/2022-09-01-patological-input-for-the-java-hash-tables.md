@@ -64,7 +64,7 @@ public static int hashCode(byte[] value) {
 }
 ```    
 
-As you can see, the `hashCode()` is computed in a series of steps, with each result (`h`) depending on the previous one. So, from a mathematical perspective, our code looks like this:
+As you can see, the `hashCode()` is computed in a series of steps, with each result (`h`) depending on the previous one. Java performs these operations with 32-bit `int` wraparound. The recurrences below are therefore understood modulo $2^{32}$ once overflow occurs; before overflow they are also ordinary integer equalities:
 
 <div class="mp mpc">
 \[
@@ -92,9 +92,11 @@ Where:
 $H$ can also be written as the sum: 
 <div class="mp mpc">
 \[
-    H = h_{N} = \sum_{i=1}^{N} v_{i}*31^{N-i}
+    H = h_{N} \equiv \sum_{i=1}^{N} v_{i}*31^{N-i} \pmod{2^{32}}
 \]
 </div>
+
+To obtain the signed Java result, first take the polynomial’s residue $u\in\{0,\ldots,2^{32}-1\}$. Return $u$ if $u<2^{31}$, and $u-2^{32}$ otherwise. For example, the integer polynomial for `"abcdefg"` is $88{,}988{,}021{,}860$, while its `hashCode()` is $-1{,}206{,}291{,}356$.
 
 If $N=1$, the formula becomes: 
 <div class="mp mpc">
@@ -139,7 +141,7 @@ So let's take the case where $N=2$. Our formula for obtaining the `hashCode()` o
 
 In this regard, $v_{1}$ is the `byte` value of the first character, and $v_{2}$ is the `byte` value of the second character of the `String`. And here comes the fun part: we can find various values for $v_{1}$ and $v_{2}$ such that $H$ remains exactly the same, thus creating a collision.
 
-There are multiple combinations of numbers $v_{1}^{i}$ and $v_{2}^{i}$ such that $H = h_{2} = v_{1}^{i} + v_{2}^{i}$ is true, because $H$ can be written as:
+There are multiple combinations of numbers $v_{1}^{i}$ and $v_{2}^{i}$ such that $H = h_{2} = 31*v_{1}^{i} + v_{2}^{i}$ is true, because $H$ can be written as:
 
 <div class="mp mpc">
 \[
@@ -218,8 +220,8 @@ Let's generate four-character long strings that collide ($N=4$). The formula for
 
 <div class="mp mpc">
 \[
-H = h_{4} = \sum_{i=1}^{4} v_{i}*31^{4-i} = v_{4}*31^3 + v_{3}*31^2 + v_{2}*31 + v_{1} = \\
-31^2(\underbrace{v_{4}*31 + v_{3}}_{H_{2}}) + (\underbrace{v_{2}*31+v_{1}}_{H_{1}}) = 31^2*H_{2} + H_{1}
+H = h_{4} = \sum_{i=1}^{4} v_{i}*31^{4-i} = v_{1}*31^3 + v_{2}*31^2 + v_{3}*31 + v_{4} = \\
+31^2(\underbrace{v_{1}*31 + v_{2}}_{H_{1}}) + (\underbrace{v_{3}*31+v_{4}}_{H_{2}}) = 31^2*H_{1} + H_{2}
 \]
 </div>
 

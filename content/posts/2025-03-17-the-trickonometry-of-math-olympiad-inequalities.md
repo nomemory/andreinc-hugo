@@ -209,7 +209,7 @@ All in all, the main idea is that *weak inequalities* are more *interesting* tha
 
 Before delving into specific inequalities, it's important to highlight a few key identities that problem creators frequently use when designing challenges. These identities are not only essential for understanding inequalities but also serve as powerful tools for solving a variety of other problems.
 
-Some of my favorite identities are:
+Some of my favorite identities are listed below. In the difference-of-powers identity, $n\ge2$ is an integer; the square-root identity assumes $a,b>0$, and the last three identities require $x,y,z$ to be pairwise distinct:
 
 <p>
 <div class="mp">
@@ -217,7 +217,7 @@ Some of my favorite identities are:
     <li>\(\hspace{1cm} 2(x^2+y^2)=(x+y)^2+(x-y)^2 \)</li>
     <li>\(\hspace{1cm}  x^3+y^3=(x+y)(x^2-xy+y^2) \)</li>
     <li>\(\hspace{1cm}  x^3-y^3=(x-y)(x^2+xy+y^2) \)</li>
-    <li>\(\hspace{1cm}  x^n-y^n=(x-y)(x^{n-1}+x^{n-2}y+\dots+xy^{n-1}+y^n) \)</li>
+    <li>\(\hspace{1cm}  x^n-y^n=(x-y)(x^{n-1}+x^{n-2}y+\dots+xy^{n-2}+y^{n-1}) \)</li>
     <li>\(\hspace{1cm} 2(xy+yz+zx)=(x+y+z)^2-(x^2+y^2+z^2) \)</li>
     <li>\(\hspace{1cm} 3(x+y)(y+z)(z+x)=(x+y+z)^3-(x^3+y^3+z^3) \)</li>
     <li>\(\hspace{1cm} (x+y)(y+z)(z+x)=(x+y+z)(xy+yz+zx)-xyz \)</li>
@@ -350,7 +350,7 @@ The cyclic behavior can be expressed using the notation:
     </div>
 </p>
 
-Here are some examples that illustrate cyclic sums and their corresponding inequalities:
+For positive real numbers $a,b,c$, here are some examples that illustrate cyclic sums and their corresponding inequalities. The final example additionally assumes $abc=1$:
 
 <p>
     <div class="mp">    
@@ -408,7 +408,7 @@ To highlight the difference, compare the following two sums:
             \sum_{\text{sym}} a^2b = \underbrace{a^2b + a^2c + b^2c + b^2a  + c^2a + c^2b}_{3! \quad \text{permutations}} \overbrace{\geq}^{AM-GM} 6\cdot abc
         \]
         \[
-            \sum_{\text{cyc}} a^2b = \underbrace{a^2b + b^2c + c^2a}_{3 \quad \text{"swaps"}} \overbrace{\geq}^{AM-GM} 3 \cdot \sqrt[3]{(abc)^2}
+            \sum_{\text{cyc}} a^2b = \underbrace{a^2b + b^2c + c^2a}_{3 \quad \text{"swaps"}} \overbrace{\geq}^{AM-GM} 3 \cdot abc
         \]
     </div>
 </p>
@@ -628,20 +628,30 @@ In this regard, the following is **true**:
     </div>
 </p>
 
-But the following is **not true** (by Muirhead's inequality):
+Muirhead cannot be applied directly to the cyclic sums below. However, this particular cyclic inequality is also **true**, so it is not a counterexample to the inequality itself:
 
 <p>
     <div class="mp">
         <p class="mpc">
             \[
-                \sum_{\text{cyc}}a^4b^2 \not\geq \sum_{\text{cyc}} a^3b^2c \Leftrightarrow
+                \sum_{\text{cyc}}a^4b^2 \geq \sum_{\text{cyc}} a^3b^2c \Leftrightarrow
             \]
             \[
-                a^4b^2 + b^4c^2 + c^4a^2 \not\geq a^3b^2c + b^3c^2a + c^3a^2b
+                a^4b^2 + b^4c^2 + c^4a^2 \geq a^3b^2c + b^3c^2a + c^3a^2b
             \]
         </p>
     </div>
 </p>
+
+To prove it, put $A=a^4b^2$, $B=b^4c^2$, and $C=c^4a^2$. AM-GM applied to four copies of $A$, one of $B$, and one of $C$ gives
+
+<div class="mp mpc">
+\[
+    a^3b^2c=(A^4BC)^{1/6}\le\frac{4A+B+C}{6}.
+\]
+</div>
+
+Adding the three cyclic versions proves the displayed inequality. The distinction is between a theorem being inapplicable and an inequality being false.
 
 Now let's solve two elementary inequalities, but this time without using "elementary" techniques or the AM-GM inequality. Use Muirhead's Theorem instead:
 
@@ -847,7 +857,7 @@ In a generalized form:
 
 <p>
 <div class="mp">
-<p>If \(x_1, x_2, \dots, x_n\) are positive real numbers, and \(S=\sum_{i=1}^n x_i\), then:</p> 
+<p>If \(n\ge2\) is an integer, \(x_1, x_2, \dots, x_n\) are positive real numbers, and \(S=\sum_{i=1}^n x_i\), then:</p>
 <p class="mpc">
     \[\sum_{i=1}^n \frac{x_i}{S-x_i}\ge\frac{n}{n-1}
 \]</p>
@@ -1018,7 +1028,7 @@ In 2001, [Titu Alexandrescu](https://en.wikipedia.org/wiki/Titu_Andreescu), who 
     <p>For any real numbers \(a_1,\dots,a_n\) and any positive real numbers \(b_1,\dots,b_n\) we have:</p>
     <p class="mpc">
     \[
-        \frac{a_1^2}{b_1}+\dots+\frac{a_2^2}{b_n}\ge\frac{(a_1+\dots+a_n)^2}{b_1+\dots+b_n}
+        \frac{a_1^2}{b_1}+\dots+\frac{a_n^2}{b_n}\ge\frac{(a_1+\dots+a_n)^2}{b_1+\dots+b_n}
     \]
     </p>
 </div>

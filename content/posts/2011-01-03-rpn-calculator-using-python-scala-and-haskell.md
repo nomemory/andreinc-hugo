@@ -123,7 +123,7 @@ import qualified Data.Map as Map
 ops = Map.fromList [("+", (+)),
                     ("-", flip (-)),
                     ("*", (*)),
-                    ("/", flip ())]
+                    ("/", flip (/))]
 
 -- Helper to evaluate an operation based on a key
 opsEval :: String -> Float -> Float -> Float

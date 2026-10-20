@@ -181,7 +181,7 @@ The `loadFactor` (default `0.75`) defines when to resize. If you have 16 slots a
 {{< img src="/images/2021-11-08-a-tale-of-java-hash-tables/adjust-capacity-hashmap.drawio.png" >}}
 
 **2. Bucket Adjustment (Treeification)**
-If a single bucket's chain becomes too long (reaching `TREEIFY_THRESHOLD = 8`), `HashMap` converts that linked list into a **Red-Black Tree**. This changes the worst-case search time from $O(n)$ to $O(\log n)$, preventing performance degradation even during heavy collisions.
+When a bucket becomes long enough to trigger `TREEIFY_THRESHOLD = 8`, `HashMap` can convert it into a **Red-Black Tree**, provided the table capacity is at least `MIN_TREEIFY_CAPACITY = 64`; smaller tables are resized instead. Tree lookup is $O(\log n)$ for distinct hashes or keys whose comparison order distinguishes equal-hash entries. Equal-hash keys without a usable comparison order may require searching both subtrees and still take $O(n)$. These conditions are described in the [OpenJDK implementation](https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/HashMap.java).
 
 
 {{< img src="/images/2021-11-08-a-tale-of-java-hash-tables/adjust-bucket.drawio.png" >}}
@@ -201,7 +201,7 @@ The primary advantage of *Open Addressing* over *Separate Chaining* is the reduc
 
 The biggest shortcoming of *Open Addressing* is its sensitivity to sub-optimal hash functions. Consider an extreme case: a hash function that returns a constant value. In this scenario, every element targets the same slot, leading to a collision for every insertion. 
 
-While `HashMap<K,V>` would gracefully degrade to $O(\log n)$ performance (thanks to its treeified buckets), a *Linear Probing* implementation would degrade to $O(n)$, effectively becoming a very slow linked list.
+With equal-hash keys that can be distinguished by their comparison order, a treeified `HashMap<K,V>` bucket can retain $O(\log n)$ lookup. Without that order, lookup can still be $O(n)$. A *Linear Probing* implementation with a constant hash also degrades to $O(n)$ as it scans the cluster.
 
 {{< img src="/images/2021-11-08-a-tale-of-java-hash-tables/hashmap-vs-open-addressing.drawio.png" >}}
 

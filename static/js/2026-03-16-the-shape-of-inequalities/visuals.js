@@ -1766,7 +1766,7 @@ createMathEngine(
         });
 
         const labelTotalArea = createLabel('A_{\\text{AHIJFGCD}}=a^2+b^2+c^2', TEXT.black);
-        const labelRects1 = createLabel('A_{\\text{ABGM}}+A_{\\text{BEFG}}+A_{\\text{ABKL}}=', TEXT.black);
+        const labelRects1 = createLabel('A_{\\text{ABGM}}+A_{\\text{BEJK}}+A_{\\text{ABKL}}=', TEXT.black);
         const labelRects2 = createLabel('=ab+bc+ca', TEXT.black);
 
         const labelSegA = createLabel('a', TEXT.black);

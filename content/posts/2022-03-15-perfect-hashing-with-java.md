@@ -100,7 +100,7 @@ bucket[13]=[Nerva, Marcus Aurelius]
 bucket[14]=[Trajan, Vespasian, Commodus, Nero]
 ```
 
-As you can see, the distribution is far from perfect; there are nine collisions squeezed into just 15 buckets. 
+As you can see, nine keys lie in the three non-singleton buckets, whose sizes are 3, 2, and 4. This means six insertions beyond the first key in each occupied bucket, or ten unordered pairs of colliding keys. The other six keys each occupy their own bucket.
 
 In this article, we will implement a class, [`PHF.java`](https://github.com/nomemory/mphmap/blob/main/src/main/java/net/andreinc/jperhash/PHF.java), that will be able to evenly distribute the 15 Roman emperors into their very own *personal* buckets. This is the right thing to do because it would have been totally unfair to have `"Trajan"` sharing the same cramped space with `"Nero"`.
 

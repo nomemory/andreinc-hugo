@@ -222,8 +222,8 @@ Then we solve the characteristic equation:
 
 We find $\lambda_{1}=3, \lambda_{2}=1$. Plugging $\lambda$ back into $(A - \lambda I)v = 0$ gives the vectors:
 
-* For $\lambda_{1} = 1$, an eigenvector is $v_{1} = \begin{bmatrix} -1 \\ 2 \end{bmatrix}$.
-* For $\lambda_{2} = 3$, an eigenvector is $v_{2} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$.
+* For $\lambda_{1} = 3$, an eigenvector is $v_{1} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$.
+* For $\lambda_{2} = 1$, an eigenvector is $v_{2} = \begin{bmatrix} -1 \\ 2 \end{bmatrix}$.
 
 > **Observation:** For a triangular matrix, the eigenvalues are simply the elements on the main diagonal!
 
@@ -241,7 +241,9 @@ with our matrix $A$, it rotates and stretches, landing off its original line of 
 
 {{< img src="/images/2021-01-24-eigenvalues-and-eigenvectors-explained/non_eigen_01.png" >}}
 
-But if we transform an **eigenvector** <div class="mp mpc">
+But if we transform an **eigenvector**
+
+<div class="mp mpc">
 \[
     v_{\text{eig}} = \begin{bmatrix} 2 \\ 0 \end{bmatrix}
 \]

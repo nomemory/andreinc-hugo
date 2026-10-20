@@ -687,7 +687,7 @@ void nml_mat_all_set(nml_mat *matrix, double value) {
 }
 ```
 
-Setting the main diagonal is a common operation (e.g., creating a scalar matrix). This method is restricted to square matrices; attempting to set the diagonal of a rectangular matrix would be mathematically ambiguous and could lead to out-of-bounds access.
+Setting the main diagonal is a common operation (e.g., creating a scalar matrix). This implementation is restricted to square matrices. A rectangular $m\times n$ matrix also has a well-defined main diagonal: the entries $a_{ii}$ for $1\le i\le\min(m,n)$. Supporting that case would require the loop to stop at the smaller dimension.
 
 ```c
 // Sets all elements on the main diagonal to a given value
@@ -1386,7 +1386,7 @@ b_{m1} & b_{m2} & \cdots & b_{mn}
 =
 \begin{bmatrix}
 a_{11} + b_{11} & a_{12} + b_{12} & \cdots & a_{1n} + b_{1n}\\
-a_{21} + b_{21} & a_{21} + b_{21} & \cdots & a_{2n} + b_{2n}\\
+a_{21} + b_{21} & a_{22} + b_{22} & \cdots & a_{2n} + b_{2n}\\
 \vdots & \vdots & \ddots & \vdots \\
 a_{m1} + b_{m1} & a_{m2} + b_{m2} & \cdots & a_{mn} + b_{mn}
 \end{bmatrix}
@@ -1592,7 +1592,7 @@ nml_mat *nml_mat_ref(nml_mat *m) {
     int pivot = _nml_mat_pivotidx(r, j, i);
     
     if (pivot < 0) {
-      // Entire column is zero; move to the next column
+      // No acceptable pivot at or below the current row; move to the next column
       j++;
       continue;
     }
@@ -1621,7 +1621,7 @@ nml_mat *nml_mat_ref(nml_mat *m) {
 ```
 
 **Technical Warning: The Floating-Point Trap**
-In pure math, $0.0$ is absolute. In computer memory, $0.0$ often looks like $1.0 \times 10^{-18}$. If we divide by such a tiny number ($1/pv$), we trigger an **overflow** or introduce massive rounding errors. By using `NML_MIN_COEF` (a "guard" or *epsilon* value), we treat these tiny values as zero, making our library significantly more reliable for real-world data.
+Floating-point zero is exactly representable, but a calculation whose exact result is zero may leave a small residual through rounding. Dividing by a small pivot can amplify errors, though $1/10^{-18}=10^{18}$ is still finite in double precision. The fixed absolute threshold `NML_MIN_COEF` is a simplifying numerical policy, not a proof that a value is mathematically zero. Its suitability depends on the scale of the input; an implementation for general data should use scaling and an appropriate tolerance.
 
 ## Reduced Row Echelon Form (RREF)
 
@@ -2036,7 +2036,7 @@ The implementation uses a nested loop structure. The outer loop moves down the r
 // b: Column matrix of size Nx1
 // Returns: Solution column matrix x of size Nx1
 //
-// Note: If any diagonal element L[i][i] is 0, the system is singular and cannot be solved.
+// Note: If any diagonal element L[i][i] is 0, the triangular matrix is singular and this unique-solution solver cannot be used.
 // Note: This function is a core component of solving systems via LU decomposition.
 nml_mat *nml_ls_solvefwd(nml_mat *L, nml_mat *b) {
   nml_mat* x = nml_mat_new(L->num_cols, 1);
@@ -2063,7 +2063,7 @@ nml_mat *nml_ls_solvefwd(nml_mat *L, nml_mat *b) {
 
 **Technical Insight:**
 * **Complexity:** This algorithm is $O(n^2)$, making it significantly faster than general solvers once the matrix has been decomposed into its triangular factors.
-* **Numerical Stability:** We include a check against `NML_MIN_COEF` before dividing. If the diagonal element is nearly zero, the matrix is "singular" (or degenerate), and a unique solution does not exist.
+* **Numerical Stability:** We check `NML_MIN_COEF` before dividing and reject pivots below this fixed absolute threshold. An exactly zero diagonal makes a triangular matrix singular; a small nonzero diagonal does not. For example, $\operatorname{diag}(10^{-12},1)$ is invertible. A rejection by the tolerance means this implementation declines the calculation at that scale.
 
 ## Backward substitution
 
@@ -2126,7 +2126,7 @@ The implementation reverses the direction of the row traversal found in forward 
 // b: Column matrix of size Nx1
 // Returns: Solution column matrix x of size Nx1
 //
-// Note: If any diagonal element U[i][i] is 0, the system is singular and cannot be solved.
+// Note: If any diagonal element U[i][i] is 0, the triangular matrix is singular and this unique-solution solver cannot be used.
 nml_mat *nml_ls_solvebck(nml_mat *U, nml_mat *b) {
   nml_mat *x = nml_mat_new(U->num_cols, 1);
   if (x == NULL) return NULL;
@@ -2223,7 +2223,7 @@ While mathematically identical, calculating the full inverse of a matrix is more
 
 A square matrix $A$ is considered **invertible** if there exists another matrix $A^{-1}$ such that their product results in the Identity matrix $I$.
 
-The property $A \cdot A^{-1} = I$ can be expanded into its component form:
+Writing $B=A^{-1}$ with entries $b_{ij}$, the property $A \cdot A^{-1} = I$ can be expanded into its component form. The entries $b_{ij}$ are not generally the reciprocals $1/a_{ij}$:
 
 <div class="mp mpc">
 \[
@@ -2234,9 +2234,9 @@ a_{31} & a_{32} & a_{33}
 \end{bmatrix}
 \cdot
 \begin{bmatrix}
-a_{11}^{-1} & a_{12}^{-1} & a_{13}^{-1} \\
-a_{21}^{-1} & a_{22}^{-1} & a_{23}^{-1} \\
-a_{31}^{-1} & a_{32}^{-1} & a_{33}^{-1}
+b_{11} & b_{12} & b_{13} \\
+b_{21} & b_{22} & b_{23} \\
+b_{31} & b_{32} & b_{33}
 \end{bmatrix}
 =
 \begin{bmatrix}
@@ -2383,11 +2383,11 @@ While beginners often learn the **Laplace Expansion** (minors and cofactors) for
 
 # QR Decomposition
 
-Any square matrix $A$ can be decomposed into two distinct matrices: $A = Q \cdot R$. In this factorization, **$Q$** is an orthogonal matrix and **$R$** is an upper triangular matrix.
+Any real square matrix $A$ can be decomposed into two matrices: $A = Q \cdot R$. In this factorization, **$Q$** is an orthogonal matrix and **$R$** is an upper triangular matrix.
 
 An orthogonal matrix satisfies the property $Q \cdot Q^{T} = Q^{T} \cdot Q = I$, which implies that $Q^{T} = Q^{-1}$. Geometrically, this means the columns of $Q$ are unit vectors that are perpendicular to each other.
 
-While LU(P) factorization relies on row-wise elementary operations, QR decomposition is fundamentally column-oriented. The most common method to compute this is the **Gram–Schmidt process**, which systematically orthogonalizes and normalizes the columns of $A$.
+While LU(P) factorization relies on row-wise elementary operations, QR decomposition is fundamentally column-oriented. One way to understand this factorization is the **Gram–Schmidt process**, which systematically orthogonalizes and normalizes the columns of $A$.
 
 ## The Mathematical Framework
 
@@ -2399,7 +2399,7 @@ A = \begin{bmatrix} | & | & | \\ a_{1} & a_{2} & a_{3} \\ | & | & | \end{bmatrix
 \]
 </div>
 
-Since $Q$ must be orthogonal, we normalize the columns of $A$ and remove their projections onto previously calculated vectors:
+For this Gram–Schmidt construction, assume the columns of $A$ are linearly independent, so every residual we normalize is nonzero. We remove projections onto previously calculated vectors and normalize the remaining columns:
 
 <div class="mp mpc">
 \[
@@ -2464,22 +2464,40 @@ double nml_mat_col_l2norm(nml_mat *m, unsigned int col) {
 
 ## QR Algorithm Implementation
 
-The following solver implements the classical Gram-Schmidt process. It iterates through columns, computing the orthogonal projection for each and storing the result in $Q$, while the coefficients of these projections form the upper triangular matrix $R$.
+The following solver implements classical Gram–Schmidt for nonempty real square matrices with independent columns. It returns `NULL` for unsupported dimensions or when a residual norm is nonfinite or at most `NML_MIN_COEF`; callers must check that return value. A small residual is a numerical rejection at this tolerance, not a proof of exact rank deficiency. Handling dependent columns while still returning an orthogonal $Q$ requires an orthonormal basis completion or another QR algorithm.
 
 ```c
 nml_mat_qr *nml_mat_qr_solve(nml_mat *m) {
-  nml_mat_qr *qr = nml_mat_qr_new();
+  if (m == NULL || m->num_rows == 0 || m->num_rows != m->num_cols) {
+    return NULL;
+  }
   nml_mat *Q = nml_mat_cp(m);
+  if (Q == NULL) return NULL;
   nml_mat *R = nml_mat_new(m->num_rows, m->num_cols);
+  if (R == NULL) {
+    nml_mat_free(Q);
+    return NULL;
+  }
 
   for(int j = 0; j < m->num_cols; j++) {    
     nml_mat *aj = nml_mat_col_get(m, j);
+    if (aj == NULL) {
+      nml_mat_free(Q);
+      nml_mat_free(R);
+      return NULL;
+    }
     for(int k = 0; k < j; k++) {
        // Projection of aj onto qk
        double rkj = nml_vect_dot(m, j, Q, k);
        R->data[k][j] = rkj;
        
        nml_mat *qk = nml_mat_col_get(Q, k);
+       if (qk == NULL) {
+         nml_mat_free(aj);
+         nml_mat_free(Q);
+         nml_mat_free(R);
+         return NULL;
+       }
        nml_mat_col_mult_r(qk, 0, rkj);
        nml_mat_sub_r(aj, qk);
        nml_mat_free(qk);
@@ -2492,12 +2510,22 @@ nml_mat_qr *nml_mat_qr_solve(nml_mat *m) {
     
     // Normalize the column
     double l2norm = nml_mat_col_l2norm(Q, j);
-    if (l2norm > NML_MIN_COEF) {
-        nml_mat_col_mult_r(Q, j, 1.0 / l2norm);
-        R->data[j][j] = l2norm;
+    if (!isfinite(l2norm) || l2norm <= NML_MIN_COEF) {
+      nml_mat_free(aj);
+      nml_mat_free(Q);
+      nml_mat_free(R);
+      return NULL;
     }
-    
+    nml_mat_col_mult_r(Q, j, 1.0 / l2norm);
+    R->data[j][j] = l2norm;
+
     nml_mat_free(aj);
+  }
+  nml_mat_qr *qr = nml_mat_qr_new();
+  if (qr == NULL) {
+    nml_mat_free(Q);
+    nml_mat_free(R);
+    return NULL;
   }
   qr->Q = Q;
   qr->R = R;
