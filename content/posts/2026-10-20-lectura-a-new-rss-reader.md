@@ -25,7 +25,9 @@ Then I thought: well, if I'm already hosting it, it could support more than one 
 
 The reader itself is [**deliberately** quiet](https://lectura.info/about?lang=en) and private. I store 0 information about the users (except the actual username).
 
-For the curious, the technical ingredients include Java, Spring Boot, PostgreSQL, and Thymeleaf—the stuff I know best for web development.
+For the curious, the technical ingredients include Java, Spring Boot, PostgreSQL, and Thymeleaf. I just wanted to render things on the server, so this seemed like a great idea.
+
+Considering the modest server I'm hosting this on, the app seems to respond reasonably quickly, so I guess the technology choice was OK. Do people nowadays still care about the tech stack?
 
 ---
 
