@@ -1,0 +1,75 @@
+<style>
+  .image-popup-trigger {
+    display: inline;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--link-color);
+    font: inherit;
+    line-height: inherit;
+    text-decoration: underline dotted;
+    text-underline-offset: 0.18em;
+    cursor: pointer;
+  }
+
+  .image-popup-trigger:hover {
+    color: var(--link-hover);
+  }
+
+  .image-popup-trigger:focus-visible,
+  .image-popup-close:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: 3px;
+  }
+
+  .image-popup {
+    box-sizing: border-box;
+    width: min(300px, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+    inset: 0;
+    margin: auto;
+    padding: 38px 12px 12px;
+    overflow: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--background-color);
+    color: var(--text-color);
+    box-shadow: 0 8px 36px rgb(0 0 0 / 22%);
+  }
+
+  .image-popup img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 65dvh;
+    object-fit: contain;
+    margin: 0;
+    border-radius: 4px;
+  }
+
+  .image-popup-close {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: 24px/1 sans-serif;
+    cursor: pointer;
+  }
+
+  .image-popup-close::before {
+    content: "×";
+  }
+
+  .image-popup-caption {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+</style>

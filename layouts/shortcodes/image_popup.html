@@ -1,0 +1,9 @@
+{{- /* Usage: {{< image_popup text="Name" src="/images/portrait.jpg" alt="Portrait of Name" caption="Name" >}} */ -}}
+{{- $text := .Get "text" -}}
+{{- $src := .Get "src" -}}
+{{- if or (not $text) (not $src) -}}
+  {{- errorf "image_popup requires text and src: %s" .Position -}}
+{{- end -}}
+{{- $id := printf "image-popup-%s-%d" .Page.File.UniqueID .Ordinal -}}
+{{- $caption := .Get "caption" | default $text -}}
+<button type="button" class="image-popup-trigger" popovertarget="{{ $id }}" aria-haspopup="dialog">{{ $text }}</button><span id="{{ $id }}" class="image-popup" popover role="dialog" aria-label="{{ $caption }}"><button type="button" class="image-popup-close" popovertarget="{{ $id }}" popovertargetaction="hide" aria-label="Close picture"></button><img src="{{ $src | relURL }}" alt="{{ .Get "alt" | default $text }}" loading="lazy" decoding="async">{{ with .Get "caption" }}<span class="image-popup-caption">{{ . }}</span>{{ end }}</span>{{- "" -}}

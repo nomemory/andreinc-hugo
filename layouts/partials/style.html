@@ -1,5 +1,9 @@
 {{ partial "styles/base.html" . }}
 
+{{ if .HasShortcode "image_popup" }}
+  {{ partial "styles/image-popup.html" . }}
+{{ end }}
+
 {{ if eq .Layout "jukebox-home" }}
   {{ partial "styles/jukebox.html" . }}
 {{ end }}
