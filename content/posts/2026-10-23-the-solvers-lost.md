@@ -17,16 +17,18 @@ There's this *semi-famous* Quora question, [*Why is LeetCode so hard?*](https://
 
 Let me start by saying that Dave was being kind. There was also a third group of programmers: people who simply wanted to earn more than the average salary. Nothing wrong with that, as long as you don't have to work with too many of them.
 
-Personally, I started as one of the “solvers”:
+Personally, I started as one of the “solvers”. I tick all the boxes:
 
-- I play chess for fun. Back in the day, I also solved lots of chess puzzles; now I try to limit myself to a few rapid games a week. It's healthier that way.
-- I still solve math problems for fun, and I've even written articles about them (see [here](/2025/03/17/the-trickonometry-of-math-olympiad-inequalities/), [here](/2024/03/25/10-algebra-problems-selected-from-the-romanian-olympiad-part-2/), and [here](/2024/02/23/20-algebra-problems-selected-from-the-romanian-olympiad-part-1/)).
-- I've solved my fair share of LeetCode problems, purely for fun and out of curiosity.
+- I play at least a few chess games a week. 
+- I solve and compose math problems.
+- I've used to solve a few hundreds (if not thousands) leetcode problems.
 - I had, and still have, zero (*zero!*) interest in cars, motorcycles, or bicycles. One of my greatest fears in life is getting stuck at a dinner party with people who talk about nothing else.
-- I have a degree in Electrical Engineering, but I had, and still have, zero interest in electronics, old hardware, designing my own “circuits,” or whatever else makes electrical engineers happy. The only courses I enjoyed throughout my university years were mathematics and programming. That was it.
-- I have no interest in making music, although I appreciate it (a lot).
+- I have a degree in Electrical Engineering, but I had, and still have, zero interest in electronics, old hardware, designing my own “circuits,” or whatever else makes electrical engineers happy. 
+- The only courses I enjoyed throughout my university years were mathematics and programming.
 
-With time and experience, I've come to see myself as more of a builder. This was a very conscious decision: to change my attitude and become much more focused on results and products than I used to be. I had to work on myself to resist the urge to dive down every rabbit hole I encountered. I'm fine now.
+But, with time and experience, I've come to educate myself to become more of a builder. This was a very conscious decision: to change my attitude and become much more focused on results and products than I used to be. 
+
+I had to work on myself to resist the urge to dive down every rabbit hole I encountered. I'm fine now. Got promoted when I've managed to do that.
 
 But in the teams I lead or interact with, there are builders, solvers, and plenty of people somewhere in between. We still talk and exchange ideas. Less than we did before LLMs and working from home became commonplace, but we still do it. Of course, when we talk, we discuss the elephants in our rooms: LLMs, agents, code generation, and how everything has changed in a matter of months. I see a lot of enthusiasm, especially among the builders. Among the solvers, I see depression, angst, and desperation. Nobody comes to them to discuss a problem anymore. They aren't expected to spend much time thinking through a solution. As long as they have tokens, they have to deliver.
 
