@@ -49,3 +49,5 @@ Beyond chess, I’m fascinated by religion (without being religious), particular
 
 - If you’d like to reach out for professional reasons, feel free to connect on LinkedIn. Here is **[my profile](https://www.linkedin.com/in/andrei-n-ciobanu-50708611/)**.
 
+- You can also try my latest project [www.lectura.info](www.lectura.info).
+
