@@ -2,6 +2,12 @@
 layout = "single"
 +++
 
+**2026-10** An old Casio
+
+{{< photo_gallery collection="2026-10-casio" >}}
+
+I received this watch when I was 14. I wore it throughout high school and university, then put it in a box somewhere, where it stayed lost for more than a decade. I recently found it, and now I wear it with pride. It has all the “scars” of my youth. We were inseparable back then. 
+
 **2026-08 [Dragasi Vineyard](https://domeniul-dragasi.ro/)**
 
 {{< photo_gallery collection="2026-08-dragasi" >}}
