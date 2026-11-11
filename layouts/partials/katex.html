@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
   renderMathInElement(document.body, {
+    macros: {{ .Params.katexmacros | default dict | jsonify | safeJS }},
     delimiters: [
       { left: "$$", right: "$$", display: true },
       { left: "\\[", right: "\\]", display: true },

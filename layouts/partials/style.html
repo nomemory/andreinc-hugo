@@ -1,6 +1,6 @@
 {{ partial "styles/base.html" . }}
 
-{{ if .HasShortcode "image_popup" }}
+{{ if or (.HasShortcode "image_popup") .Params.imagePopups }}
   {{ partial "styles/image-popup.html" . }}
 {{ end }}
 

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="370" viewBox="0 0 720 370" role="img" aria-labelledby="title description">
+  <title id="title">Vector addition through A in parallelogram ABCD</title>
+  <desc id="description">A, B, C, D are consecutive vertices of a parallelogram. E lies on CD extended beyond D, with ED equal to DC. F lies on AB, with AF twice FB. The diagonals AC and BD are dashed. Blue arrows trace E to A and A to F; their sum is the red arrow from E to F. Thus EF equals EA plus AF, or AF minus AE.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#c0392b"/>
+    </marker>
+    <marker id="blue-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#226b9d"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="718" height="368" rx="6" fill="#fafaf7" stroke="#ccc"/>
+  <path d="M 280 300 L 580 300 L 650 90 L 350 90 Z" fill="#226b9d" fill-opacity="0.05" stroke="#226b9d" stroke-width="2.5" stroke-linejoin="round"/>
+  <g fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="6 6">
+    <path d="M 280 300 L 650 90"/>
+    <path d="M 580 300 L 350 90"/>
+  </g>
+  <path d="M 50 90 L 350 90" fill="none" stroke="#8055a2" stroke-width="2" stroke-dasharray="7 5"/>
+  <g fill="none" stroke="#226b9d" stroke-width="3" marker-end="url(#blue-arrow)">
+    <path d="M 50 90 L 280 300"/>
+    <path d="M 280 300 L 480 300"/>
+  </g>
+  <path d="M 50 90 L 480 300" fill="none" stroke="#c0392b" stroke-width="2" marker-end="url(#arrow)"/>
+  <g fill="#226b9d" stroke="#fafaf7" stroke-width="1.5">
+    <circle cx="280" cy="300" r="4.5"/>
+    <circle cx="580" cy="300" r="4.5"/>
+    <circle cx="650" cy="90" r="4.5"/>
+    <circle cx="350" cy="90" r="4.5"/>
+  </g>
+  <g fill="#8055a2" stroke="#fafaf7" stroke-width="1.5">
+    <circle cx="50" cy="90" r="4.5"/>
+    <circle cx="480" cy="300" r="4.5"/>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif" font-size="24" font-style="italic" fill="#226b9d">
+    <text x="262" y="331">A</text>
+    <text x="586" y="331">B</text>
+    <text x="660" y="87">C</text>
+    <text x="340" y="70">D</text>
+    <text x="37" y="70" fill="#8055a2">E</text>
+    <text x="472" y="331" fill="#8055a2">F</text>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif" font-size="21">
+    <text x="85" y="224" fill="#226b9d">E → A</text>
+    <text x="345" y="335" fill="#226b9d">A → F</text>
+    <text x="190" y="146" fill="#c0392b">E → F</text>
+  </g>
+</svg>

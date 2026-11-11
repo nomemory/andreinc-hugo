@@ -1,0 +1,262 @@
+.ormen-video iframe {
+    filter: grayscale(1);
+}
+
+.ormen-video:focus-within iframe,
+.ormen-video.ormen-video-color iframe {
+    filter: none;
+}
+
+.ormen-mood-toggle {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--link-color);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.ormen-mood-toggle:hover {
+    color: var(--link-hover);
+}
+
+.ormen-mood-toggle:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+.ormen-eyes {
+    margin: 2rem 0;
+}
+
+.ormen-eyes img,
+.ormen-eyes canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.ormen-eclipse img {
+    filter: grayscale(1) contrast(1.15) brightness(0.9);
+}
+
+.ormen-villa img,
+.ormen-blindfold img,
+.ormen-norway img,
+.ormen-priest img,
+.ormen-astronaut img {
+    filter: grayscale(1);
+}
+
+.ormen-skull svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.ormen-manuscript img {
+    max-width: 476px;
+    margin: 0 auto;
+}
+
+.ormen-norway img {
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+.ormen-villa {
+    position: relative;
+}
+
+.ormen-name-toggle {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: bold;
+    text-decoration: underline dotted;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+}
+
+.ormen-villa-name {
+    position: absolute;
+    transform: translateY(-50%);
+    min-width: 44px;
+    min-height: 44px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.ormen-name-toggle:hover,
+.ormen-name-toggle:active,
+.ormen-villa-name:hover,
+.ormen-villa-name:active {
+    background: transparent;
+    color: inherit;
+}
+
+.ormen-name-toggle:focus-visible,
+.ormen-villa-name:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+.ormen-villa-name:focus-visible {
+    outline-color: #fff;
+}
+
+.ormen-eyes-stage {
+    position: relative;
+}
+
+.ormen-eyes-watermark {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    min-width: 44px;
+    min-height: 44px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+}
+
+.ormen-eyes-watermark:hover,
+.ormen-eyes-watermark:active {
+    background: transparent;
+}
+
+.ormen-eyes-watermark:focus-visible {
+    outline: 2px solid #aaa;
+    outline-offset: 3px;
+}
+
+.ormen-eyes [hidden] {
+    display: none;
+}
+
+.ormen-eyes-credit {
+    display: block;
+    margin-top: 0.65rem;
+    font-size: 0.7em;
+    opacity: 0.7;
+}
+
+.ormen-recompose {
+    margin: 2rem 0;
+}
+
+.ormen-recompose svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.ormen-recompose-toggle {
+    font: inherit;
+    cursor: pointer;
+}
+
+.ormen-recompose-toggle[hidden] {
+    display: none;
+}
+
+.ormen-poem-popup {
+    width: min(360px, calc(100vw - 32px));
+    padding: 22px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.ormen-poem-popup img {
+    width: 100px;
+    height: 134px;
+    margin: 0 auto 14px;
+    object-fit: cover;
+    filter: grayscale(1);
+}
+
+.ormen-poem-excerpt {
+    margin: 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1rem;
+}
+
+.ormen-poem-author {
+    margin: 0 0 4px;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.ormen-poem-title {
+    margin: 0 0 20px;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.ormen-anaphora-definition {
+    margin: 0;
+}
+
+.ormen-anaphora-symbols {
+    display: block;
+    width: 100%;
+    max-width: 276px;
+    height: auto;
+    margin: 18px auto 0;
+}
+
+.ormen-mousy-hair-popup img {
+    width: 100%;
+    height: auto;
+    max-height: 50dvh;
+    object-fit: contain;
+    margin: 0 auto 16px;
+}
+
+.ormen-letter-signature {
+    display: block;
+    width: 150px;
+    max-width: 100%;
+    height: auto;
+    margin: 18px auto 0;
+}
+
+.ormen-cell-art {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.ormen-cell-nucleus {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ormen-cell-pulse 4s ease-in-out infinite;
+    animation-play-state: paused;
+}
+
+.ormen-cell-popup:popover-open .ormen-cell-nucleus {
+    animation-play-state: running;
+}
+
+@keyframes ormen-cell-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.035); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ormen-cell-nucleus { animation: none; }
+}
