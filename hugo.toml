@@ -55,7 +55,7 @@ enable = true
 
 [markup.goldmark.extensions.passthrough.delimiters]
   block = [['\\[', '\\]'], ['$$', '$$']]
-  inline = [['\\(', '\\)']]
+  inline = [['\\(', '\\)'], ['$', '$']]
 
 [markup.tableOfContents]
   startLevel = 1
