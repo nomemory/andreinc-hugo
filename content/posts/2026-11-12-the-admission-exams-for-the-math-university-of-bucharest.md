@@ -1,6 +1,6 @@
 +++
 date = '2026-11-12'
-draft = false
+draft = true
 title = 'The University of Bucharest Mathematics Entrance Exam (2015)'
 categories = ["math"]
 tags = ['algebra', 'analysis']
