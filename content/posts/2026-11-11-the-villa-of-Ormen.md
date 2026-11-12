@@ -1,7 +1,7 @@
 +++
 date = '2026-11-11'
 draft = false
-title = 'The villa of Ormen'
+title = 'The Villa of Ormen'
 categories = ["thoughts"]
 tags = ['music']
 usekatex = false

@@ -1,7 +1,7 @@
 +++
-date = '2026-10-28'
-draft = true
-title = 'The University of Bucharest Mathematics Entrance Exam'
+date = '2026-11-12'
+draft = false
+title = 'The University of Bucharest Mathematics Entrance Exam (2015)'
 categories = ["math"]
 tags = ['algebra', 'analysis']
 usekatex = true
@@ -10,11 +10,7 @@ customCSS = ["/css/2026-10-28-bucharest-exam/explorers.css?v=3"]
 customDeferJS = ["/js/2026-10-28-bucharest-exam/plot.js", "/js/2026-10-28-bucharest-exam/algebra.js", "/js/2026-10-28-bucharest-exam/analysis.js?v=15", "/js/2026-10-28-bucharest-exam/geometry.js?v=1"]
 +++
 
-A long time ago, I actually took this exam, as well as the entrance exam for Politehnica University of Bucharest.
-
-Eventually, I decided to become an engineer, so I chose not to pursue a mathematics degree. It would have been impossible to study at both universities at the same time.
-
-Unlike the entrance exam at Politehnica, which uses multiple-choice questions, this exam requires you to write out the full solution, like a *true* mathematician who enjoys writing proofs.
+Unlike the entrance exam at Politehnica, which uses multiple-choice questions, this exam requires you to write out the full solution, like a *true* mathematician who enjoys writing proofs. The exam is not very difficult, but I really enjoy the types of problems they give candidates: problems that x-ray their grasp of analysis, algebra, geometry or informatics.
 
 ## Contents
 
@@ -398,7 +394,7 @@ f'(0)=\lim_{x\to0}\frac{f(x)-f(0)}{x-0}
 =\lim_{x\to0}\frac{f(x)-1}{x}.
 $$
 
-For $f$ to be differentiable at $0$, the limits from both sides must exist, be finite, and match. *Philosopher's question: can they match and be infinite ?*
+For $f$ to be differentiable at $0$, the limits from both sides must exist, be finite, and match. *Philosopher's question: can they match and be infinite?*
 
 From the left:
 
@@ -435,7 +431,7 @@ $$
 
 Away from $0$, both branches are differentiable on their respective intervals, so $f$ is differentiable everywhere on $\mathbb{R}$.
 
-> `both branches are differentiable on their respective intervals`, a rigorous professor might ask for additional justification for this claim. How would you answer?
+> `both branches are differentiable on their respective intervals` — a rigorous professor might ask for additional justification for this claim. How would you answer?
 
 We can see this below: as the blue and purple points approach $(0,1)$, their secants approach the same green tangent, with slope $-1/2$. 
 
@@ -537,12 +533,12 @@ $$
 I_1 = \int_{1}^{2} \frac{f(x)}{x} dx = \int_{1}^{2} \frac{\ln(1+x)}{x^2} dx
 $$
 
-Before even considering integrating by parts, let's do the following substition:
+Before even considering integrating by parts, let's do the following substitution:
 
 * $x=\frac{1}{t}$
 * When $x=1$, $t=1$
 * When $x=2$, $t=\frac12$
-* In the same time $dx = -\frac{1}{t^2} dt$
+* At the same time, $dx = -\frac{1}{t^2} dt$
 
 Substituting this back into our integral:
 
@@ -560,7 +556,7 @@ $$
 = 3\ln 2 - \frac{3}{2}\ln 3 = \frac{3}{2}\ln\frac{4}{3}
 $$
 
-We can see the substitution below: the curve and integration limits change, but both shaded regions have the same area, $I_1=\frac32\ln\frac43$. Isn't that *amazing*.
+We can see the substitution below: the curve and integration limits change, but both shaded regions have the same area, $I_1=\frac32\ln\frac43$. Isn't that *amazing*?
 
 *Both plots use the same scale.*
 
@@ -662,7 +658,7 @@ Increase $n$ to watch the shaded area $I_n$ under $\frac{f(x)}{x^n}$ shrink.
 
 I am not the best when it comes to geometry, but I decided to give this problem a try... 
 
-Well the problem is quite straightforward, nothing spectacular, it tests basic vector manipulation, dot products, the usual suspects. The last point is more interesting, it has a "twist". 
+Well, the problem is quite straightforward, nothing spectacular: it tests basic vector manipulation, dot products, the usual suspects. The last point is more interesting: it has a "twist". 
 
 ### Problem {#pub2015iii}
 
@@ -709,11 +705,11 @@ Prove that $ABCD$ is a rectangle.
 
 ![Parallelogram ABCD, with E beyond D on CD, F on AB, dashed diagonals, and the vector EF shown in red.](/images/2026-10-28-the-admission-exams-for-the-math-university-of-bucharest/geometry-2015.svg)
 
-For this type of problem, there is a repeatable "recipe", we need to choose a reference point, express the vectors using that point of reference, and turn all the geometric conditions into equations. Then we solve them just like we do it in (basic) algebra.
+For this type of problem, there is a repeatable "recipe": we need to choose a reference point, express the vectors using that point of reference, and turn all the geometric conditions into equations. Then we solve them just like we do in (basic) algebra.
 
 We are asked to find \(x, y\) from $\vv{EF}=x \cdot \vv{AB} + y \cdot \vv{AC}$. 
 
-Notice how both of our vectors start from $A$. This suggest chosing $A$ as our *reference point* and expressing everything in terms of $\vv{AB}$ and $\vv{AC}$. Okay, but how we can connect $\vv{EF}$ with $A$:
+Notice how both of our vectors start from $A$. This suggests choosing $A$ as our *reference point* and expressing everything in terms of $\vv{AB}$ and $\vv{AC}$. Okay, but how can we connect $\vv{EF}$ with $A$?
 
 ![Full parallelogram ABCD with dashed diagonals, E beyond D, and F on AB. The blue vectors EA and AF add to the red vector EF; EA is the opposite of AE.](/images/2026-10-28-the-admission-exams-for-the-math-university-of-bucharest/geometry-vector-addition.svg)
 
@@ -937,8 +933,114 @@ Can the program compute the output string without converting the strings into nu
 
 ### Solution (a) [← Back to problem](#informatics-problem-a) {#informatics-solution-a}
 
-*Solution to be added.*
+This is binary representation, written as a sum of powers rather than a string of zeroes and ones. But let's prove both parts: that such a representation exists, and that there cannot be two different ones.
+
+For existence, start with a positive integer $n$ and repeatedly divide by $2$, keeping the remainders:
+
+$$
+n=2q_1+r_0,\qquad
+q_1=2q_2+r_1,\qquad
+q_2=2q_3+r_2,\qquad\ldots
+$$
+
+Each remainder is either $0$ or $1$. The nonzero quotients get smaller, so eventually we reach a quotient of $0$. Substituting backwards gives:
+
+$$
+\begin{aligned}
+n
+&=r_0+2q_1\\[4pt]
+&=r_0+2(r_1+2q_2)\\[4pt]
+&=r_0+2r_1+2^2q_2\\[4pt]
+&=r_0+2r_1+2^2(r_2+2q_3)\\[4pt]
+&=r_0+2r_1+2^2r_2+2^3q_3\\[4pt]
+&\;\vdots\\[4pt]
+&=r_0+2r_1+2^2r_2+\cdots+2^kr_k.
+\end{aligned}
+$$
+
+$$
+\boxed{n=\sum_{i=0}^{k}r_i2^i},
+\qquad r_i\in\{0,1\}.
+$$
+
+Keep only the terms whose remainder is $1$, and we have a sum of distinct powers of $2$.
+
+Now for uniqueness. Suppose two different sums represent the same number. Cancel the powers appearing in both, and let $2^k$ be the largest power left in either sum.
+
+The sum on the other side contains only smaller powers. Even if it contains *all* of them, their sum is:
+
+$$
+\sum_{j=0}^{k-1}2^j=2^k-1<2^k.
+$$
+
+For $k=0$, that sum is empty and equals $0$. Either way, the two sides cannot be equal. This contradiction proves uniqueness.
 
 ### Solution (b) [← Back to problem](#informatics-problem-b) {#informatics-solution-b}
 
-*Solution to be added.*
+The straightforward approach would be to decode both strings, add the numbers, and encode the result. But the problem asks whether we can skip those conversions. We can: just add the letters with carries, exactly as we would add binary digits.
+
+The important detail is the direction. Since `a` represents the smallest power, we work from `a` towards `h`, which means reading these strings from left to right.
+
+Two copies of a letter carry into one copy of the next letter:
+
+$$
+2^k+2^k=2^{k+1}.
+$$
+
+So `aa` becomes `b`, `bb` becomes `c`, and so on. At each letter, count its occurrences in the two inputs and add the incoming carry. The total can only be $0$, $1$, $2$ or $3$:
+
+| Total | Write the current letter? | Carry to the next letter |
+| --- | --- | --- |
+| $0$ | No | $0$ |
+| $1$ | Yes | $0$ |
+| $2$ | No | $1$ |
+| $3$ | Yes | $1$ |
+
+In other words, write the letter if the total is odd, then divide the total by $2$ using integer division to get the next carry.
+
+For the example `acdg` + `ac`, the two `a`s become a `b`, the two `c`s become a `d`, and that new `d` combines with the existing `d` to become an `e`. The `g` stays where it is. The result is `beg`.
+
+Here is a C++ implementation:
+
+```cpp
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string first, second;
+    std::cin >> first >> second;
+
+    std::size_t i = 0, j = 0;
+    int carry = 0;
+    std::string result;
+
+    for (char letter = 'a'; letter <= 'h'; ++letter) {
+        int total = carry;
+
+        if (i < first.size() && first[i] == letter) {
+            ++total;
+            ++i;
+        }
+        if (j < second.size() && second[j] == letter) {
+            ++total;
+            ++j;
+        }
+
+        if (total % 2 == 1) {
+            result += letter;
+        }
+        carry = total / 2;
+    }
+
+    std::cout << result << '\n';
+    return 0;
+}
+```
+
+The two indices track the next unread letter in each string. Since each input is already sorted and contains no repeated letters, we only need to check whether its next letter matches the one we are processing.
+
+Every carry preserves the represented sum. Once a letter has been processed, later steps cannot change it, because they involve only higher powers of $2$. The result is sorted and contains each letter at most once, so part **(a)** guarantees that it is the unique encoding of the sum.
+
+The condition that the sum is at most $255$ guarantees that no carry remains after `h`: such a carry would represent $256$.
+
+We never decode either input into an integer. The only arithmetic is on the small totals $0$ through $3$. There are eight iterations, and the extra storage apart from the output is constant.
