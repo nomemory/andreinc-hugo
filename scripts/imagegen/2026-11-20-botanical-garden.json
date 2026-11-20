@@ -1,0 +1,68 @@
+{
+  "mode": "built-in image_gen",
+  "date": "2026-11-20",
+  "status": "All thirteen user photographs recovered, edited and embedded in the article.",
+  "assets": [
+    {
+      "file": "tangled-lights.jpg",
+      "prompt": "Use case: lighting-weather. Edit target: the first of the last five photographs attached by the user, the LANDSCAPE photograph of a tangled mound of branches/threads draped in white, violet and blue lights in Bucharest Botanical Garden at night (not the masks, winged cat, dragon or hanging spheres). Create one edited standalone landscape photograph matching this exact composition. Make it more frightening using colder moonlit blue shadows, restrained violet highlights, deeper surrounding darkness, a slight silvery ground mist and subtle film grain. Preserve every branch and light installation, the camera framing and photographic textures. Keep the mound visibly an installation, not a monster. No new figures, faces, eyes, creatures, text, borders, collage or gore. This is an atmospheric photographic edit for a short blog article about surrealism."
+    },
+    {
+      "file": "illuminated-mask.jpg",
+      "prompt": "Use case: lighting-weather. Edit target: among the user's most recent attached garden photographs, the PORTRAIT photograph of a large freestanding illuminated red, gold and white mask with a crown, in front of blue and white leafless trees. Edit ONLY this target, using the other photographs solely to identify the correct scene. Output one standalone photograph with exactly the original framing, aspect ratio, subject geometry and all original objects. Make it scarier through cinematic cold blue-black shadows, restrained original coloured lighting, slightly dimmer highlights, a subtle low mist at ground level and fine film grain. Keep the original installation and its design completely intact. It must remain recognisably this exact photograph of Bucharest Botanical Garden. Preserve texture and legibility in the main subject. No added faces, eyes, monsters, figures, blood, teeth, lettering, borders or collage. Atmospheric photographic treatment only."
+    },
+    {
+      "file": "winged-cat.jpg",
+      "prompt": "Use case: lighting-weather. Edit target: among the user's most recent attached garden photographs, the LANDSCAPE photograph of a freestanding winged cat or feline made of coloured panels outlined with warm white lights, facing left on fallen leaves. Edit ONLY this target, using the other photographs solely to identify the correct scene. Output one standalone photograph with exactly the original framing, aspect ratio, subject geometry and all original objects. Make it scarier through cinematic cold blue-black shadows, restrained original coloured lighting, slightly dimmer highlights, a subtle low mist at ground level and fine film grain. Keep the original installation and its design completely intact. It must remain recognisably this exact photograph of Bucharest Botanical Garden. Preserve texture and legibility in the main subject. No added faces, eyes, monsters, figures, blood, teeth, lettering, borders or collage. Atmospheric photographic treatment only."
+    },
+    {
+      "file": "dragon.jpg",
+      "prompt": "Use case: lighting-weather. Edit target: among the user's most recent attached garden photographs, the PORTRAIT photograph of a yellow and orange Chinese-style illuminated dragon, its head at upper centre and its coiled body disappearing to the left. Edit ONLY this target, using the other photographs solely to identify the correct scene. Output one standalone photograph with exactly the original framing, aspect ratio, subject geometry and all original objects. Make it scarier through cinematic cold blue-black shadows, restrained original coloured lighting, slightly dimmer highlights, a subtle low mist at ground level and fine film grain. Keep the original installation and its design completely intact. It must remain recognisably this exact photograph of Bucharest Botanical Garden. Preserve texture and legibility in the main subject. No added faces, eyes, monsters, figures, blood, teeth, lettering, borders or collage. Atmospheric photographic treatment only."
+    },
+    {
+      "file": "hanging-spheres.jpg",
+      "prompt": "Use case: lighting-weather. Edit target: among the user's most recent attached garden photographs, the LANDSCAPE photograph of four suspended patterned glowing spheres above a silver tinsel mound on a black square base, among green and cyan-lit foliage. Edit ONLY this target, using the other photographs solely to identify the correct scene. Output one standalone photograph with exactly the original framing, aspect ratio, subject geometry and all original objects. Make it scarier through cinematic cold blue-black shadows, restrained original coloured lighting, slightly dimmer highlights, a subtle low mist at ground level and fine film grain. Keep the original installation and its design completely intact. It must remain recognisably this exact photograph of Bucharest Botanical Garden. Preserve texture and legibility in the main subject. No added faces, eyes, monsters, figures, blood, teeth, lettering, borders or collage. Atmospheric photographic treatment only."
+    },
+    {
+      "file": "garden-path.jpg",
+      "original": "garden-path.png",
+      "prompt": "Use case: lighting-weather. The attached local photograph is the sole edit target. Make this exact photograph of Bucharest Botanical Garden at night more scary and surreal through cinematic cold blue-black shadows, slightly dimmer original coloured lighting, subtle low ground mist and fine film grain, consistent with an eerie night photography series. Preserve the original camera position, aspect ratio, composition, all buildings, paths, plants, benches, installations and mask designs exactly. Keep main subjects readable and original textures intact; retain the existing colours but make surrounding darkness more ominous. No invented objects, people, eyes, creatures or faces. No alteration of facial expressions on masks, no gore, no text, no collage, no borders. Atmospheric photographic treatment only."
+    },
+    {
+      "file": "red-trees.jpg",
+      "original": "red-trees.png",
+      "prompt": "Use case: lighting-weather. The attached local photograph is the sole edit target. Make this exact photograph of Bucharest Botanical Garden at night more scary and surreal through cinematic cold blue-black shadows, slightly dimmer original coloured lighting, subtle low ground mist and fine film grain, consistent with an eerie night photography series. Preserve the original camera position, aspect ratio, composition, all buildings, paths, plants, benches, installations and mask designs exactly. Keep main subjects readable and original textures intact; retain the existing colours but make surrounding darkness more ominous. No invented objects, people, eyes, creatures or faces. No alteration of facial expressions on masks, no gore, no text, no collage, no borders. Atmospheric photographic treatment only."
+    },
+    {
+      "file": "violet-shrub.jpg",
+      "original": "violet-shrub.png",
+      "prompt": "Use case: lighting-weather. The attached local photograph is the sole edit target. Make this exact photograph of Bucharest Botanical Garden at night more scary and surreal through cinematic cold blue-black shadows, slightly dimmer original coloured lighting, subtle low ground mist and fine film grain, consistent with an eerie night photography series. Preserve the original camera position, aspect ratio, composition, all buildings, paths, plants, benches, installations and mask designs exactly. Keep main subjects readable and original textures intact; retain the existing colours but make surrounding darkness more ominous. No invented objects, people, eyes, creatures or faces. No alteration of facial expressions on masks, no gore, no text, no collage, no borders. Atmospheric photographic treatment only."
+    },
+    {
+      "file": "greenhouse.jpg",
+      "original": "greenhouse.png",
+      "prompt": "Use case: lighting-weather. The attached local photograph is the sole edit target. Make this exact photograph of Bucharest Botanical Garden at night more scary and surreal through cinematic cold blue-black shadows, slightly dimmer original coloured lighting, subtle low ground mist and fine film grain, consistent with an eerie night photography series. Preserve the original camera position, aspect ratio, composition, all buildings, paths, plants, benches, installations and mask designs exactly. Keep main subjects readable and original textures intact; retain the existing colours but make surrounding darkness more ominous. No invented objects, people, eyes, creatures or faces. No alteration of facial expressions on masks, no gore, no text, no collage, no borders. Atmospheric photographic treatment only."
+    },
+    {
+      "file": "blue-tree-masks.jpg",
+      "original": "blue-tree-masks.png",
+      "prompt": "Use case: lighting-weather. The attached local photograph is the sole edit target. Make this exact photograph of Bucharest Botanical Garden at night more scary and surreal through cinematic cold blue-black shadows, slightly dimmer original coloured lighting, subtle low ground mist and fine film grain, consistent with an eerie night photography series. Preserve the original camera position, aspect ratio, composition, all buildings, paths, plants, benches, installations and mask designs exactly. Keep main subjects readable and original textures intact; retain the existing colours but make surrounding darkness more ominous. No invented objects, people, eyes, creatures or faces. No alteration of facial expressions on masks, no gore, no text, no collage, no borders. Atmospheric photographic treatment only."
+    },
+    {
+      "file": "red-mask.jpg",
+      "original": "red-mask.png",
+      "prompt": "Use case: lighting-weather. The attached local photograph is the sole edit target. Make this exact photograph of Bucharest Botanical Garden at night more scary and surreal through cinematic cold blue-black shadows, slightly dimmer original coloured lighting, subtle low ground mist and fine film grain, consistent with an eerie night photography series. Preserve the original camera position, aspect ratio, composition, all buildings, paths, plants, benches, installations and mask designs exactly. Keep main subjects readable and original textures intact; retain the existing colours but make surrounding darkness more ominous. No invented objects, people, eyes, creatures or faces. No alteration of facial expressions on masks, no gore, no text, no collage, no borders. Atmospheric photographic treatment only."
+    },
+    {
+      "file": "fluorescent-mask.jpg",
+      "original": "fluorescent-mask.png",
+      "prompt": "Use case: lighting-weather. The attached local photograph is the sole edit target. Make this exact photograph of Bucharest Botanical Garden at night more scary and surreal through cinematic cold blue-black shadows, slightly dimmer original coloured lighting, subtle low ground mist and fine film grain, consistent with an eerie night photography series. Preserve the original camera position, aspect ratio, composition, all buildings, paths, plants, benches, installations and mask designs exactly. Keep main subjects readable and original textures intact; retain the existing colours but make surrounding darkness more ominous. No invented objects, people, eyes, creatures or faces. No alteration of facial expressions on masks, no gore, no text, no collage, no borders. Atmospheric photographic treatment only."
+    },
+    {
+      "file": "paired-masks.jpg",
+      "original": "paired-masks.png",
+      "prompt": "Use case: lighting-weather. The attached local photograph is the sole edit target. Make this exact photograph of Bucharest Botanical Garden at night more scary and surreal through cinematic cold blue-black shadows, slightly dimmer original coloured lighting, subtle low ground mist and fine film grain, consistent with an eerie night photography series. Preserve the original camera position, aspect ratio, composition, all buildings, paths, plants, benches, installations and mask designs exactly. Keep main subjects readable and original textures intact; retain the existing colours but make surrounding darkness more ominous. No invented objects, people, eyes, creatures or faces. No alteration of facial expressions on masks, no gore, no text, no collage, no borders. Atmospheric photographic treatment only."
+    }
+  ],
+  "originals": "assets/photos/2026-11-botanica-originals/"
+}

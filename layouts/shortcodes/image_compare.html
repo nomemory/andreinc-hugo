@@ -1,0 +1,24 @@
+{{- /* Usage: {{< image_compare src="/images/edited.jpg" collection="originals" file="photo.png" caption="A photograph." width="1448" height="1086" >}} */ -}}
+{{- $src := .Get "src" -}}
+{{- $original := .Get "original" -}}
+{{- with .Get "collection" -}}
+  {{- $path := printf "photos/%s/%s" . ($.Get "file") -}}
+  {{- $resource := resources.Get $path -}}
+  {{- if not $resource -}}
+    {{- errorf "image_compare could not find original photo %q: %s" $path $.Position -}}
+  {{- else -}}
+    {{- $original = $resource.RelPermalink -}}
+  {{- end -}}
+{{- end -}}
+{{- if or (not $src) (not $original) -}}
+  {{- errorf "image_compare requires src and either original or collection/file: %s" .Position -}}
+{{- end -}}
+{{- $id := printf "image-compare-%s-%d" .Page.File.UniqueID .Ordinal -}}
+<figure class="image-compare" data-image-compare>
+  <img id="{{ $id }}" src="{{ $src | relURL }}" alt="{{ .Get "alt" | default (.Get "caption") }}"{{ with .Get "width" }} width="{{ . }}"{{ end }}{{ with .Get "height" }} height="{{ . }}"{{ end }} loading="lazy" decoding="async">
+  <figcaption>
+    {{ with .Get "caption" }}<span>{{ . }}</span>{{ end }}
+    <button class="image-compare-toggle" type="button" aria-controls="{{ $id }}" aria-pressed="false" data-original="{{ $original | relURL }}" hidden>show original</button>
+    <noscript><a class="image-compare-original" href="{{ $original | relURL }}">show original</a></noscript>
+  </figcaption>
+</figure>

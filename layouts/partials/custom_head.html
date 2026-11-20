@@ -51,3 +51,8 @@ var sc_remove_link=1;
 {{ range .Params.customCSS }}
     <link rel="stylesheet" href="{{ . }}">
 {{ end }}
+
+{{ if .HasShortcode "image_compare" }}
+    <link rel="stylesheet" href="{{ "css/image-compare.css" | relURL }}">
+    <script src="{{ "js/image-compare.js" | relURL }}" defer></script>
+{{ end }}

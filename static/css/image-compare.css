@@ -1,0 +1,39 @@
+.image-compare {
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+.image-compare img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.image-compare figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.image-compare-toggle,
+.image-compare-original {
+  display: block;
+  margin: 0.35rem auto 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--link-color, #0056b3);
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.image-compare-toggle[hidden] {
+  display: none;
+}
+
+.image-compare-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
