@@ -22,9 +22,15 @@ Whether you are looking for a fresh challenge or revisiting classic techniques, 
 
 # The exercises
 
+{{< olympiad_problem id="p00215" >}}
+
 {{< olympiad_problem id="p00182" >}}
 
 {{< olympiad_problem id="p00183" >}}
+
+{{< olympiad_problem id="p00217" >}}
+
+{{< olympiad_problem id="p00213" >}}
 
 {{< olympiad_problem id="p00184" >}}
 
@@ -34,7 +40,11 @@ Whether you are looking for a fresh challenge or revisiting classic techniques, 
 
 {{< olympiad_problem id="p00187" >}}
 
+{{< olympiad_problem id="p00214" >}}
+
 {{< olympiad_problem id="p00188" >}}
+
+{{< olympiad_problem id="p00216" >}}
 
 {{< olympiad_problem id="p00189" >}}
 
